@@ -47,3 +47,9 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Ottavia va disegnata in tutte le direzioni, una per una: non si può specchiare, ma deve potersi girare ovunque.
 - Finale: nella Notte arrivano nemici senza fine; Ottavia si ferma in un vicolo cieco, vede le stelle e aspetta la morte; lampi di luce la portano via, senza che se ne veda il salvatore.
 - Stile precisato sull'immagine di riferimento di *Elliot*: mondo 3D esplorabile in tutte le direzioni e su più livelli di altezza, con texture in pixel art e tre piani di profondità. Sostituisce la formula “pixel art 2.5D”.
+
+## 27 settembre 2026
+
+- Scenario: si usa il progetto esistente "Nessuno" (`proj_e3G6TyKNVH3TRmGEBhrB8Aym`).
+- Git: solo commit locali, niente push su `origin` se non richiesto.
+- Texture pixel art degli ambienti per la fase 1: Retro Diffusion Tile su Scenario (circa 10 CU a immagine).

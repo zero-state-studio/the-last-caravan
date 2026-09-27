@@ -20,7 +20,7 @@ Compilato in fase 0 (27 settembre 2026). Le versioni qui sotto sono fissate: non
 
 Note sui servizi:
 - ElevenLabs: la chiave non può leggere l'abbonamento (`/v1/user/subscription` risponde 401, permesso non concesso, come previsto). Il costo di ogni generazione si legge dall'header `character-cost` della risposta.
-- Scenario: un solo team ("Gianlucaricaldone's Organization", `team_boscukTE1AfcStGzcGfPCBSq`) con un solo progetto ("Nessuno", `proj_e3G6TyKNVH3TRmGEBhrB8Aym`). Gli strumenti di scrittura vogliono i due ID espliciti.
+- Scenario: un solo team ("Gianlucaricaldone's Organization", `team_boscukTE1AfcStGzcGfPCBSq`) con un solo progetto ("Nessuno", `proj_e3G6TyKNVH3TRmGEBhrB8Aym`). Gli strumenti di scrittura vogliono i due ID espliciti. Si usa questo progetto (decisione del 27 settembre).
 - Meshy: `meshy_download_model` accetta `save_to` con percorso assoluto; senza, salva in `meshy_output/` nella radice (da evitare).
 
 ## Comandi di verifica
@@ -50,4 +50,4 @@ Note sui servizi:
 
   Zona morta 0,2. Tasti fisici (`physical_keycode`), così WASD resta nella stessa posizione anche su tastiere AZERTY. La mappatura completa dei tasti resta da definire (67).
 - Traduzioni: `localization/translations.csv` (colonne `keys,en,it`, chiavi in inglese), importato da Godot in `translations.en.translation` e `translations.it.translation`, che si versionano perché senza di essi il primo avvio segnala errori. Lingua di riserva: inglese. Chiave di prova: `UI_TEST_GREETING`. Un `Label` con testo uguale a una chiave si traduce da solo; nel codice si usa `tr()`.
-- Scena di prova: `scenes/dev/smoke_test.tscn` (scena principale provvisoria): cielo, sole, un cubo e l'etichetta tradotta. Screenshot: `docs/screenshots/2026-09-27-fase0-smoke-test.png`.
+- Scena di prova: `scenes/dev/smoke_test.tscn` (scena principale provvisoria, da sostituire con il diorama in fase 1): cielo, sole, un cubo e l'etichetta tradotta. Screenshot: `docs/screenshots/2026-09-27-fase0-smoke-test.png`.
