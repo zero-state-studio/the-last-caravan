@@ -78,7 +78,7 @@ func _behave(delta: float) -> void:
 			velocity = _roll_direction * creature.grappolo_roll_speed
 			if not _roll_hit and distance <= radius + 0.6:
 				_roll_hit = true
-				attack_player(creature.grappolo_damage, radius + 0.7)
+				attack_player(creature.grappolo_damage, radius + 0.7, true, true)
 			if _time >= creature.grappolo_roll_seconds or is_on_wall():
 				_set_phase(Phase.COOLDOWN)
 		Phase.COOLDOWN:

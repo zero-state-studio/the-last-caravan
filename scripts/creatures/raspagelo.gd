@@ -83,7 +83,7 @@ func _behave(delta: float) -> void:
 				_facing = flat_direction_to(target.global_position)
 				sprite.flip_h = _facing.x > 0.0
 				_set_phase(Phase.BURST)
-				attack_player(creature.raspagelo_damage, creature.raspagelo_burst_radius, false)
+				attack_player(creature.raspagelo_damage, creature.raspagelo_burst_radius, false, true)
 				flash(0.6, Color(0.85, 0.9, 1.0))
 				# A burst of earth that is hard to miss, even in tall grass.
 				CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 0.4, MOUND_COLOR.lightened(0.4), 30.0)

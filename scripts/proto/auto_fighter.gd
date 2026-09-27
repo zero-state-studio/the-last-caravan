@@ -13,17 +13,19 @@ const STRIKE_INTERVAL: float = 0.22
 ## Distance from the creature of the spot on its shaded side.
 const SIDE_OFFSET: float = 1.1
 const THREAT_DISTANCE: float = 3.0
-## How early the bot steps away from an attack it cannot deflect.
+## How early the bot jumps away from an attack it cannot deflect.
 const STEP_LEAD_SECONDS: float = 0.2
 ## Distance kept from a boss while it is not open (beyond its stomp).
 const BOSS_WAIT_DISTANCE: float = 4.5
 const DODGE_PAUSE_SECONDS: float = 0.5
+## About how far a running jump carries Ottavia.
+const JUMP_DISTANCE: float = 2.3
 
 var ottavia: OttaviaProto
 ## The bot stays within `home_radius` of `home` (an arena), when set.
 var home: Vector3 = Vector3.ZERO
 var home_radius: float = INF
-## Human timing: each parry or step comes up to this many seconds early or
+## Human timing: each parry or jump comes up to this many seconds early or
 ## late, drawn with a fixed seed so every run of a fight is the same.
 var timing_error: float = 0.0
 var targets: Array[CombatEnemy] = []
@@ -32,6 +34,8 @@ var defeats: int = 0
 var _parry_left: float = 0.0
 var _strike_left: float = 0.0
 var _dodge_left: float = 0.0
+var _dodge_direction: Vector3 = Vector3.ZERO
+var _run_pressed: bool = false
 var _was_down: bool = false
 var _done: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -63,6 +67,12 @@ func _physics_process(delta: float) -> void:
 	var combat: OttaviaCombat = ottavia.combat
 	_strike_left -= delta
 	_dodge_left -= delta
+	if _dodge_left > 0.0 and (combat.state == OttaviaCombat.State.JUMP or _dodge_left > DODGE_PAUSE_SECONDS - 0.1):
+		_steer(_dodge_direction)
+		return
+	if _run_pressed:
+		_run_pressed = false
+		combat.release(&"run")
 	if _parry_left > 0.0:
 		_parry_left -= delta
 		if _parry_left <= 0.0:
@@ -86,9 +96,12 @@ func _physics_process(delta: float) -> void:
 		if not target.attack_deflectable() and soon <= STEP_LEAD_SECONDS:
 			if _dodge_left <= 0.0:
 				_dodge_left = DODGE_PAUSE_SECONDS
-				var dodge: Vector3 = _keep_home(target.dodge_direction(ottavia.global_position), combat.tuning.step_distance)
-				_steer(dodge)
-				combat.press(&"step", Vector2(dodge.x, dodge.z))
+				_dodge_direction = _keep_home(target.dodge_direction(ottavia.global_position), JUMP_DISTANCE)
+				_steer(_dodge_direction)
+				# A running jump carries farther.
+				combat.press(&"run")
+				_run_pressed = true
+				combat.press(&"jump")
 			return
 	var nearest: CombatEnemy = alive[0]
 	for target: CombatEnemy in alive:

@@ -8,24 +8,26 @@ extends Node
 ## Hook: tap pulls small creatures (or tears shields off), hold pushes away.
 ## Parry: hold to block (costs breath per hit); a hit right after the press
 ## is deflected and the attacker is left staggered.
-## Step: a short sidestep, not a roll; costs a lot of breath.
+## Jump: a real jump that also dodges: a moment of invulnerability at
+## takeoff, and attacks along the ground miss while in the air; costs breath.
+## Run: hold to run; drains breath while running, stops when it is empty.
 ## Lantern: tap opens or closes the shutter, hold raises it to light farther.
 ## Call: calls the companion present in the chapter (20).
 ## Breath is the only resource. Empty breath: breathless for an instant.
 ## Counter-hit: striking a creature that is open after its own attack.
 
 signal message(key: StringName)
-## Emitted when a sidestep starts (it shakes off clinging creatures).
-signal stepped
+## Emitted when a jump starts (it shakes off clinging creatures).
+signal jumped
 ## Emitted at the active moment of every strike.
 signal struck
-## A move done well by the player (81): parry, counter, combo, step, hook.
+## A move done well by the player (81): parry, counter, combo, jump, hook.
 ## Enea counts them to learn the move.
 signal technique_done(technique: StringName)
 
-enum State { FREE, STRIKE, HOOK, PARRY, STEP, HITSTUN, BREATHLESS }
+enum State { FREE, STRIKE, HOOK, PARRY, JUMP, HITSTUN, BREATHLESS }
 
-const ACTIONS: Array[StringName] = [&"attack", &"hook", &"parry", &"step", &"lantern", &"call"]
+const ACTIONS: Array[StringName] = [&"attack", &"hook", &"parry", &"jump", &"run", &"lantern", &"call"]
 const SWING_COLOR: Color = Color(1.0, 0.95, 0.8, 0.9)
 const COUNTER_COLOR: Color = Color(1.0, 0.77, 0.42, 1.0)
 const DEFLECT_COLOR: Color = Color(0.85, 0.9, 1.0, 1.0)
@@ -48,7 +50,12 @@ var _since_action: float = 10.0
 var _aim: Vector3 = Vector3.BACK
 var _hook_push: bool = false
 var _hook_charge: float = -1.0
-var _step_direction: Vector3 = Vector3.ZERO
+## True while Ottavia runs (run held, moving, free, with breath).
+var running: bool = false
+var _run_held: bool = false
+var _jump_from_run: bool = false
+## Upward speed of a jump just started, taken once by OttaviaProto.
+var _jump_impulse: float = 0.0
 var _invulnerable_left: float = 0.0
 var _knock_velocity: Vector3 = Vector3.ZERO
 var _lantern_charge: float = -1.0
@@ -81,6 +88,8 @@ func reset() -> void:
 	_enter(State.FREE)
 	_buffer.clear()
 	_parry_held = false
+	_run_held = false
+	running = false
 	_knock_velocity = Vector3.ZERO
 	_hook_charge = -1.0
 
@@ -102,6 +111,7 @@ func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> voi
 	_invulnerable_left = maxf(0.0, _invulnerable_left - delta)
 	_knock_velocity = _knock_velocity.move_toward(Vector3.ZERO, 8.0 * delta)
 	_advance_state(input)
+	_update_run(delta, controls_enabled)
 	_regenerate(delta)
 
 
@@ -125,9 +135,10 @@ func press(action: StringName, input: Vector2 = Vector2.ZERO) -> void:
 		&"parry":
 			_buffer[&"parry"] = tuning.input_buffer_seconds
 			_parry_held = true
-		&"step":
-			_buffer[&"step"] = tuning.input_buffer_seconds
-			_step_direction = _step_direction_for(input)
+		&"jump":
+			_buffer[&"jump"] = tuning.input_buffer_seconds
+		&"run":
+			_run_held = true
 		&"lantern":
 			_lantern_charge = 0.0
 		&"call":
@@ -136,6 +147,8 @@ func press(action: StringName, input: Vector2 = Vector2.ZERO) -> void:
 
 func release(action: StringName) -> void:
 	match action:
+		&"run":
+			_run_held = false
 		&"hook":
 			if _hook_charge >= 0.0:
 				_buffer[&"hook_pull"] = tuning.input_buffer_seconds
@@ -183,10 +196,10 @@ func _advance_state(input: Vector2) -> void:
 		State.HOOK:
 			_advance_hook()
 		State.PARRY:
-			if _buffer.has(&"step"):
-				_start_step()
-		State.STEP:
-			if _state_time >= tuning.step_seconds:
+			if _buffer.has(&"jump"):
+				_start_jump()
+		State.JUMP:
+			if _state_time >= 0.05 and ottavia.is_on_floor():
 				_enter(State.FREE)
 		State.HITSTUN:
 			if _state_time >= tuning.hitstun_seconds:
@@ -197,8 +210,8 @@ func _advance_state(input: Vector2) -> void:
 
 
 func _start_buffered_action(_input: Vector2) -> void:
-	if _buffer.has(&"step"):
-		_start_step()
+	if _buffer.has(&"jump") and ottavia.is_on_floor():
+		_start_jump()
 	elif _buffer.has(&"parry") or _parry_held:
 		_parry_can_deflect = _buffer.has(&"parry")
 		_buffer.erase(&"parry")
@@ -264,17 +277,35 @@ func _advance_hook() -> void:
 		_enter(State.FREE)
 
 
-func _start_step() -> void:
-	_buffer.erase(&"step")
-	if stamina <= 0.0:
+func _start_jump() -> void:
+	_buffer.erase(&"jump")
+	if stamina <= 0.0 or not ottavia.is_on_floor():
 		return
-	if _step_direction.is_zero_approx():
-		_step_direction = _step_direction_for(Vector2.ZERO)
-	_enter(State.STEP)
-	_invulnerable_left = step_invulnerable_seconds()
+	# Run held while moving counts even if the run starts with the jump.
+	_jump_from_run = _run_held and _moving and stamina > 0.0
+	_enter(State.JUMP)
+	_invulnerable_left = jump_invulnerable_seconds()
+	_jump_impulse = sqrt(2.0 * ottavia.gravity * tuning.jump_height)
 	SoundBank.play_sound(get_tree(), &"passo")
-	stepped.emit()
-	_spend(tuning.step_stamina_cost)
+	jumped.emit()
+	_spend(tuning.jump_stamina_cost)
+
+
+## The upward speed of a jump just started (0 when none); read once.
+func take_jump_impulse() -> float:
+	var impulse: float = _jump_impulse
+	_jump_impulse = 0.0
+	return impulse
+
+
+## Running drains breath and keeps it from coming back; with no breath
+## left Ottavia just walks (no breathlessness).
+func _update_run(delta: float, controls_enabled: bool) -> void:
+	running = controls_enabled and _run_held and _moving and state == State.FREE and stamina > 0.0
+	if not running:
+		return
+	stamina = maxf(0.0, stamina - tuning.run_stamina_per_second * delta)
+	_since_action = 0.0
 
 
 func _enter(new_state: State) -> void:
@@ -415,9 +446,9 @@ func targets_in_arc(reach: float, arc_degrees: float) -> Array[CombatEnemy]:
 
 ## An attack from a creature. Returns how it ended (CombatAttack.Result).
 func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
-	if _invulnerable_left > 0.0:
-		if state == State.STEP:
-			technique_done.emit(&"step")
+	if _invulnerable_left > 0.0 or (attack.ground and is_airborne()):
+		if state == State.JUMP:
+			technique_done.emit(&"jump")
 		return CombatAttack.Result.EVADED
 	if state == State.PARRY:
 		if attack.deflectable and _parry_can_deflect and _state_time <= deflect_window():
@@ -502,8 +533,13 @@ func deflect_window() -> float:
 	return (tuning.deflect_window + (Progression.KEEN_EYE_WINDOW if knows(&"keen_eye") else 0.0)) * Difficulty.deflect_window()
 
 
-func step_invulnerable_seconds() -> float:
-	return maxf(tuning.step_invulnerable_seconds, Progression.SURE_STEP_INVULNERABLE) if knows(&"sure_step") else tuning.step_invulnerable_seconds
+func jump_invulnerable_seconds() -> float:
+	return maxf(tuning.jump_invulnerable_seconds, Progression.SURE_JUMP_INVULNERABLE) if knows(&"sure_jump") else tuning.jump_invulnerable_seconds
+
+
+## In the air after a jump: attacks along the ground miss.
+func is_airborne() -> bool:
+	return state == State.JUMP and not ottavia.is_on_floor()
 
 
 func counter_multiplier() -> float:
@@ -546,7 +582,9 @@ func move_speed_multiplier() -> float:
 	var free: float = 1.0 - clampf(slowdown, 0.0, 1.0)
 	match state:
 		State.FREE:
-			return free
+			return free * (tuning.run_speed_multiplier if running else 1.0)
+		State.JUMP:
+			return free * (tuning.run_speed_multiplier if _jump_from_run else 1.0)
 		State.PARRY:
 			return tuning.parry_speed_multiplier * free
 		State.BREATHLESS:
@@ -554,22 +592,20 @@ func move_speed_multiplier() -> float:
 	return 0.0
 
 
-## Extra velocity from the current action: sidestep, strike lunge, knockback.
+## Extra velocity from the current action: strike lunge, knockback.
 func forced_velocity() -> Vector3:
 	var velocity: Vector3 = _knock_velocity
-	if state == State.STEP:
-		velocity += _step_direction * tuning.step_distance / maxf(tuning.step_seconds, 0.01)
-	elif state == State.STRIKE and _state_time >= tuning.strike_startup and _state_time < tuning.strike_startup + tuning.strike_active:
+	if state == State.STRIKE and _state_time >= tuning.strike_startup and _state_time < tuning.strike_startup + tuning.strike_active:
 		velocity += _aim * tuning.strike_lunge / maxf(tuning.strike_active, 0.01)
 	return velocity
 
 
 func can_turn() -> bool:
-	return state == State.FREE or state == State.BREATHLESS
+	return state == State.FREE or state == State.BREATHLESS or state == State.JUMP
 
 
 func is_acting() -> bool:
-	return state == State.STRIKE or state == State.HOOK or state == State.STEP
+	return state == State.STRIKE or state == State.HOOK or state == State.JUMP
 
 
 # --- Helpers ---------------------------------------------------------------
@@ -585,13 +621,6 @@ func _aim_direction(reach: float) -> Vector3:
 		direction = _stick_direction()
 	ottavia.face_toward(direction)
 	return direction
-
-
-func _step_direction_for(input: Vector2) -> Vector3:
-	if not input.is_zero_approx():
-		return Vector3(input.x, 0.0, input.y).normalized()
-	# No direction: a sidestep to Ottavia's left.
-	return ottavia.facing_vector().rotated(Vector3.UP, PI * 0.5)
 
 
 func _call_companion() -> void:

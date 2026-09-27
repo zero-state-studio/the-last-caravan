@@ -44,6 +44,8 @@ var _facing: Facing.Direction = Facing.Direction.SOUTH
 var _frame_timer: float = 0.0
 var _frame: int = 0
 var _moving: bool = false
+## Height of the ground last stood on: the camera stays there during a jump.
+var _ground_y: float = 0.0
 ## False during room transitions and cutscenes: input is ignored.
 var controls_enabled: bool = true
 var health: float = 0.0
@@ -84,15 +86,29 @@ func _physics_process(delta: float) -> void:
 	var forced: Vector3 = combat.forced_velocity()
 	velocity.x = direction.x * speed + forced.x
 	velocity.z = direction.z * speed + forced.z
-	if is_on_floor():
+	var jump: float = combat.take_jump_impulse()
+	if jump > 0.0:
+		velocity.y = jump
+	elif is_on_floor():
 		velocity.y = 0.0
 	else:
 		velocity.y -= gravity * delta
 	move_and_slide()
+	if is_on_floor():
+		_ground_y = global_position.y
 	if combat.can_turn():
 		_facing = Facing.nearest_direction(input, _facing)
 	_animate(delta, not input.is_zero_approx() and combat.move_speed_multiplier() > 0.0)
 	_update_flash(delta)
+
+
+## Where the camera looks: the feet, but at the ground height during a jump
+## so the view does not bob (a fall still takes it down).
+func camera_anchor() -> Vector3:
+	var point: Vector3 = global_position
+	if combat.is_airborne():
+		point.y = minf(point.y, _ground_y)
+	return point
 
 
 func set_billboard_fixed_y(fixed_y: bool) -> void:
@@ -127,6 +143,12 @@ func _animate(delta: float, moving: bool) -> void:
 		_frame = 0
 		_frame_timer = 0.0
 	var frame_time: float = WALK_FRAME_TIME if moving else IDLE_FRAME_TIME
+	if combat.running:
+		frame_time /= combat.tuning.run_speed_multiplier
+	# Provisional jump: the walk pose held in the air (no jump frames yet).
+	if combat.is_airborne():
+		moving = true
+		frame_time = INF
 	_frame_timer += delta
 	while _frame_timer >= frame_time:
 		_frame_timer -= frame_time

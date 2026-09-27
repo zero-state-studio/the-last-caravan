@@ -171,7 +171,8 @@ func _move_by(offset: Vector3) -> void:
 
 ## Attacks the current target (see find_target) if it is within `reach`
 ## (flat distance); returns how it ended, or -1 when it was out of reach.
-func attack_player(damage: float, reach: float, deflectable: bool = true) -> int:
+## A `ground` attack is cleared by a jump.
+func attack_player(damage: float, reach: float, deflectable: bool = true, ground: bool = false) -> int:
 	var target: Node3D = find_target()
 	if target == null or flat_distance_to(target.global_position) > reach:
 		return -1
@@ -179,6 +180,7 @@ func attack_player(damage: float, reach: float, deflectable: bool = true) -> int
 	attack.damage = damage * Difficulty.enemy_damage()
 	attack.source = self
 	attack.deflectable = deflectable
+	attack.ground = ground
 	if target is OttaviaProto:
 		var player: OttaviaProto = target
 		if player.health <= 0.0:

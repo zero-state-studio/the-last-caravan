@@ -109,10 +109,10 @@ func _test_brinacchio() -> void:
 	await _wait(0.3)
 	_check(clinging.phase == Brinacchio.Phase.LATCHED, "brinacchio: clings to Ottavia")
 	_check(_ottavia.combat.slowdown > 0.0, "brinacchio: clinging slows her down")
-	_ottavia.combat.press(&"step", Vector2.RIGHT)
+	_ottavia.combat.press(&"jump")
 	await physics_frame
 	await physics_frame
-	_check(clinging.phase == Brinacchio.Phase.CRUSTED and clinging.has_shield, "brinacchio: a step shakes it off, crusted with frost")
+	_check(clinging.phase == Brinacchio.Phase.CRUSTED and clinging.has_shield, "brinacchio: a jump shakes it off, crusted with frost")
 	_check(is_zero_approx(_ottavia.combat.slowdown), "brinacchio: no slowdown once shaken off")
 	clinging.free()
 	_ottavia.restore_health()

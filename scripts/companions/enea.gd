@@ -14,7 +14,7 @@ signal hit_taken
 enum State { FOLLOW, DOWN, CONTROLLED }
 
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
-const TECHNIQUES: Array[StringName] = [&"parry", &"counter", &"combo", &"step", &"hook"]
+const TECHNIQUES: Array[StringName] = [&"parry", &"counter", &"combo", &"jump", &"hook"]
 const GRAVITY: float = 20.0
 
 @export var tuning: CombatTuning
@@ -87,7 +87,7 @@ func receive_attack(attack: CombatAttack) -> int:
 		_flash_color = Color(0.85, 0.9, 1.0)
 		deflected.emit()
 		return CombatAttack.Result.DEFLECTED
-	if state == State.FOLLOW and knows(&"step") and randf() < 0.5:
+	if state == State.FOLLOW and knows(&"jump") and randf() < 0.5:
 		return CombatAttack.Result.EVADED
 	state = State.DOWN if state == State.FOLLOW else state
 	_down_left = tuning.enea_down_seconds

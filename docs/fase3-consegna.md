@@ -25,7 +25,9 @@ cd ~/Progetti/the-last-caravan && "$GODOT_PATH" --path . res://scenes/proto/dior
 | Spartighiaccio | ±0,15 s | 8,5 s, −10 vita | 7,1 s, nessun danno |
 | Spartighiaccio | ±0,25 s | 10,7 s, nessun danno | 7,2 s, nessun danno |
 
-Capitoli 1-10 senza errore, Spartighiaccio: 8,9 · 8,6 · 6,7 · 7,1 · 7,1 · 5,7 · 5,5 · 7,0 · 7,0 · 6,4 s.
+Dopo il cambio dal passo al salto (28 settembre), errore ±0,25 s: branco 3,6 s (cap. 1) e 4,0 s (cap. 9), nessun danno; Spartighiaccio 22,3 s con −10 vita (cap. 1) e 18,1 s con −15 (cap. 9). Il salto schiva le cariche meno bene del vecchio passo: gli scontri col boss si allungano. Il video è ancora quello girato col passo.
+
+Capitoli 1-10 col passo, senza errore, Spartighiaccio: 8,9 · 8,6 · 6,7 · 7,1 · 7,1 · 5,7 · 5,5 · 7,0 · 7,0 · 6,4 s.
 
 ## Valori trovati
 
@@ -41,7 +43,8 @@ Valori di partenza dopo il ribilanciamento e la regola della mira, tutti nel pan
 | Mira | cono di 60° (90° al facile), disattivabile |
 | Uncino | portata 3,2 m, tenuto 0,35 s spinge |
 | Parata | deviazione entro 0,25 s dalla pressione, gratis; parata tenuta −15 fiato a colpo; sbilancia 1,2 s |
-| Passo | 1,7 m in 0,16 s, invulnerabile 0,12 s, −20 fiato |
+| Salto (al posto del passo, 28 settembre) | 0,6 m, circa 0,5 s in aria, invulnerabile 0,12 s al decollo, in aria supera gli attacchi a terra, −15 fiato |
+| Corsa | ×1,6, −15 fiato al secondo, senza fiato si cammina |
 | Fiato | +55/s dopo 0,6 s fermi, metà camminando, mai in parata; senza fiato 1 s |
 | Colpito | 0,25 s di stordimento |
 | Sensazione | fermo immagine 0,06 s (critico 0,12), tremolio 0,08 m (0,16) |

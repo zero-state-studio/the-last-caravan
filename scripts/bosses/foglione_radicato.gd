@@ -126,6 +126,7 @@ func _update_roots(delta: float) -> void:
 			attack.damage = creature.foglione_root_damage * Difficulty.enemy_damage()
 			attack.source = self
 			attack.deflectable = false
+			attack.ground = true
 			player.combat.receive_attack(attack)
 
 

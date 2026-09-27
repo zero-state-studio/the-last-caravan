@@ -115,11 +115,11 @@ func _connect(player: OttaviaProto) -> void:
 	if _connected:
 		return
 	_connected = true
-	player.combat.stepped.connect(_on_stepped)
+	player.combat.jumped.connect(_on_jumped)
 	player.combat.struck.connect(_on_struck)
 
 
-func _on_stepped() -> void:
+func _on_jumped() -> void:
 	detach()
 
 

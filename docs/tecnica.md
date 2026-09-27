@@ -141,7 +141,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Nemici: `CombatEnemy` (`scripts/combat/combat_enemy.gd`), gruppo `combat_targets`: vita, lampo, contraccolpo, sbilanciamento dopo una deviazione, uncino (tira i piccoli, spinge, strappa gli scudi). `TrainingDummy`: fantoccio dei Voltacampi a ritmo regolabile (`scenes/combat/training_dummy.tscn`).
 - Sensazione: `HitFeedback` (fermo immagine con `Engine.time_scale`, tremolio della camera), lampo nello shader dello sprite (`flash`, `flash_color`), `CombatEffects` (scia ad arco in pixel e scintilla, provvisorie), `SoundBank` (12 effetti ElevenLabs). Tremolio e lampi riducibili dal pannello (opzioni, 96).
 - Misure a schermo: `CombatHud` (`scripts/ui/combat_hud.gd`), vita, fiato e segnali "Deviato!", "Contrattempo!", "Senza fiato".
-- Mappatura: gamepad come in 67 (A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo); tastiera e mouse proposti: J o clic sinistro Colpo, I Uncino, L o clic destro Parata, K o Spazio Passo, U Lanterna, O Richiamo, E interagire; movimento WASD o frecce.
+- Mappatura: come in 67. Salto (`jump`): Spazio, K, pad B; corsa (`run`, tenuta): Shift, pad L3.
 - Test: `tests/test_combat.gd`. Un suono ancora in riproduzione alla chiusura conta come risorsa trapelata: il test aspetta la fine dei suoni, `SoundBank` li ferma all'uscita.
 - Diorama: `autocombat=1` esegue una sequenza fissa contro il fantoccio (per catture e video).
 
@@ -182,3 +182,10 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Lato del mondo delle creature (`world_side` in `CombatEnemy`), usato dalle toppe del freddo e del caldo.
 - Test: `tests/test_progression.gd`. Screenshot: `docs/screenshots/2026-09-28-fase3-fine-capitolo.png`.
 - Bot di prova (`AutoFighter`, `scripts/proto/auto_fighter.gd`, solo sviluppo): argomento del diorama `autofight=herd` (i tre Voltafaccia del prato) o `autofight=sparti` (il Vecchio Spartighiaccio), con `autofight_error=<s>` per un errore di tempismo umano (seme fisso). Legge solo lo stato pubblico delle creature (`attack_in`, `attack_deflectable`, `dodge_direction`, `weak_side`, `is_exposed`), stampa una riga `AUTOFIGHT` (tempo, vita rimasta, sconfitte) ed esce. Con `--write-movie` fa il video di confronto tra capitoli.
+
+## Salto e corsa (33, 67)
+
+- Salto: stato `JUMP` di `OttaviaCombat`; `take_jump_impulse()` dà a `OttaviaProto` la velocità verso l'alto (`sqrt(2 · gravità · jump_height)`); lo stato finisce all'atterraggio. Invulnerabilità al decollo (`jump_invulnerable_seconds`, salto sicuro al capitolo 5); in aria gli attacchi con `CombatAttack.ground` vanno a vuoto (`attack_player(..., ground = true)`: Raspagelo, rotolata del Grappolo, pestone dello Spartighiaccio, radici del Foglione). Il segnale `jumped` stacca i Brinacchio.
+- Corsa: `run` tenuto, velocità × `run_speed_multiplier`, `run_stamina_per_second` di fiato; niente ricarica mentre si corre; a fiato vuoto si cammina. Un salto preso correndo conserva la velocità di corsa.
+- Camera: segue `OttaviaProto.camera_anchor()`, che durante il salto resta all'altezza del terreno (niente sobbalzi; una caduta la porta giù).
+- Animazione provvisoria: in aria resta la posa del cammino; la corsa accelera i fotogrammi. Argomento del diorama `autojump=1` per le catture. Screenshot: `docs/screenshots/2026-09-28-fase3-salto.png`.

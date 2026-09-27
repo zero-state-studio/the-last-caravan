@@ -8,3 +8,5 @@ var damage: float = 0.0
 ## The attacker: staggered when the attack is deflected.
 var source: CombatEnemy
 var deflectable: bool = true
+## Along the ground (rings, roots, rolls): a jump clears it.
+var ground: bool = false

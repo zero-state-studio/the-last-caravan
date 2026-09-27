@@ -29,6 +29,7 @@ func _initialize() -> void:
 	await _test_strikes()
 	await _test_defence()
 	await _test_breath()
+	await _test_jump_and_run()
 	await _test_hook()
 	await _test_lantern_and_call()
 	await _test_rules_from_review()
@@ -99,29 +100,70 @@ func _test_defence() -> void:
 
 func _test_breath() -> void:
 	_combat.reset()
-	_combat.press(&"step", Vector2.RIGHT)
+	_combat.press(&"jump")
 	await physics_frame
 	await physics_frame
-	_check(_combat.state == OttaviaCombat.State.STEP, "step: the sidestep starts")
-	_check(is_equal_approx(_combat.stamina, _tuning.max_stamina - _tuning.step_stamina_cost), "step costs step_stamina_cost breath")
-	var after_step: float = _combat.stamina
-	await _wait(_tuning.step_seconds + _tuning.stamina_regen_delay + 0.4)
-	_check(_combat.stamina > after_step, "breath comes back when Ottavia does not act")
+	_check(_combat.state == OttaviaCombat.State.JUMP, "jump: the jump starts")
+	_check(is_equal_approx(_combat.stamina, _tuning.max_stamina - _tuning.jump_stamina_cost), "jump costs jump_stamina_cost breath")
+	var after_jump: float = _combat.stamina
+	await _wait(0.8 + _tuning.stamina_regen_delay + 0.4)
+	_check(_combat.stamina > after_jump, "breath comes back when Ottavia does not act")
 
 	_messages.clear()
 	_combat.stamina = 5.0
-	_combat.press(&"step", Vector2.RIGHT)
+	_combat.press(&"jump")
 	await physics_frame
 	await physics_frame
 	_check(_combat.state == OttaviaCombat.State.BREATHLESS, "empty breath: breathless")
 	_check(&"COMBAT_BREATHLESS" in _messages, "breathless shows its signal")
-	await _wait(_tuning.step_invulnerable_seconds + 0.05)
+	await _wait(_tuning.jump_invulnerable_seconds + 0.05)
 	var health_before: float = _ottavia.health
 	_combat.receive_attack(_attack())
 	_check(is_equal_approx(health_before - _ottavia.health, _tuning.dummy_damage * _tuning.breathless_damage_multiplier), "breathless: more damage taken")
 	await _wait(_tuning.breathless_seconds + 0.2)
 	_check(_combat.state == OttaviaCombat.State.FREE, "breathless lasts only an instant")
 	_ottavia.restore_health()
+
+
+## Jump (33): a real jump that dodges ground attacks; run: faster, drains
+## breath, stops when it is empty without breathlessness.
+func _test_jump_and_run() -> void:
+	_combat.reset()
+	await _wait(0.3)
+	var start_y: float = _ottavia.global_position.y
+	_combat.press(&"jump")
+	await _wait(0.2)
+	_check(_ottavia.global_position.y > start_y + 0.3 and _combat.is_airborne(), "jump: Ottavia leaves the ground")
+	var ground: CombatAttack = _attack()
+	ground.ground = true
+	var health_before: float = _ottavia.health
+	_check(_combat.receive_attack(ground) == CombatAttack.Result.EVADED and is_equal_approx(_ottavia.health, health_before), "jump: attacks along the ground miss in the air")
+	_check(_combat.receive_attack(_attack()) == CombatAttack.Result.HIT, "jump: other attacks still hit after the takeoff")
+	await _wait(0.9)
+	_check(_combat.state == OttaviaCombat.State.FREE and _ottavia.is_on_floor() and absf(_ottavia.global_position.y - start_y) < 0.1, "jump: lands back on the ground")
+	_ottavia.restore_health()
+
+	_combat.reset()
+	var walk_start: Vector3 = _ottavia.global_position
+	Input.action_press(&"move_down")
+	await _wait(0.5)
+	var walked: float = _ottavia.global_position.distance_to(walk_start)
+	Input.action_release(&"move_down")
+	await _wait(0.2)
+	var run_start: Vector3 = _ottavia.global_position
+	var breath: float = _combat.stamina
+	_combat.press(&"run")
+	Input.action_press(&"move_up")
+	await _wait(0.5)
+	_check(_combat.running and _ottavia.global_position.distance_to(run_start) > walked * 1.3, "run: faster than walking")
+	_check(_combat.stamina < breath, "run: drains breath")
+	_combat.stamina = 0.5
+	await _wait(0.2)
+	_check(not _combat.running and _combat.state == OttaviaCombat.State.FREE, "run: with no breath she walks, not breathless")
+	Input.action_release(&"move_up")
+	_combat.release(&"run")
+	await _wait(0.2)
+	_combat.reset()
 
 
 func _test_hook() -> void:

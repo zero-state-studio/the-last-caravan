@@ -82,7 +82,8 @@ func snap_to_target() -> void:
 
 
 func _target_point() -> Vector3:
-	var point: Vector3 = target.global_position + Vector3.UP * look_height
+	var anchor: Vector3 = target.call(&"camera_anchor") if target.has_method(&"camera_anchor") else target.global_position
+	var point: Vector3 = anchor + Vector3.UP * look_height
 	if limits.has_area():
 		point.x = clampf(point.x, limits.position.x, limits.end.x)
 		point.z = clampf(point.z, limits.position.y, limits.end.y)

@@ -6,7 +6,7 @@
 
 Ogni capitolo: una cosa persa e una tecnica imparata, mostrate nella schermata di fine capitolo. La forza di ogni colpo cresce del 15% del valore del capitolo 1 a ogni capitolo.
 
-Valori di partenza del capitolo 1: fiato 100, passo 3,0 m/s, colpo 14, combinazione di 3 colpi.
+Valori di partenza del capitolo 1: fiato 100, passo 3,0 m/s (corsa ×1,6), colpo 14, combinazione di 3 colpi.
 
 | Cap. | Fiato | Passo | Combinazione | Forza colpo | Perde | Impara |
 |---|---|---|---|---|---|---|
@@ -14,7 +14,7 @@ Valori di partenza del capitolo 1: fiato 100, passo 3,0 m/s, colpo 14, combinazi
 | 2 | 94% | 100% | 3 | 1,15 | fiato | Colpo di ritorno: dopo una deviazione, il colpo successivo (entro 1,2 s) è critico |
 | 3 | 94% | 96% | 3 | 1,30 | passo | Occhio esperto: finestra di deviazione +0,05 s |
 | 4 | 94% | 96% | 2 | 1,45 | combinazione | Colpo pesante: l'ultimo colpo della combinazione sbilancia (0,8 s) |
-| 5 | 88% | 96% | 2 | 1,60 | fiato | Passo sicuro: invulnerabilità del passo 0,2 s |
+| 5 | 88% | 96% | 2 | 1,60 | fiato | Salto sicuro: invulnerabilità del salto 0,2 s |
 | 6 | 88% | 92% | 2 | 1,75 | passo | Lanterna che abbaglia: alzarla sbilancia le creature entro 3 m (1,2 s, ricarica 8 s) |
 | 7 | 82% | 92% | 2 | 1,90 | fiato | Contrattempo profondo: critico ×2,5 |
 | 8 | 82% | 92% | 1 | 2,05 | combinazione | Uncino lungo: +1 m di portata |

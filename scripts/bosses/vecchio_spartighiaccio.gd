@@ -121,7 +121,7 @@ func _behave(delta: float) -> void:
 			if _time >= creature.sparti_stomp_telegraph * Difficulty.telegraph():
 				SoundBank.play_sound(get_tree(), &"nemico_sconfitto", 0.2)
 				HitFeedback.shake(get_tree(), 0.18)
-				var attack_result: int = attack_player(creature.sparti_stomp_damage, creature.sparti_stomp_range, false)
+				var attack_result: int = attack_player(creature.sparti_stomp_damage, creature.sparti_stomp_range, false, true)
 				_set_phase(Phase.RECOVER)
 				_time = creature.sparti_recover_seconds * 0.5 if attack_result >= 0 else 0.0
 

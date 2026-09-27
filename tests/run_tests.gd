@@ -3,7 +3,7 @@ extends SceneTree
 ## Usage: godot --headless --path . --script res://tests/run_tests.gd
 ## Exits with code 0 when every check passes, 1 otherwise.
 
-const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"step", &"parry", &"lantern", &"call", &"open_options"]
+const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"jump", &"run", &"parry", &"lantern", &"call", &"open_options"]
 const LOAD_ROOTS: Array[String] = ["res://scenes", "res://scripts", "res://tests"]
 const TEST_KEY: StringName = &"UI_TEST_GREETING"
 const EXPECTED_TRANSLATIONS: Dictionary = {
@@ -138,19 +138,26 @@ func _test_load_all_resources() -> void:
 
 
 ## Controls (67, 96): every action within reach of the left hand on WASD,
-## strike and parry on the mouse buttons, step on the space bar; bindings
+## strike and parry on the mouse buttons, jump on the space bar, run on
+## Shift; bindings
 ## can be changed and reset.
 func _test_controls() -> void:
-	var left_hand: Array[Key] = [KEY_Q, KEY_E, KEY_R, KEY_F, KEY_SPACE, KEY_ESCAPE, KEY_W, KEY_A, KEY_S, KEY_D]
-	for action: StringName in [&"hook", &"step", &"lantern", &"call", &"interact", &"open_options"]:
+	var left_hand: Array[Key] = [KEY_Q, KEY_E, KEY_R, KEY_F, KEY_SPACE, KEY_SHIFT, KEY_ESCAPE, KEY_W, KEY_A, KEY_S, KEY_D]
+	for action: StringName in [&"hook", &"jump", &"run", &"lantern", &"call", &"interact", &"open_options"]:
 		var event: InputEvent = InputRemap.main_event(action, InputRemap.Device.KEYBOARD)
 		_check(event is InputEventKey and (event as InputEventKey).physical_keycode in left_hand, "controls: %s under the left hand" % action)
 	var attack: InputEvent = InputRemap.main_event(&"attack", InputRemap.Device.KEYBOARD)
 	var parry: InputEvent = InputRemap.main_event(&"parry", InputRemap.Device.KEYBOARD)
-	var step: InputEvent = InputRemap.main_event(&"step", InputRemap.Device.KEYBOARD)
+	var jump: InputEvent = InputRemap.main_event(&"jump", InputRemap.Device.KEYBOARD)
+	var run: InputEvent = InputRemap.main_event(&"run", InputRemap.Device.KEYBOARD)
+	var run_pad: InputEvent = InputRemap.main_event(&"run", InputRemap.Device.GAMEPAD)
+	var jump_pad: InputEvent = InputRemap.main_event(&"jump", InputRemap.Device.GAMEPAD)
 	_check(attack is InputEventMouseButton and (attack as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT, "controls: strike on the left mouse button")
 	_check(parry is InputEventMouseButton and (parry as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT, "controls: parry on the right mouse button")
-	_check(step is InputEventKey and (step as InputEventKey).physical_keycode == KEY_SPACE, "controls: step on the space bar")
+	_check(jump is InputEventKey and (jump as InputEventKey).physical_keycode == KEY_SPACE, "controls: jump on the space bar")
+	_check(run is InputEventKey and (run as InputEventKey).physical_keycode == KEY_SHIFT, "controls: run on Shift")
+	_check(jump_pad is InputEventJoypadButton and (jump_pad as InputEventJoypadButton).button_index == JOY_BUTTON_B, "controls: jump on pad B")
+	_check(run_pad is InputEventJoypadButton and (run_pad as InputEventJoypadButton).button_index == JOY_BUTTON_LEFT_STICK, "controls: run on L3")
 	var key: InputEventKey = InputEventKey.new()
 	key.physical_keycode = KEY_G
 	InputRemap.rebind(&"attack", key)

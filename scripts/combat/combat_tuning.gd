@@ -60,11 +60,16 @@ extends Resource
 @export var parry_speed_multiplier: float = 0.4
 @export var deflect_stagger_seconds: float = 1.2
 
-@export_group("Step")
-@export var step_stamina_cost: float = 20.0
-@export var step_distance: float = 1.7
-@export var step_seconds: float = 0.16
-@export var step_invulnerable_seconds: float = 0.12
+@export_group("Jump")
+@export var jump_stamina_cost: float = 15.0
+## Height of the jump; with Ottavia's gravity (20 m/s²) 0.6 m lasts about
+## half a second.
+@export var jump_height: float = 0.6
+@export var jump_invulnerable_seconds: float = 0.12
+
+@export_group("Run")
+@export var run_speed_multiplier: float = 1.6
+@export var run_stamina_per_second: float = 15.0
 
 @export_group("Hit taken")
 @export var hitstun_seconds: float = 0.25

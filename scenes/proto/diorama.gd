@@ -12,6 +12,7 @@ extends Node3D
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
 ##   autocombat=1          fight the training dummy with a fixed sequence (captures)
+##   autojump=1            walk, run and jump with a fixed sequence (captures)
 ##   autofight=herd|sparti a bot fights the Voltafaccia herd or the Vecchio
 ##                         Spartighiaccio, prints the result and quits
 ##                         (videos and measures, phase 3 step 7)
@@ -29,6 +30,13 @@ const AUTOCOMBAT: Array[Dictionary] = [
 	{"at": 3.25, "press": &"attack"}, {"at": 3.5, "press": &"attack"},
 	{"at": 4.6, "press": &"step"},
 	{"at": 5.4, "press": &"hook"}, {"at": 5.45, "release": &"hook"},
+]
+## Moves use the input actions ("hold"/"let_go"), the rest OttaviaCombat.
+const AUTOJUMP: Array[Dictionary] = [
+	{"at": 0.5, "hold": &"move_right"}, {"at": 1.2, "press": &"jump"},
+	{"at": 2.2, "press": &"run"}, {"at": 2.8, "press": &"jump"},
+	{"at": 3.8, "let_go": &"move_right"}, {"at": 3.8, "release": &"run"},
+	{"at": 4.4, "press": &"jump"},
 ]
 const AUTOWALK: Array[Dictionary] = [
 	{"actions": [], "seconds": 1.5},
@@ -62,6 +70,7 @@ var _base_ambient_color: Color
 var _autowalk_elapsed: float = 0.0
 var _autocombat_time: float = -1.0
 var _autocombat_next: int = 0
+var _autocombat_events: Array[Dictionary] = AUTOCOMBAT
 var _autofight_error: float = 0.0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
@@ -90,6 +99,9 @@ func _ready() -> void:
 			($OptionsMenu as OptionsMenu).open.call_deferred()
 		elif argument == "autocombat=1":
 			_autocombat_time = 0.0
+		elif argument == "autojump=1":
+			_autocombat_time = 0.0
+			_autocombat_events = AUTOJUMP
 		elif argument == "autowalk=1":
 			_autowalk_step = 0
 		elif argument.begins_with("autofight="):
@@ -271,12 +283,16 @@ func _autocombat(delta: float) -> void:
 		if dummy != null:
 			ottavia.face_toward(dummy.global_position - ottavia.global_position)
 	_autocombat_time += delta
-	while _autocombat_next < AUTOCOMBAT.size() and _autocombat_time >= float(AUTOCOMBAT[_autocombat_next]["at"]):
-		var event: Dictionary = AUTOCOMBAT[_autocombat_next]
+	while _autocombat_next < _autocombat_events.size() and _autocombat_time >= float(_autocombat_events[_autocombat_next]["at"]):
+		var event: Dictionary = _autocombat_events[_autocombat_next]
 		if event.has("press"):
 			ottavia.combat.press(event["press"])
-		else:
+		elif event.has("release"):
 			ottavia.combat.release(event["release"])
+		elif event.has("hold"):
+			Input.action_press(event["hold"])
+		else:
+			Input.action_release(event["let_go"])
 		_autocombat_next += 1
 
 

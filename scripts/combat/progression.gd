@@ -18,7 +18,7 @@ const CHAPTERS: Array[Dictionary] = [
 	{"stamina": 0.94, "speed": 1.00, "combo": 3, "lose": &"PROG_LOSE_STAMINA", "learn": &"return_strike"},
 	{"stamina": 0.94, "speed": 0.96, "combo": 3, "lose": &"PROG_LOSE_SPEED", "learn": &"keen_eye"},
 	{"stamina": 0.94, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_COMBO", "learn": &"heavy_finisher"},
-	{"stamina": 0.88, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_STAMINA", "learn": &"sure_step"},
+	{"stamina": 0.88, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_STAMINA", "learn": &"sure_jump"},
 	{"stamina": 0.88, "speed": 0.92, "combo": 2, "lose": &"PROG_LOSE_SPEED", "learn": &"dazzling_lantern"},
 	{"stamina": 0.82, "speed": 0.92, "combo": 2, "lose": &"PROG_LOSE_STAMINA", "learn": &"deep_counter"},
 	{"stamina": 0.82, "speed": 0.92, "combo": 1, "lose": &"PROG_LOSE_COMBO", "learn": &"long_hook"},
@@ -29,7 +29,7 @@ const CHAPTERS: Array[Dictionary] = [
 ## What the techniques change (read by OttaviaCombat).
 const KEEN_EYE_WINDOW: float = 0.05
 const HEAVY_FINISHER_STAGGER: float = 0.8
-const SURE_STEP_INVULNERABLE: float = 0.2
+const SURE_JUMP_INVULNERABLE: float = 0.2
 const DAZZLE_RADIUS: float = 3.0
 const DAZZLE_STAGGER: float = 1.2
 const DAZZLE_COOLDOWN: float = 8.0
