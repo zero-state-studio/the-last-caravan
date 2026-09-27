@@ -20,6 +20,7 @@ Immagini di riferimento nostre (52), modello personalizzato su Scenario, Ottavia
 ## Fase 3: Prototipo di combattimento e progressione
 Bastone, tempismo e posizione (33), progressione inversa (34), Enea che impara (81), lezioni di Ottavia (82), qualche creatura del Margine.
 **Uscita:** il combattimento è divertente e la progressione inversa non frustra.
+**Stato:** in corso, dal `PROMPT-03.md`.
 
 ## Fase 4: Prima fetta giocabile
 Il prologo e i Carri-campo (68), con grafica, musica, effetti e testi IT/EN definitivi, la carovana come base (37), la Tregua a tempo (39), i salvataggi (95).

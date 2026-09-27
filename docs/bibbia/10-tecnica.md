@@ -32,8 +32,8 @@ Il file CLAUDE.md nel progetto, con specifiche, convenzioni e divieti. Claude Co
 
 Cartelle, nomi dei file, organizzazione degli asset.
 
-## 67. Controlli  [Da definire]
+## 67. Controlli  [In discussione]
 
-Pensati prima per il gamepad, come richiede la verifica Steam Deck, poi per tastiera e mouse.
+Pensati prima per il gamepad, come richiede la verifica Steam Deck. Proposta di partenza: A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo (su PlayStation: croce, quadrato, triangolo, cerchio, L1, R1, R2).
 
-**Resta da definire:** La mappatura dei tasti.
+**Resta da definire:** La mappatura di tastiera e mouse, da proporre nella fase 3.

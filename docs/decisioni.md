@@ -76,3 +76,8 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Luce di zona (51): il valore della zona sposta anche la luce (verso la Notte sole più freddo, debole e basso, cielo più blu; verso il Giorno sole più bianco e più alto), solo in base al valore della zona e mai alla camera. Scelta al posto di alzare l'intensità del viraggio.
 - Limiti di triangoli (54) approvati per tipo di elemento; kit di vegetazione (101) Definito.
 - Terreno: tinta ocra-oliva sulla faccia superiore di terreno e terrazza.
+
+## Fase 3, passo 0 (27 settembre 2026)
+
+- Bibbia aggiornata con i testi di `PROMPT-03.md`: 20 I compagni (azioni richiamabili di Anselmo, Tosca, Oreste), 33 Combattimento (sei azioni, fiato, contrattempo), 34 Progressione inversa (schermata di fine capitolo con due righe, niente albero delle abilità), 67 Controlli (In discussione, proposta gamepad), 81 Enea (non muore, impara le mosse dal giocatore), nuovi 104 Le toppe e 105 La sconfitta, 36 con le due regole di gioco (lato destro delle bestie del Giorno a danni doppi; la lanterna richiama le creature del crepuscolo).
+- Fase corrente: 3.

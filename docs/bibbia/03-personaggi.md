@@ -22,9 +22,7 @@ Completano la figura un piccolo specchio rotondo sulla spalla sinistra, preso da
 
 ## 20. I compagni  [Definito]
 
-Quattro in tutto: Anselmo, Tosca, Oreste ed Enea (78-81). Enea, il più piccolo, sta sempre con Ottavia.
-
-**Resta da definire:** Come intervengono gli altri tre in combattimento. Proposta: con brevi azioni richiamabili, che richiedono molte meno animazioni di tre personaggi completi in 8 direzioni.
+Quattro in tutto: Anselmo, Tosca, Oreste ed Enea (78-81). Enea, il più piccolo, sta sempre con Ottavia. Gli altri tre intervengono in combattimento con brevi azioni richiamabili, con un tempo di ricarica, solo quando sono presenti nel capitolo: Anselmo piazza una lanterna che acceca o attira le creature; Tosca aggancia un nemico con il rampone e lo trascina; Oreste lo abbaglia con un lampo dello specchio e ne mostra il lato debole.
 
 ## 78. Anselmo, l'Ultimalume  [Definito]
 
@@ -40,7 +38,7 @@ Trentacinque giri. Si è spinto nel Giorno più lontano di chiunque, e il troppo
 
 ## 81. Enea, l'apprendista  [Definito]
 
-Dodici giri. Figlio del Sindaco, ha scelto il mestiere più umile e pericoloso della carovana: camminare in fondo, dove nessuno vuole stare. Suo padre applica la legge dei Lasciati; lui sta imparando a riportare indietro chi resta. Ha appena cominciato e non sa quasi nulla. Diventerà il protagonista della saga. Impara guardando: le mosse che il giocatore esegue meglio con Ottavia diventano le sue, così mentre lei perde vigore lui cresce. Con il padre il rapporto è silenzioso: non lo disprezza, ma non condivide i suoi ragionamenti troppo duri, e ne soffre come se non pensarla come lui lo rendesse un cattivo figlio. Ha scelto l'unico posto della carovana dove suo padre non guarda mai.
+Dodici giri. Figlio del Sindaco, ha scelto il mestiere più umile e pericoloso della carovana: camminare in fondo, dove nessuno vuole stare. Suo padre applica la legge dei Lasciati; lui sta imparando a riportare indietro chi resta. Ha appena cominciato e non sa quasi nulla. Diventerà il protagonista della saga. Impara guardando: le mosse che il giocatore esegue meglio con Ottavia diventano le sue, così mentre lei perde vigore lui cresce. Con il padre il rapporto è silenzioso: non lo disprezza, ma non condivide i suoi ragionamenti troppo duri, e ne soffre come se non pensarla come lui lo rendesse un cattivo figlio. Ha scelto l'unico posto della carovana dove suo padre non guarda mai. In combattimento non è mai una missione di scorta: non può morire, e se viene colpito cade e si rialza. All'inizio resta indietro; quando il giocatore esegue bene una mossa per un certo numero di volte, compare un segnale, per esempio «Enea ha imparato la parata», e da lì Enea la usa. Verso la fine del gioco combatte davvero.
 
 **Resta da definire:** Se le tecniche insegnate a Enea passano nel secondo capitolo.
 

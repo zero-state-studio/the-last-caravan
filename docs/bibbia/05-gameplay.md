@@ -8,15 +8,19 @@ Ci si muove liberamente in tutte le direzioni dentro ambienti 3D, su più livell
 
 ## 33. Combattimento  [Definito]
 
-Ottavia combatte con il lungo bastone da carovaniera: tanta portata, colpi lenti e precisi. Tutto si gioca su tempismo e posizione, non su schivate a ripetizione.
+Ottavia combatte con il lungo bastone a gancio: tanta portata, colpi lenti e precisi. Tutto si gioca su tempismo e posizione, non su schivate a ripetizione. Sei azioni. **Colpo:** attacco con il bastone. **Uncino:** il gancio tira a sé i nemici piccoli o strappa gli scudi; tenendo premuto, spinge via. **Parata:** tenendo premuto ci si difende; premendo al momento giusto si devia il colpo e il nemico resta sbilanciato. **Passo:** un breve scarto di lato, non una capriola, che costa fiato. **Lanterna:** apre e chiude lo sportello; tenendo premuto la alza e illumina più lontano. **Richiamo:** chiama il compagno presente nel capitolo. **Il fiato** è l'unica risorsa: passo e parata ne consumano molto, i colpi poco; si ricarica quando Ottavia non agisce; se si svuota, lei resta senza respiro per un istante ed è vulnerabile. **Il contrattempo:** colpire un nemico subito dopo un suo attacco, quando è scoperto, infligge un colpo critico.
 
-**Resta da definire:** Controlli, mosse, parata, gestione del fiato, danni.
+**Resta da definire:** Valori di danno, finestre di tempo e costi di fiato: si fissano provando, nella fase 3. Le animazioni definitive si generano solo dopo.
 
 ## 34. Progressione inversa  [Definito]
 
-Capitolo dopo capitolo Ottavia perde forza e fiato, ma impara nuove abilità: attacca meno spesso, con colpi più potenti. Nel complesso diventa più forte. Il giocatore migliora mentre il personaggio invecchia, e intanto Enea cresce (vedi 81).
+Capitolo dopo capitolo Ottavia perde forza, fiato, velocità e lunghezza delle combinazioni, ma impara nuove tecniche e ogni colpo diventa più potente: nel complesso diventa più forte. Alla fine di ogni capitolo una sola schermata mostra due righe, cosa perde e cosa impara, per esempio «La combinazione di colpi si accorcia da 3 a 2» e «Impara il contrattempo». Nessun albero delle abilità: è la vita di Ottavia che cambia. Intanto Enea cresce (81).
 
-**Resta da definire:** Il bilanciamento, da provare presto con un prototipo.
+**Resta da definire:** Quale tecnica si impara in quale capitolo, e il bilanciamento: da provare nella fase 3.
+
+## 105. La sconfitta  [Definito]
+
+Se Ottavia cade, si riparte dall'ingresso della stanza con la vita piena; contro un boss, dall'inizio del combattimento. Nessuna penalità pesante: il gioco spinge a riprovare, non punisce. Nel finale (45) la sconfitta non esiste.
 
 ## 82. Le lezioni di Ottavia  [Definito]
 
@@ -43,6 +47,12 @@ Si raggiungono le persone e le si riporta indietro superando ostacoli, percorsi 
 ## 39. La luce come tempo  [Definito]
 
 Vale ovunque. Durante ogni Tregua la meridiana fa da timer: il giocatore esplora i dintorni della carovana in cerca di oggetti ed equipaggiamento. Al dungeon successivo si passa con un'azione dedicata, separata dall'esplorazione. Quando il tempo finisce, lo Gnomone richiama tutti e la carovana riparte: ciò che il giocatore non ha raccolto resta lì fino al giro successivo, cioè, per Ottavia, per sempre. Nessuna sconfitta, solo occasioni perse.
+
+## 104. Le toppe  [Definito]
+
+L'equipaggiamento sono le toppe del cappotto, trovate durante la Tregua (39). Si cuciono in tre spazi, e ognuna dà un piccolo effetto: resistenza al freddo per i livelli verso la Notte, al caldo per quelli verso il Giorno, recupero del fiato, durata della lanterna. Nascono dal personaggio e non richiedono sprite nuovi.
+
+**Resta da definire:** L'elenco delle toppe.
 
 ## 40. Difficoltà  [Definito]
 
