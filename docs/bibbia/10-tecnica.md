@@ -34,6 +34,4 @@ Cartelle, nomi dei file, organizzazione degli asset.
 
 ## 67. Controlli  [In discussione]
 
-Pensati prima per il gamepad, come richiede la verifica Steam Deck. Proposta di partenza: A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo (su PlayStation: croce, quadrato, triangolo, cerchio, L1, R1, R2).
-
-**Resta da definire:** La mappatura di tastiera e mouse, da proporre nella fase 3.
+Pensati prima per il gamepad, come richiede la verifica Steam Deck. Gamepad: A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo, Menu opzioni (su PlayStation: croce, quadrato, triangolo, cerchio, L1, R1, R2, Options). Tastiera e mouse, con la mano sinistra su WASD senza spostarla: tasto sinistro del mouse Colpo, tasto destro Parata, barra spaziatrice Passo, Q Uncino, E interagire, R Richiamo, F Lanterna, Esc opzioni. Il mouse non mira: Colpo e Uncino seguono la direzione del movimento con l'aiuto alla mira, come con il gamepad, così la sensazione è la stessa su tutti i comandi. Tutti i comandi sono rimappabili dalle opzioni (96).

@@ -6,6 +6,7 @@ extends Node3D
 ##   settings=<path.json>  start from these settings instead of the saved ones
 ##   perf=<seconds>        measure frame times with vsync off, print, quit
 ##   panel=1               open the tuning panel at start
+##   options=1             open the options menu at start
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
 ##   autocombat=1          fight the training dummy with a fixed sequence (captures)
@@ -61,6 +62,8 @@ var _perf_cpu_times: PackedFloat32Array = []
 
 
 func _ready() -> void:
+	GameOptions.load_options()
+	InputRemap.load_controls()
 	_base_ambient_color = world_environment.environment.ambient_light_color
 	var settings_path: String = USER_SETTINGS_PATH
 	var open_panel: bool = false
@@ -71,6 +74,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument == "options=1":
+			($OptionsMenu as OptionsMenu).open.call_deferred()
 		elif argument == "autocombat=1":
 			_autocombat_time = 0.0
 		elif argument == "autowalk=1":
@@ -134,8 +139,6 @@ func apply_settings() -> void:
 	RenderingServer.global_shader_parameter_set(&"world_texels_per_meter", settings.world_texels_per_meter)
 	zone_palette.strength = settings.palette_strength
 	zone_palette.night_proximity = settings.zone_night_proximity
-	HitFeedback.shake_scale = settings.shake_strength
-	HitFeedback.flash_scale = settings.flash_strength
 	combat_hud.visible = settings.show_combat_hud
 	zone_palette.apply()
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):

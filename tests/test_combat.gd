@@ -29,6 +29,7 @@ func _initialize() -> void:
 	await _test_breath()
 	await _test_hook()
 	await _test_lantern_and_call()
+	await _test_rules_from_review()
 
 	# Let the last sounds end: a playing stream at exit counts as a leak.
 	await _wait(1.5)
@@ -165,6 +166,61 @@ func _test_lantern_and_call() -> void:
 	_messages.clear()
 	_combat.press(&"call")
 	_check(&"COMBAT_NO_COMPANION" in _messages, "call without a companion in the chapter says so")
+
+
+## Corrections after the first review: free deflection, hook only in front,
+## half regeneration while walking, aim assist that can be turned off.
+func _test_rules_from_review() -> void:
+	_combat.reset()
+	_dummy.global_position = _ottavia.global_position + Vector3(0.0, 0.0, -1.6)
+	var press_cost: float = _tuning.parry_press_cost
+	_tuning.parry_press_cost = 10.0
+	var before: float = _combat.stamina
+	_combat.press(&"parry")
+	await physics_frame
+	await physics_frame
+	_combat.receive_attack(_attack())
+	_check(is_equal_approx(_combat.stamina, before), "a deflection costs no breath, even with a press cost")
+	_combat.release(&"parry")
+	_tuning.parry_press_cost = press_cost
+	await _wait(0.3)
+
+	var behind: CombatEnemy = CombatEnemy.new()
+	var sprite: Sprite3D = Sprite3D.new()
+	sprite.name = "Sprite3D"
+	behind.add_child(sprite)
+	behind.is_small = true
+	current_scene.add_child(behind)
+	_dummy.global_position = Vector3(20.0, 0.0, 20.0)
+	behind.global_position = _ottavia.global_position + Vector3(0.0, 0.0, 1.5)
+	_ottavia.face_toward(Vector3.FORWARD)
+	_check(_combat.hook_target() == null, "the hook never catches a creature behind Ottavia")
+	_ottavia.face_toward(Vector3.BACK)
+	_check(_combat.hook_target() == behind, "turned toward it, the hook catches it")
+	behind.queue_free()
+
+	_ottavia.set_physics_process(false)
+	_combat.reset()
+	_combat.stamina = 10.0
+	_combat.physics_update(1.0, Vector2.ZERO, true)
+	var standing: float = _combat.stamina
+	_combat.physics_update(0.25, Vector2.ZERO, true)
+	var standing_gain: float = _combat.stamina - standing
+	var walking: float = _combat.stamina
+	_combat.physics_update(0.25, Vector2.RIGHT, true)
+	var walking_gain: float = _combat.stamina - walking
+	_check(is_equal_approx(walking_gain, standing_gain * _tuning.walking_regen_multiplier), "walking regains breath at walking_regen_multiplier (%.2f vs %.2f)" % [walking_gain, standing_gain])
+	_ottavia.set_physics_process(true)
+
+	# About 22 degrees off the facing: inside the 35 degree assist cone.
+	_dummy.global_position = _ottavia.global_position + Vector3(0.8, 0.0, -2.0)
+	_ottavia.face_toward(Vector3.FORWARD)
+	GameOptions.aim_assist = false
+	_check(_combat._aim_direction(3.0).is_equal_approx(Vector3.FORWARD), "aim assist off: strikes follow the facing only")
+	GameOptions.aim_assist = true
+	_ottavia.face_toward(Vector3.FORWARD)
+	_check(not _combat._aim_direction(3.0).is_equal_approx(Vector3.FORWARD), "aim assist on: strikes turn toward the creature")
+	_place_in_front()
 
 
 func _place_in_front() -> void:

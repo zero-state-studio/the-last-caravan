@@ -26,6 +26,7 @@ var _message_left: float = 0.0
 
 func _ready() -> void:
 	layer = 5
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	var box: VBoxContainer = VBoxContainer.new()
 	box.position = Vector2(16.0, 16.0)
 	add_child(box)

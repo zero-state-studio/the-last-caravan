@@ -24,11 +24,9 @@ var world_texels_per_meter: float = WorldScale.PIXELS_PER_METER
 var palette_strength: float = 1.0
 # Closeness of the zone to the Night (16): -1 Day edge, 0 Twilight, +1 Night edge.
 var zone_night_proximity: float = 0.0
-# Combat prototype (phase 3): on-screen measures, and the options (96)
-# that turn down screen shake and flashes (0-1).
+# Combat prototype (phase 3): on-screen measures. Shake, flashes and aim
+# assist are player options (GameOptions, 96).
 var show_combat_hud: bool = true
-var shake_strength: float = 1.0
-var flash_strength: float = 1.0
 # Light (48)
 var sun_elevation: float = 14.0
 var sun_azimuth: float = 300.0

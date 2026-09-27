@@ -3,7 +3,7 @@ extends SceneTree
 ## Usage: godot --headless --path . --script res://tests/run_tests.gd
 ## Exits with code 0 when every check passes, 1 otherwise.
 
-const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"step", &"parry", &"lantern", &"call"]
+const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"step", &"parry", &"lantern", &"call", &"open_options"]
 const LOAD_ROOTS: Array[String] = ["res://scenes", "res://scripts", "res://tests"]
 const TEST_KEY: StringName = &"UI_TEST_GREETING"
 const EXPECTED_TRANSLATIONS: Dictionary = {
@@ -26,6 +26,7 @@ func _initialize() -> void:
 	_test_texture_imports()
 	_test_lantern()
 	_test_zone_light()
+	_test_controls()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -134,6 +135,31 @@ func _test_load_all_resources() -> void:
 					_check(instance != null, "scene instantiates: " + path)
 					if instance != null:
 						instance.free()
+
+
+## Controls (67, 96): every action within reach of the left hand on WASD,
+## strike and parry on the mouse buttons, step on the space bar; bindings
+## can be changed and reset.
+func _test_controls() -> void:
+	var left_hand: Array[Key] = [KEY_Q, KEY_E, KEY_R, KEY_F, KEY_SPACE, KEY_ESCAPE, KEY_W, KEY_A, KEY_S, KEY_D]
+	for action: StringName in [&"hook", &"step", &"lantern", &"call", &"interact", &"open_options"]:
+		var event: InputEvent = InputRemap.main_event(action, InputRemap.Device.KEYBOARD)
+		_check(event is InputEventKey and (event as InputEventKey).physical_keycode in left_hand, "controls: %s under the left hand" % action)
+	var attack: InputEvent = InputRemap.main_event(&"attack", InputRemap.Device.KEYBOARD)
+	var parry: InputEvent = InputRemap.main_event(&"parry", InputRemap.Device.KEYBOARD)
+	var step: InputEvent = InputRemap.main_event(&"step", InputRemap.Device.KEYBOARD)
+	_check(attack is InputEventMouseButton and (attack as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT, "controls: strike on the left mouse button")
+	_check(parry is InputEventMouseButton and (parry as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT, "controls: parry on the right mouse button")
+	_check(step is InputEventKey and (step as InputEventKey).physical_keycode == KEY_SPACE, "controls: step on the space bar")
+	var key: InputEventKey = InputEventKey.new()
+	key.physical_keycode = KEY_G
+	InputRemap.rebind(&"attack", key)
+	var rebound: InputEvent = InputRemap.main_event(&"attack", InputRemap.Device.KEYBOARD)
+	_check(rebound is InputEventKey and (rebound as InputEventKey).physical_keycode == KEY_G, "controls: strike can be rebound")
+	_check(InputRemap.main_event(&"attack", InputRemap.Device.GAMEPAD) != null, "controls: rebinding the keyboard keeps the gamepad binding")
+	InputRemap.reset_controls()
+	var reset: InputEvent = InputRemap.main_event(&"attack", InputRemap.Device.KEYBOARD)
+	_check(reset is InputEventMouseButton, "controls: reset restores the defaults")
 
 
 ## Zone light (51): unchanged in the Twilight, colder, weaker and lower toward

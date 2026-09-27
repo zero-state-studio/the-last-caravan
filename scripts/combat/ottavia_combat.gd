@@ -47,6 +47,7 @@ var _knock_velocity: Vector3 = Vector3.ZERO
 var _lantern_charge: float = -1.0
 var _lantern_raised: bool = false
 var _parry_held: bool = false
+var _moving: bool = false
 ## Only a fresh press opens the deflect window, not a parry held through
 ## another action.
 var _parry_can_deflect: bool = false
@@ -68,6 +69,7 @@ func reset() -> void:
 
 
 func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> void:
+	_moving = controls_enabled and not input.is_zero_approx()
 	if controls_enabled:
 		_read_input(input)
 	_update_charges(delta)
@@ -224,7 +226,11 @@ func _advance_strike() -> void:
 
 func _start_hook(push: bool) -> void:
 	_hook_push = push
-	_aim = _aim_direction(tuning.hook_reach)
+	_aim = ottavia.facing_vector()
+	var target: CombatEnemy = hook_target()
+	if target != null:
+		_aim = _flat_direction(target.global_position - ottavia.global_position)
+		ottavia.face_toward(_aim)
 	_enter(State.HOOK)
 	_spend(tuning.hook_stamina_cost)
 
@@ -292,11 +298,9 @@ func _hook_hit() -> void:
 	SoundBank.play_sound(get_tree(), &"uncino")
 	var origin: Vector3 = ottavia.global_position
 	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.hook_reach, tuning.hook_arc_degrees, SWING_COLOR)
-	var targets: Array[CombatEnemy] = targets_in_arc(tuning.hook_reach, tuning.hook_arc_degrees)
-	if targets.is_empty():
+	var target: CombatEnemy = hook_target()
+	if target == null:
 		return
-	# The hook catches the nearest creature only.
-	var target: CombatEnemy = targets[0]
 	var hit: CombatHit = CombatHit.new()
 	hit.kind = CombatHit.Kind.HOOK_PUSH if _hook_push else CombatHit.Kind.HOOK_PULL
 	hit.source = ottavia
@@ -310,6 +314,31 @@ func _hook_hit() -> void:
 	elif target.is_small:
 		target.pull_to(origin + hit.direction * tuning.hook_pull_distance)
 	HitFeedback.hitstop(get_tree(), tuning.hitstop_seconds)
+
+
+## The creature the hook catches: the nearest one in front of Ottavia, inside
+## the aim assist cone (or the hook arc when aim assist is off), never one
+## behind her.
+func hook_target() -> CombatEnemy:
+	var cone: float = tuning.aim_assist_degrees if GameOptions.aim_assist else tuning.hook_arc_degrees * 0.5
+	var facing: Vector3 = ottavia.facing_vector()
+	var origin: Vector3 = ottavia.global_position
+	var best: CombatEnemy = null
+	var best_distance: float = INF
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var target: CombatEnemy = node as CombatEnemy
+		if target == null or not target.is_alive():
+			continue
+		var offset: Vector3 = target.global_position - origin
+		offset.y = 0.0
+		var distance: float = offset.length()
+		if distance > tuning.hook_reach + target.radius or distance >= best_distance:
+			continue
+		if distance > 0.01 and rad_to_deg(facing.angle_to(offset / distance)) > cone:
+			continue
+		best = target
+		best_distance = distance
+	return best
 
 
 ## Creatures within `reach` and `arc_degrees` around the current aim,
@@ -342,6 +371,8 @@ func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 			if attack.source != null:
 				attack.source.stagger(tuning.deflect_stagger_seconds)
 				CombatEffects.spark(get_tree().current_scene, ottavia.global_position.lerp(attack.source.global_position, 0.5) + Vector3.UP * 1.0, DEFLECT_COLOR, 14.0)
+			# A deflection costs no breath: the press cost is given back.
+			stamina = minf(tuning.max_stamina, stamina + tuning.parry_press_cost)
 			SoundBank.play_sound(get_tree(), &"deviazione")
 			HitFeedback.hitstop(get_tree(), tuning.hitstop_critical_seconds)
 			HitFeedback.shake(get_tree(), tuning.shake_meters)
@@ -376,8 +407,10 @@ func _spend(amount: float) -> void:
 
 
 func _regenerate(delta: float) -> void:
+	# Never while parrying; half as fast while walking as standing still.
 	if state == State.FREE and _since_action >= tuning.stamina_regen_delay:
-		stamina = minf(tuning.max_stamina, stamina + tuning.stamina_regen_per_second * delta)
+		var rate: float = tuning.stamina_regen_per_second * (tuning.walking_regen_multiplier if _moving else 1.0)
+		stamina = minf(tuning.max_stamina, stamina + rate * delta)
 
 
 # --- Movement queries (used by OttaviaProto) --------------------------------
@@ -417,6 +450,8 @@ func is_acting() -> bool:
 ## the aim assist angle (the eight views make exact aiming hard).
 func _aim_direction(reach: float) -> Vector3:
 	var facing: Vector3 = ottavia.facing_vector()
+	if not GameOptions.aim_assist:
+		return facing
 	var origin: Vector3 = ottavia.global_position
 	var best: Vector3 = facing
 	var best_angle: float = tuning.aim_assist_degrees

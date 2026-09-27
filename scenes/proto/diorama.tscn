@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3]
+[gd_scene load_steps=54 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -37,6 +37,7 @@
 [ext_resource type="PackedScene" path="res://scenes/combat/training_dummy.tscn" id="41_dummy"]
 [ext_resource type="Script" path="res://scripts/audio/sound_bank.gd" id="42_sounds"]
 [ext_resource type="Script" path="res://scripts/ui/combat_hud.gd" id="43_hud"]
+[ext_resource type="Script" path="res://scripts/ui/options_menu.gd" id="44_options"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_exit1"]
 size = Vector3(3, 2, 1.2)
@@ -614,6 +615,9 @@ script = ExtResource("42_sounds")
 
 [node name="CombatHud" type="CanvasLayer" parent="."]
 script = ExtResource("43_hud")
+
+[node name="OptionsMenu" type="CanvasLayer" parent="."]
+script = ExtResource("44_options")
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("40_manager")

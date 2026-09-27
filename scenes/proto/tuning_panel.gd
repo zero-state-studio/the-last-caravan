@@ -22,8 +22,6 @@ const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_FOG_DENSITY", "property": "fog_density", "min": 0.0, "max": 0.05, "step": 0.001},
 	{"key": "DEV_PALETTE_STRENGTH", "property": "palette_strength", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_ZONE_NIGHT_PROXIMITY", "property": "zone_night_proximity", "min": -1.0, "max": 1.0, "step": 0.05},
-	{"key": "DEV_SHAKE_STRENGTH", "property": "shake_strength", "min": 0.0, "max": 1.0, "step": 0.05},
-	{"key": "DEV_FLASH_STRENGTH", "property": "flash_strength", "min": 0.0, "max": 1.0, "step": 0.05},
 ]
 const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_ORTHOGRAPHIC", "property": "camera_orthographic"},
@@ -38,6 +36,7 @@ const COMBAT_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_C_MOVE_SPEED", "property": "move_speed", "min": 1.0, "max": 6.0, "step": 0.1},
 	{"key": "DEV_C_MAX_STAMINA", "property": "max_stamina", "min": 20.0, "max": 200.0, "step": 5.0},
 	{"key": "DEV_C_STAMINA_REGEN_PER_SECOND", "property": "stamina_regen_per_second", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_C_WALKING_REGEN_MULTIPLIER", "property": "walking_regen_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
 	{"key": "DEV_C_STAMINA_REGEN_DELAY", "property": "stamina_regen_delay", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_C_BREATHLESS_SECONDS", "property": "breathless_seconds", "min": 0.2, "max": 3.0, "step": 0.05},
 	{"key": "DEV_C_BREATHLESS_DAMAGE_MULTIPLIER", "property": "breathless_damage_multiplier", "min": 1.0, "max": 3.0, "step": 0.05},

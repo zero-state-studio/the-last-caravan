@@ -13,6 +13,8 @@ extends Resource
 @export var stamina_regen_per_second: float = 40.0
 ## Time without actions before the breath starts coming back.
 @export var stamina_regen_delay: float = 0.6
+## Share of the regeneration while walking: stopping is worth it (33).
+@export var walking_regen_multiplier: float = 0.5
 @export var breathless_seconds: float = 1.0
 @export var breathless_damage_multiplier: float = 1.5
 @export var breathless_speed_multiplier: float = 0.5
@@ -48,7 +50,9 @@ extends Resource
 @export var hook_damage: float = 4.0
 
 @export_group("Parry")
-@export var parry_press_cost: float = 10.0
+## Breath spent just by pressing parry; 0: only blocked hits cost breath, and
+## a deflection is always free (the reward for timing).
+@export var parry_press_cost: float = 0.0
 @export var block_hit_cost: float = 22.0
 ## A hit landing this soon after pressing parry is deflected.
 @export var deflect_window: float = 0.2
