@@ -70,6 +70,8 @@ func reset_enemy() -> void:
 	_stagger_left = 0.0
 	_move_left = 0.0
 	sprite.visible = true
+	collision_layer = 1
+	collision_mask = 1
 	_on_reset()
 
 
@@ -97,6 +99,7 @@ func receive_hit(hit: CombatHit) -> void:
 	_on_hit(hit)
 	if health <= 0.0:
 		SoundBank.play_sound(get_tree(), &"nemico_sconfitto")
+		_become_defeated()
 		_on_defeated()
 		defeated.emit()
 
@@ -138,6 +141,11 @@ func _physics_process(delta: float) -> void:
 		velocity = _move_velocity
 	else:
 		velocity = Vector3.ZERO
+	# A defeated creature does nothing until its room restarts (the dummy
+	# gets up by itself, see acts_when_defeated).
+	if not is_alive() and not acts_when_defeated():
+		velocity = Vector3.ZERO
+		return
 	# Creatures wait while Ottavia has no control (fades, passages, restarts).
 	var player: OttaviaProto = find_player()
 	if player == null or player.controls_enabled:
@@ -211,6 +219,20 @@ func flat_direction_to(point: Vector3) -> Vector3:
 
 
 # --- For subclasses ----------------------------------------------------------
+
+## False: once defeated the creature stops acting (and stops colliding)
+## until reset_enemy(). The training dummy overrides it to get up again.
+func acts_when_defeated() -> bool:
+	return false
+
+
+func _become_defeated() -> void:
+	velocity = Vector3.ZERO
+	_move_left = 0.0
+	if not acts_when_defeated():
+		collision_layer = 0
+		collision_mask = 0
+
 
 ## Bosses show their health in the HUD instead.
 func shows_health_bar() -> bool:

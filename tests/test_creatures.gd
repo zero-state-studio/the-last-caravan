@@ -82,6 +82,12 @@ func _test_raspagelo() -> void:
 	rodent._time = CREATURE_TUNING.raspagelo_exposed + 0.05
 	rodent._facing = Vector3.BACK
 	_check(is_equal_approx(rodent.damage_multiplier(_hit(Vector3.FORWARD, 10.0)), CREATURE_TUNING.raspagelo_armor_multiplier), "raspagelo: the head plate halves frontal strikes when not open")
+	# Defeated, it must stay gone: no digging, no coming back, no attacks.
+	var health_before: float = _ottavia.health
+	rodent.receive_hit(_hit(Vector3.FORWARD, 1000.0))
+	await _wait(5.0)
+	_check(not rodent.sprite.visible and rodent.phase == Raspagelo.Phase.SURFACED, "raspagelo: once defeated it does not dig or come back")
+	_check(is_equal_approx(_ottavia.health, health_before) and rodent.collision_layer == 0, "raspagelo: once defeated it neither attacks nor blocks the way")
 	rodent.free()
 	_ottavia.restore_health()
 

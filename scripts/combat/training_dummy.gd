@@ -26,6 +26,11 @@ func _ready() -> void:
 	_sprite_rest = sprite.position
 
 
+## It gets up again after dummy_respawn_seconds.
+func acts_when_defeated() -> bool:
+	return true
+
+
 func is_exposed() -> bool:
 	return phase == Phase.EXPOSED or super.is_exposed()
 
