@@ -47,6 +47,12 @@ func _test_voltafaccia() -> void:
 	var from_south: CombatHit = _hit(Vector3.FORWARD, 10.0)
 	_check(is_equal_approx(beast.damage_multiplier(from_north), CREATURE_TUNING.voltafaccia_shade_multiplier), "voltafaccia: hit from its shaded (right) side, double damage")
 	_check(is_equal_approx(beast.damage_multiplier(from_south), 1.0), "voltafaccia: hit from the other side, normal damage")
+	await _wait(0.05)
+	_check(beast.health_bar != null and not beast.health_bar.visible, "health bar: hidden until the creature is hit")
+	beast.receive_hit(_hit(Vector3.FORWARD, beast.max_health * 0.5))
+	await _wait(0.05)
+	_check(beast.health_bar.visible and absf(beast.health_bar.fill_ratio() - 0.5) < 0.06, "health bar: shown after a hit, half full at half health (%.2f)" % beast.health_bar.fill_ratio())
+	beast.health = beast.max_health
 	beast.global_position = _ottavia.global_position + Vector3(3.0, -0.05, 0.0)
 	var attacked: bool = false
 	for index: int in 40:
@@ -109,6 +115,8 @@ func _test_brinacchio() -> void:
 
 func _test_grappolo() -> void:
 	var colony: Grappolo = _spawn("res://scenes/creatures/grappolo.tscn", _ottavia.global_position + Vector3(0.0, -0.05, -15.0))
+	var sparti: VecchioSpartighiaccio = current_scene.get_node("PondArena/Spartighiaccio")
+	_check(sparti.health_bar == null, "health bar: bosses show their health in the HUD instead")
 	await _wait(0.1)
 	var members: int = colony.members
 	colony.receive_hit(_hit(Vector3.FORWARD, 1.0))

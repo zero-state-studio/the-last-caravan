@@ -9,6 +9,10 @@ extends CombatEnemy
 var active: bool = false
 
 
+func shows_health_bar() -> bool:
+	return false
+
+
 func targets_companions() -> bool:
 	return false
 

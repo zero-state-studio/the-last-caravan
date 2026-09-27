@@ -171,3 +171,4 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - `Tosca` (`scripts/companions/tosca.gd`): compagna del Richiamo, presente se `tosca_present` (pannello F1); aggancia la creatura più vicina davanti a Ottavia entro `tosca_range` e la trascina (i pesanti e i boss si sbilanciano soltanto), poi ricarica per `tosca_cooldown`; barra di ricarica nell'HUD.
 - Sprite di Enea e Tosca: segnaposti a una vista (`TODO-DESIGN #81`, `TODO-DESIGN #79`), l'aspetto non è definito nella bibbia.
 - Test: `tests/test_companions.gd`.
+- Barra della vita delle creature: `EnemyHealthBar` (`scripts/combat/enemy_health_bar.gd`), Sprite3D in pixel da 24×4 px sopra la testa, aggiunta da `CombatEnemy` (non ai boss, che hanno la barra nell'HUD). Compare dal primo colpo, nascosta quando la creatura non è bersagliabile; non vira con la palette.

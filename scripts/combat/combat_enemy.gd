@@ -26,6 +26,8 @@ var health: float = 0.0
 var spawn_transform: Transform3D
 ## Forced target (the lesson makes the dummy swing at Enea), or null.
 var target_override: Node3D = null
+## Pixel health bar above the head, shown once hit (none for bosses).
+var health_bar: EnemyHealthBar
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _flash: float = 0.0
@@ -45,6 +47,9 @@ func _ready() -> void:
 	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
 	sprite.material_override = _material
 	sprite.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	if shows_health_bar():
+		health_bar = EnemyHealthBar.new(self)
+		add_child(health_bar)
 
 
 func is_alive() -> bool:
@@ -202,6 +207,11 @@ func flat_direction_to(point: Vector3) -> Vector3:
 
 
 # --- For subclasses ----------------------------------------------------------
+
+## Bosses show their health in the HUD instead.
+func shows_health_bar() -> bool:
+	return true
+
 
 ## Multiplier for an incoming hit (weak sides, armor plates, shells).
 func damage_multiplier(_hit: CombatHit) -> float:
