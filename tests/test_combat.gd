@@ -169,8 +169,11 @@ func _test_lantern_and_call() -> void:
 	_combat.release(&"lantern")
 	_check(is_equal_approx(_ottavia.lantern_light.omni_range, base_range), "lantern released: back to normal")
 	_messages.clear()
+	var companion: Node = _combat.companion
+	_combat.companion = null
 	_combat.press(&"call")
 	_check(&"COMBAT_NO_COMPANION" in _messages, "call without a companion in the chapter says so")
+	_combat.companion = companion
 
 
 ## Corrections after the first review: free deflection, hook only in front,

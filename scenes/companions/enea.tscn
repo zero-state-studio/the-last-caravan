@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/companions/enea.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/companions/enea_placeholder.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://assets/combat/combat_tuning.tres" id="3_tuning"]
+[ext_resource type="Script" path="res://scripts/companions/lesson_talk.gd" id="4_talk"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enea"]
+radius = 0.25
+height = 1.3
+
+[node name="Enea" type="CharacterBody3D"]
+collision_layer = 0
+script = ExtResource("1_script")
+tuning = ExtResource("3_tuning")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+shape = SubResource("CapsuleShape3D_enea")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 22)
+pixel_size = 0.0333
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_sprite")
+
+[node name="Talk" type="Node3D" parent="."]
+script = ExtResource("4_talk")
+radius = 1.8

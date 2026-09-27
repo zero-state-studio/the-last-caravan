@@ -7,6 +7,7 @@ extends Node3D
 ##   perf=<seconds>        measure frame times with vsync off, print, quit
 ##   panel=1               open the tuning panel at start
 ##   options=1             open the options menu at start
+##   lesson=1              start the lesson of the parry (82) at once
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
 ##   autocombat=1          fight the training dummy with a fixed sequence (captures)
@@ -75,6 +76,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument == "lesson=1":
+			($LessonParry as LessonParry).start.call_deferred()
 		elif argument == "options=1":
 			($OptionsMenu as OptionsMenu).open.call_deferred()
 		elif argument == "autocombat=1":
@@ -142,6 +145,10 @@ func apply_settings() -> void:
 	zone_palette.strength = settings.palette_strength
 	zone_palette.night_proximity = settings.zone_night_proximity
 	combat_hud.visible = settings.show_combat_hud
+	var tosca: Tosca = get_node_or_null(^"Tosca") as Tosca
+	if tosca != null:
+		tosca.present = settings.tosca_present
+		ottavia.combat.companion = tosca if settings.tosca_present else null
 	zone_palette.apply()
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter

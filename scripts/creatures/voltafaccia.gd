@@ -46,9 +46,10 @@ func is_exposed() -> bool:
 func _behave(delta: float) -> void:
 	_time += delta
 	var player: OttaviaProto = find_player()
-	if player == null:
+	var target: Node3D = find_target()
+	if player == null or target == null:
 		return
-	var distance: float = flat_distance_to(player.global_position)
+	var distance: float = flat_distance_to(target.global_position)
 	var move: Vector3 = Vector3.ZERO
 	match phase:
 		Phase.GRAZE:
@@ -65,12 +66,12 @@ func _behave(delta: float) -> void:
 			elif distance <= creature.voltafaccia_attack_range:
 				_set_phase(Phase.WINDUP)
 			else:
-				move = (flat_direction_to(player.global_position) + _separation()).normalized() * creature.voltafaccia_speed
+				move = (flat_direction_to(target.global_position) + _separation()).normalized() * creature.voltafaccia_speed
 		Phase.WINDUP:
 			flash(0.3 + 0.4 * _time / maxf(creature.voltafaccia_windup, 0.01), TELEGRAPH_COLOR)
 			if _time >= creature.voltafaccia_windup:
 				_set_phase(Phase.ACTIVE)
-				var toward: Vector3 = flat_direction_to(player.global_position)
+				var toward: Vector3 = flat_direction_to(target.global_position)
 				_move_by(toward * creature.voltafaccia_lunge)
 				CombatEffects.swing(get_tree().current_scene, global_position + Vector3.UP * 0.5, toward, creature.voltafaccia_attack_range, 70.0, Color(1.0, 0.8, 0.55, 0.85))
 				attack_player(creature.voltafaccia_damage, creature.voltafaccia_attack_range + creature.voltafaccia_lunge * 0.5)
@@ -83,7 +84,7 @@ func _behave(delta: float) -> void:
 		Phase.COOLDOWN:
 			# Backs off a little, still facing the sun.
 			if distance < creature.voltafaccia_attack_range * 1.5:
-				move = -flat_direction_to(player.global_position) * creature.voltafaccia_speed * 0.5
+				move = -flat_direction_to(target.global_position) * creature.voltafaccia_speed * 0.5
 			if _time >= creature.voltafaccia_cooldown:
 				_set_phase(Phase.APPROACH)
 	if not is_being_moved() and not is_staggered():

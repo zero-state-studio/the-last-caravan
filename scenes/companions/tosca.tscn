@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/companions/tosca.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/companions/tosca_placeholder.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://assets/combat/combat_tuning.tres" id="3_tuning"]
+
+[node name="Tosca" type="Node3D"]
+script = ExtResource("1_script")
+tuning = ExtResource("3_tuning")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 28)
+pixel_size = 0.0333
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_sprite")

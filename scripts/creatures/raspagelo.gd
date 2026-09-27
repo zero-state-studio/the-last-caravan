@@ -55,9 +55,10 @@ func damage_multiplier(hit: CombatHit) -> float:
 func _behave(delta: float) -> void:
 	_time += delta
 	var player: OttaviaProto = find_player()
-	if player == null:
+	var target: Node3D = find_target()
+	if player == null or target == null:
 		return
-	var distance: float = flat_distance_to(player.global_position)
+	var distance: float = flat_distance_to(target.global_position)
 	var move: Vector3 = Vector3.ZERO
 	match phase:
 		Phase.IDLE:
@@ -71,7 +72,7 @@ func _behave(delta: float) -> void:
 			if distance > creature.leash_distance or player.health <= 0.0:
 				pass
 			elif distance > 0.25:
-				move = flat_direction_to(player.global_position) * creature.raspagelo_burrow_speed
+				move = flat_direction_to(target.global_position) * creature.raspagelo_burrow_speed
 			if distance <= 0.35 and _time >= creature.raspagelo_underground_min:
 				_set_phase(Phase.TELEGRAPH)
 				CombatEffects.ground_ring(get_tree().current_scene, global_position, creature.raspagelo_burst_radius, Color(0.95, 0.85, 0.7, 0.9), creature.raspagelo_telegraph)
@@ -79,7 +80,7 @@ func _behave(delta: float) -> void:
 			_mound.position = Vector3(randf_range(-1.0, 1.0), 0.0, randf_range(-1.0, 1.0)) * WorldScale.METERS_PER_PIXEL
 			if _time >= creature.raspagelo_telegraph:
 				_go_under(false)
-				_facing = flat_direction_to(player.global_position)
+				_facing = flat_direction_to(target.global_position)
 				sprite.flip_h = _facing.x > 0.0
 				_set_phase(Phase.BURST)
 				attack_player(creature.raspagelo_damage, creature.raspagelo_burst_radius, false)

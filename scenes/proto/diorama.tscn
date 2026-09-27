@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3]
+[gd_scene load_steps=75 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -47,6 +47,10 @@
 [ext_resource type="Script" path="res://scripts/bosses/foglione_arena.gd" id="51_field_arena"]
 [ext_resource type="Script" path="res://scripts/bosses/ice_arena.gd" id="52_ice_arena"]
 [ext_resource type="Script" path="res://scripts/bosses/field_lever.gd" id="53_lever"]
+[ext_resource type="PackedScene" path="res://scenes/companions/enea.tscn" id="54_enea"]
+[ext_resource type="PackedScene" path="res://scenes/companions/tosca.tscn" id="55_tosca"]
+[ext_resource type="Script" path="res://scripts/companions/lesson_parry.gd" id="56_lesson"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="57_dialogue"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_field"]
 size = Vector3(16, 1, 16)
@@ -865,6 +869,19 @@ surface_material_override/0 = SubResource("Material_water")
 
 [node name="Spartighiaccio" parent="PondArena" instance=ExtResource("50_sparti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
+
+[node name="Enea" parent="." instance=ExtResource("54_enea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.05, -1.8)
+
+[node name="Tosca" parent="." instance=ExtResource("55_tosca")]
+
+[node name="LessonParry" type="Node" parent="."]
+script = ExtResource("56_lesson")
+enea_path = NodePath("../Enea")
+dummy_path = NodePath("../TrainingDummy")
+
+[node name="DialogueBox" type="CanvasLayer" parent="."]
+script = ExtResource("57_dialogue")
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("40_manager")

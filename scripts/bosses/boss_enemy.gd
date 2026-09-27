@@ -9,6 +9,10 @@ extends CombatEnemy
 var active: bool = false
 
 
+func targets_companions() -> bool:
+	return false
+
+
 func activate() -> void:
 	active = true
 	add_to_group(&"active_boss")

@@ -52,9 +52,10 @@ func _on_hit(_hit: CombatHit) -> void:
 func _behave(delta: float) -> void:
 	_time += delta
 	var player: OttaviaProto = find_player()
-	if player == null:
+	var target: Node3D = find_target()
+	if player == null or target == null:
 		return
-	var distance: float = flat_distance_to(player.global_position)
+	var distance: float = flat_distance_to(target.global_position)
 	sprite.position = _sprite_rest
 	velocity = Vector3.ZERO
 	match phase:
@@ -65,7 +66,7 @@ func _behave(delta: float) -> void:
 			sprite.position = _sprite_rest + Vector3(randf_range(-1.0, 1.0), 0.0, 0.0) * WOBBLE_PIXELS * WorldScale.METERS_PER_PIXEL
 			flash(0.25 + 0.35 * _time / maxf(creature.grappolo_roll_windup, 0.01), Color(1.0, 0.6, 0.3))
 			if _time >= creature.grappolo_roll_windup:
-				_roll_direction = flat_direction_to(player.global_position)
+				_roll_direction = flat_direction_to(target.global_position)
 				_roll_hit = false
 				_set_phase(Phase.ROLL)
 		Phase.ROLL:

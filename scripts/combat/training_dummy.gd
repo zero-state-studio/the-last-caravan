@@ -13,6 +13,8 @@ const LEAN_PIXELS: float = 3.0
 @export var tuning: CombatTuning
 
 var phase: Phase = Phase.WAIT
+## Held still (a lesson explains before it swings).
+var paused: bool = false
 var _phase_time: float = 0.0
 var _sprite_rest: Vector3
 
@@ -29,8 +31,11 @@ func is_exposed() -> bool:
 
 
 func _behave(delta: float) -> void:
+	if paused:
+		sprite.position = _sprite_rest
+		return
 	_phase_time += delta
-	var player: OttaviaProto = find_player()
+	var player: Node3D = find_target()
 	var toward: Vector3 = Vector3.BACK
 	if player != null:
 		toward = OttaviaCombat._flat_direction(player.global_position - global_position)
@@ -62,19 +67,10 @@ func _behave(delta: float) -> void:
 				_set_phase(Phase.WAIT)
 
 
-func _swing(player: OttaviaProto, toward: Vector3) -> void:
+func _swing(_target: Node3D, toward: Vector3) -> void:
 	CombatEffects.swing(get_tree().current_scene, global_position + Vector3.UP * 0.9, toward, tuning.dummy_reach, 90.0, Color(1.0, 0.7, 0.45, 0.9))
 	SoundBank.play_sound(get_tree(), &"colpo_bastone", 0.15)
-	if player == null or player.health <= 0.0:
-		return
-	var offset: Vector3 = player.global_position - global_position
-	offset.y = 0.0
-	if offset.length() > tuning.dummy_reach:
-		return
-	var attack: CombatAttack = CombatAttack.new()
-	attack.damage = tuning.dummy_damage
-	attack.source = self
-	player.combat.receive_attack(attack)
+	attack_player(tuning.dummy_damage, tuning.dummy_reach)
 
 
 func _on_staggered() -> void:

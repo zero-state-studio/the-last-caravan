@@ -92,3 +92,27 @@ extends Resource
 @export var dummy_reach: float = 2.4
 @export var dummy_health: float = 150.0
 @export var dummy_respawn_seconds: float = 2.5
+
+@export_group("Enea")
+@export var enea_speed: float = 3.3
+## Distance he keeps behind Ottavia.
+@export var enea_follow_distance: float = 1.8
+## At first he stays this far from creatures (81).
+@export var enea_keep_back: float = 3.0
+## Moves done well by the player before Enea learns them.
+@export var enea_learn_count: int = 3
+@export var enea_down_seconds: float = 1.5
+## Chance that Enea deflects a hit once he has learned the parry.
+@export var enea_parry_chance: float = 0.8
+@export var enea_attack_damage: float = 5.0
+@export var enea_attack_interval: float = 1.2
+@export var enea_attack_reach: float = 1.5
+
+@export_group("Tosca")
+@export var tosca_cooldown: float = 12.0
+@export var tosca_range: float = 8.0
+## Where the dragged creature ends, in front of Ottavia.
+@export var tosca_pull_distance: float = 1.5
+@export var tosca_damage: float = 8.0
+## Heavy creatures and bosses cannot be dragged: they only stagger.
+@export var tosca_heavy_stagger: float = 1.0

@@ -24,6 +24,8 @@ const MOVE_SETTLE_SECONDS: float = 0.15
 var health: float = 0.0
 ## Where the creature starts; it comes back here when the room restarts (105).
 var spawn_transform: Transform3D
+## Forced target (the lesson makes the dummy swing at Enea), or null.
+var target_override: Node3D = null
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _flash: float = 0.0
@@ -142,17 +144,47 @@ func _move_by(offset: Vector3) -> void:
 	_move_left = MOVE_SETTLE_SECONDS
 
 
-## Attacks Ottavia if she is within `reach` (flat distance); returns how it
-## ended, or -1 when she was out of reach.
+## Attacks the current target (see find_target) if it is within `reach`
+## (flat distance); returns how it ended, or -1 when it was out of reach.
 func attack_player(damage: float, reach: float, deflectable: bool = true) -> int:
-	var player: OttaviaProto = find_player()
-	if player == null or player.health <= 0.0 or flat_distance_to(player.global_position) > reach:
+	var target: Node3D = find_target()
+	if target == null or flat_distance_to(target.global_position) > reach:
 		return -1
 	var attack: CombatAttack = CombatAttack.new()
 	attack.damage = damage
 	attack.source = self
 	attack.deflectable = deflectable
-	return player.combat.receive_attack(attack)
+	if target is OttaviaProto:
+		var player: OttaviaProto = target
+		if player.health <= 0.0:
+			return -1
+		return player.combat.receive_attack(attack)
+	return target.call(&"receive_attack", attack)
+
+
+## Who the creature goes for: the forced target, or the nearest fighter on
+## its feet (Ottavia, or Enea when he is closer, 81).
+func find_target() -> Node3D:
+	if target_override != null and is_instance_valid(target_override):
+		return target_override
+	var best: Node3D = find_player()
+	if not targets_companions():
+		return best
+	var best_distance: float = flat_distance_to(best.global_position) if best != null else INF
+	for node: Node in get_tree().get_nodes_in_group(&"fighters"):
+		var fighter: Node3D = node as Node3D
+		if fighter == null or not fighter.call(&"can_be_attacked"):
+			continue
+		var distance: float = flat_distance_to(fighter.global_position)
+		if distance < best_distance:
+			best = fighter
+			best_distance = distance
+	return best
+
+
+## Bosses go for Ottavia only.
+func targets_companions() -> bool:
+	return true
 
 
 ## True while a knockback, pull or push is moving the creature.

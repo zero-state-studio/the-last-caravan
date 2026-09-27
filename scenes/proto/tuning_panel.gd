@@ -30,6 +30,7 @@ const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_SPRITE_UPRIGHT_DEPTH", "property": "sprite_upright_depth"},
 	{"key": "DEV_SPRITE_SHADED", "property": "sprite_shaded"},
 	{"key": "DEV_SHOW_COMBAT_HUD", "property": "show_combat_hud"},
+	{"key": "DEV_TOSCA_PRESENT", "property": "tosca_present"},
 ]
 ## Combat values (33), bound to CombatTuning; found by playing in phase 3.
 const COMBAT_SLIDERS: Array[Dictionary] = [
@@ -89,6 +90,19 @@ const COMBAT_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_C_DUMMY_EXPOSED", "property": "dummy_exposed", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_C_DUMMY_DAMAGE", "property": "dummy_damage", "min": 0.0, "max": 50.0, "step": 1.0},
 	{"key": "DEV_C_DUMMY_REACH", "property": "dummy_reach", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_C_ENEA_SPEED", "property": "enea_speed", "min": 1.0, "max": 6.0, "step": 0.1},
+	{"key": "DEV_C_ENEA_FOLLOW_DISTANCE", "property": "enea_follow_distance", "min": 0.5, "max": 5.0, "step": 0.1},
+	{"key": "DEV_C_ENEA_KEEP_BACK", "property": "enea_keep_back", "min": 0.0, "max": 8.0, "step": 0.1},
+	{"key": "DEV_C_ENEA_LEARN_COUNT", "property": "enea_learn_count", "min": 1.0, "max": 10.0, "step": 1.0},
+	{"key": "DEV_C_ENEA_DOWN_SECONDS", "property": "enea_down_seconds", "min": 0.2, "max": 5.0, "step": 0.1},
+	{"key": "DEV_C_ENEA_PARRY_CHANCE", "property": "enea_parry_chance", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_ENEA_ATTACK_DAMAGE", "property": "enea_attack_damage", "min": 0.0, "max": 30.0, "step": 1.0},
+	{"key": "DEV_C_ENEA_ATTACK_INTERVAL", "property": "enea_attack_interval", "min": 0.2, "max": 4.0, "step": 0.05},
+	{"key": "DEV_C_TOSCA_COOLDOWN", "property": "tosca_cooldown", "min": 1.0, "max": 40.0, "step": 0.5},
+	{"key": "DEV_C_TOSCA_RANGE", "property": "tosca_range", "min": 2.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_C_TOSCA_PULL_DISTANCE", "property": "tosca_pull_distance", "min": 0.5, "max": 4.0, "step": 0.1},
+	{"key": "DEV_C_TOSCA_DAMAGE", "property": "tosca_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_C_TOSCA_HEAVY_STAGGER", "property": "tosca_heavy_stagger", "min": 0.0, "max": 4.0, "step": 0.1},
 ]
 ## Creature values (36), bound to CreatureTuning.
 const CREATURE_SLIDERS: Array[Dictionary] = [

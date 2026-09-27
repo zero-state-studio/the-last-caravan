@@ -27,6 +27,8 @@ var zone_night_proximity: float = 0.0
 # Combat prototype (phase 3): on-screen measures. Shake, flashes and aim
 # assist are player options (GameOptions, 96).
 var show_combat_hud: bool = true
+# Tosca travels with Ottavia in this chapter (20): the Call brings her in.
+var tosca_present: bool = true
 # Light (48)
 var sun_elevation: float = 14.0
 var sun_azimuth: float = 300.0

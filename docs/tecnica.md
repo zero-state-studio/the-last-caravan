@@ -162,3 +162,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Durante dissolvenze e ripartenze tutte le creature restano ferme (`CombatEnemy` non agisce se Ottavia non ha i comandi).
 - Interazione: `OttaviaProto.interact()` usa l'`Interactable` più vicino entro il suo raggio.
 - Test: `tests/test_bosses.gd`. I test di combattimento, creature e boss liberano la scena prima di chiudere (suoni ancora in riproduzione = risorse trapelate).
+
+## Enea, la lezione e Tosca (fase 3, passo 5; 81, 82, 20)
+
+- `Enea` (`scripts/companions/enea.gd`, `scenes/companions/enea.tscn`): segue Ottavia, si tiene lontano dalle creature finché non sa attaccare, non muore (colpito cade per `enea_down_seconds`). Conta i segnali `OttaviaCombat.technique_done` (parry, counter, combo, step, hook); dopo `enea_learn_count` impara la mossa (messaggio "Enea ha imparato…", suono `segnale_enea`) e la usa: devia, schiva, colpisce le creature (scoperte, con il solo contrattempo). Non attacca il fantoccio.
+- Le creature scelgono il combattente più vicino tra Ottavia ed Enea (`CombatEnemy.find_target`, gruppo `fighters`); i boss puntano solo Ottavia; `target_override` forza il bersaglio (la lezione).
+- Lezione della parata (`LessonParry`, `scripts/companions/lesson_parry.gd`): si avvia parlando con Enea (`LessonTalk`, un `Interactable`); Ottavia spiega (battute `DLG_LESSON_PARRY_001`…`008`, ID univoci per il doppiaggio, 59), il giocatore guida Enea contro il fantoccio; due deviazioni e Enea impara la parata. Riquadro dei dialoghi: `DialogueBox` (`scripts/ui/dialogue_box.gd`). Argomento del diorama `lesson=1` per avviarla subito.
+- `Tosca` (`scripts/companions/tosca.gd`): compagna del Richiamo, presente se `tosca_present` (pannello F1); aggancia la creatura più vicina davanti a Ottavia entro `tosca_range` e la trascina (i pesanti e i boss si sbilanciano soltanto), poi ricarica per `tosca_cooldown`; barra di ricarica nell'HUD.
+- Sprite di Enea e Tosca: segnaposti a una vista (`TODO-DESIGN #81`, `TODO-DESIGN #79`), l'aspetto non è definito nella bibbia.
+- Test: `tests/test_companions.gd`.

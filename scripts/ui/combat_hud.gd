@@ -23,6 +23,8 @@ var _breath_bar: ProgressBar
 var _message: Label
 var _message_left: float = 0.0
 var _boss_box: VBoxContainer
+var _tosca_label: Label
+var _tosca_bar: ProgressBar
 var _boss_label: Label
 var _boss_bar: ProgressBar
 
@@ -36,6 +38,9 @@ func _ready() -> void:
 	add_child(box)
 	_health_bar = _add_bar(box, "HUD_HEALTH", HEALTH_COLOR)
 	_breath_bar = _add_bar(box, "HUD_BREATH", BREATH_COLOR)
+	_tosca_bar = _add_bar(box, "HUD_TOSCA", Color(0.8, 0.85, 0.95))
+	_tosca_label = box.get_child(box.get_child_count() - 2) as Label
+	_tosca_bar.custom_minimum_size = Vector2(110.0, 8.0)
 	_message = Label.new()
 	_message.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	_message.position = Vector2(-200.0, 96.0)
@@ -91,6 +96,13 @@ func _process(delta: float) -> void:
 	# Real time: messages stay readable during freeze frames.
 	_message_left = maxf(0.0, _message_left - delta / maxf(Engine.time_scale, 0.001))
 	_message.modulate.a = clampf(_message_left / 0.3, 0.0, 1.0)
+	# Companion readiness: full when she can be called again.
+	var tosca: Tosca = ottavia.combat.companion as Tosca
+	_tosca_bar.visible = tosca != null
+	_tosca_label.visible = tosca != null
+	if tosca != null:
+		_tosca_bar.max_value = 1.0
+		_tosca_bar.value = 1.0 - tosca.cooldown_ratio()
 	var boss: BossEnemy = get_tree().get_first_node_in_group(&"active_boss") as BossEnemy
 	_boss_box.visible = boss != null
 	if boss != null:

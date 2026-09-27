@@ -19,6 +19,9 @@ signal message(key: StringName)
 signal stepped
 ## Emitted at the active moment of every strike.
 signal struck
+## A move done well by the player (81): parry, counter, combo, step, hook.
+## Enea counts them to learn the move.
+signal technique_done(technique: StringName)
 
 enum State { FREE, STRIKE, HOOK, PARRY, STEP, HITSTUN, BREATHLESS }
 
@@ -300,6 +303,9 @@ func _strike_hit() -> void:
 		HitFeedback.shake(tree, tuning.shake_critical_meters if critical_any else tuning.shake_meters)
 		if critical_any:
 			message.emit(&"COMBAT_COUNTER")
+			technique_done.emit(&"counter")
+		if finisher:
+			technique_done.emit(&"combo")
 
 
 func _hook_hit() -> void:
@@ -322,6 +328,7 @@ func _hook_hit() -> void:
 	elif target.is_small:
 		target.pull_to(origin + hit.direction * tuning.hook_pull_distance)
 	HitFeedback.hitstop(get_tree(), tuning.hitstop_seconds)
+	technique_done.emit(&"hook")
 
 
 ## The creature the hook catches: the nearest one in front of Ottavia, inside
@@ -373,6 +380,8 @@ func targets_in_arc(reach: float, arc_degrees: float) -> Array[CombatEnemy]:
 ## An attack from a creature. Returns how it ended (CombatAttack.Result).
 func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 	if _invulnerable_left > 0.0:
+		if state == State.STEP:
+			technique_done.emit(&"step")
 		return CombatAttack.Result.EVADED
 	if state == State.PARRY:
 		if attack.deflectable and _parry_can_deflect and _state_time <= tuning.deflect_window:
@@ -385,6 +394,7 @@ func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 			HitFeedback.hitstop(get_tree(), tuning.hitstop_critical_seconds)
 			HitFeedback.shake(get_tree(), tuning.shake_meters)
 			message.emit(&"COMBAT_DEFLECT")
+			technique_done.emit(&"parry")
 			return CombatAttack.Result.DEFLECTED
 		SoundBank.play_sound(get_tree(), &"parata")
 		_spend(tuning.block_hit_cost)
