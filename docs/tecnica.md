@@ -62,5 +62,6 @@ Note sui servizi:
 ## Strumenti
 
 - `tools/meshy_pixelize.py` (Pillow via `uv run --with pillow`): prende un GLB texturizzato di Meshy, riduce la texture (per esempio 128 px, 24 colori, senza retino), la incorpora in PNG con filtro nearest e scala il modello a un'altezza in metri con la base a terra (54).
+- Import dei GLB: Godot estrae le texture (`<nome>_0.png`) generando comunque le mipmap, ma il campionatore nearest scritto da `meshy_pixelize.py` diventa `texture_filter = Nearest` nel materiale (verificato), quindi le mipmap non vengono usate.
 - Pillow non è installato nel Python di sistema: usare `uv run --quiet --with pillow python3 ...`.
 - Misura delle prestazioni: `"$GODOT_PATH" --path . --resolution 1280x800 res://scenes/proto/diorama.tscn -- settings=<json> perf=8` stampa una riga `PERF` (media, FPS, 95° percentile) con vsync disattivato. Risultati della fase 1 in `docs/fase1-prototipo.md`.
