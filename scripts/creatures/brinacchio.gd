@@ -130,7 +130,8 @@ func _on_struck() -> void:
 
 
 func _update_slowdown(player: OttaviaProto) -> void:
-	player.combat.slowdown = minf(latched.size() * creature.brinacchio_slow, creature.brinacchio_max_slow)
+	var patch: float = CoatPatches.COLD_SLOW if player.combat.has_patch(&"cold") else 1.0
+	player.combat.slowdown = minf(latched.size() * creature.brinacchio_slow, creature.brinacchio_max_slow) * patch
 
 
 func _on_defeated() -> void:

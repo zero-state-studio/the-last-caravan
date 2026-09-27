@@ -172,3 +172,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Sprite di Enea e Tosca: segnaposti a una vista (`TODO-DESIGN #81`, `TODO-DESIGN #79`), l'aspetto non è definito nella bibbia.
 - Test: `tests/test_companions.gd`.
 - Barra della vita delle creature: `EnemyHealthBar` (`scripts/combat/enemy_health_bar.gd`), Sprite3D in pixel da 24×4 px sopra la testa, aggiunta da `CombatEnemy` (non ai boss, che hanno la barra nell'HUD). Compare dal primo colpo, nascosta quando la creatura non è bersagliabile; non vira con la palette.
+
+## Progressione, toppe e difficoltà (fase 3, passo 6; 34, 104, 40)
+
+- `Progression` (`scripts/combat/progression.gd`): tabella per capitolo (fiato, passo, combinazione, perdita, tecnica), `power()`, `knows()`, `chapter_lines()`. Proposta in `docs/progressione.md`, da approvare.
+- `OttaviaCombat` legge i valori effettivi solo tramite i getter (`max_stamina()`, `move_speed()`, `combo_length()`, `deflect_window()`, `step_invulnerable_seconds()`, `counter_multiplier()`, `hook_reach()`, `regen_delay()`, `aim_cone_degrees()`), che combinano taratura, capitolo, toppe e difficoltà. `set_chapter()` e `patches` si impostano dal diorama (`apply_settings`).
+- `CoatPatches` (`scripts/combat/coat_patches.gd`): tre spazi, quattro toppe di prova. `Difficulty` (`scripts/combat/difficulty.gd`): moltiplicatori per livello, applicati in `CombatEnemy.attack_player`, alla vita in `reset_enemy` e ai preavvisi di creature e boss; il livello sta in `GameOptions.difficulty` (`user://options.cfg`).
+- Schermata di fine capitolo: `ChapterScreen` (`scripts/ui/chapter_screen.gd`), mette in pausa e mostra le due righe; si apre con il pulsante del pannello F1 o l'argomento del diorama `chapter_end=1`.
+- Lato del mondo delle creature (`world_side` in `CombatEnemy`), usato dalle toppe del freddo e del caldo.
+- Test: `tests/test_progression.gd`. Screenshot: `docs/screenshots/2026-09-28-fase3-fine-capitolo.png`.

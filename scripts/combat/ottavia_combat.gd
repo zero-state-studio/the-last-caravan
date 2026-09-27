@@ -62,16 +62,22 @@ var _input: Vector2 = Vector2.ZERO
 ## Only a fresh press opens the deflect window, not a parry held through
 ## another action.
 var _parry_can_deflect: bool = false
+## Chapter of Ottavia's life (34): what she has lost and learned.
+var chapter: int = 1
+## Coat patches sewn in the three slots (104).
+var patches: Array[StringName] = []
+var _return_strike_left: float = 0.0
+var _dazzle_cooldown: float = 0.0
 
 
 func _ready() -> void:
 	ottavia = get_parent() as OttaviaProto
-	stamina = tuning.max_stamina
+	stamina = max_stamina()
 
 
 ## Full breath and no action in progress (after a defeat, 105).
 func reset() -> void:
-	stamina = tuning.max_stamina
+	stamina = max_stamina()
 	_enter(State.FREE)
 	_buffer.clear()
 	_parry_held = false
@@ -91,6 +97,8 @@ func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> voi
 			_buffer.erase(action)
 	_state_time += delta
 	_since_action += delta
+	_return_strike_left = maxf(0.0, _return_strike_left - delta)
+	_dazzle_cooldown = maxf(0.0, _dazzle_cooldown - delta)
 	_invulnerable_left = maxf(0.0, _invulnerable_left - delta)
 	_knock_velocity = _knock_velocity.move_toward(Vector3.ZERO, 8.0 * delta)
 	_advance_state(input)
@@ -161,6 +169,7 @@ func _update_charges(delta: float) -> void:
 				ottavia.set_lantern_open(true)
 				SoundBank.play_sound(get_tree(), &"sportello_lanterna")
 			ottavia.set_lantern_raised(true)
+			dazzle()
 
 
 # --- State machine ---------------------------------------------------------
@@ -224,7 +233,7 @@ func _advance_strike() -> void:
 	if not _hit_done and _state_time >= active_start:
 		_hit_done = true
 		_strike_hit()
-	if _state_time >= active_start and _buffer.has(&"attack") and combo_index + 1 < tuning.combo_length:
+	if _state_time >= active_start and _buffer.has(&"attack") and combo_index + 1 < combo_length():
 		_combo_queued = true
 	if _combo_queued and _state_time >= recovery_start:
 		_buffer.erase(&"attack")
@@ -262,7 +271,7 @@ func _start_step() -> void:
 	if _step_direction.is_zero_approx():
 		_step_direction = _step_direction_for(Vector2.ZERO)
 	_enter(State.STEP)
-	_invulnerable_left = tuning.step_invulnerable_seconds
+	_invulnerable_left = step_invulnerable_seconds()
 	SoundBank.play_sound(get_tree(), &"passo")
 	stepped.emit()
 	_spend(tuning.step_stamina_cost)
@@ -281,10 +290,11 @@ func _enter(new_state: State) -> void:
 # --- Hits ------------------------------------------------------------------
 
 func _strike_hit() -> void:
-	var finisher: bool = combo_index == tuning.combo_length - 1 and tuning.combo_length > 1
+	var finisher: bool = combo_index == combo_length() - 1 and combo_length() > 1
 	var origin: Vector3 = ottavia.global_position
 	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.strike_reach, tuning.strike_arc_degrees, SWING_COLOR)
 	struck.emit()
+	var return_strike: bool = _return_strike_left > 0.0
 	var landed: bool = false
 	var critical_any: bool = false
 	for target: CombatEnemy in targets_in_arc(tuning.strike_reach, tuning.strike_arc_degrees):
@@ -293,9 +303,11 @@ func _strike_hit() -> void:
 		hit.source = ottavia
 		hit.direction = _flat_direction(target.global_position - origin)
 		hit.knockback = tuning.strike_knockback
-		hit.critical = target.is_exposed()
-		hit.damage = tuning.strike_damage * (tuning.combo_finisher_multiplier if finisher else 1.0) * (tuning.counter_multiplier if hit.critical else 1.0)
+		hit.critical = target.is_exposed() or _return_strike_left > 0.0
+		hit.damage = tuning.strike_damage * Progression.power(chapter) * (tuning.combo_finisher_multiplier if finisher else 1.0) * (counter_multiplier() if hit.critical else 1.0)
 		target.receive_hit(hit)
+		if finisher and knows(&"heavy_finisher") and target.is_alive():
+			target.stagger(Progression.HEAVY_FINISHER_STAGGER)
 		landed = true
 		critical_any = critical_any or hit.critical
 		CombatEffects.spark(get_tree().current_scene, target.global_position + Vector3.UP * 0.9, COUNTER_COLOR if hit.critical else Color.WHITE)
@@ -304,6 +316,8 @@ func _strike_hit() -> void:
 		var tree: SceneTree = get_tree()
 		HitFeedback.hitstop(tree, tuning.hitstop_critical_seconds if critical_any else tuning.hitstop_seconds)
 		HitFeedback.shake(tree, tuning.shake_critical_meters if critical_any else tuning.shake_meters)
+		if return_strike:
+			_return_strike_left = 0.0
 		if critical_any:
 			message.emit(&"COMBAT_COUNTER")
 			technique_done.emit(&"counter")
@@ -314,7 +328,7 @@ func _strike_hit() -> void:
 func _hook_hit() -> void:
 	SoundBank.play_sound(get_tree(), &"uncino")
 	var origin: Vector3 = ottavia.global_position
-	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.hook_reach, tuning.hook_arc_degrees, SWING_COLOR)
+	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, hook_reach(), tuning.hook_arc_degrees, SWING_COLOR)
 	var target: CombatEnemy = hook_target()
 	if target == null:
 		return
@@ -336,7 +350,7 @@ func _hook_hit() -> void:
 
 ## The creature the hook catches: the same aim rule as the strike (33).
 func hook_target() -> CombatEnemy:
-	return aim_target(tuning.hook_reach)
+	return aim_target(hook_reach())
 
 
 ## The creature an action goes for (33). Stick held: the nearest creature
@@ -367,9 +381,9 @@ func aim_target(reach: float) -> CombatEnemy:
 	return best
 
 
-## Whole aim cone angle; the easy level (40) widens it from step 6.
+## Whole aim cone angle; wider at the easy level (40).
 func aim_cone_degrees() -> float:
-	return tuning.aim_cone_degrees
+	return tuning.aim_cone_easy_degrees if Difficulty.is_easy() else tuning.aim_cone_degrees
 
 
 func _stick_direction() -> Vector3:
@@ -406,23 +420,25 @@ func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 			technique_done.emit(&"step")
 		return CombatAttack.Result.EVADED
 	if state == State.PARRY:
-		if attack.deflectable and _parry_can_deflect and _state_time <= tuning.deflect_window:
+		if attack.deflectable and _parry_can_deflect and _state_time <= deflect_window():
 			if attack.source != null:
 				attack.source.stagger(tuning.deflect_stagger_seconds)
 				CombatEffects.spark(get_tree().current_scene, ottavia.global_position.lerp(attack.source.global_position, 0.5) + Vector3.UP * 1.0, DEFLECT_COLOR, 14.0)
 			# A deflection costs no breath: the press cost is given back.
-			stamina = minf(tuning.max_stamina, stamina + tuning.parry_press_cost)
+			stamina = minf(max_stamina(), stamina + tuning.parry_press_cost)
 			SoundBank.play_sound(get_tree(), &"deviazione")
 			HitFeedback.hitstop(get_tree(), tuning.hitstop_critical_seconds)
 			HitFeedback.shake(get_tree(), tuning.shake_meters)
 			message.emit(&"COMBAT_DEFLECT")
 			technique_done.emit(&"parry")
+			if knows(&"return_strike"):
+				_return_strike_left = Progression.RETURN_STRIKE_SECONDS
 			return CombatAttack.Result.DEFLECTED
 		SoundBank.play_sound(get_tree(), &"parata")
 		_spend(tuning.block_hit_cost)
 		HitFeedback.shake(get_tree(), tuning.shake_meters * 0.5)
 		return CombatAttack.Result.BLOCKED
-	var damage: float = attack.damage * (tuning.breathless_damage_multiplier if state == State.BREATHLESS else 1.0)
+	var damage: float = attack.damage * (tuning.breathless_damage_multiplier if state == State.BREATHLESS else 1.0) * patch_damage_taken(attack.source)
 	ottavia.take_damage(damage)
 	ottavia.flash(1.0, Color(1.0, 0.45, 0.4))
 	SoundBank.play_sound(get_tree(), &"colpo_subito")
@@ -448,12 +464,83 @@ func _spend(amount: float) -> void:
 
 func _regenerate(delta: float) -> void:
 	# Never while parrying; half as fast while walking as standing still.
-	if state == State.FREE and _since_action >= tuning.stamina_regen_delay:
-		var rate: float = tuning.stamina_regen_per_second * (tuning.walking_regen_multiplier if _moving else 1.0)
-		stamina = minf(tuning.max_stamina, stamina + rate * delta)
+	if state == State.FREE and _since_action >= regen_delay():
+		var rate: float = tuning.stamina_regen_per_second * (tuning.walking_regen_multiplier if _moving else 1.0) * (CoatPatches.BREATH_REGEN if has_patch(&"breath") else 1.0)
+		stamina = minf(max_stamina(), stamina + rate * delta)
 
 
 # --- Movement queries (used by OttaviaProto) --------------------------------
+
+# --- Chapter, patches and difficulty (34, 104, 40) ---------------------------
+
+func set_chapter(new_chapter: int) -> void:
+	chapter = Progression.clamp_chapter(new_chapter)
+	stamina = minf(stamina, max_stamina())
+
+
+func knows(technique: StringName) -> bool:
+	return Progression.knows(chapter, technique)
+
+
+func has_patch(patch: StringName) -> bool:
+	return patch in patches
+
+
+func max_stamina() -> float:
+	return tuning.max_stamina * float(Progression.entry(chapter)["stamina"])
+
+
+func move_speed() -> float:
+	return tuning.move_speed * float(Progression.entry(chapter)["speed"])
+
+
+func combo_length() -> int:
+	return mini(tuning.combo_length, int(Progression.entry(chapter)["combo"]))
+
+
+func deflect_window() -> float:
+	return (tuning.deflect_window + (Progression.KEEN_EYE_WINDOW if knows(&"keen_eye") else 0.0)) * Difficulty.deflect_window()
+
+
+func step_invulnerable_seconds() -> float:
+	return maxf(tuning.step_invulnerable_seconds, Progression.SURE_STEP_INVULNERABLE) if knows(&"sure_step") else tuning.step_invulnerable_seconds
+
+
+func counter_multiplier() -> float:
+	return maxf(tuning.counter_multiplier, Progression.DEEP_COUNTER_MULTIPLIER) if knows(&"deep_counter") else tuning.counter_multiplier
+
+
+func hook_reach() -> float:
+	return tuning.hook_reach + (Progression.LONG_HOOK_EXTRA_REACH if knows(&"long_hook") else 0.0)
+
+
+func regen_delay() -> float:
+	return maxf(0.0, tuning.stamina_regen_delay - (Progression.VETERAN_BREATH_DELAY if knows(&"veteran_breath") else 0.0))
+
+
+## Damage taken multiplier from the patches, by the side of the attacker.
+func patch_damage_taken(source: CombatEnemy) -> float:
+	if source == null:
+		return 1.0
+	var multiplier: float = 1.0
+	if has_patch(&"cold") and source.world_side == &"night":
+		multiplier *= CoatPatches.COLD_DAMAGE_TAKEN
+	if has_patch(&"heat") and source.world_side == &"day":
+		multiplier *= CoatPatches.HEAT_DAMAGE_TAKEN
+	return multiplier
+
+
+## Raised lantern that dazzles (a technique): nearby creatures stagger.
+func dazzle() -> void:
+	if not knows(&"dazzling_lantern") or _dazzle_cooldown > 0.0:
+		return
+	_dazzle_cooldown = Progression.DAZZLE_COOLDOWN
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var creature: CombatEnemy = node as CombatEnemy
+		if creature != null and creature.can_be_targeted() and creature.flat_distance_to(ottavia.global_position) <= Progression.DAZZLE_RADIUS:
+			creature.stagger(Progression.DAZZLE_STAGGER)
+			creature.flash(1.0, Color(1.0, 0.95, 0.7))
+
 
 func move_speed_multiplier() -> float:
 	var free: float = 1.0 - clampf(slowdown, 0.0, 1.0)

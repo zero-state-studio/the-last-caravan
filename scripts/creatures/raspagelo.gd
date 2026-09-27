@@ -75,10 +75,10 @@ func _behave(delta: float) -> void:
 				move = flat_direction_to(target.global_position) * creature.raspagelo_burrow_speed
 			if distance <= 0.35 and _time >= creature.raspagelo_underground_min:
 				_set_phase(Phase.TELEGRAPH)
-				CombatEffects.ground_ring(get_tree().current_scene, global_position, creature.raspagelo_burst_radius, Color(0.95, 0.85, 0.7, 0.9), creature.raspagelo_telegraph)
+				CombatEffects.ground_ring(get_tree().current_scene, global_position, creature.raspagelo_burst_radius, Color(0.95, 0.85, 0.7, 0.9), creature.raspagelo_telegraph * Difficulty.telegraph())
 		Phase.TELEGRAPH:
 			_mound.position = Vector3(randf_range(-1.0, 1.0), 0.0, randf_range(-1.0, 1.0)) * WorldScale.METERS_PER_PIXEL
-			if _time >= creature.raspagelo_telegraph:
+			if _time >= creature.raspagelo_telegraph * Difficulty.telegraph():
 				_go_under(false)
 				_facing = flat_direction_to(target.global_position)
 				sprite.flip_h = _facing.x > 0.0

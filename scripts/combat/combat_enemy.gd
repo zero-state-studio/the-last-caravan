@@ -22,8 +22,13 @@ const OPEN_COLOR: Color = Color(1.0, 0.9, 0.6)
 @export var has_shield: bool = false
 ## Heavy creatures do not move when hit or pushed.
 @export var heavy: bool = false
+## Side of the world it belongs to (day, twilight, night): the coat patches
+## against cold and heat (104) act on it.
+@export var world_side: StringName = &"twilight"
 
 var health: float = 0.0
+## Health before the difficulty scaling (40).
+var base_max_health: float = 0.0
 ## Where the creature starts; it comes back here when the room restarts (105).
 var spawn_transform: Transform3D
 ## Forced target (the lesson makes the dummy swing at Enea), or null.
@@ -43,6 +48,8 @@ var _move_left: float = 0.0
 
 func _ready() -> void:
 	add_to_group(&"combat_targets")
+	base_max_health = max_health
+	max_health = base_max_health * Difficulty.enemy_health()
 	health = max_health
 	spawn_transform = global_transform
 	_material.shader = LIT_SHADER
@@ -66,6 +73,7 @@ func can_be_targeted() -> bool:
 ## Back to the start, full health (the room restarts after a defeat, 105).
 func reset_enemy() -> void:
 	global_transform = spawn_transform
+	max_health = base_max_health * Difficulty.enemy_health()
 	health = max_health
 	_stagger_left = 0.0
 	_move_left = 0.0
@@ -168,7 +176,7 @@ func attack_player(damage: float, reach: float, deflectable: bool = true) -> int
 	if target == null or flat_distance_to(target.global_position) > reach:
 		return -1
 	var attack: CombatAttack = CombatAttack.new()
-	attack.damage = damage
+	attack.damage = damage * Difficulty.enemy_damage()
 	attack.source = self
 	attack.deflectable = deflectable
 	if target is OttaviaProto:

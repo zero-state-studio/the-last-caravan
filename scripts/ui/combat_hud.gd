@@ -92,7 +92,7 @@ func _process(delta: float) -> void:
 		return
 	_health_bar.max_value = ottavia.max_health
 	_health_bar.value = ottavia.health
-	_breath_bar.max_value = ottavia.combat.tuning.max_stamina
+	_breath_bar.max_value = ottavia.combat.max_stamina()
 	_breath_bar.value = ottavia.combat.stamina
 	# Real time: messages stay readable during freeze frames.
 	_message_left = maxf(0.0, _message_left - delta / maxf(Engine.time_scale, 0.001))

@@ -77,8 +77,8 @@ func _behave(delta: float) -> void:
 			if distance <= creature.foglione_sweep_range and rad_to_deg(toward.angle_to(facing)) <= 100.0:
 				_set_phase(Phase.SWEEP_WINDUP)
 		Phase.SWEEP_WINDUP:
-			flash(0.3 + 0.4 * _time / maxf(creature.foglione_sweep_windup, 0.01), TELEGRAPH_COLOR)
-			if _time >= creature.foglione_sweep_windup:
+			flash(0.3 + 0.4 * _time / maxf(creature.foglione_sweep_windup * Difficulty.telegraph(), 0.01), TELEGRAPH_COLOR)
+			if _time >= creature.foglione_sweep_windup * Difficulty.telegraph():
 				_set_phase(Phase.SWEEP)
 				CombatEffects.swing(get_tree().current_scene, global_position + Vector3.UP * 1.0, facing, creature.foglione_sweep_range, 200.0, Color(0.8, 1.0, 0.6, 0.9))
 				SoundBank.play_sound(get_tree(), &"colpo_bastone", 0.2)
@@ -104,8 +104,8 @@ func _turn_toward_sun(delta: float) -> void:
 
 func _start_root(point: Vector3) -> void:
 	var center: Vector3 = Vector3(point.x, global_position.y, point.z)
-	CombatEffects.ground_ring(get_tree().current_scene, center, creature.foglione_root_radius, ROOT_COLOR, creature.foglione_root_telegraph)
-	_roots.append({"center": center, "left": creature.foglione_root_telegraph})
+	CombatEffects.ground_ring(get_tree().current_scene, center, creature.foglione_root_radius, ROOT_COLOR, creature.foglione_root_telegraph * Difficulty.telegraph())
+	_roots.append({"center": center, "left": creature.foglione_root_telegraph * Difficulty.telegraph()})
 
 
 func _update_roots(delta: float) -> void:
@@ -123,7 +123,7 @@ func _update_roots(delta: float) -> void:
 		var player: OttaviaProto = find_player()
 		if player != null and Vector2(player.global_position.x - center.x, player.global_position.z - center.z).length() <= creature.foglione_root_radius:
 			var attack: CombatAttack = CombatAttack.new()
-			attack.damage = creature.foglione_root_damage
+			attack.damage = creature.foglione_root_damage * Difficulty.enemy_damage()
 			attack.source = self
 			attack.deflectable = false
 			player.combat.receive_attack(attack)

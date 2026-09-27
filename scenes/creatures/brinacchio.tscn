@@ -10,6 +10,7 @@ radius = 0.15
 
 [node name="Brinacchio" type="CharacterBody3D"]
 script = ExtResource("1_script")
+world_side = &"night"
 creature = ExtResource("3_tuning")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

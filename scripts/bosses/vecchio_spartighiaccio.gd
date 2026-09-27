@@ -56,10 +56,10 @@ func _behave(delta: float) -> void:
 			_start_aim(player)
 		Phase.AIM:
 			# Keeps turning toward Ottavia until the last third of the aim.
-			if _time < creature.sparti_aim_seconds * 0.66:
+			if _time < creature.sparti_aim_seconds * Difficulty.telegraph() * 0.66:
 				facing = flat_direction_to(player.global_position)
-			flash(0.2 + 0.4 * _time / maxf(creature.sparti_aim_seconds, 0.01), Color(0.8, 0.9, 1.0))
-			if _time >= creature.sparti_aim_seconds:
+			flash(0.2 + 0.4 * _time / maxf(creature.sparti_aim_seconds * Difficulty.telegraph(), 0.01), Color(0.8, 0.9, 1.0))
+			if _time >= creature.sparti_aim_seconds * Difficulty.telegraph():
 				_charge_id += 1
 				_charge_travel = 0.0
 				_charge_hit = false
@@ -88,7 +88,7 @@ func _behave(delta: float) -> void:
 			if _time >= creature.sparti_stuck_seconds and not is_staggered():
 				_start_aim(player)
 		Phase.STOMP:
-			if _time >= creature.sparti_stomp_telegraph:
+			if _time >= creature.sparti_stomp_telegraph * Difficulty.telegraph():
 				SoundBank.play_sound(get_tree(), &"nemico_sconfitto", 0.2)
 				HitFeedback.shake(get_tree(), 0.18)
 				var attack_result: int = attack_player(creature.sparti_stomp_damage, creature.sparti_stomp_range, false)
@@ -99,14 +99,14 @@ func _behave(delta: float) -> void:
 func _start_aim(player: OttaviaProto) -> void:
 	if flat_distance_to(player.global_position) < creature.sparti_stomp_range:
 		_set_phase(Phase.STOMP)
-		CombatEffects.ground_ring(get_tree().current_scene, global_position, creature.sparti_stomp_range, TELEGRAPH_COLOR, creature.sparti_stomp_telegraph)
+		CombatEffects.ground_ring(get_tree().current_scene, global_position, creature.sparti_stomp_range, TELEGRAPH_COLOR, creature.sparti_stomp_telegraph * Difficulty.telegraph())
 		return
 	facing = flat_direction_to(player.global_position)
 	_set_phase(Phase.AIM)
 	var length: float = creature.sparti_charge_max_distance
 	if ice != null:
 		length = ice.distance_to_edge(global_position, facing)
-	CombatEffects.ground_line(get_tree().current_scene, global_position + facing * radius, facing, maxf(1.0, length - radius), radius * 2.0, TELEGRAPH_COLOR, creature.sparti_aim_seconds)
+	CombatEffects.ground_line(get_tree().current_scene, global_position + facing * radius, facing, maxf(1.0, length - radius), radius * 2.0, TELEGRAPH_COLOR, creature.sparti_aim_seconds * Difficulty.telegraph())
 
 
 func _on_reset() -> void:

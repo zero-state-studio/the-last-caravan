@@ -52,10 +52,10 @@ func _behave(delta: float) -> void:
 			elif _phase_time >= tuning.dummy_attack_interval:
 				_set_phase(Phase.WINDUP)
 		Phase.WINDUP:
-			var t: float = _phase_time / maxf(tuning.dummy_windup, 0.01)
+			var t: float = _phase_time / maxf(tuning.dummy_windup * Difficulty.telegraph(), 0.01)
 			sprite.position = _sprite_rest - toward * LEAN_PIXELS * WorldScale.METERS_PER_PIXEL * t
 			flash(0.35 + 0.35 * t, TELEGRAPH_COLOR)
-			if _phase_time >= tuning.dummy_windup:
+			if _phase_time >= tuning.dummy_windup * Difficulty.telegraph():
 				_set_phase(Phase.ACTIVE)
 				_swing(player, toward)
 		Phase.ACTIVE:

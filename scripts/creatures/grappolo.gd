@@ -31,6 +31,11 @@ func _ready() -> void:
 	_sprite_rest = sprite.position
 
 
+## Health of one member, scaled by the difficulty (40).
+func member_health() -> float:
+	return creature.grappolo_member_health * Difficulty.enemy_health()
+
+
 func can_be_targeted() -> bool:
 	return is_alive() and phase != Phase.SPLIT
 
@@ -45,7 +50,7 @@ func damage_multiplier(_hit: CombatHit) -> float:
 
 func _on_hit(_hit: CombatHit) -> void:
 	if health > 0.0:
-		members = maxi(1, ceili(health / creature.grappolo_member_health))
+		members = maxi(1, ceili(health / member_health()))
 		_split()
 
 
@@ -64,8 +69,8 @@ func _behave(delta: float) -> void:
 				_set_phase(Phase.WINDUP)
 		Phase.WINDUP:
 			sprite.position = _sprite_rest + Vector3(randf_range(-1.0, 1.0), 0.0, 0.0) * WOBBLE_PIXELS * WorldScale.METERS_PER_PIXEL
-			flash(0.25 + 0.35 * _time / maxf(creature.grappolo_roll_windup, 0.01), Color(1.0, 0.6, 0.3))
-			if _time >= creature.grappolo_roll_windup:
+			flash(0.25 + 0.35 * _time / maxf(creature.grappolo_roll_windup * Difficulty.telegraph(), 0.01), Color(1.0, 0.6, 0.3))
+			if _time >= creature.grappolo_roll_windup * Difficulty.telegraph():
 				_roll_direction = flat_direction_to(target.global_position)
 				_roll_hit = false
 				_set_phase(Phase.ROLL)
@@ -130,7 +135,7 @@ func _reform(center: Vector3) -> void:
 		bit.queue_free()
 	bits.clear()
 	global_position = Vector3(center.x, spawn_transform.origin.y, center.z)
-	health = members * creature.grappolo_member_health
+	health = members * member_health()
 	sprite.visible = true
 	collision_layer = 1
 	_set_phase(Phase.COOLDOWN)
@@ -152,7 +157,7 @@ func _on_reset() -> void:
 			(item as GrappoloBit).queue_free()
 	bits.clear()
 	members = creature.grappolo_members
-	health = members * creature.grappolo_member_health
+	health = members * member_health()
 	collision_layer = 1
 	_set_phase(Phase.IDLE)
 

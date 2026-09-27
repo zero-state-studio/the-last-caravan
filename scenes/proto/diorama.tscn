@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3]
+[gd_scene load_steps=76 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -51,6 +51,7 @@
 [ext_resource type="PackedScene" path="res://scenes/companions/tosca.tscn" id="55_tosca"]
 [ext_resource type="Script" path="res://scripts/companions/lesson_parry.gd" id="56_lesson"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="57_dialogue"]
+[ext_resource type="Script" path="res://scripts/ui/chapter_screen.gd" id="58_chapter"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_field"]
 size = Vector3(16, 1, 16)
@@ -882,6 +883,9 @@ dummy_path = NodePath("../TrainingDummy")
 
 [node name="DialogueBox" type="CanvasLayer" parent="."]
 script = ExtResource("57_dialogue")
+
+[node name="ChapterScreen" type="CanvasLayer" parent="."]
+script = ExtResource("58_chapter")
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("40_manager")

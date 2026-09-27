@@ -10,6 +10,7 @@ radius = 0.4
 
 [node name="Voltafaccia" type="CharacterBody3D"]
 script = ExtResource("1_script")
+world_side = &"day"
 creature = ExtResource("3_tuning")
 radius = 0.45
 

@@ -8,6 +8,7 @@ extends Node3D
 ##   panel=1               open the tuning panel at start
 ##   options=1             open the options menu at start
 ##   lesson=1              start the lesson of the parry (82) at once
+##   chapter_end=1         end the current chapter at once (34)
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
 ##   autocombat=1          fight the training dummy with a fixed sequence (captures)
@@ -76,6 +77,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument == "chapter_end=1":
+			end_chapter.call_deferred()
 		elif argument == "lesson=1":
 			($LessonParry as LessonParry).start.call_deferred()
 		elif argument == "options=1":
@@ -103,6 +106,7 @@ func _ready() -> void:
 	tuning_panel.save_requested.connect(_save_capture)
 	tuning_panel.combat_save_requested.connect(_save_combat_tuning)
 	tuning_panel.creatures_save_requested.connect(func() -> void: _save_resource(CREATURE_TUNING))
+	tuning_panel.end_chapter_requested.connect(end_chapter)
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		# Render times do not depend on vsync, which macOS may enforce anyway.
@@ -145,6 +149,13 @@ func apply_settings() -> void:
 	zone_palette.strength = settings.palette_strength
 	zone_palette.night_proximity = settings.zone_night_proximity
 	combat_hud.visible = settings.show_combat_hud
+	ottavia.combat.set_chapter(roundi(settings.chapter))
+	var sewn: Array[StringName] = []
+	for patch: String in [settings.patch_slot_1, settings.patch_slot_2, settings.patch_slot_3]:
+		if patch != "" and not StringName(patch) in sewn:
+			sewn.append(StringName(patch))
+	ottavia.combat.patches = sewn
+	ottavia.set_lantern_raised(false)
 	var tosca: Tosca = get_node_or_null(^"Tosca") as Tosca
 	if tosca != null:
 		tosca.present = settings.tosca_present
@@ -258,3 +269,15 @@ func _autocombat(delta: float) -> void:
 		else:
 			ottavia.combat.release(event["release"])
 		_autocombat_next += 1
+
+
+## Ends the current chapter (34): Ottavia moves to the next one and the
+## screen shows what she loses and what she learns.
+func end_chapter() -> void:
+	if roundi(settings.chapter) >= Progression.LAST_CHAPTER:
+		return
+	settings.chapter = roundi(settings.chapter) + 1
+	apply_settings()
+	var screen: ChapterScreen = get_node_or_null(^"ChapterScreen") as ChapterScreen
+	if screen != null:
+		screen.show_chapter(roundi(settings.chapter))

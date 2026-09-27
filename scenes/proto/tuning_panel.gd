@@ -7,6 +7,7 @@ signal settings_changed
 signal save_requested
 signal combat_save_requested
 signal creatures_save_requested
+signal end_chapter_requested
 
 const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_PITCH", "property": "camera_pitch", "min": 30.0, "max": 70.0, "step": 0.5},
@@ -23,6 +24,7 @@ const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_FOG_DENSITY", "property": "fog_density", "min": 0.0, "max": 0.05, "step": 0.001},
 	{"key": "DEV_PALETTE_STRENGTH", "property": "palette_strength", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_ZONE_NIGHT_PROXIMITY", "property": "zone_night_proximity", "min": -1.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_CHAPTER", "property": "chapter", "min": 1.0, "max": 10.0, "step": 1.0},
 ]
 const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_ORTHOGRAPHIC", "property": "camera_orthographic"},
@@ -256,6 +258,16 @@ func _build() -> void:
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_status_label)
 
+	var end_chapter: Button = Button.new()
+	end_chapter.text = "DEV_END_CHAPTER"
+	end_chapter.pressed.connect(func() -> void: end_chapter_requested.emit())
+	box.add_child(end_chapter)
+	var coat: Label = Label.new()
+	coat.text = "DEV_SECTION_COAT"
+	box.add_child(coat)
+	for slot: int in CoatPatches.SLOTS:
+		_add_patch_slot(box, "patch_slot_%d" % (slot + 1))
+
 	if combat_tuning != null:
 		var section: Label = Label.new()
 		section.text = "DEV_SECTION_COMBAT"
@@ -305,6 +317,20 @@ func _add_slider(box: VBoxContainer, definition: Dictionary, target: Object) -> 
 		value_label.text = _format_value(value, slider.step)
 		settings_changed.emit())
 	box.add_child(slider)
+
+
+## One coat slot (104): empty or one of the test patches.
+func _add_patch_slot(box: VBoxContainer, property: String) -> void:
+	var picker: OptionButton = OptionButton.new()
+	var options: Array[StringName] = [CoatPatches.NONE]
+	options.append_array(CoatPatches.ALL)
+	for patch: StringName in options:
+		picker.add_item(CoatPatches.label_key(patch))
+	picker.selected = maxi(0, options.find(StringName(settings.get(property))))
+	picker.item_selected.connect(func(index: int) -> void:
+		settings.set(property, String(options[index]))
+		settings_changed.emit())
+	box.add_child(picker)
 
 
 func _add_toggle(box: VBoxContainer, definition: Dictionary) -> void:

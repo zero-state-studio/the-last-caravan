@@ -10,6 +10,7 @@ radius = 1.2
 
 [node name="FoglioneRadicato" type="CharacterBody3D"]
 script = ExtResource("1_script")
+world_side = &"day"
 creature = ExtResource("3_tuning")
 title_key = &"BOSS_FOGLIONE"
 

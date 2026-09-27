@@ -68,8 +68,8 @@ func _behave(delta: float) -> void:
 			else:
 				move = (flat_direction_to(target.global_position) + _separation()).normalized() * creature.voltafaccia_speed
 		Phase.WINDUP:
-			flash(0.3 + 0.4 * _time / maxf(creature.voltafaccia_windup, 0.01), TELEGRAPH_COLOR)
-			if _time >= creature.voltafaccia_windup:
+			flash(0.3 + 0.4 * _time / maxf(creature.voltafaccia_windup * Difficulty.telegraph(), 0.01), TELEGRAPH_COLOR)
+			if _time >= creature.voltafaccia_windup * Difficulty.telegraph():
 				_set_phase(Phase.ACTIVE)
 				var toward: Vector3 = flat_direction_to(target.global_position)
 				_move_by(toward * creature.voltafaccia_lunge)

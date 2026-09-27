@@ -106,6 +106,18 @@ func _build() -> void:
 	aim.button_pressed = GameOptions.aim_assist
 	aim.toggled.connect(func(pressed: bool) -> void: GameOptions.aim_assist = pressed)
 	box.add_child(aim)
+	var difficulty_row: HBoxContainer = HBoxContainer.new()
+	var difficulty_label: Label = Label.new()
+	difficulty_label.text = "OPTIONS_DIFFICULTY"
+	difficulty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	difficulty_row.add_child(difficulty_label)
+	var difficulty: OptionButton = OptionButton.new()
+	for key: String in ["DIFFICULTY_EASY", "DIFFICULTY_MEDIUM", "DIFFICULTY_HARD"]:
+		difficulty.add_item(key)
+	difficulty.selected = GameOptions.difficulty
+	difficulty.item_selected.connect(func(index: int) -> void: GameOptions.difficulty = index)
+	difficulty_row.add_child(difficulty)
+	box.add_child(difficulty_row)
 
 	box.add_child(HSeparator.new())
 	var controls: Label = Label.new()

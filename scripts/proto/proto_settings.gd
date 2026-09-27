@@ -29,6 +29,12 @@ var zone_night_proximity: float = 0.0
 var show_combat_hud: bool = true
 # Tosca travels with Ottavia in this chapter (20): the Call brings her in.
 var tosca_present: bool = true
+# Reverse progression (34): Ottavia at this chapter of her life, 1-10.
+var chapter: float = 1.0
+# Coat patches sewn in the three slots (104), "" for empty.
+var patch_slot_1: String = ""
+var patch_slot_2: String = ""
+var patch_slot_3: String = ""
 # Light (48)
 var sun_elevation: float = 14.0
 var sun_azimuth: float = 300.0
@@ -70,6 +76,8 @@ func apply_dict(data: Dictionary) -> void:
 			set(key, Vector3(float(parts[0]), float(parts[1]), float(parts[2])))
 		elif get(key) is bool:
 			set(key, bool(value))
+		elif get(key) is String:
+			set(key, str(value))
 		else:
 			set(key, float(value))
 

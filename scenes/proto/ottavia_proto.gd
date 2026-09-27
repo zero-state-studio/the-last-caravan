@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	if controls_enabled and Input.is_action_just_pressed(&"interact"):
 		interact()
 	var direction: Vector3 = Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, deg_to_rad(camera_yaw_degrees))
-	var speed: float = combat.tuning.move_speed * combat.move_speed_multiplier()
+	var speed: float = combat.move_speed() * combat.move_speed_multiplier()
 	var forced: Vector3 = combat.forced_velocity()
 	velocity.x = direction.x * speed + forced.x
 	velocity.z = direction.z * speed + forced.z
@@ -244,7 +244,8 @@ func set_lantern_open(open: bool) -> void:
 ## Raised lantern (33): lights farther while the button is held.
 func set_lantern_raised(raised: bool) -> void:
 	var tuning: CombatTuning = combat.tuning
-	lantern_light.omni_range = _lantern_base_range * (tuning.lantern_raised_range_multiplier if raised else 1.0)
+	var patch: float = CoatPatches.LANTERN_RANGE if combat.has_patch(&"lantern") else 1.0
+	lantern_light.omni_range = _lantern_base_range * patch * (tuning.lantern_raised_range_multiplier if raised else 1.0)
 	lantern_light.light_energy = _lantern_base_energy * (1.3 if raised else 1.0)
 
 
