@@ -1,6 +1,6 @@
 # Fase 1: prototipo visivo
 
-Stato al 27 settembre 2026. Serviva a scegliere, guardando, camera (50), misure degli sprite (49) e palette di base (51). Non è grafica definitiva. **Le scelte dell'autore sono in fondo e nella bibbia (48, 49, 50, 51, 54).**
+Stato al 27 settembre 2026. Serviva a scegliere, guardando, camera (50), misure degli sprite (49) e palette di base (51). Non è grafica definitiva. **Le scelte dell'autore sono in fondo e nella bibbia (48, 49, 50, 51, 54, 99, 100).**
 
 ## Come si prova
 
@@ -16,7 +16,7 @@ Stato al 27 settembre 2026. Serviva a scegliere, guardando, camera (50), misure 
 - Ottavia: foglio v1 (`assets/sprites/ottavia/ottavia_v1_sheet.png`), celle 64×64, 8 direzioni vere, attesa e camminata da 8 fotogrammi (160 e 100 ms). Billboard pieno, con profondità di una sagoma verticale (non entra nei muri) e ombra proiettata da una copia verticale girata verso il sole. Le prime prove erano con il foglio di prova 40×56 a 4 direzioni, ora archiviato in `source-assets/archivio/ottavia_test_sheet.png`.
 - Modelli Meshy (54): cassa, roccia, albero storto; 350-669 triangoli, texture ridotte a 24 colori con `tools/meshy_pixelize.py --texels-per-meter 30` (124, 120 e 276 px, ricavati dalla superficie). Non hanno collisioni.
 - Primo piano (53): 3 piante PixelLab su quad rivolti alla camera fissa. Quando stanno tra la camera e Ottavia si aprono attorno a lei con un retino (dithering 4×4) nello spazio della texture: niente trasparenze da ordinare, la grana dei pixel resta.
-- Luce (48): sole a 14° di altezza da ovest-sudovest (il Giorno è a sinistra), colore #FFB873, ombre lunghe, luce ambiente fredda (tono lilla-blu) per le ombre, bagliore, foschia volumetrica leggera, prospettiva aerea, SSAO.
+- Luce (48, 100): sole a 14° di altezza da ovest-sudovest (il Giorno è a sinistra), colore #FFB873, ombre lunghe, luce ambiente fredda (tono lilla-blu) per le ombre, bagliore, foschia volumetrica leggera, prospettiva aerea, SSAO.
 - Palette (51): `ZonePalette` (`scripts/world/zone_palette.gd`) dà alla zona un valore di vicinanza alla Notte o al Giorno (qui 0, centro del Crepuscolo) e un gradiente lungo l'asse ovest-est del mondo (un passo pieno a 15 m dal centro). Virano terreno, piante e modelli Meshy; Ottavia no, ma è illuminata dalla scena (luce e ombre calcolate in un solo punto, al petto, spostato verso il sole). Luce ambientale e cielo tendono al blu-viola, e da lì viene il freddo delle ombre.
 
 ## Le combinazioni consegnate
@@ -73,9 +73,9 @@ Configurazione scelta (camera a 50°, Ottavia v1, profondità verticale e ombra 
 
 1. Camera a 50°, distanza 20 m, campo visivo 35°, per ora (50).
 2. Prospettica.
-3. Billboard pieno; controllato che non entri nei muri e che l'ombra sia di una sagoma verticale.
+3. Billboard pieno (99); controllato che non entri nei muri e che l'ombra sia di una sagoma verticale.
 4. Tela 64×64 di Ottavia v1; 30 pixel per metro per tutte le texture del mondo (49, 54).
 5. Palette calda con accenti freddi legati al mondo: verso la Notte blu-viola, verso il Giorno bianco e ocra (51).
-6. Il Giorno è fisso a ovest (sinistra dello schermo), la Notte a destra; sole da sinistra e un po' dal lato della camera. Eccezioni: 41, 43, interni dei mezzi (48).
+6. Il Giorno è fisso a ovest (sinistra dello schermo), la Notte a destra; sole da sinistra e un po' dal lato della camera. Eccezioni: 41, 43, interni dei mezzi (100).
 
 Seconda risposta (27 settembre 2026): intensità del viraggio 1; freddo dalla luce (ombre e cielo blu-viola); viraggio per zona più gradiente ovest-est nel mondo; virano i modelli 3D, non personaggi, creature e interfaccia; fase 1 approvata.

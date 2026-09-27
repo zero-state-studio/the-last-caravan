@@ -18,17 +18,27 @@ Proposta, regola per tutti i personaggi: il sole basso scolorisce il lato dei ve
 
 Tutto il gioco è illuminato da una luce radente e calda, e la Notte finale è l'unica zona buia. È l'identità visiva del gioco, riconoscibile da un solo screenshot.
 
-**Direzione.** Il Giorno sta sempre a ovest, cioè a sinistra dello schermo, e la Notte a destra. Il sole arriva da sinistra e un po' dal lato della camera. Uniche eccezioni: la Linea d'Ombra (41), l'Ombra della Montagna (43) e gli interni dei mezzi.
+Orientamento: vedi 100.
+
+## 100. Il lato del Giorno  [Definito]
+
+Il Giorno è fisso a ovest, cioè a sinistra dello schermo, e la Notte a destra. Il sole arriva da sinistra e un po' dal lato della camera: ombre lunghe verso destra, visi illuminati. Il viaggio tra Giorno e Notte corre in orizzontale, dove lo schermo è più largo. Eccezioni solo dove la luce che si muove è la meccanica stessa: la Linea d'Ombra (41), l'Ombra della Montagna (43) e gli interni dei mezzi.
 
 ## 49. Misure degli sprite  [Definito]
 
 Tela di **64×64 pixel**, quella di Ottavia v1. Ottavia è alta **48 pixel** dalla testa ai piedi (bastone escluso), pari a circa 1,6 metri: la densità del gioco è quindi **30 pixel per metro** (un pixel vale 3,3 cm). La stessa densità vale per tutte le texture del mondo (vedi 54).
 
-Gli sprite sono **billboard pieni**: guardano sempre la camera, così i pixel restano quadrati a qualunque angolo. Per la profondità contano però come una sagoma verticale in piedi sul punto d'appoggio, perché la cima dello sprite inclinato non entri nei muri alle sue spalle; l'ombra la proietta una sagoma verticale rivolta al sole, non lo sprite inclinato.
+Billboard: vedi 99.
 
 Il movimento libero richiede sprite in 8 direzioni. Ottavia e i personaggi asimmetrici si disegnano in tutte e 8, una per una, senza specchiarli; le creature simmetriche possono usarne 5 più 3 specchiate (36).
 
 **Resta da definire:** Fotogrammi per animazione. Ottavia v1 ne usa 8 per l'attesa e 8 per la camminata.
+
+## 99. Billboard degli sprite  [Definito]
+
+Billboard pieno: gli sprite guardano sempre la camera e i pixel restano quadrati a ogni angolo.
+
+**Resta da definire:** Che gli sprite inclinati non entrino nei muri e che le ombre non siano quelle di sagome piatte inclinate (passo 5 della fase 2).
 
 ## 50. Camera  [Definito]
 
@@ -41,7 +51,7 @@ Camera prospettica che guarda la scena dall'alto e segue il personaggio. L'orien
 Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre e colori virano al blu-viola, verso il Giorno al bianco e all'ocra.
 
 - Il freddo viene soprattutto dalla luce: il colore delle ombre e la luce ambientale del cielo tendono al blu-viola.
-- Il viraggio dipende solo dalla posizione nel mondo, mai dalla camera. Ogni zona ha un valore di vicinanza alla Notte o al Giorno (vedi 16), e dentro la zona il viraggio cresce lungo l'asse ovest-est del mondo, con il Giorno a ovest (48). Nessun oggetto cambia colore quando la camera si muove.
+- Il viraggio dipende solo dalla posizione nel mondo, mai dalla camera. Ogni zona ha un valore di vicinanza alla Notte o al Giorno (vedi 16), e dentro la zona il viraggio cresce lungo l'asse ovest-est del mondo, con il Giorno a ovest (100). Nessun oggetto cambia colore quando la camera si muove.
 - Virano l'ambiente e i suoi modelli 3D. Personaggi e creature mantengono i colori disegnati, per riconoscibilità e leggibilità in combattimento, ma ricevono la luce della scena, ombre fredde comprese. L'interfaccia non vira mai.
 
 **Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione. L'intensità del viraggio (per ora 1 nel prototipo), da rivedere nella fase 2 con le texture vere.
@@ -59,6 +69,10 @@ Quando la vegetazione vicina alla camera copre il personaggio, come nell'immagin
 I modelli di Meshy vanno semplificati (low-poly) e ridipinti con texture in pixel art a bassa risoluzione, senza sfumature (filtro nearest), come le foglie nell'immagine di riferimento. Tutte le texture del mondo, cioè terreno, rocce, piante e modelli, hanno la stessa densità di pixel dei personaggi: 30 pixel per metro (49). La risoluzione di ogni texture si ricava da questa densità e dalla superficie del modello.
 
 **Resta da definire:** Limite di poligoni.
+
+## 101. Kit di vegetazione 3D  [In discussione]
+
+Vegetazione in vera geometria 3D con texture pixel art, fittissima e su più strati. Kit di 10-15 elementi (alberi, cespugli, felci, ciuffi d'erba, rocce), fatti con Meshy semplificato e con piani incrociati per l'erba, tutti alla stessa densità di pixel e distribuiti con MultiMesh. Le piante crescono piegate verso il Giorno, cioè verso ovest. Si costruisce al passo 4 della fase 2.
 
 ## 55. Interfaccia  [Da definire]
 

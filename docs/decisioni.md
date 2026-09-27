@@ -63,3 +63,6 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Viraggio della palette calcolato sulla posizione nel mondo: valore di vicinanza alla Notte o al Giorno per zona (16) più gradiente lungo l'asse ovest-est dentro la zona; niente cambia colore con la camera.
 - Virano ambiente e modelli 3D; personaggi e creature tengono i colori disegnati ma ricevono la luce della scena, ombre fredde comprese; l'interfaccia non vira mai.
 - Fase 1 approvata; fase corrente: 2.
+- Nuovi elementi della bibbia, con i numeri della bibbia di riferimento: 99 Billboard degli sprite [Definito], 100 Il lato del Giorno [Definito], 101 Kit di vegetazione 3D [In discussione]. In 48 e 49 restano solo i rimandi.
+- Ottavia (19): le diagonali sono fatte (v1); restano da definire le animazioni di combattimento (fase 3) e le durate definitive dei fotogrammi.
+- Spritesheet di Ottavia v1: tela 64×64 definitiva, durate provvisorie fino alla fase 3.

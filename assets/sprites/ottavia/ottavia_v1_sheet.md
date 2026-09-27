@@ -41,7 +41,7 @@ Direzioni: `s` verso la camera, `e` verso destra dello schermo, `n` di spalle, `
 
 ## Note provvisorie
 
-- Tela 64×64 e durate (160 ms attesa, 100 ms camminata) sono valori di prova: le misure degli sprite e i fotogrammi per animazione sono ancora da definire (49).
+- La tela 64×64 è definitiva (49): Ottavia alta 48 px, 30 pixel per metro. Le durate (160 ms attesa, 100 ms camminata) restano provvisorie fino alla fase 3.
 - Palette: 162 colori, tutti presi dalle rotazioni approvate. Contorno esterno uniformato a #1E1A33.
 
 ## Rigenerare

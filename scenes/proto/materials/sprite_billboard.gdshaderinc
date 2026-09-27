@@ -1,4 +1,4 @@
-// Character sprite billboard (49). Included by sprite_billboard_*.gdshader.
+// Character sprite billboard (99), sizes in 49. Included by sprite_billboard_*.gdshader.
 // Draws the quad facing the camera (full billboard, square pixels at any
 // camera angle) but writes the depth of an upright quad standing on the
 // feet, so the top of the leaning sprite never sinks into walls behind it.

@@ -16,7 +16,7 @@ Sessant'anni, Serrafila da quaranta. Ancora molto in forma, grintosa, ma dall'an
 
 Completano la figura un piccolo specchio rotondo sulla spalla sinistra, preso dagli Specchianti, per vedere dietro mentre cammina in avanti; un cappotto color ardesia rattoppato con stoffe diverse; stivali spaiati, uno dei quali da Brinaiolo, con i ramponi.
 
-**Resta da definire:** Le quattro direzioni diagonali. Come le altre, vanno disegnate una per una e non specchiate: bastone, specchio e rotolo di corda cambierebbero lato. Proposta: in combattimento la lanterna dondola sul bastone a ogni colpo, e le ombre si muovono con lei (vedi Mangiaombre, B15).
+**Resta da definire:** Le animazioni di combattimento (fase 3) e le durate definitive dei fotogrammi. Proposta: in combattimento la lanterna dondola sul bastone a ogni colpo, e le ombre si muovono con lei (vedi Mangiaombre, B15).
 
 *Sprite di prova: `source-assets/test/ottavia_test_sheet.png`.*
 

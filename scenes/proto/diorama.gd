@@ -82,7 +82,7 @@ func apply_settings() -> void:
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
 	# The light points along its -Z: at azimuth A the sun sits toward
-	# (sin A, 0, cos A); 300 degrees puts it west-south-west, on the Day side.
+	# (sin A, 0, cos A); 300 degrees puts it west-south-west, on the Day side (100).
 	sun.rotation_degrees = Vector3(-settings.sun_elevation, settings.sun_azimuth, 0.0)
 	sun.light_color = settings.sun_color
 	sun.light_energy = settings.sun_energy
