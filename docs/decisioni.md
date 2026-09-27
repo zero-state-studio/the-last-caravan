@@ -1,0 +1,49 @@
+# Registro delle decisioni
+
+Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. Aggiungi righe solo dopo l'approvazione dell'autore.
+
+## 26 settembre 2026
+
+- Genere: action RPG con combattimento in tempo reale, non a turni.
+- Stile: come *The Adventures of Elliot*.
+- Durata: da 2 a 4 ore.
+- Concept scelto: *L'Ultima Carovana*, con Ottavia come protagonista.
+- Il gioco è il prologo di un secondo capitolo con un protagonista più giovane.
+- Scartati perché troppo convenzionali: pietre magiche che reggono il mondo, città che si rivela malvagia, cassa misteriosa, giovane guardia come protagonista.
+- Titolo originale in inglese: *The Last Caravan*. In italiano: *L'Ultima Carovana*.
+- Motore: Godot 4 con GDScript tipizzato.
+- Piattaforme: PC su Steam, con l'obiettivo della verifica per Steam Deck.
+- Lingue: italiano e inglese al lancio.
+- La carovana è un comune in movimento, con carri-campo, camion-condominio e un Sindaco che governa quasi come un re.
+- La carovana procede a tappe, regolate da una meridiana.
+- I compagni di Ottavia sono quattro: tre adulti e un ragazzo che ha appena iniziato a imparare da lei.
+- Il protagonista della saga è quel ragazzo. Nel secondo capitolo diventa discepolo di una figura misteriosa, la cui identità resta un segreto.
+- Traccia della figura misteriosa: la lanterna che Anselmo non ha mai costruito.
+- Enea sta sempre con Ottavia; le missioni in cui lei gli dice cosa fare fanno da tutorial.
+- Oreste parla, con dialoghi da svitato per il troppo sole.
+- Apertura: Ottavia si sveglia con l'ordine di marcia, narrazione del mondo, poi aiuta la gente a partire.
+- Nella Notte non c'è niente per gli umani: solo freddo, buio, ombre di creature e rumori.
+- Almeno dieci dungeon.
+- Struttura della storia approvata: le dieci Tregue, la lanterna come avanzamento, il finale.
+- La durata si decide dungeon per dungeon, da 10 a 40 minuti, invece che sul totale.
+- Recupero degli attardati: prima senza limiti, poi a tempo, infine appena dentro la Notte.
+- Difficoltà: facile, medio, difficile, con percorsi più lunghi e rami bonus a medio e difficile.
+- Bestiario: almeno 30 creature del crepuscolo e 30 del Giorno, più forti man mano che ci si addentra.
+- Salvataggi e accessibilità approvati.
+- Ogni creatura può comparire in più dungeon, tranne i colossi.
+- Bestiario, creature e boss dei dieci dungeon approvati.
+- Ultimo gesto del gioco: spegnere la lanterna. Nel vicolo cieco è l'unica azione possibile, senza timer.
+- Pilastri approvati; “nessun cattivo” significa nessun supercattivo, le bestie restano nemici.
+- Lessico, fasce intermedie, carovana come base, musica approvati.
+- Ottavia ha sessant'anni: grintosa, buona, dolce con Enea e rigida con gli altri; da bambina ha visto i genitori lasciati indietro.
+- Progressione: Ottavia perde forza e fiato, ma con nuove abilità e colpi più potenti diventa nel complesso più forte.
+- La Tregua è un timer ovunque, per esplorare i dintorni della carovana; al dungeon si passa con un'azione dedicata.
+- Doppiaggio completo previsto fin dall'inizio, anche se arriverà dopo.
+- Il Sindaco è Arold, il Capofila, salito al potere con la Lunga Rincorsa.
+- Scartati i Nascosti, perché allungano il gioco senza servire la storia principale.
+- Salvati approvati.
+- I motori dei mezzi si chiamano Generatori.
+- Aspetto di Ottavia approvato; la schiena molto più sbiadita del davanti è una scelta di stile.
+- Ottavia va disegnata in tutte le direzioni, una per una: non si può specchiare, ma deve potersi girare ovunque.
+- Finale: nella Notte arrivano nemici senza fine; Ottavia si ferma in un vicolo cieco, vede le stelle e aspetta la morte; lampi di luce la portano via, senza che se ne veda il salvatore.
+- Stile precisato sull'immagine di riferimento di *Elliot*: mondo 3D esplorabile in tutte le direzioni e su più livelli di altezza, con texture in pixel art e tre piani di profondità. Sostituisce la formula “pixel art 2.5D”.

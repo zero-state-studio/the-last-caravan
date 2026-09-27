@@ -1,0 +1,16 @@
+Pixel art game sprite, single character facing south (front view, straight-on toward the viewer), low top-down 3/4 RPG view, full body, transparent background. Character is about 44 pixels tall, feet near the bottom of the 64x64 canvas; the staff reaches near the top edge. 60-year-old woman, lean, broad shoulders, long arms, a worker, not a heroine. Iron-grey hair tied in a low knot with a piece of rope, crooked nose, pale squinting eyes. Knee-length slate-blue coat patched with mismatched fabrics; the BACK of the coat is strongly sun-faded to pale beige, the front stays darker. Hemp rope worn across the chest with many small knots, coiled at her left hip. In her RIGHT hand a hooked wooden staff taller than her, with a small iron lantern hanging from the hook at the top. Small round mirror on a short stalk on her LEFT shoulder. Dark teal scarf. Mismatched boots, the left one with ice crampons. Calm, upright posture. Palette: coat #3B4163, faded parts #B8AD98, rope #C9A96E, scarf #2E5B5E, hair #8A8C96, lantern light #FFC46B, outline #1E1A33. Since she faces the viewer, her right hand and the staff appear on the left side of the image, the mirror and the rope coil on the right side of the image.
+
+style_image: source-assets/test/ottavia_test_sheet.png, south frame (0,0,40,56). usage: "Our own earlier test sprite of the same character (south view). Match its pixel-art style: dark outline, simple shading, readable silhouette. Improve detail, keep identity."
+v1=seed1 job 68391843; v2=seed3 job 28134d77; v3=seed4 job a92f8ba5; v4=seed2 job 07e95af6
+
+--- inpaint gancio (ottavia_south_v3_hook_a.png) ---
+source: ottavia_south_v3.png (source_image_id 6879a1b5-da82-5233-a7a7-10539200e349)
+mask: mask_v3_hook.png (white x12-23 y0-16, shaft x15-17 y10-16 preserved)
+seed 1, output_method "Modify current layer", job 0f832f12
+prompt: Top of a tall wooden walking staff held by an old woman: the staff ends in a curved black iron hook (shepherds crook shape) that bends over to the right, and a small iron lantern with warm yellow light #FFC46B hangs from the tip of the hook on a short chain. Dark outline #1E1A33, same pixel-art style, flat simple shading. Transparent background around it.
+
+--- inpaint gancio, tentativo b (ottavia_south_v3_hook_b.png), 2026-09-27 ---
+source: ottavia_south_v3.png (source_image_id 6879a1b5-da82-5233-a7a7-10539200e349)
+mask: mask_v3_hook_b.png (white x13-23 y0-6; wood x15-17 y5-6 and x16 y4 preserved; lantern ring y7 preserved)
+seed 7, output_method "Modify current layer", job 54ac6a39
+prompt: Tiny pixel-art detail at the top of a wooden staff: the wooden shaft continues up one or two pixels, then a short grey iron hook, 1 pixel thick with dark outline #1E1A33, curves over to the RIGHT (toward the character standing on the right) and ends pointing down directly above the lantern ring below, so the lantern hangs exactly from the tip of the hook. Clean solid lines, no stray pixels, no chain loops, nothing else. Transparent background everywhere else.
