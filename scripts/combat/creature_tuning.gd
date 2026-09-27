@@ -33,8 +33,8 @@ extends Resource
 @export var raspagelo_damage: float = 8.0
 @export var raspagelo_burst_radius: float = 1.1
 ## Open right after bursting out (counter-hit window).
-@export var raspagelo_exposed: float = 0.8
-@export var raspagelo_surfaced: float = 0.8
+@export var raspagelo_exposed: float = 1.2
+@export var raspagelo_surfaced: float = 1.2
 @export var raspagelo_underground_min: float = 1.2
 ## Frontal strikes on the head plate while not open.
 @export var raspagelo_armor_multiplier: float = 0.5

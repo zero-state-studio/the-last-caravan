@@ -10,6 +10,8 @@ signal defeated
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
 const FLASH_DECAY_PER_SECOND: float = 8.0
 const MOVE_SETTLE_SECONDS: float = 0.15
+## Warm pulse while the creature is open: a strike now is a counter-hit (33).
+const OPEN_COLOR: Color = Color(1.0, 0.9, 0.6)
 
 @export var max_health: float = 50.0
 ## Body radius in meters, added to the reach of Ottavia's actions.
@@ -127,6 +129,8 @@ func flash(amount: float, color: Color) -> void:
 func _physics_process(delta: float) -> void:
 	_stagger_left = maxf(0.0, _stagger_left - delta)
 	_flash = maxf(0.0, _flash - FLASH_DECAY_PER_SECOND * delta)
+	if is_alive() and is_exposed() and _flash < 0.2:
+		flash(0.3 + 0.15 * sin(Time.get_ticks_msec() * 0.015), OPEN_COLOR)
 	_material.set_shader_parameter(&"flash", _flash)
 	_material.set_shader_parameter(&"flash_color", _flash_color)
 	if _move_left > 0.0:

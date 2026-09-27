@@ -85,6 +85,9 @@ func _behave(delta: float) -> void:
 				_set_phase(Phase.BURST)
 				attack_player(creature.raspagelo_damage, creature.raspagelo_burst_radius, false)
 				flash(0.6, Color(0.85, 0.9, 1.0))
+				# A burst of earth that is hard to miss, even in tall grass.
+				CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 0.4, MOUND_COLOR.lightened(0.4), 30.0)
+				CombatEffects.ground_ring(get_tree().current_scene, global_position, 0.6, Color(0.9, 0.75, 0.55, 0.9), 0.4)
 		Phase.BURST:
 			if _time >= 0.1:
 				_set_phase(Phase.SURFACED)
