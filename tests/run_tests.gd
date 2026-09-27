@@ -3,7 +3,7 @@ extends SceneTree
 ## Usage: godot --headless --path . --script res://tests/run_tests.gd
 ## Exits with code 0 when every check passes, 1 otherwise.
 
-const MOVE_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down"]
+const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel"]
 const LOAD_ROOTS: Array[String] = ["res://scenes", "res://scripts", "res://tests"]
 const TEST_KEY: StringName = &"UI_TEST_GREETING"
 const EXPECTED_TRANSLATIONS: Dictionary = {
@@ -19,6 +19,8 @@ func _initialize() -> void:
 	_test_project_settings()
 	_test_input_map()
 	_test_translations()
+	_test_facing()
+	_test_proto_settings()
 	_test_load_all_resources()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
@@ -40,7 +42,7 @@ func _test_project_settings() -> void:
 
 
 func _test_input_map() -> void:
-	for action: StringName in MOVE_ACTIONS:
+	for action: StringName in GAME_ACTIONS:
 		_check(InputMap.has_action(action), "input action %s exists" % action)
 		if not InputMap.has_action(action):
 			continue
@@ -62,6 +64,38 @@ func _test_translations() -> void:
 		var text: String = TranslationServer.translate(TEST_KEY)
 		_check(text == EXPECTED_TRANSLATIONS[locale], "%s translation of %s (got '%s')" % [locale, TEST_KEY, text])
 	TranslationServer.set_locale(previous_locale)
+
+
+func _test_facing() -> void:
+	var south: Facing.Cardinal = Facing.Cardinal.SOUTH
+	var north: Facing.Cardinal = Facing.Cardinal.NORTH
+	var east: Facing.Cardinal = Facing.Cardinal.EAST
+	var west: Facing.Cardinal = Facing.Cardinal.WEST
+	_check(Facing.nearest_cardinal(Vector2.ZERO, north) == north, "facing: no input keeps the view")
+	_check(Facing.nearest_cardinal(Vector2(0, 1), north) == south, "facing: down is south")
+	_check(Facing.nearest_cardinal(Vector2(0, -1), south) == north, "facing: up is north")
+	_check(Facing.nearest_cardinal(Vector2(1, 0), south) == east, "facing: right is east")
+	_check(Facing.nearest_cardinal(Vector2(-1, 0), south) == west, "facing: left is west")
+	_check(Facing.nearest_cardinal(Vector2(0.9, 0.3), north) == east, "facing: mostly right is east")
+	_check(Facing.nearest_cardinal(Vector2(0.3, -0.9), east) == north, "facing: mostly up is north")
+	var diagonal: Vector2 = Vector2(1, 1).normalized()
+	_check(Facing.nearest_cardinal(diagonal, south) == south, "facing: diagonal keeps a matching view")
+	_check(Facing.nearest_cardinal(diagonal, east) == east, "facing: diagonal keeps the other matching view")
+	_check(Facing.nearest_cardinal(diagonal, north) == east, "facing: diagonal from a non-matching view picks east/west")
+
+
+func _test_proto_settings() -> void:
+	var original: ProtoSettings = ProtoSettings.new()
+	original.camera_pitch = 62.5
+	original.camera_orthographic = true
+	original.sun_color = Color(0.25, 0.5, 0.75)
+	original.player_position = Vector3(1, 2, 3)
+	var copy: ProtoSettings = ProtoSettings.new()
+	copy.apply_dict(JSON.parse_string(JSON.stringify(original.to_dict())))
+	_check(is_equal_approx(copy.camera_pitch, 62.5), "settings: float survives JSON")
+	_check(copy.camera_orthographic, "settings: bool survives JSON")
+	_check(copy.sun_color.is_equal_approx(Color(0.25, 0.5, 0.75)), "settings: color survives JSON")
+	_check(copy.player_position.is_equal_approx(Vector3(1, 2, 3)), "settings: vector survives JSON")
 
 
 func _test_load_all_resources() -> void:

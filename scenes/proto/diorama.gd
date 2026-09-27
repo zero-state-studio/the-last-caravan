@@ -5,9 +5,11 @@ extends Node3D
 ## Command-line user arguments (after "--"):
 ##   settings=<path.json>  start from these settings instead of the saved ones
 ##   perf=<seconds>        measure frame times with vsync off, print, quit
+##   panel=1               open the tuning panel at start
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
+const CAPTURE_DIR: String = "res://docs/screenshots"
 
 @onready var ottavia: OttaviaProto = $Ottavia
 @onready var camera_rig: FollowCameraRig = $CameraRig
@@ -15,6 +17,7 @@ const PERF_WARMUP_SECONDS: float = 2.0
 @onready var world_environment: WorldEnvironment = $WorldEnvironment
 
 var settings: ProtoSettings = ProtoSettings.new()
+var tuning_panel: TuningPanel
 
 var _perf_seconds: float = 0.0
 var _perf_elapsed: float = 0.0
@@ -23,11 +26,14 @@ var _perf_frame_times: PackedFloat32Array = []
 
 func _ready() -> void:
 	var settings_path: String = USER_SETTINGS_PATH
+	var open_panel: bool = false
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("settings="):
 			settings_path = argument.trim_prefix("settings=")
 		elif argument.begins_with("perf="):
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
+		elif argument == "panel=1":
+			open_panel = true
 	var error: Error = settings.load_json(settings_path)
 	if error != OK and error != ERR_FILE_NOT_FOUND:
 		push_warning("Cannot read settings %s (error %d)" % [settings_path, error])
@@ -35,6 +41,11 @@ func _ready() -> void:
 	camera_rig.target = ottavia
 	apply_settings()
 	camera_rig.snap_to_target()
+	tuning_panel = TuningPanel.new(settings)
+	add_child(tuning_panel)
+	tuning_panel.set_panel_visible(open_panel)
+	tuning_panel.settings_changed.connect(apply_settings)
+	tuning_panel.save_requested.connect(_save_capture)
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
@@ -67,6 +78,24 @@ func apply_settings() -> void:
 func save_user_settings() -> void:
 	settings.player_position = ottavia.global_position
 	settings.save_json(USER_SETTINGS_PATH)
+
+
+## Saves the current settings and a screenshot without the panel, both in
+## docs/screenshots/ with the same timestamped name.
+func _save_capture() -> void:
+	save_user_settings()
+	var was_visible: bool = tuning_panel.is_panel_visible()
+	tuning_panel.set_panel_visible(false)
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	var image: Image = get_viewport().get_texture().get_image()
+	tuning_panel.set_panel_visible(was_visible)
+	var directory: String = ProjectSettings.globalize_path(CAPTURE_DIR)
+	DirAccess.make_dir_recursive_absolute(directory)
+	var base_name: String = "proto-" + Time.get_datetime_string_from_system().replace(":", "").replace("T", "-")
+	image.save_png(directory.path_join(base_name + ".png"))
+	settings.save_json(directory.path_join(base_name + ".json"))
+	tuning_panel.show_saved(base_name)
 
 
 func _measure_performance(delta: float) -> void:

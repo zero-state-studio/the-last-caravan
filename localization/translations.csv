@@ -1,2 +1,22 @@
 keys,en,it
 UI_TEST_GREETING,The caravan is ready to leave.,La carovana è pronta a partire.
+DEV_PANEL_TITLE,Tuning panel (F1),Pannello di regolazione (F1)
+DEV_CAMERA_PITCH,Camera angle (degrees),Angolo della camera (gradi)
+DEV_CAMERA_DISTANCE,Camera distance (m),Distanza della camera (m)
+DEV_CAMERA_FOV,Field of view (degrees),Campo visivo (gradi)
+DEV_CAMERA_ORTHOGRAPHIC,Orthographic camera,Camera ortografica
+DEV_DOF_NEAR,Near blur (m before focus),Sfocatura vicina (m prima del fuoco)
+DEV_DOF_FAR,Far blur (m after focus),Sfocatura lontana (m dopo il fuoco)
+DEV_DOF_AMOUNT,Blur strength,Intensità della sfocatura
+DEV_SPRITE_PIXEL_SIZE,Sprite pixel size (m),Dimensione dei pixel degli sprite (m)
+DEV_SPRITE_BILLBOARD_FIXED_Y,Billboard with fixed vertical axis,Billboard con asse verticale fisso
+DEV_SPRITE_SHADED,Sprite lit by the sun,Sprite illuminato dal sole
+DEV_WORLD_TEXELS,World pixels per meter,Pixel per metro del mondo
+DEV_SUN_ELEVATION,Sun height (degrees),Altezza del sole (gradi)
+DEV_SUN_AZIMUTH,Sun direction (degrees),Direzione del sole (gradi)
+DEV_SUN_ENERGY,Sun strength,Intensità del sole
+DEV_SUN_COLOR,Sun color,Colore del sole
+DEV_FOG_DENSITY,Fog density,Densità della foschia
+DEV_SAVE,Save settings and screenshot,Salva impostazioni e screenshot
+DEV_SAVED,Saved: {file},Salvato: {file}
+DEV_FPS,{fps} FPS,{fps} FPS

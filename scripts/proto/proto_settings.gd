@@ -36,7 +36,7 @@ func to_dict() -> Dictionary:
 		var value: Variant = get(key)
 		if value is Color:
 			var color: Color = value
-			result[key] = color.to_html(false)
+			result[key] = [color.r, color.g, color.b]
 		elif value is Vector3:
 			var vector: Vector3 = value
 			result[key] = [vector.x, vector.y, vector.z]
@@ -51,7 +51,8 @@ func apply_dict(data: Dictionary) -> void:
 			continue
 		var value: Variant = data[key]
 		if key in _COLOR_KEYS:
-			set(key, Color.html(str(value)))
+			var channels: Array = value
+			set(key, Color(float(channels[0]), float(channels[1]), float(channels[2])))
 		elif key in _VECTOR_KEYS:
 			var parts: Array = value
 			set(key, Vector3(float(parts[0]), float(parts[1]), float(parts[2])))
