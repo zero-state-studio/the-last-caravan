@@ -66,3 +66,4 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Nuovi elementi della bibbia, con i numeri della bibbia di riferimento: 99 Billboard degli sprite [Definito], 100 Il lato del Giorno [Definito], 101 Kit di vegetazione 3D [In discussione]. In 48 e 49 restano solo i rimandi.
 - Ottavia (19): le diagonali sono fatte (v1); restano da definire le animazioni di combattimento (fase 3) e le durate definitive dei fotogrammi.
 - Spritesheet di Ottavia v1: tela 64×64 definitiva, durate provvisorie fino alla fase 3.
+- Immagini di riferimento (52), passo 2 della fase 2: scelte 12 texture (01, 05, 11, 12, 18, 19, 22, 23, 24, 25, 26, 27), in `source-assets/riferimenti/2026-09-27-texture/`. Le vedute V1-V4 (GPT Image) sono solo riferimento visivo, escluse dall'addestramento. Il modello personalizzato si addestra solo sulle texture approvate.
