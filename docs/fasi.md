@@ -1,6 +1,6 @@
 # Fasi di sviluppo
 
-**Fase corrente: 0**
+**Fase corrente: 1**
 
 Ogni fase finisce con un resoconto e con l'approvazione dell'autore. Non si passa alla fase successiva senza un ok esplicito. Quando una fase è approvata, aggiorna la riga "Fase corrente".
 
