@@ -18,7 +18,10 @@ const CELL_PIXELS: float = 64.0
 const UNSHADED_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_unshaded.gdshader")
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
 
+signal defeated
+
 @export var move_speed: float = 3.0
+@export var max_health: float = 100.0
 @export var gravity: float = 20.0
 ## Yaw of the camera, so "up" on the stick always means "away from the camera".
 @export var camera_yaw_degrees: float = 0.0
@@ -40,12 +43,16 @@ var _facing: Facing.Direction = Facing.Direction.SOUTH
 var _frame_timer: float = 0.0
 var _frame: int = 0
 var _moving: bool = false
+## False during room transitions and cutscenes: input is ignored.
+var controls_enabled: bool = true
+var health: float = 0.0
 var _lantern_points: PackedVector2Array = []
 var _dark_areas: int = 0
 var _forced_lantern_shadows: int = -1
 
 
 func _ready() -> void:
+	health = max_health
 	_material.shader = UNSHADED_SHADER
 	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
 	_material.set_shader_parameter(&"emission_mask", EMISSION_MASK)
@@ -58,7 +65,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down") if controls_enabled else Vector2.ZERO
 	var direction: Vector3 = Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, deg_to_rad(camera_yaw_degrees))
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
@@ -162,3 +169,16 @@ func _update_lantern_light() -> void:
 	var camera_right: Vector3 = camera.global_basis.x if camera != null else Vector3.RIGHT
 	var offset: Vector3 = lantern_offset(_lantern_points[sprite.frame], sprite.pixel_size, sprite.offset.y, camera_right)
 	lantern_light.global_position = global_position + offset
+
+
+## Damage from creatures; at zero health Ottavia is defeated (105).
+func take_damage(amount: float) -> void:
+	if health <= 0.0:
+		return
+	health = maxf(0.0, health - amount)
+	if health <= 0.0:
+		defeated.emit()
+
+
+func restore_health() -> void:
+	health = max_health

@@ -26,6 +26,9 @@ extends Node3D
 @onready var camera: Camera3D = $Camera3D
 
 var _focus: Vector3 = Vector3.ZERO
+## World X/Z rectangle the focus point stays inside (set by the room);
+## an empty rectangle means no limits.
+var limits: Rect2 = Rect2()
 
 
 func _ready() -> void:
@@ -73,7 +76,11 @@ func snap_to_target() -> void:
 
 
 func _target_point() -> Vector3:
-	return target.global_position + Vector3.UP * look_height
+	var point: Vector3 = target.global_position + Vector3.UP * look_height
+	if limits.has_area():
+		point.x = clampf(point.x, limits.position.x, limits.end.x)
+		point.z = clampf(point.z, limits.position.y, limits.end.y)
+	return point
 
 
 func _place_camera() -> void:

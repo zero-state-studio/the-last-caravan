@@ -126,3 +126,10 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - `ProtoSettings.zone_night_proximity` (anche nel pannello F1) sposta il valore della zona verso la Notte (16, 51).
 - Video: `"$GODOT_PATH" --path . --resolution 1280x800 --write-movie <out.avi> --fixed-fps 30 --quit-after 600 res://scenes/proto/diorama.tscn -- settings=<json> autowalk=1` (Movie Maker, AVI MJPEG), poi MP4 con il binario di `imageio-ffmpeg` via `uv run --with imageio-ffmpeg` (ffmpeg non è installato nel sistema). `autowalk=1` fa percorrere a Ottavia le 8 direzioni.
 - FPS finali a 1280×800, vista normale: 138-143.
+
+## Stanze e sconfitta (fase 3, passo 1; 105)
+
+- `Room` (`scripts/world/room.gd`): volume della stanza (box centrato sul nodo, per sapere dove si trova Ottavia), rettangolo X/Z entro cui resta il fuoco della camera (`camera_limits_rect`), entrata predefinita. `RoomEntry` (Marker3D): punto d'arrivo e di ripartenza. `RoomExit` (Area3D): passaggio verso `target_room`/`target_entry`; l'entrata d'arrivo deve stare fuori da ogni uscita della stanza di destinazione.
+- `RoomManager` (`scripts/world/room_manager.gd`): dissolvenza al nero (0,25 s), spostamento all'entrata, limiti della camera (`FollowCameraRig.limits`); segue Ottavia senza dissolvenza quando lascia una stanza senza passaggio (caduta dalla piattaforma). Sconfitta (105): `OttaviaProto.defeated` → dissolvenza, ripartenza dall'entrata usata per entrare nella stanza, vita piena.
+- Nel diorama: Prato (terreno e corridoio), Terrazza, Piattaforma. Passaggi: la scala (Prato ↔ Terrazza), il ponte (Terrazza ↔ Piattaforma), il varco tra i cespugli in cima alla rampa nuova (Piattaforma ↔ Prato). A 20 m di camera l'inquadratura copre circa ±10 m: nelle stanze alte la camera resta quasi ferma.
+- Test: `tests/test_rooms.gd` (passaggi, caduta, limiti della camera, sconfitta).

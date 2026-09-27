@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3]
+[gd_scene load_steps=50 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -30,6 +30,28 @@
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/roccia_grande_01.glb" id="34_rock"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_secco_01.glb" id="35_drybush"]
 [ext_resource type="Script" path="res://scripts/world/dark_area.gd" id="36_dark"]
+[ext_resource type="Script" path="res://scripts/world/room.gd" id="37_room"]
+[ext_resource type="Script" path="res://scripts/world/room_entry.gd" id="38_entry"]
+[ext_resource type="Script" path="res://scripts/world/room_exit.gd" id="39_exit"]
+[ext_resource type="Script" path="res://scripts/world/room_manager.gd" id="40_manager"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit1"]
+size = Vector3(3, 2, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit2"]
+size = Vector3(2.4, 1.6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit3"]
+size = Vector3(3, 1.6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit4"]
+size = Vector3(1.2, 1.6, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit5"]
+size = Vector3(1.2, 1.6, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit6"]
+size = Vector3(2.4, 1.6, 0.8)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dark"]
 size = Vector3(6, 3, 9)
@@ -218,6 +240,11 @@ material = ExtResource("6_wood")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 3.35, -5)
 size = Vector3(4, 0.7, 0.5)
 material = ExtResource("7_stone")
+
+[node name="Ramp" type="CSGBox3D" parent="Level/Solid"]
+transform = Transform3D(1, 0, 0, 0, 0.8572, -0.5150, 0, 0.5150, 0.8572, 13, 1.3286, -3.603)
+size = Vector3(2.4, 0.4, 6.4)
+material = ExtResource("4_ground")
 
 [node name="Stairs" type="CSGCombiner3D" parent="Level"]
 
@@ -445,6 +472,141 @@ sun_path = NodePath("../Sun")
 
 [node name="Shape" type="CollisionShape3D" parent="DarkUnderBridge"]
 shape = SubResource("BoxShape3D_dark")
+
+[node name="Varco0" parent="Vegetation" instance=ExtResource("18_bush")]
+transform = Transform3D(1.0833, 0, 0.1910, 0, 1.1, 0, -0.1910, 0, 1.0833, 11.2, 3, -6.7)
+
+[node name="Varco1" parent="Vegetation" instance=ExtResource("18_bush")]
+transform = Transform3D(0.9659, 0, -0.2588, 0, 1, 0, 0.2588, 0, 0.9659, 14.7, 3, -6.7)
+
+[node name="Varco2" parent="Vegetation" instance=ExtResource("31_sapling")]
+transform = Transform3D(0.8966, 0, 0.0784, 0, 0.9, 0, -0.0784, 0, 0.8966, 10.2, 3, -7.2)
+
+[node name="Varco3" parent="Vegetation" instance=ExtResource("35_drybush")]
+transform = Transform3D(0.9397, 0, 0.3420, 0, 1, 0, -0.3420, 0, 0.9397, 11.4, 0, -0.2)
+
+[node name="Varco4" parent="Vegetation" instance=ExtResource("35_drybush")]
+transform = Transform3D(0.8863, 0, -0.1563, 0, 0.9, 0, 0.1563, 0, 0.8863, 14.7, 0, -0.4)
+
+[node name="Rooms" type="Node3D" parent="."]
+
+[node name="Prato" type="Node3D" parent="Rooms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+script = ExtResource("37_room")
+room_id = &"prato"
+size = Vector3(30, 4.5, 30)
+camera_limits_rect = Rect2(-5, -6, 10, 13)
+default_entry = &"inizio"
+
+[node name="Entry_inizio" type="Marker3D" parent="Rooms/Prato"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -0.25, -3)
+script = ExtResource("38_entry")
+entry_id = &"inizio"
+
+[node name="Entry_da_scala" type="Marker3D" parent="Rooms/Prato"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -0.25, 2.3)
+script = ExtResource("38_entry")
+entry_id = &"da_scala"
+
+[node name="Entry_da_varco" type="Marker3D" parent="Rooms/Prato"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -0.25, 0.8)
+script = ExtResource("38_entry")
+entry_id = &"da_varco"
+
+[node name="VersoTerrazza" type="Area3D" parent="Rooms/Prato"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1.25, -2.2)
+script = ExtResource("39_exit")
+target_room = &"terrazza"
+target_entry = &"da_scala"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Prato/VersoTerrazza"]
+shape = SubResource("BoxShape3D_exit1")
+
+[node name="VersoPiattaforma" type="Area3D" parent="Rooms/Prato"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.55, -1.6)
+script = ExtResource("39_exit")
+target_room = &"piattaforma"
+target_entry = &"da_varco"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Prato/VersoPiattaforma"]
+shape = SubResource("BoxShape3D_exit2")
+
+[node name="Terrazza" type="Node3D" parent="Rooms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 4.25, -9.5)
+script = ExtResource("37_room")
+room_id = &"terrazza"
+size = Vector3(13, 3.5, 11)
+camera_limits_rect = Rect2(-9, -10, 1, 1)
+default_entry = &"da_scala"
+
+[node name="Entry_da_scala" type="Marker3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -1.25, 3.6)
+script = ExtResource("38_entry")
+entry_id = &"da_scala"
+
+[node name="Entry_da_ponte" type="Marker3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, -1.25, -0.5)
+script = ExtResource("38_entry")
+entry_id = &"da_ponte"
+
+[node name="VersoPrato" type="Area3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.65, 5.2)
+script = ExtResource("39_exit")
+target_room = &"prato"
+target_entry = &"da_scala"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Terrazza/VersoPrato"]
+shape = SubResource("BoxShape3D_exit3")
+
+[node name="VersoPiattaforma" type="Area3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3, -0.45, -0.5)
+script = ExtResource("39_exit")
+target_room = &"piattaforma"
+target_entry = &"da_ponte"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Terrazza/VersoPiattaforma"]
+shape = SubResource("BoxShape3D_exit4")
+
+[node name="Piattaforma" type="Node3D" parent="Rooms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 4.25, -10.5)
+script = ExtResource("37_room")
+room_id = &"piattaforma"
+size = Vector3(11, 3.5, 9)
+camera_limits_rect = Rect2(9, -11, 1, 1)
+default_entry = &"da_ponte"
+
+[node name="Entry_da_ponte" type="Marker3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9, -1.25, 0.5)
+script = ExtResource("38_entry")
+entry_id = &"da_ponte"
+
+[node name="Entry_da_varco" type="Marker3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -1.25, 2.9)
+script = ExtResource("38_entry")
+entry_id = &"da_varco"
+
+[node name="VersoTerrazza" type="Area3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3, -0.45, 0.5)
+script = ExtResource("39_exit")
+target_room = &"terrazza"
+target_entry = &"da_ponte"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Piattaforma/VersoTerrazza"]
+shape = SubResource("BoxShape3D_exit5")
+
+[node name="VersoPrato" type="Area3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -0.95, 5.1)
+script = ExtResource("39_exit")
+target_room = &"prato"
+target_entry = &"da_varco"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Piattaforma/VersoPrato"]
+shape = SubResource("BoxShape3D_exit6")
+
+[node name="RoomManager" type="Node" parent="."]
+script = ExtResource("40_manager")
+player_path = NodePath("../Ottavia")
+camera_rig_path = NodePath("../CameraRig")
 
 [node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
