@@ -144,3 +144,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Mappatura: gamepad come in 67 (A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo); tastiera e mouse proposti: J o clic sinistro Colpo, I Uncino, L o clic destro Parata, K o Spazio Passo, U Lanterna, O Richiamo, E interagire; movimento WASD o frecce.
 - Test: `tests/test_combat.gd`. Un suono ancora in riproduzione alla chiusura conta come risorsa trapelata: il test aspetta la fine dei suoni, `SoundBank` li ferma all'uscita.
 - Diorama: `autocombat=1` esegue una sequenza fissa contro il fantoccio (per catture e video).
+
+## Creature del Margine (fase 3, passo 3; 36)
+
+- Valori: `CreatureTuning` (`scripts/combat/creature_tuning.gd`, file `assets/combat/creature_tuning.tres`), sezione "Creature" del pannello F1 con pulsante di salvataggio.
+- `scripts/creatures/`: `Voltafaccia` (B31: sempre rivolto al Giorno, a ovest; lato destro, a nord, in ombra con danni doppi), `Raspagelo` (B5: sotto terra non bersagliabile e senza collisione, anello di preavviso sul terreno, scoperto dopo il morso, placca frontale), `Brinacchio` (B1: sente la lanterna aperta da lontano, perde le tracce a sportello chiuso, si attacca e rallenta, si stacca col passo o con un colpo, crosta di brina che para finché l'uncino non la strappa), `Grappolo` (B7: rotola, colpito si scompone in `GrappoloBit`, i superstiti si ricompongono più piccoli).
+- Base comune `CombatEnemy`: `can_be_targeted`, `damage_multiplier`, `attack_player`, `reset_enemy`. Dopo una sconfitta il `RoomManager` riporta al punto di partenza le creature della stanza (105).
+- Effetto `CombatEffects.ground_ring`: anello sul terreno sopra l'erba, per i preavvisi che la vegetazione fitta nasconderebbe.
+- `screenshot_runner.gd` libera la scena e aspetta qualche fotogramma prima di chiudere: un suono ancora in riproduzione alla chiusura conta come risorsa trapelata e fa fallire lo screenshot.
+- Test: `tests/test_creatures.gd`; i test di camminata, stanze e combattimento tolgono le creature all'avvio.

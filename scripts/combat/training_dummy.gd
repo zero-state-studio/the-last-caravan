@@ -88,6 +88,10 @@ func _on_defeated() -> void:
 	_set_phase(Phase.DOWN)
 
 
+func _on_reset() -> void:
+	_set_phase(Phase.WAIT)
+
+
 func _set_phase(new_phase: Phase) -> void:
 	phase = new_phase
 	_phase_time = 0.0

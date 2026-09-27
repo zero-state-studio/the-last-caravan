@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3]
+[gd_scene load_steps=58 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -38,6 +38,10 @@
 [ext_resource type="Script" path="res://scripts/audio/sound_bank.gd" id="42_sounds"]
 [ext_resource type="Script" path="res://scripts/ui/combat_hud.gd" id="43_hud"]
 [ext_resource type="Script" path="res://scripts/ui/options_menu.gd" id="44_options"]
+[ext_resource type="PackedScene" path="res://scenes/creatures/voltafaccia.tscn" id="45_volta"]
+[ext_resource type="PackedScene" path="res://scenes/creatures/raspagelo.tscn" id="46_raspa"]
+[ext_resource type="PackedScene" path="res://scenes/creatures/brinacchio.tscn" id="47_brina"]
+[ext_resource type="PackedScene" path="res://scenes/creatures/grappolo.tscn" id="48_grappolo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_exit1"]
 size = Vector3(3, 2, 1.2)
@@ -606,6 +610,47 @@ target_entry = &"da_varco"
 
 [node name="Shape" type="CollisionShape3D" parent="Rooms/Piattaforma/VersoPrato"]
 shape = SubResource("BoxShape3D_exit6")
+
+[node name="Creatures" type="Node3D" parent="."]
+
+[node name="Voltafaccia1" parent="Creatures" instance=ExtResource("45_volta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0, 6.5)
+
+[node name="Voltafaccia2" parent="Creatures" instance=ExtResource("45_volta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8, 0, 8.2)
+
+[node name="Voltafaccia3" parent="Creatures" instance=ExtResource("45_volta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.4, 0, 8.8)
+
+[node name="Raspagelo1" parent="Creatures" instance=ExtResource("46_raspa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 9.5)
+
+[node name="Raspagelo2" parent="Creatures" instance=ExtResource("46_raspa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 7.5)
+
+[node name="BrinacchioTerrazza1" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 3, -11)
+
+[node name="BrinacchioTerrazza2" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6, 3, -11.8)
+
+[node name="BrinacchioTerrazza3" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.4, 3, -12.3)
+
+[node name="BrinacchioTerrazza4" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 3, -10.6)
+
+[node name="BrinacchioCorridoio1" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -12.5)
+
+[node name="BrinacchioCorridoio2" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -13)
+
+[node name="BrinacchioCorridoio3" parent="Creatures" instance=ExtResource("47_brina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -11.8)
+
+[node name="Grappolo1" parent="Creatures" instance=ExtResource("48_grappolo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 3, -12)
 
 [node name="TrainingDummy" parent="." instance=ExtResource("41_dummy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, -1.2)

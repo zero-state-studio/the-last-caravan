@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/creatures/voltafaccia.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/creatures/voltafaccia.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://assets/combat/creature_tuning.tres" id="3_tuning"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_body"]
+height = 1.0
+radius = 0.4
+
+[node name="Voltafaccia" type="CharacterBody3D"]
+script = ExtResource("1_script")
+creature = ExtResource("3_tuning")
+radius = 0.45
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_body")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 16.5)
+pixel_size = 0.0333
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_sprite")

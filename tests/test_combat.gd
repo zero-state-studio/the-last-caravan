@@ -17,6 +17,8 @@ func _initialize() -> void:
 	change_scene_to_file("res://scenes/proto/diorama.tscn")
 	await _wait(0.3)
 	_ottavia = current_scene.get_node("Ottavia")
+	# Ottavia against the dummy only; the creatures have their own test.
+	current_scene.get_node("Creatures").free()
 	_combat = _ottavia.combat
 	_tuning = _combat.tuning
 	_dummy = current_scene.get_node("TrainingDummy")

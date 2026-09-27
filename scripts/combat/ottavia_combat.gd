@@ -15,6 +15,10 @@ extends Node
 ## Counter-hit: striking a creature that is open after its own attack.
 
 signal message(key: StringName)
+## Emitted when a sidestep starts (it shakes off clinging creatures).
+signal stepped
+## Emitted at the active moment of every strike.
+signal struck
 
 enum State { FREE, STRIKE, HOOK, PARRY, STEP, HITSTUN, BREATHLESS }
 
@@ -47,6 +51,8 @@ var _knock_velocity: Vector3 = Vector3.ZERO
 var _lantern_charge: float = -1.0
 var _lantern_raised: bool = false
 var _parry_held: bool = false
+## Share of speed taken by creatures clinging to Ottavia (B1), 0-1.
+var slowdown: float = 0.0
 var _moving: bool = false
 ## Only a fresh press opens the deflect window, not a parry held through
 ## another action.
@@ -252,6 +258,7 @@ func _start_step() -> void:
 	_enter(State.STEP)
 	_invulnerable_left = tuning.step_invulnerable_seconds
 	SoundBank.play_sound(get_tree(), &"passo")
+	stepped.emit()
 	_spend(tuning.step_stamina_cost)
 
 
@@ -271,6 +278,7 @@ func _strike_hit() -> void:
 	var finisher: bool = combo_index == tuning.combo_length - 1 and tuning.combo_length > 1
 	var origin: Vector3 = ottavia.global_position
 	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.strike_reach, tuning.strike_arc_degrees, SWING_COLOR)
+	struck.emit()
 	var landed: bool = false
 	var critical_any: bool = false
 	for target: CombatEnemy in targets_in_arc(tuning.strike_reach, tuning.strike_arc_degrees):
@@ -327,7 +335,7 @@ func hook_target() -> CombatEnemy:
 	var best_distance: float = INF
 	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
 		var target: CombatEnemy = node as CombatEnemy
-		if target == null or not target.is_alive():
+		if target == null or not target.can_be_targeted():
 			continue
 		var offset: Vector3 = target.global_position - origin
 		offset.y = 0.0
@@ -348,7 +356,7 @@ func targets_in_arc(reach: float, arc_degrees: float) -> Array[CombatEnemy]:
 	var origin: Vector3 = ottavia.global_position
 	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
 		var target: CombatEnemy = node as CombatEnemy
-		if target == null or not target.is_alive():
+		if target == null or not target.can_be_targeted():
 			continue
 		var offset: Vector3 = target.global_position - origin
 		offset.y = 0.0
@@ -416,13 +424,14 @@ func _regenerate(delta: float) -> void:
 # --- Movement queries (used by OttaviaProto) --------------------------------
 
 func move_speed_multiplier() -> float:
+	var free: float = 1.0 - clampf(slowdown, 0.0, 1.0)
 	match state:
 		State.FREE:
-			return 1.0
+			return free
 		State.PARRY:
-			return tuning.parry_speed_multiplier
+			return tuning.parry_speed_multiplier * free
 		State.BREATHLESS:
-			return tuning.breathless_speed_multiplier
+			return tuning.breathless_speed_multiplier * free
 	return 0.0
 
 
@@ -457,7 +466,7 @@ func _aim_direction(reach: float) -> Vector3:
 	var best_angle: float = tuning.aim_assist_degrees
 	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
 		var target: CombatEnemy = node as CombatEnemy
-		if target == null or not target.is_alive():
+		if target == null or not target.can_be_targeted():
 			continue
 		var offset: Vector3 = target.global_position - origin
 		offset.y = 0.0

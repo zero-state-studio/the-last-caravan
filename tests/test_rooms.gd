@@ -15,6 +15,7 @@ func _initialize() -> void:
 	await _wait(0.3)
 	_manager = current_scene.get_node("RoomManager")
 	_ottavia = current_scene.get_node("Ottavia")
+	current_scene.get_node("Creatures").free()
 	_check(_manager.current_room != null and _manager.current_room.room_id == &"prato", "starts in the meadow room")
 
 	await _through(Vector3(-7.5, 1.0, -2.2), &"terrazza", Vector3(-7.5, 3.0, -5.9), "stair")

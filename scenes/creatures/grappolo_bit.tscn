@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/creatures/grappolo_bit.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/creatures/grappolo_bit.png" id="2_sprite"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_body"]
+height = 0.5
+radius = 0.2
+
+[node name="GrappoloBit" type="CharacterBody3D"]
+script = ExtResource("1_script")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_body")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 8)
+pixel_size = 0.0333
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_sprite")

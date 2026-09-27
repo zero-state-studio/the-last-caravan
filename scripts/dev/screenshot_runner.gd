@@ -31,12 +31,20 @@ func _process(_delta: float) -> bool:
 	_frames_left -= 1
 	if _frames_left > 0:
 		return false
-	var image: Image = root.get_texture().get_image()
-	var error: Error = image.save_png(_output_path)
-	if error != OK:
-		printerr("screenshot_runner: cannot save %s (error %d)" % [_output_path, error])
-		quit(4)
-	else:
+	if _frames_left == 0:
+		var image: Image = root.get_texture().get_image()
+		var error: Error = image.save_png(_output_path)
+		if error != OK:
+			printerr("screenshot_runner: cannot save %s (error %d)" % [_output_path, error])
+			quit(4)
+			return true
 		print("screenshot_runner: saved %s (%dx%d)" % [_output_path, image.get_width(), image.get_height()])
-		quit(0)
+		# Free the scene first and give the audio server a few frames to drop
+		# playing sounds: a stream still playing at exit counts as a leak.
+		if current_scene != null:
+			current_scene.queue_free()
+		return false
+	if _frames_left > -10:
+		return false
+	quit(0)
 	return true

@@ -22,6 +22,8 @@ const MOVE_SETTLE_SECONDS: float = 0.15
 @export var heavy: bool = false
 
 var health: float = 0.0
+## Where the creature starts; it comes back here when the room restarts (105).
+var spawn_transform: Transform3D
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _flash: float = 0.0
@@ -36,6 +38,7 @@ var _move_left: float = 0.0
 func _ready() -> void:
 	add_to_group(&"combat_targets")
 	health = max_health
+	spawn_transform = global_transform
 	_material.shader = LIT_SHADER
 	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
 	sprite.material_override = _material
@@ -44,6 +47,21 @@ func _ready() -> void:
 
 func is_alive() -> bool:
 	return health > 0.0
+
+
+## False while the creature cannot be hit (underground, split apart...).
+func can_be_targeted() -> bool:
+	return is_alive()
+
+
+## Back to the start, full health (the room restarts after a defeat, 105).
+func reset_enemy() -> void:
+	global_transform = spawn_transform
+	health = max_health
+	_stagger_left = 0.0
+	_move_left = 0.0
+	sprite.visible = true
+	_on_reset()
 
 
 ## True while the creature is open after its own attack (counter-hit, 33).
@@ -62,7 +80,7 @@ func receive_hit(hit: CombatHit) -> void:
 		flash(0.5, Color(0.8, 0.85, 1.0))
 		SoundBank.play_sound(get_tree(), &"parata")
 		return
-	health = maxf(0.0, health - hit.damage)
+	health = maxf(0.0, health - hit.damage * damage_multiplier(hit))
 	flash(1.0, Color(1.0, 0.95, 0.85) if not hit.critical else Color(1.0, 0.77, 0.42))
 	SoundBank.play_sound(get_tree(), &"nemico_colpito")
 	if hit.knockback > 0.0 and not heavy:
@@ -119,7 +137,43 @@ func _move_by(offset: Vector3) -> void:
 	_move_left = MOVE_SETTLE_SECONDS
 
 
+## Attacks Ottavia if she is within `reach` (flat distance); returns how it
+## ended, or -1 when she was out of reach.
+func attack_player(damage: float, reach: float, deflectable: bool = true) -> int:
+	var player: OttaviaProto = find_player()
+	if player == null or player.health <= 0.0 or flat_distance_to(player.global_position) > reach:
+		return -1
+	var attack: CombatAttack = CombatAttack.new()
+	attack.damage = damage
+	attack.source = self
+	attack.deflectable = deflectable
+	return player.combat.receive_attack(attack)
+
+
+## True while a knockback, pull or push is moving the creature.
+func is_being_moved() -> bool:
+	return _move_left > 0.0
+
+
+func flat_distance_to(point: Vector3) -> float:
+	return Vector2(point.x - global_position.x, point.z - global_position.z).length()
+
+
+## Horizontal unit vector toward `point`.
+func flat_direction_to(point: Vector3) -> Vector3:
+	return OttaviaCombat._flat_direction(point - global_position)
+
+
 # --- For subclasses ----------------------------------------------------------
+
+## Multiplier for an incoming hit (weak sides, armor plates, shells).
+func damage_multiplier(_hit: CombatHit) -> float:
+	return 1.0
+
+
+func _on_reset() -> void:
+	pass
+
 
 ## Per-frame behaviour; may set `velocity` before move_and_slide.
 func _behave(_delta: float) -> void:

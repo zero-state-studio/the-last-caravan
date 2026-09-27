@@ -27,6 +27,8 @@ func _physics_process(delta: float) -> bool:
 		return false
 	if _ottavia == null:
 		_ottavia = current_scene.get_node("Ottavia")
+		# The walk is about the level: no creatures in the way.
+		current_scene.get_node("Creatures").free()
 		_start_step(0)
 		return false
 	_elapsed += delta

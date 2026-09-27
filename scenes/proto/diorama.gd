@@ -37,6 +37,7 @@ const AUTOWALK: Array[Dictionary] = [
 	{"actions": [], "seconds": 10.0},
 ]
 const CAPTURE_DIR: String = "res://docs/screenshots"
+const CREATURE_TUNING: CreatureTuning = preload("res://assets/combat/creature_tuning.tres")
 
 @onready var ottavia: OttaviaProto = $Ottavia
 @onready var camera_rig: FollowCameraRig = $CameraRig
@@ -92,12 +93,13 @@ func _ready() -> void:
 	apply_settings()
 	camera_rig.snap_to_target()
 	combat_hud.bind(ottavia)
-	tuning_panel = TuningPanel.new(settings, ottavia.combat.tuning)
+	tuning_panel = TuningPanel.new(settings, ottavia.combat.tuning, CREATURE_TUNING)
 	add_child(tuning_panel)
 	tuning_panel.set_panel_visible(open_panel)
 	tuning_panel.settings_changed.connect(apply_settings)
 	tuning_panel.save_requested.connect(_save_capture)
 	tuning_panel.combat_save_requested.connect(_save_combat_tuning)
+	tuning_panel.creatures_save_requested.connect(func() -> void: _save_resource(CREATURE_TUNING))
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		# Render times do not depend on vsync, which macOS may enforce anyway.
@@ -225,12 +227,15 @@ func _autowalk(delta: float) -> void:
 
 ## Writes the combat values back to their resource file (phase 3 tuning).
 func _save_combat_tuning() -> void:
-	var tuning: CombatTuning = ottavia.combat.tuning
-	var error: Error = ResourceSaver.save(tuning, tuning.resource_path)
+	_save_resource(ottavia.combat.tuning)
+
+
+func _save_resource(resource: Resource) -> void:
+	var error: Error = ResourceSaver.save(resource, resource.resource_path)
 	if error == OK:
-		tuning_panel.show_saved(tuning.resource_path)
+		tuning_panel.show_saved(resource.resource_path)
 	else:
-		push_warning("Cannot save %s (error %d)" % [tuning.resource_path, error])
+		push_warning("Cannot save %s (error %d)" % [resource.resource_path, error])
 
 
 func _autocombat(delta: float) -> void:

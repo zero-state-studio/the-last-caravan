@@ -6,6 +6,7 @@ extends CanvasLayer
 signal settings_changed
 signal save_requested
 signal combat_save_requested
+signal creatures_save_requested
 
 const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_PITCH", "property": "camera_pitch", "min": 30.0, "max": 70.0, "step": 0.5},
@@ -89,19 +90,66 @@ const COMBAT_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_C_DUMMY_DAMAGE", "property": "dummy_damage", "min": 0.0, "max": 50.0, "step": 1.0},
 	{"key": "DEV_C_DUMMY_REACH", "property": "dummy_reach", "min": 1.0, "max": 4.0, "step": 0.05},
 ]
+## Creature values (36), bound to CreatureTuning.
+const CREATURE_SLIDERS: Array[Dictionary] = [
+	{"key": "DEV_K_LEASH_DISTANCE", "property": "leash_distance", "min": 4.0, "max": 30.0, "step": 0.5},
+	{"key": "DEV_K_VOLTAFACCIA_HEALTH", "property": "voltafaccia_health", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_VOLTAFACCIA_SPEED", "property": "voltafaccia_speed", "min": 0.5, "max": 6.0, "step": 0.1},
+	{"key": "DEV_K_VOLTAFACCIA_AGGRO", "property": "voltafaccia_aggro", "min": 2.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_VOLTAFACCIA_ATTACK_RANGE", "property": "voltafaccia_attack_range", "min": 0.5, "max": 3.0, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_WINDUP", "property": "voltafaccia_windup", "min": 0.1, "max": 1.5, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_EXPOSED", "property": "voltafaccia_exposed", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_COOLDOWN", "property": "voltafaccia_cooldown", "min": 0.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_DAMAGE", "property": "voltafaccia_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_VOLTAFACCIA_LUNGE", "property": "voltafaccia_lunge", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_SHADE_MULTIPLIER", "property": "voltafaccia_shade_multiplier", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_VOLTAFACCIA_SHADE_DEGREES", "property": "voltafaccia_shade_degrees", "min": 15.0, "max": 90.0, "step": 1.0},
+	{"key": "DEV_K_RASPAGELO_HEALTH", "property": "raspagelo_health", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_RASPAGELO_BURROW_SPEED", "property": "raspagelo_burrow_speed", "min": 0.5, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_RASPAGELO_AGGRO", "property": "raspagelo_aggro", "min": 2.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_RASPAGELO_TELEGRAPH", "property": "raspagelo_telegraph", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_RASPAGELO_DAMAGE", "property": "raspagelo_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_RASPAGELO_BURST_RADIUS", "property": "raspagelo_burst_radius", "min": 0.3, "max": 3.0, "step": 0.05},
+	{"key": "DEV_K_RASPAGELO_EXPOSED", "property": "raspagelo_exposed", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_RASPAGELO_SURFACED", "property": "raspagelo_surfaced", "min": 0.0, "max": 3.0, "step": 0.05},
+	{"key": "DEV_K_RASPAGELO_UNDERGROUND_MIN", "property": "raspagelo_underground_min", "min": 0.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_RASPAGELO_ARMOR_MULTIPLIER", "property": "raspagelo_armor_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_K_BRINACCHIO_HEALTH", "property": "brinacchio_health", "min": 1.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_BRINACCHIO_SPEED", "property": "brinacchio_speed", "min": 0.5, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_BRINACCHIO_AGGRO", "property": "brinacchio_aggro", "min": 1.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_BRINACCHIO_LANTERN_AGGRO", "property": "brinacchio_lantern_aggro", "min": 1.0, "max": 25.0, "step": 0.5},
+	{"key": "DEV_K_BRINACCHIO_LOSE_TRACK", "property": "brinacchio_lose_track", "min": 0.5, "max": 10.0, "step": 0.1},
+	{"key": "DEV_K_BRINACCHIO_LATCH_DAMAGE_PER_SECOND", "property": "brinacchio_latch_damage_per_second", "min": 0.0, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_BRINACCHIO_SLOW", "property": "brinacchio_slow", "min": 0.0, "max": 0.5, "step": 0.01},
+	{"key": "DEV_K_BRINACCHIO_MAX_SLOW", "property": "brinacchio_max_slow", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_K_BRINACCHIO_CRUST_SECONDS", "property": "brinacchio_crust_seconds", "min": 0.0, "max": 10.0, "step": 0.25},
+	{"key": "DEV_K_GRAPPOLO_MEMBERS", "property": "grappolo_members", "min": 1.0, "max": 12.0, "step": 1.0},
+	{"key": "DEV_K_GRAPPOLO_MEMBER_HEALTH", "property": "grappolo_member_health", "min": 1.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_GRAPPOLO_AGGRO", "property": "grappolo_aggro", "min": 2.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_GRAPPOLO_ROLL_WINDUP", "property": "grappolo_roll_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_GRAPPOLO_ROLL_SPEED", "property": "grappolo_roll_speed", "min": 1.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_GRAPPOLO_ROLL_SECONDS", "property": "grappolo_roll_seconds", "min": 0.2, "max": 3.0, "step": 0.05},
+	{"key": "DEV_K_GRAPPOLO_ROLL_COOLDOWN", "property": "grappolo_roll_cooldown", "min": 0.0, "max": 5.0, "step": 0.05},
+	{"key": "DEV_K_GRAPPOLO_DAMAGE", "property": "grappolo_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_GRAPPOLO_SHELL_MULTIPLIER", "property": "grappolo_shell_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_K_GRAPPOLO_REFORM_SECONDS", "property": "grappolo_reform_seconds", "min": 0.5, "max": 10.0, "step": 0.25},
+	{"key": "DEV_K_GRAPPOLO_BIT_SPEED", "property": "grappolo_bit_speed", "min": 0.2, "max": 5.0, "step": 0.1},
+]
 const PANEL_WIDTH: float = 380.0
 
 var settings: ProtoSettings
 
 var _root: PanelContainer
 var combat_tuning: CombatTuning
+var creature_tuning: CreatureTuning
 var _fps_label: Label
 var _status_label: Label
 
 
-func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null) -> void:
+func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null, target_creatures: CreatureTuning = null) -> void:
 	settings = target_settings
 	combat_tuning = target_combat
+	creature_tuning = target_creatures
 	layer = 10
 
 
@@ -178,6 +226,17 @@ func _build() -> void:
 		combat_save.text = "DEV_SAVE_COMBAT"
 		combat_save.pressed.connect(func() -> void: combat_save_requested.emit())
 		box.add_child(combat_save)
+	if creature_tuning != null:
+		var creatures: Label = Label.new()
+		creatures.text = "DEV_SECTION_CREATURES"
+		box.add_child(HSeparator.new())
+		box.add_child(creatures)
+		for definition: Dictionary in CREATURE_SLIDERS:
+			_add_slider(box, definition, creature_tuning)
+		var creatures_save: Button = Button.new()
+		creatures_save.text = "DEV_SAVE_CREATURES"
+		creatures_save.pressed.connect(func() -> void: creatures_save_requested.emit())
+		box.add_child(creatures_save)
 
 
 func _add_slider(box: VBoxContainer, definition: Dictionary, target: Object) -> void:

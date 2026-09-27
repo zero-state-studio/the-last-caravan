@@ -40,6 +40,48 @@ static func swing(parent: Node, origin: Vector3, direction: Vector3, reach: floa
 	_fade_and_free(instance, material, SWING_SECONDS)
 
 
+## A flat ring on the ground marking where an attack will land (telegraph),
+## drawn above the grass so it stays readable in dense vegetation.
+static func ground_ring(parent: Node, center: Vector3, radius: float, color: Color, seconds: float) -> void:
+	var radius_pixels: int = maxi(6, roundi(radius * WorldScale.PIXELS_PER_METER))
+	var mesh: PlaneMesh = PlaneMesh.new()
+	mesh.size = Vector2(radius * 2.0, radius * 2.0)
+	var material: StandardMaterial3D = StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	material.no_depth_test = true
+	material.albedo_texture = _ring_texture(radius_pixels)
+	material.albedo_color = color
+	var instance: MeshInstance3D = MeshInstance3D.new()
+	instance.mesh = mesh
+	instance.material_override = material
+	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(instance)
+	instance.global_position = center + Vector3.UP * 0.05
+	var tween: Tween = instance.create_tween()
+	tween.tween_property(material, "albedo_color:a", color.a * 0.35, seconds * 0.5).from(color.a * 0.35)
+	tween.tween_property(material, "albedo_color:a", color.a, seconds * 0.5)
+	tween.tween_callback(instance.queue_free)
+
+
+static func _ring_texture(radius: int) -> ImageTexture:
+	var key: String = "ring_%d" % radius
+	if _arc_textures.has(key):
+		return _arc_textures[key]
+	var image: Image = Image.create(radius * 2, radius * 2, false, Image.FORMAT_RGBA8)
+	for y: int in radius * 2:
+		for x: int in radius * 2:
+			var distance: float = Vector2(x + 0.5 - radius, y + 0.5 - radius).length()
+			if distance <= radius and distance >= radius - 2.0:
+				image.set_pixel(x, y, Color.WHITE)
+			elif distance < radius - 2.0 and (x + y) % 4 == 0:
+				image.set_pixel(x, y, Color(1.0, 1.0, 1.0, 0.35))
+	var texture: ImageTexture = ImageTexture.create_from_image(image)
+	_arc_textures[key] = texture
+	return texture
+
+
 ## A tiny star that faces the camera at `point`.
 static func spark(parent: Node, point: Vector3, color: Color, size_pixels: float = 9.0) -> void:
 	var sprite: Sprite3D = Sprite3D.new()

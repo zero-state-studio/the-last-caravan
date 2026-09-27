@@ -118,10 +118,21 @@ func _on_player_defeated() -> void:
 	await _fade_to(1.0, defeat_fade_seconds)
 	_place_player(respawn_position)
 	player.restore_health()
+	reset_room_enemies(current_room)
 	await _fade_to(0.0, defeat_fade_seconds)
 	player.controls_enabled = true
 	_busy = false
 	player_respawned.emit(current_room)
+
+
+## Every creature that started in `room` goes back to its start (105).
+func reset_room_enemies(room: Room) -> void:
+	if room == null:
+		return
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var enemy: CombatEnemy = node as CombatEnemy
+		if enemy != null and room.contains(enemy.spawn_transform.origin + Vector3.UP * 0.5):
+			enemy.reset_enemy()
 
 
 func _place_player(position: Vector3) -> void:
