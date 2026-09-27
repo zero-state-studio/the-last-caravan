@@ -13,13 +13,13 @@ var dof_near_offset: float = 2.0
 var dof_far_offset: float = 3.0
 var dof_amount: float = 0.2
 # Sprites (49)
-# Ottavia v1 body is 48 px for about 1.6 m: 30 px per meter everywhere (49, 54).
-var sprite_pixel_size: float = 1.0 / 30.0
+# One density everywhere (49, 54): see WorldScale.
+var sprite_pixel_size: float = WorldScale.METERS_PER_PIXEL
 var sprite_billboard_fixed_y: bool = false
 var sprite_upright_depth: bool = true
 # Characters keep their drawn colors but receive the scene light (51).
 var sprite_shaded: bool = true
-var world_texels_per_meter: float = 30.0
+var world_texels_per_meter: float = WorldScale.PIXELS_PER_METER
 # World palette (51): drift toward the Day (west) and the Night (east).
 var palette_strength: float = 1.0
 # Light (48)

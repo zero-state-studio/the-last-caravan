@@ -40,6 +40,9 @@ func _test_project_settings() -> void:
 	_check(ProjectSettings.get_setting("display/window/size/resizable") == true, "window is resizable")
 	_check(ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter") == 0, "default canvas texture filter is nearest")
 	_check(ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus", "renderer is Forward+")
+	var texel_global: Dictionary = ProjectSettings.get_setting("shader_globals/world_texels_per_meter")
+	_check(is_equal_approx(float(texel_global["value"]), WorldScale.PIXELS_PER_METER), "shader global world_texels_per_meter matches WorldScale")
+	_check(is_equal_approx(WorldScale.OTTAVIA_BODY_PIXELS / WorldScale.OTTAVIA_HEIGHT_METERS, WorldScale.PIXELS_PER_METER), "WorldScale density matches Ottavia v1")
 
 
 func _test_input_map() -> void:

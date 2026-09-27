@@ -11,7 +11,7 @@ const FADE_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fad
 	set(value):
 		texture = value
 		_rebuild()
-@export var pixel_size: float = 1.0 / 30.0:
+@export var pixel_size: float = WorldScale.METERS_PER_PIXEL:
 	set(value):
 		pixel_size = value
 		_rebuild()
