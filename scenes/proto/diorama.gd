@@ -6,6 +6,7 @@ extends Node3D
 ##   settings=<path.json>  start from these settings instead of the saved ones
 ##   perf=<seconds>        measure frame times with vsync off, print, quit
 ##   panel=1               open the tuning panel at start
+##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
@@ -37,6 +38,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument.begins_with("lantern_shadows="):
+			ottavia.force_lantern_shadows(argument.trim_prefix("lantern_shadows=").to_int())
 	var error: Error = settings.load_json(settings_path)
 	if error != OK and error != ERR_FILE_NOT_FOUND:
 		push_warning("Cannot read settings %s (error %d)" % [settings_path, error])

@@ -32,3 +32,9 @@ texture_filter = 0
 texture = ExtResource("2_sheet")
 hframes = 8
 vframes = 16
+
+[node name="LanternLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.6, 0)
+light_color = Color(1, 0.7686, 0.4196, 1)
+light_energy = 1.5
+omni_range = 5.0

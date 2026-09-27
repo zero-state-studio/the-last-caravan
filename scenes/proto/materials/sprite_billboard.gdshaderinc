@@ -14,6 +14,10 @@ uniform bool full_billboard = true;
 uniform bool upright_depth = true;
 // World offset from the sprite origin of the lighting sample point.
 uniform vec3 light_sample_offset = vec3(0.0, 0.9, 0.0);
+// Lantern glass (19): white where the sprite gives off its own light, so the
+// glass stays lit in the shade and feeds the scene glow.
+uniform sampler2D emission_mask : filter_nearest, hint_default_black;
+uniform float emission_energy = 0.0;
 
 varying vec4 upright_clip;
 
@@ -36,6 +40,12 @@ void fragment() {
 		discard;
 	}
 	ALBEDO = texel.rgb;
+	float glass = texture(emission_mask, UV).r;
+#ifdef SPRITE_LIT
+	EMISSION = texel.rgb * glass * emission_energy;
+#else
+	ALBEDO = texel.rgb * (1.0 + glass * emission_energy);
+#endif
 	// View-space normal toward the camera, used by the lit variant.
 	NORMAL = vec3(0.0, 0.0, 1.0);
 	DEPTH = upright_clip.z / upright_clip.w;

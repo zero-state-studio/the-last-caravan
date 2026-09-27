@@ -24,6 +24,7 @@ func _initialize() -> void:
 	_test_zone_palette_models()
 	_test_load_all_resources()
 	_test_texture_imports()
+	_test_lantern()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -132,6 +133,23 @@ func _test_load_all_resources() -> void:
 					_check(instance != null, "scene instantiates: " + path)
 					if instance != null:
 						instance.free()
+
+
+## Lantern of Ottavia (19): one lantern point per frame, near the top of the
+## staff, and a light offset at about the height of the drawn lantern.
+func _test_lantern() -> void:
+	var data: JSON = load("res://assets/sprites/ottavia/ottavia_v1_sheet.json")
+	var points: PackedVector2Array = OttaviaProto.lantern_points_from(data.data)
+	_check(points.size() == 128, "lantern: one point per frame (got %d)" % points.size())
+	var inside: bool = true
+	for point: Vector2 in points:
+		inside = inside and point.x > 4.0 and point.x < 60.0 and point.y > 4.0 and point.y < 20.0
+	_check(inside, "lantern: every point sits near the top of the staff")
+	var offset: Vector3 = OttaviaProto.lantern_offset(points[0], WorldScale.METERS_PER_PIXEL, 29.0, Vector3.RIGHT)
+	_check(offset.y > 1.4 and offset.y < 1.8 and offset.x < 0.0, "lantern: idle_s light at the drawn lantern (got %s)" % offset)
+	var mask: Texture2D = load("res://assets/sprites/ottavia/ottavia_v1_emission.png")
+	var sheet: Texture2D = load("res://assets/sprites/ottavia/ottavia_v1_sheet.png")
+	_check(mask.get_size() == sheet.get_size(), "lantern: emission mask matches the sheet size")
 
 
 ## Pixel-art textures never get mipmaps, also the ones extracted from GLB models.

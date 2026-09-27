@@ -11,6 +11,10 @@ const WALK_FRAME_TIME: float = 0.1
 ## Where the lit sprite samples light and shadow: chest height, a bit toward the sun.
 const LIGHT_SAMPLE_HEIGHT: float = 0.9
 const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
+## Frame data with the lantern point of every frame (see tools/lantern_mask.lua).
+const SHEET_DATA: JSON = preload("res://assets/sprites/ottavia/ottavia_v1_sheet.json")
+const EMISSION_MASK: Texture2D = preload("res://assets/sprites/ottavia/ottavia_v1_emission.png")
+const CELL_PIXELS: float = 64.0
 const UNSHADED_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_unshaded.gdshader")
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
 
@@ -23,18 +27,32 @@ const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboar
 ## Invisible upright copy that only casts the shadow, turned toward the sun,
 ## so the shadow is never the one of a leaning billboard.
 @onready var shadow_proxy: Sprite3D = $ShadowProxy
+## Small real light that follows the lantern (19): the only light in the
+## Night (45), and the one whose shadows matter to B15 and to the creatures
+## drawn to light (36).
+@onready var lantern_light: OmniLight3D = $LanternLight
+
+## Brightness of the lantern glass (emission mask), feeding the scene glow.
+@export var lantern_glass_energy: float = 2.5
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _facing: Facing.Direction = Facing.Direction.SOUTH
 var _frame_timer: float = 0.0
 var _frame: int = 0
 var _moving: bool = false
+var _lantern_points: PackedVector2Array = []
+var _dark_areas: int = 0
+var _forced_lantern_shadows: int = -1
 
 
 func _ready() -> void:
 	_material.shader = UNSHADED_SHADER
 	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
+	_material.set_shader_parameter(&"emission_mask", EMISSION_MASK)
+	_material.set_shader_parameter(&"emission_energy", lantern_glass_energy)
 	sprite.material_override = _material
+	_lantern_points = lantern_points_from(SHEET_DATA.data)
+	_update_lantern_shadows()
 	sprite.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	shadow_proxy.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 
@@ -92,3 +110,55 @@ func _animate(delta: float, moving: bool) -> void:
 	var row: int = int(_facing) + (WALK_ROW_OFFSET if moving else 0)
 	sprite.frame = row * FRAMES_PER_ROW + _frame
 	shadow_proxy.frame = sprite.frame
+	_update_lantern_light()
+
+
+## Lantern points (cell pixels) of every frame, in sheet order.
+static func lantern_points_from(data: Dictionary) -> PackedVector2Array:
+	var points: PackedVector2Array = []
+	for frame: Dictionary in data["frames"]:
+		var lantern: Dictionary = frame["lantern"]
+		points.append(Vector2(float(lantern["x"]), float(lantern["y"])))
+	return points
+
+
+## World offset of a lantern point from the feet, on the upright plane that
+## faces the camera: the light stays where the lantern is drawn, at its real
+## height, whatever the direction and frame.
+static func lantern_offset(point: Vector2, pixel_size: float, sprite_offset_y: float, camera_right: Vector3) -> Vector3:
+	var right: Vector3 = Vector3(camera_right.x, 0.0, camera_right.z).normalized()
+	var across: float = (point.x - CELL_PIXELS * 0.5) * pixel_size
+	var up: float = (CELL_PIXELS * 0.5 - point.y + sprite_offset_y) * pixel_size
+	return right * across + Vector3.UP * up
+
+
+## Called by DarkArea: the lantern casts shadows only where it is dark, to
+## stay cheap in daylight (Steam Deck, 7).
+func enter_dark_area() -> void:
+	_dark_areas += 1
+	_update_lantern_shadows()
+
+
+func exit_dark_area() -> void:
+	_dark_areas = maxi(0, _dark_areas - 1)
+	_update_lantern_shadows()
+
+
+## Debug override for measurements: 1 on, 0 off, -1 follow the dark areas.
+func force_lantern_shadows(mode: int) -> void:
+	_forced_lantern_shadows = mode
+	_update_lantern_shadows()
+
+
+func _update_lantern_shadows() -> void:
+	var enabled: bool = _dark_areas > 0 if _forced_lantern_shadows < 0 else _forced_lantern_shadows == 1
+	lantern_light.shadow_enabled = enabled
+
+
+func _update_lantern_light() -> void:
+	if _lantern_points.is_empty():
+		return
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	var camera_right: Vector3 = camera.global_basis.x if camera != null else Vector3.RIGHT
+	var offset: Vector3 = lantern_offset(_lantern_points[sprite.frame], sprite.pixel_size, sprite.offset.y, camera_right)
+	lantern_light.global_position = global_position + offset

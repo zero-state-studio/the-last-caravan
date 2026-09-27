@@ -8,6 +8,7 @@ Personaggio 19. Versione 1, generata con PixelLab il 2026-09-27 (vedi `docs/asse
 |---|---|
 | `ottavia_v1_sheet.png` | Spritesheet, 512×1024 px, RGBA, sfondo trasparente |
 | `ottavia_v1_sheet.json` | Dati Aseprite (json-array): rettangolo e durata di ogni fotogramma, tag |
+| `ottavia_v1_emission.png` | Maschera di emissione della lanterna, stessa griglia: bianco sui pixel del vetro, trasparente altrove |
 | `ottavia_v1.aseprite` | Sorgente Aseprite: un livello, 128 fotogrammi, 16 tag, durate impostate |
 
 ## Griglia
@@ -47,3 +48,15 @@ Direzioni: `s` verso la camera, `e` verso destra dello schermo, `n` di spalle, `
 ## Rigenerare
 
 `tools/ottavia_v1_build.py` (pulizia, controlli, GIF) e poi `tools/ottavia_v1_aseprite.lua` (file .aseprite); comandi in testa ai due script.
+
+## Lanterna (19)
+
+`tools/lantern_mask.lua` (Aseprite in riga di comando) prepara la maschera di emissione e scrive in `ottavia_v1_sheet.json`, per ogni fotogramma, `"lantern": {"x": .., "y": ..}`: il centro del vetro in pixel della cella (origine in alto a sinistra, centri dei pixel a +0,5). Il vetro è il gruppo più in alto di pixel nei colori `#FEF88F` `#FCBC3C` `#FACC69` `#ECC04E` `#ED9D2B`: gli stessi gialli compaiono più in basso su fibbia e corda, quindi il colore da solo non basta. Lo script riscrive il JSON su una riga sola.
+
+```
+"$ASEPRITE_PATH" -b --script-param sheet=$PWD/assets/sprites/ottavia/ottavia_v1_sheet.png \
+  --script-param data=$PWD/assets/sprites/ottavia/ottavia_v1_sheet.json \
+  --script-param mask=$PWD/assets/sprites/ottavia/ottavia_v1_emission.png --script tools/lantern_mask.lua
+```
+
+Va rieseguito ogni volta che il foglio cambia.

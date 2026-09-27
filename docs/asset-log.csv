@@ -161,3 +161,4 @@ assets/models/vegetation/ceppo_01.glb,manuale (tools/mesh_simplify.py + meshy_pi
 assets/models/vegetation/roccia_grande_01.glb,manuale (tools/mesh_simplify.py + meshy_pixelize.py),nessuno,,2026-09-27,0,"600 triangoli, alta 1,6 m, texture 300 px; palette v2"
 assets/models/vegetation/sassi_01.glb,manuale (tools/mesh_simplify.py + meshy_pixelize.py),nessuno,,2026-09-27,0,"400 triangoli, alti 0,5 m, texture 68 px; palette v2"
 assets/models/vegetation/cespuglio_secco_01.glb,manuale (tools/mesh_simplify.py + meshy_pixelize.py),nessuno,,2026-09-27,0,"1022 triangoli (la semplificazione si ferma per preservare i rami), alto 1,2 m, texture 108 px; palette v2"
+assets/sprites/ottavia/ottavia_v1_emission.png,manuale (Aseprite + tools/lantern_mask.lua),nessuno,,2026-09-27,0,"Maschera di emissione del vetro della lanterna, 512x1024, dalla griglia di ottavia_v1_sheet.png; scrive anche i punti della lanterna in ottavia_v1_sheet.json (19)"

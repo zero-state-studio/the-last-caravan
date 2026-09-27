@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3]
+[gd_scene load_steps=40 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -29,6 +29,10 @@
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/ceppo_01.glb" id="33_stump"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/roccia_grande_01.glb" id="34_rock"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_secco_01.glb" id="35_drybush"]
+[ext_resource type="Script" path="res://scripts/world/dark_area.gd" id="36_dark"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dark"]
+size = Vector3(6, 3, 9)
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
 sky_top_color = Color(0.3, 0.26, 0.56, 1)
@@ -428,6 +432,13 @@ entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft"), ExtR
 extents = Vector2(15, 15)
 density = 1.2
 random_seed = 31
+
+[node name="DarkUnderBridge" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, -10.5)
+script = ExtResource("36_dark")
+
+[node name="Shape" type="CollisionShape3D" parent="DarkUnderBridge"]
+shape = SubResource("BoxShape3D_dark")
 
 [node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
