@@ -1,0 +1,68 @@
+GIMP Palette
+Name: The Last Caravan v2 ambienti
+Columns: 8
+#
+ 43  27  23	luce - brace scura
+ 60  34  27	luce - tra brace scura e bruno caldo
+ 78  42  30	luce - bruno caldo
+100  52  32	luce - tra bruno caldo e terracotta
+122  63  34	luce - terracotta
+145  78  38	luce - tra terracotta e rame
+168  94  42	luce - rame
+190 116  50	luce - tra rame e arancio tramonto
+212 138  58	luce - arancio tramonto
+225 158  74	luce - tra arancio tramonto e oro
+237 178  90	luce - oro
+242 196 116	luce - tra oro e sole
+247 213 140	luce - sole
+251 227 174	luce - tra sole e riflesso
+255 241 207	luce - riflesso
+ 20  17  37	ombra - nero viola
+ 25  21  44	ombra - tra nero viola e contorno
+ 30  26  51	ombra - contorno
+ 38  34  66	ombra - tra contorno e indaco profondo
+ 46  42  82	ombra - indaco profondo
+ 56  52  98	ombra - tra indaco profondo e indaco
+ 67  63 115	ombra - indaco
+ 79  76 131	ombra - tra indaco e blu viola
+ 92  90 148	ombra - blu viola
+108 107 164	ombra - tra blu viola e lavanda
+125 125 181	ombra - lavanda
+146 147 197	ombra - tra lavanda e lavanda chiara
+167 169 212	ombra - lavanda chiara
+ 62  68  36	crepuscolo verde - oliva scuro
+ 78  87  41	crepuscolo verde - tra oliva scuro e oliva
+ 94 107  46	crepuscolo verde - oliva
+110 123  52	crepuscolo verde - tra oliva e foglia
+126 140  58	crepuscolo verde - foglia
+145 156  74	crepuscolo verde - tra foglia e muschio chiaro
+164 172  90	crepuscolo verde - muschio chiaro
+ 90  63  43	crepuscolo terra - terra scura
+109  79  54	crepuscolo terra - tra terra scura e terra
+128  96  66	crepuscolo terra - terra
+141 118  94	crepuscolo terra - tra terra e pietra calda
+154 140 122	crepuscolo terra - pietra calda
+175 162 142	crepuscolo terra - tra pietra calda e pietra chiara
+196 184 162	crepuscolo terra - pietra chiara
+ 59  65  99	notte - ardesia
+ 84  92 124	notte - tra ardesia e brina scura
+110 120 150	notte - brina scura
+126 135 163	notte - tra brina scura e pietra fredda
+143 151 176	notte - pietra fredda
+171 181 203	notte - tra pietra fredda e brina
+200 211 230	notte - brina
+158 106  44	giorno - ocra bruciata
+179 127  53	giorno - tra ocra bruciata e ocra
+201 149  63	giorno - ocra
+214 178 114	giorno - tra ocra e sabbia chiara
+227 207 160	giorno - sabbia chiara
+236 223 190	giorno - tra sabbia chiara e osso sbiancato
+244 238 220	giorno - osso sbiancato
+255 196 107	accento - lanterna
+ 42  48  32	varianti - sottobosco
+ 47  90  78	varianti - verde acqua scuro
+ 79 138 114	varianti - verde acqua
+156 154  60	varianti - muschio dorato
+194 190  94	varianti - muschio giallo
+107  51  38	varianti - sentiero rosso scuro
+154  82  54	varianti - sentiero rosso

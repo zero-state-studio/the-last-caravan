@@ -67,3 +67,7 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Ottavia (19): le diagonali sono fatte (v1); restano da definire le animazioni di combattimento (fase 3) e le durate definitive dei fotogrammi.
 - Spritesheet di Ottavia v1: tela 64×64 definitiva, durate provvisorie fino alla fase 3.
 - Immagini di riferimento (52), passo 2 della fase 2: scelte 12 texture (01, 05, 11, 12, 18, 19, 22, 23, 24, 25, 26, 27), in `source-assets/riferimenti/2026-09-27-texture/`. Le vedute V1-V4 (GPT Image) sono solo riferimento visivo, escluse dall'addestramento. Il modello personalizzato si addestra solo sulle texture approvate.
+- Modello personalizzato (52): il v1 (`model_SU9gw4R9QvdxPcDtbd598gak`) è accettato per l'MVP. Un modello v2 più specifico, definitivo per tutto il gioco, è rimandato a una fase successiva (budget Scenario della fase 2 invariato).
+- Immagini di altri giochi: l'autore può mostrarle come esempio della direzione voluta; si traducono solo in regole scritte e generiche (`docs/stile.md`), mai usate come input, riferimento nei prompt o addestramento.
+- Palette (51): palette v2 per gli ambienti, 64 colori (la v1 più 25 toni intermedi e 7 varianti di tinta), in `assets/palette/palette_v2_env.*`, generata da `tools/palette_v2.py`. Personaggi, creature e interfaccia restano sulla v1.
+- Densità (54): prima di decidere tra 30 px/m per tutto e 60 px/m per le texture degli ambienti, prova delle due nel diorama con le texture esistenti (`docs/screenshots/2026-09-27-fase2-densita-*.png`). Scelta in attesa.

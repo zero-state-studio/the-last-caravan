@@ -53,6 +53,7 @@ Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre
 - Il freddo viene soprattutto dalla luce: il colore delle ombre e la luce ambientale del cielo tendono al blu-viola.
 - Il viraggio dipende solo dalla posizione nel mondo, mai dalla camera. Ogni zona ha un valore di vicinanza alla Notte o al Giorno (vedi 16), e dentro la zona il viraggio cresce lungo l'asse ovest-est del mondo, con il Giorno a ovest (100). Nessun oggetto cambia colore quando la camera si muove.
 - Virano l'ambiente e i suoi modelli 3D. Personaggi e creature mantengono i colori disegnati, per riconoscibilità e leggibilità in combattimento, ma ricevono la luce della scena, ombre fredde comprese. L'interfaccia non vira mai.
+- Due palette di base: la v1 (32 colori) per personaggi, creature e interfaccia; la v2 degli ambienti (64 colori: la v1 più toni intermedi e alcune varianti di tinta) per terreno, rocce, piante e modelli 3D, così ogni materiale ha più sfumature.
 
 **Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione. L'intensità del viraggio (per ora 1 nel prototipo), da rivedere nella fase 2 con le texture vere.
 

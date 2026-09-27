@@ -1,6 +1,6 @@
 # Guida di stile
 
-Versione 1, 27 settembre 2026 (fase 2, passo 1). Traduce in regole pratiche gli elementi 46-54 e 99-101 della bibbia. Vale per chi genera asset (servizi e Claude Code) e per chi li rifinisce in Aseprite. Anteprima della palette accanto a Ottavia v1: `screenshots/2026-09-27-fase2-palette-ottavia.png`.
+Versione 1.1, 27 settembre 2026 (fase 2: passo 1, aggiornata dopo il passo 4). Traduce in regole pratiche gli elementi 46-54 e 99-101 della bibbia. Vale per chi genera asset (servizi e Claude Code) e per chi li rifinisce in Aseprite. Anteprima della palette accanto a Ottavia v1: `screenshots/2026-09-27-fase2-palette-ottavia.png`.
 
 ## Descrizione dello stile per i servizi di generazione
 
@@ -8,11 +8,13 @@ Nei prompt si usa sempre questa formula, mai nomi di altri giochi, studi o il te
 
 > 3D diorama, low-poly models with low-resolution pixel-art textures, nearest filtering, soft warm sunset light, cool blue-violet shadows
 
-Per le texture si aggiunge: "seamless tileable texture, flat pixel-art shading, no dithering, limited palette, seen from above / from the front". Per le vedute d'insieme: "tilted top-down view at about 50 degrees, sun low on the left".
+Per le texture si aggiunge: "seamless tileable texture, detailed pixel-art shading with many small flecks, cracks and hue variation, up to 8 shades per material, no dithering, seen from above / from the front". Per le vedute d'insieme: "tilted top-down view at about 50 degrees, sun low on the left".
 
 ## Densità
 
 **30 pixel per metro** per tutto: personaggi, terreno, rocce, piante, modelli (49, 54). Un pixel vale 3,3 cm. Regole e controlli in `tecnica.md`, "Lista di controllo per ogni texture".
+
+A 1280×800 con la camera della fase 1 (20 m, 35°) un texel a 30 px/m occupa circa 1,8 pixel dello schermo; a 60 px/m circa 0,9, e sul terreno inclinato meno ancora. Prova delle due densità: `screenshots/2026-09-27-fase2-densita-30-60.png` (scelta in attesa, 54).
 
 ## Palette di base (51)
 
@@ -22,6 +24,8 @@ Per le texture si aggiunge: "seamless tileable texture, flat pixel-art shading, 
 - `palette_v1_preview.png`: campioni ingranditi.
 
 Si rigenera con `tools/palette_v1.py`. È una prima versione: i codici esatti restano da confermare con le immagini di riferimento del passo 2 (51, "Resta da definire").
+
+**Palette v2 degli ambienti** (51): 64 colori, `assets/palette/palette_v2_env.{gpl,png,_preview.png}`, generata da `tools/palette_v2.py`. Contiene la v1, un tono intermedio (in OKLab) tra ogni coppia di colori vicini di ogni rampa, e 7 varianti di tinta: sottobosco `#2A3020`, verde acqua `#2F5A4E` `#4F8A72`, muschio `#9C9A3C` `#C2BE5E`, sentiero rosso `#6B3326` `#9A5236`. Vale per terreno, rocce, piante e modelli 3D; personaggi, creature e interfaccia restano sulla v1.
 
 | Gruppo | Uso | Colori |
 |---|---|---|
@@ -64,7 +68,17 @@ Nelle texture **non si dipingono luce e ombra direzionali forti**: le fa il moto
 
 ## Materiali alla nostra densità
 
-A 30 px/m un pixel è 3,3 cm: i dettagli più piccoli di 3 cm non esistono. Al massimo 4 toni per materiale più un riflesso, forme grandi e leggibili, niente rumore di pixel sparsi e niente retino.
+A 30 px/m un pixel è 3,3 cm: i dettagli più piccoli di 3 cm non esistono. Fino a 8 toni per materiale dalla palette v2, forme grandi e leggibili arricchite da micro-dettaglio (vedi sotto), niente retino.
+
+### Ricchezza degli ambienti
+
+Regole generiche, scritte dopo aver guardato esempi della direzione voluta (le immagini di altri giochi non si usano mai come input, riferimento nei prompt o addestramento):
+
+1. **Micro-dettaglio.** Sopra le forme grandi, granelli e sassolini di 1-2 px, crepe sottili di 1 px, fili d'erba e muschio sparsi a gruppi, non a caso uniforme.
+2. **Più sfumature e tinta che varia.** Ogni materiale usa 6-8 toni e cambia tinta al suo interno: il muschio va dal verde al giallo, la terra del sentiero verso il rosso-bruno, l'erba fresca verso il verde acqua.
+3. **Rilievo da geometria e luce.** Crepe e spigoli delle rocce sono modellati, non solo dipinti; ombre di contatto e occlusione forti; nelle zone buie pozze di luce calda.
+4. **Vegetazione a ciuffi.** Piante fatte di molte foglie o fili sottili, con un bordo chiaro di 1 px sul lato del Giorno; contrasto di tinta forte tra piante vicine.
+5. **Grana più fine degli sprite:** solo se la prova di densità la sceglie (54, in attesa).
 
 - **Legno** (carri, ponti, casse): assi larghe 15-20 cm, cioè 5-6 px, separate da una riga scura di 1 px. Venatura con righe di 1 px ogni 2-3 px, nel verso dell'asse. Nodi di 2×2 px. Il legno dei carri è sbiadito dal sole, verso le tinte "pietra calda" e "sabbia".
 - **Pietra** (muri, terrazze, rocce): blocchi di 30-60 cm, cioè 9-18 px, con fughe scure di 1 px. Tre toni per blocco più un bordo chiaro di 1 px sul lato alto. Crepe diagonali di 1 px, poche.
