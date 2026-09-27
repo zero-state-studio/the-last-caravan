@@ -30,8 +30,9 @@ func _initialize() -> void:
 	await _test_lesson()
 
 	current_scene.queue_free()
-	for index: int in 10:
-		await process_frame
+	# Real time: headless frames run unthrottled, a few of them last
+	# microseconds and the audio server would not drop the streams yet.
+	await create_timer(0.3, true, false, true).timeout
 	print("TESTS: companions %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
