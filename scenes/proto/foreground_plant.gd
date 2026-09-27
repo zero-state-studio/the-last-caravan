@@ -11,7 +11,7 @@ const FADE_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fad
 	set(value):
 		texture = value
 		_rebuild()
-@export var pixel_size: float = 1.0 / 26.0:
+@export var pixel_size: float = 1.0 / 30.0:
 	set(value):
 		pixel_size = value
 		_rebuild()
@@ -22,6 +22,7 @@ const FADE_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fad
 
 
 func _ready() -> void:
+	add_to_group(&"foreground_plants")
 	_rebuild()
 
 

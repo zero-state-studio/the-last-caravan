@@ -69,7 +69,7 @@ La chiave ElevenLabs ha solo questi permessi: Text to Speech, Effetti Sonori, Ge
 - Mai usare immagini di altri giochi (per esempio The Adventures of Elliot) come input, riferimento o materiale di addestramento. Solo immagini nostre.
 - Modelli Meshy: sempre semplificati (low-poly, remesh) e con texture pixel art a bassa risoluzione, filtro nearest (54).
 - Ottavia e i personaggi asimmetrici si disegnano in 8 direzioni, una per una, mai specchiati. Le creature simmetriche possono usare 5 direzioni più 3 specchiate (36).
-- Misure provvisorie degli sprite: tela 40×56 pixel, Ottavia alta circa 42 pixel, finché la fase 1 non le fissa (49).
+- Misure degli sprite (49): tela 64×64 pixel, Ottavia alta 48 pixel, 30 pixel per metro; la stessa densità vale per tutte le texture del mondo (54).
 
 ### Budget
 

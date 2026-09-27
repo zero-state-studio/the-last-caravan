@@ -63,3 +63,6 @@ assets/models/proto/crate.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09
 assets/models/proto/boulder.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09-27,0,"Da boulder_textured.glb: texture 128 px, 24 colori, filtro nearest, alta 1,4 m (54)"
 assets/models/proto/tree_crooked.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09-27,0,"Da tree_crooked_textured.glb: texture 128 px, 24 colori, filtro nearest, alto 4,5 m (54)"
 assets/sprites/proto/ottavia_test_sheet.png,copia,nessuno,,2026-09-27,0,Copia di source-assets/test/ottavia_test_sheet.png per il prototipo visivo (Godot non legge source-assets)
+assets/models/proto/crate.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09-27,0,"Rielaborato a 30 px/m (54): texture 124 px, 24 colori, filtro nearest, alta 0,9 m; sostituisce la versione a 128 px"
+assets/models/proto/boulder.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09-27,0,"Rielaborato a 30 px/m (54): texture 120 px, 24 colori, filtro nearest, alta 1,4 m; sostituisce la versione a 128 px"
+assets/models/proto/tree_crooked.glb,manuale (tools/meshy_pixelize.py),nessuno,,2026-09-27,0,"Rielaborato a 30 px/m (54): texture 276 px, 24 colori, filtro nearest, alto 4,5 m; sostituisce la versione a 128 px"

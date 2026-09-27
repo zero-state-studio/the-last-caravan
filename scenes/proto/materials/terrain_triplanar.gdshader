@@ -8,6 +8,8 @@ render_mode diffuse_burley, specular_disabled;
 
 global uniform float world_texels_per_meter;
 
+#include "res://scenes/proto/materials/world_palette.gdshaderinc"
+
 uniform sampler2D top_texture : source_color, filter_nearest, repeat_enable, hint_default_white;
 uniform sampler2D side_texture : source_color, filter_nearest, repeat_enable, hint_default_white;
 uniform vec4 top_tint : source_color = vec4(1.0);
@@ -42,6 +44,6 @@ void fragment() {
 		vec2 size = vec2(textureSize(side_texture, 0));
 		color = texture(side_texture, uv * world_texels_per_meter / size).rgb * side_tint.rgb;
 	}
-	ALBEDO = color;
+	ALBEDO = apply_world_palette(color, world_position);
 	ROUGHNESS = 1.0;
 }

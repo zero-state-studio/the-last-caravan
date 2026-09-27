@@ -13,16 +13,18 @@ const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_DOF_NEAR", "property": "dof_near_offset", "min": 0.0, "max": 20.0, "step": 0.5},
 	{"key": "DEV_DOF_FAR", "property": "dof_far_offset", "min": 0.0, "max": 40.0, "step": 0.5},
 	{"key": "DEV_DOF_AMOUNT", "property": "dof_amount", "min": 0.0, "max": 0.5, "step": 0.01},
-	{"key": "DEV_SPRITE_PIXEL_SIZE", "property": "sprite_pixel_size", "min": 0.02, "max": 0.06, "step": 0.001},
+	{"key": "DEV_SPRITE_PIXEL_SIZE", "property": "sprite_pixel_size", "min": 0.02, "max": 0.06, "step": 0.0001},
 	{"key": "DEV_WORLD_TEXELS", "property": "world_texels_per_meter", "min": 12.0, "max": 48.0, "step": 1.0},
 	{"key": "DEV_SUN_ELEVATION", "property": "sun_elevation", "min": 2.0, "max": 60.0, "step": 0.5},
 	{"key": "DEV_SUN_AZIMUTH", "property": "sun_azimuth", "min": 0.0, "max": 360.0, "step": 1.0},
 	{"key": "DEV_SUN_ENERGY", "property": "sun_energy", "min": 0.0, "max": 5.0, "step": 0.05},
 	{"key": "DEV_FOG_DENSITY", "property": "fog_density", "min": 0.0, "max": 0.05, "step": 0.001},
+	{"key": "DEV_PALETTE_STRENGTH", "property": "palette_strength", "min": 0.0, "max": 2.0, "step": 0.05},
 ]
 const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_ORTHOGRAPHIC", "property": "camera_orthographic"},
 	{"key": "DEV_SPRITE_BILLBOARD_FIXED_Y", "property": "sprite_billboard_fixed_y"},
+	{"key": "DEV_SPRITE_UPRIGHT_DEPTH", "property": "sprite_upright_depth"},
 	{"key": "DEV_SPRITE_SHADED", "property": "sprite_shaded"},
 ]
 const PANEL_WIDTH: float = 380.0
@@ -161,4 +163,6 @@ func _format_value(value: float, step: float) -> String:
 		return "%.1f" % value
 	if step >= 0.01:
 		return "%.2f" % value
-	return "%.3f" % value
+	if step >= 0.001:
+		return "%.3f" % value
+	return "%.4f" % value

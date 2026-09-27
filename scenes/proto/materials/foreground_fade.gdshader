@@ -7,6 +7,8 @@ render_mode cull_disabled, diffuse_burley, specular_disabled;
 
 global uniform vec3 player_position;
 
+#include "res://scenes/proto/materials/world_palette.gdshaderinc"
+
 uniform sampler2D albedo_texture : source_color, filter_nearest, hint_default_white;
 uniform vec4 tint : source_color = vec4(1.0);
 // Radius of the see-through area, in meters at the player's depth.
@@ -25,7 +27,8 @@ const float BAYER_4X4[16] = float[](
 
 void fragment() {
 	vec4 texel = texture(albedo_texture, UV);
-	ALBEDO = texel.rgb * tint.rgb;
+	vec3 world_position = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	ALBEDO = apply_world_palette(texel.rgb * tint.rgb, world_position);
 	ROUGHNESS = 1.0;
 
 	vec3 player_view = (VIEW_MATRIX * vec4(player_position, 1.0)).xyz;

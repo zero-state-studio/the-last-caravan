@@ -17,6 +17,16 @@ shift $(( $# < 4 ? $# : 4 ))
 mkdir -p "$(dirname "$OUTPUT")"
 OUTPUT_ABS="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
 
+# Shaders only compile on a real GPU, so this is also the check for shader
+# errors: the run fails if Godot prints any error line.
+LOG="$(mktemp)"
+trap 'rm -f "$LOG"' EXIT
+rm -f "$OUTPUT_ABS"
 "$GODOT" --path "$ROOT" --resolution "$RESOLUTION" \
-	--script res://scripts/dev/screenshot_runner.gd -- "$SCENE" "$OUTPUT_ABS" "$FRAMES" "$@"
+	--script res://scripts/dev/screenshot_runner.gd -- "$SCENE" "$OUTPUT_ABS" "$FRAMES" "$@" >"$LOG" 2>&1 || true
+grep -E "saved" "$LOG" || true
+if grep -E "ERROR|SCRIPT ERROR" "$LOG"; then
+	echo "SCREENSHOT FAILED: errors above" >&2
+	exit 1
+fi
 test -s "$OUTPUT_ABS"

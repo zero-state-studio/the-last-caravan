@@ -18,19 +18,29 @@ Proposta, regola per tutti i personaggi: il sole basso scolorisce il lato dei ve
 
 Tutto il gioco è illuminato da una luce radente e calda, e la Notte finale è l'unica zona buia. È l'identità visiva del gioco, riconoscibile da un solo screenshot.
 
-## 49. Misure degli sprite  [Da definire]
+**Direzione.** Il Giorno sta sempre a ovest, cioè a sinistra dello schermo, e la Notte a destra. Il sole arriva da sinistra e un po' dal lato della camera. Uniche eccezioni: la Linea d'Ombra (41), l'Ombra della Montagna (43) e gli interni dei mezzi.
 
-Proposta dal primo test di Ottavia: tela di 40×56 pixel, personaggio alto circa 42 pixel, bastone compreso fino al bordo superiore. Da confermare nel prototipo visivo. Altezza dei personaggi in pixel, pixel per unità di mondo, fotogrammi per animazione. Senza questi numeri ogni asset generato esce con misure diverse. Il movimento libero richiede sprite in 8 direzioni: di solito se ne disegnano 5 e le altre 3 si ottengono specchiando. Ottavia però tiene il bastone in una mano e la lanterna nell'altra, e specchiandola le mani si scambierebbero. Per lei servono probabilmente tutte e 8.
+## 49. Misure degli sprite  [Definito]
 
-## 50. Camera  [In discussione]
+Tela di **64×64 pixel**, quella di Ottavia v1. Ottavia è alta **48 pixel** dalla testa ai piedi (bastone escluso), pari a circa 1,6 metri: la densità del gioco è quindi **30 pixel per metro** (un pixel vale 3,3 cm). La stessa densità vale per tutte le texture del mondo (vedi 54).
 
-Proposta: camera alta che guarda la scena dall'alto, inclinata di circa 45-60 gradi, e segue il personaggio. L'orientamento resta fisso, perché gli sprite sono piatti: con una camera che ruota liberamente perderebbero credibilità.
+Gli sprite sono **billboard pieni**: guardano sempre la camera, così i pixel restano quadrati a qualunque angolo. Per la profondità contano però come una sagoma verticale in piedi sul punto d'appoggio, perché la cima dello sprite inclinato non entri nei muri alle sue spalle; l'ombra la proietta una sagoma verticale rivolta al sole, non lo sprite inclinato.
 
-**Resta da definire:** Angolo, distanza e campo visivo esatti, da fissare con un prototipo. Se concedere piccole rotazioni in punti precisi.
+Il movimento libero richiede sprite in 8 direzioni. Ottavia e i personaggi asimmetrici si disegnano in tutte e 8, una per una, senza specchiarli; le creature simmetriche possono usarne 5 più 3 specchiate (36).
 
-## 51. Palette ufficiale  [Da definire]
+**Resta da definire:** Fotogrammi per animazione. Ottavia v1 ne usa 8 per l'attesa e 8 per la camminata.
 
-I colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione.
+## 50. Camera  [Definito]
+
+Camera prospettica che guarda la scena dall'alto e segue il personaggio. L'orientamento resta fisso, perché gli sprite sono piatti: con una camera che ruota liberamente perderebbero credibilità. Valori scelti con il prototipo visivo, per ora: **inclinazione 50°**, **distanza 20 metri** dal punto seguito, **campo visivo verticale 35°**.
+
+**Resta da definire:** Se concedere piccole rotazioni in punti precisi.
+
+## 51. Palette ufficiale  [Definito]
+
+Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre e colori virano al blu-viola, verso il Giorno al bianco e all'ocra. Con il Giorno a sinistra (48), una scena si scalda verso il bordo sinistro dello schermo e si raffredda verso il destro.
+
+**Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione.
 
 ## 52. Immagini di riferimento  [Da definire]
 
@@ -42,9 +52,9 @@ Quando la vegetazione vicina alla camera copre il personaggio, come nell'immagin
 
 ## 54. Regole per i modelli 3D  [Definito]
 
-I modelli di Meshy vanno semplificati (low-poly) e ridipinti con texture in pixel art a bassa risoluzione, senza sfumature (filtro nearest), come le foglie nell'immagine di riferimento.
+I modelli di Meshy vanno semplificati (low-poly) e ridipinti con texture in pixel art a bassa risoluzione, senza sfumature (filtro nearest), come le foglie nell'immagine di riferimento. Tutte le texture del mondo, cioè terreno, rocce, piante e modelli, hanno la stessa densità di pixel dei personaggi: 30 pixel per metro (49). La risoluzione di ogni texture si ricava da questa densità e dalla superficie del modello.
 
-**Resta da definire:** Limite di poligoni e risoluzione delle texture.
+**Resta da definire:** Limite di poligoni.
 
 ## 55. Interfaccia  [Da definire]
 

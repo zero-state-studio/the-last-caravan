@@ -7,14 +7,16 @@
 	"dof_far_offset": 3.0,
 	"dof_near_offset": 2.0,
 	"fog_density": 0.008,
+	"palette_strength": 1.0,
 	"player_position": [
 		-1.5,
 		0.0,
 		-3.0
 	],
-	"sprite_billboard_fixed_y": true,
-	"sprite_pixel_size": 0.038,
+	"sprite_billboard_fixed_y": false,
+	"sprite_pixel_size": 0.0333333333333333,
 	"sprite_shaded": false,
+	"sprite_upright_depth": true,
 	"sun_azimuth": 300.0,
 	"sun_color": [
 		1.0,
@@ -23,5 +25,5 @@
 	],
 	"sun_elevation": 14.0,
 	"sun_energy": 2.0,
-	"world_texels_per_meter": 26.0
+	"world_texels_per_meter": 30.0
 }

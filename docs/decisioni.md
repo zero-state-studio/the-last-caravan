@@ -53,3 +53,9 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Scenario: si usa il progetto esistente "Nessuno" (`proj_e3G6TyKNVH3TRmGEBhrB8Aym`).
 - Git: solo commit locali, niente push su `origin` se non richiesto.
 - Texture pixel art degli ambienti per la fase 1: Retro Diffusion Tile su Scenario (circa 10 CU a immagine).
+- Camera (50): prospettica, inclinata di 50°, a 20 m, campo visivo 35°, per ora.
+- Sprite (49): tela 64×64 di Ottavia v1, Ottavia alta 48 px, 30 pixel per metro; billboard pieno, con profondità e ombra da sagoma verticale.
+- Densità di pixel unica per tutte le texture del mondo: terreno, rocce, piante e modelli (54).
+- Palette (51): calda con accenti freddi legati al mondo; verso la Notte blu-viola, verso il Giorno bianco e ocra.
+- Direzione (48): il Giorno è fisso a ovest, a sinistra dello schermo, la Notte a destra; sole da sinistra e un po' dal lato della camera. Eccezioni: Linea d'Ombra (41), Ombra della Montagna (43), interni dei mezzi.
+- Scartati per la camera: 40° e 60° e la proiezione ortografica. Scartato per gli sprite: il billboard ad asse verticale fisso, perché schiaccia lo sprite e rende i pixel rettangolari.

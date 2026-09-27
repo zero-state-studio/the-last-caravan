@@ -20,3 +20,5 @@ DEV_FOG_DENSITY,Fog density,Densità della foschia
 DEV_SAVE,Save settings and screenshot,Salva impostazioni e screenshot
 DEV_SAVED,Saved: {file},Salvato: {file}
 DEV_FPS,{fps} FPS,{fps} FPS
+DEV_SPRITE_UPRIGHT_DEPTH,Sprite depth from an upright quad,Profondità dello sprite come se fosse verticale
+DEV_PALETTE_STRENGTH,Day/Night color drift,Viraggio dei colori Giorno/Notte

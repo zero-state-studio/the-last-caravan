@@ -67,21 +67,24 @@ func _test_translations() -> void:
 
 
 func _test_facing() -> void:
-	var south: Facing.Cardinal = Facing.Cardinal.SOUTH
-	var north: Facing.Cardinal = Facing.Cardinal.NORTH
-	var east: Facing.Cardinal = Facing.Cardinal.EAST
-	var west: Facing.Cardinal = Facing.Cardinal.WEST
-	_check(Facing.nearest_cardinal(Vector2.ZERO, north) == north, "facing: no input keeps the view")
-	_check(Facing.nearest_cardinal(Vector2(0, 1), north) == south, "facing: down is south")
-	_check(Facing.nearest_cardinal(Vector2(0, -1), south) == north, "facing: up is north")
-	_check(Facing.nearest_cardinal(Vector2(1, 0), south) == east, "facing: right is east")
-	_check(Facing.nearest_cardinal(Vector2(-1, 0), south) == west, "facing: left is west")
-	_check(Facing.nearest_cardinal(Vector2(0.9, 0.3), north) == east, "facing: mostly right is east")
-	_check(Facing.nearest_cardinal(Vector2(0.3, -0.9), east) == north, "facing: mostly up is north")
-	var diagonal: Vector2 = Vector2(1, 1).normalized()
-	_check(Facing.nearest_cardinal(diagonal, south) == south, "facing: diagonal keeps a matching view")
-	_check(Facing.nearest_cardinal(diagonal, east) == east, "facing: diagonal keeps the other matching view")
-	_check(Facing.nearest_cardinal(diagonal, north) == east, "facing: diagonal from a non-matching view picks east/west")
+	var cases: Array[Array] = [
+		[Vector2(0, 1), Facing.Direction.SOUTH],
+		[Vector2(1, 1), Facing.Direction.SOUTH_EAST],
+		[Vector2(1, 0), Facing.Direction.EAST],
+		[Vector2(1, -1), Facing.Direction.NORTH_EAST],
+		[Vector2(0, -1), Facing.Direction.NORTH],
+		[Vector2(-1, -1), Facing.Direction.NORTH_WEST],
+		[Vector2(-1, 0), Facing.Direction.WEST],
+		[Vector2(-1, 1), Facing.Direction.SOUTH_WEST],
+		[Vector2(0.9, 0.2), Facing.Direction.EAST],
+		[Vector2(0.2, -0.9), Facing.Direction.NORTH],
+	]
+	for test_case: Array in cases:
+		var input: Vector2 = test_case[0]
+		var expected: Facing.Direction = test_case[1]
+		var got: Facing.Direction = Facing.nearest_direction(input.normalized(), Facing.Direction.SOUTH)
+		_check(got == expected, "facing: %s gives %d (got %d)" % [input, expected, got])
+	_check(Facing.nearest_direction(Vector2.ZERO, Facing.Direction.WEST) == Facing.Direction.WEST, "facing: no input keeps the view")
 
 
 func _test_proto_settings() -> void:

@@ -1,25 +1,20 @@
 class_name Facing
 extends RefCounted
-## Chooses the sprite view for a movement direction.
-## Phase 1 prototype (19, 49): the test sheet has only the four cardinal views,
-## so diagonals fall back to the nearest cardinal one.
+## Chooses the sprite view for a movement direction (19, 49).
+## Views follow the row order of the Ottavia v1 sheet:
+## south, south-east, east, north-east, north, north-west, west, south-west.
 
-enum Cardinal { SOUTH, EAST, NORTH, WEST }
+enum Direction { SOUTH, SOUTH_EAST, EAST, NORTH_EAST, NORTH, NORTH_WEST, WEST, SOUTH_WEST }
+
+const DIRECTION_COUNT: int = 8
 
 
-## Returns the cardinal view for a screen-space input vector
+## Returns the nearest of the eight views for a screen-space input vector
 ## (x: right positive, y: down positive, as returned by Input.get_vector).
-## On an exact diagonal the current view is kept when it matches one of the
-## two components, so the sprite does not flicker; otherwise east/west wins.
-static func nearest_cardinal(direction: Vector2, current: Cardinal) -> Cardinal:
-	if direction.is_zero_approx():
+## No input keeps the current view.
+static func nearest_direction(input: Vector2, current: Direction) -> Direction:
+	if input.is_zero_approx():
 		return current
-	var horizontal: Cardinal = Cardinal.EAST if direction.x > 0.0 else Cardinal.WEST
-	var vertical: Cardinal = Cardinal.SOUTH if direction.y > 0.0 else Cardinal.NORTH
-	var ax: float = absf(direction.x)
-	var ay: float = absf(direction.y)
-	if is_equal_approx(ax, ay):
-		if current == horizontal or current == vertical:
-			return current
-		return horizontal
-	return horizontal if ax > ay else vertical
+	# atan2(x, y) is 0 for south and grows clockwise on screen: east is +90 degrees.
+	var octant: int = roundi(atan2(input.x, input.y) / (TAU / DIRECTION_COUNT))
+	return posmod(octant, DIRECTION_COUNT) as Direction

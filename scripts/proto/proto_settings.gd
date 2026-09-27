@@ -13,10 +13,14 @@ var dof_near_offset: float = 2.0
 var dof_far_offset: float = 3.0
 var dof_amount: float = 0.2
 # Sprites (49)
-var sprite_pixel_size: float = 0.038
-var sprite_billboard_fixed_y: bool = true
+# Ottavia v1 body is 48 px for about 1.6 m: 30 px per meter everywhere (49, 54).
+var sprite_pixel_size: float = 1.0 / 30.0
+var sprite_billboard_fixed_y: bool = false
+var sprite_upright_depth: bool = true
 var sprite_shaded: bool = false
-var world_texels_per_meter: float = 26.0
+var world_texels_per_meter: float = 30.0
+# World palette (51): drift toward the Day (west) and the Night (east).
+var palette_strength: float = 1.0
 # Light (48)
 var sun_elevation: float = 14.0
 var sun_azimuth: float = 300.0

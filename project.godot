@@ -87,9 +87,25 @@ textures/canvas_textures/default_texture_filter=0
 
 world_texels_per_meter={
 "type": "float",
-"value": 26.0
+"value": 30.0
 }
 player_position={
 "type": "vec3",
 "value": Vector3(0, 0, 0)
+}
+palette_day_tint={
+"type": "vec4",
+"value": Vector4(1.12, 1.04, 0.86, 1)
+}
+palette_night_tint={
+"type": "vec4",
+"value": Vector4(0.72, 0.74, 1.05, 1)
+}
+palette_gradient_width={
+"type": "float",
+"value": 15.0
+}
+palette_strength={
+"type": "float",
+"value": 1.0
 }

@@ -22,6 +22,8 @@ var tuning_panel: TuningPanel
 var _perf_seconds: float = 0.0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
+var _perf_gpu_times: PackedFloat32Array = []
+var _perf_cpu_times: PackedFloat32Array = []
 
 
 func _ready() -> void:
@@ -48,6 +50,8 @@ func _ready() -> void:
 	tuning_panel.save_requested.connect(_save_capture)
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		# Render times do not depend on vsync, which macOS may enforce anyway.
+		RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
 
 
 func _process(delta: float) -> void:
@@ -67,8 +71,15 @@ func apply_settings() -> void:
 	camera_rig.apply()
 	ottavia.set_pixel_size(settings.sprite_pixel_size)
 	ottavia.set_billboard_fixed_y(settings.sprite_billboard_fixed_y)
+	ottavia.set_upright_depth(settings.sprite_upright_depth)
 	ottavia.set_shaded(settings.sprite_shaded)
+	ottavia.set_sun_azimuth(settings.sun_azimuth)
 	RenderingServer.global_shader_parameter_set(&"world_texels_per_meter", settings.world_texels_per_meter)
+	RenderingServer.global_shader_parameter_set(&"palette_strength", settings.palette_strength)
+	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
+		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
+	# The light points along its -Z: at azimuth A the sun sits toward
+	# (sin A, 0, cos A); 300 degrees puts it west-south-west, on the Day side.
 	sun.rotation_degrees = Vector3(-settings.sun_elevation, settings.sun_azimuth, 0.0)
 	sun.light_color = settings.sun_color
 	sun.light_energy = settings.sun_energy
@@ -103,6 +114,9 @@ func _measure_performance(delta: float) -> void:
 	if _perf_elapsed < PERF_WARMUP_SECONDS:
 		return
 	_perf_frame_times.append(delta * 1000.0)
+	var viewport_rid: RID = get_viewport().get_viewport_rid()
+	_perf_gpu_times.append(RenderingServer.viewport_get_measured_render_time_gpu(viewport_rid))
+	_perf_cpu_times.append(RenderingServer.viewport_get_measured_render_time_cpu(viewport_rid))
 	if _perf_elapsed < PERF_WARMUP_SECONDS + _perf_seconds:
 		return
 	var sorted: PackedFloat32Array = _perf_frame_times.duplicate()
@@ -113,6 +127,14 @@ func _measure_performance(delta: float) -> void:
 	var average: float = total / sorted.size()
 	var p95: float = sorted[int(sorted.size() * 0.95)]
 	var size: Vector2i = get_viewport().get_visible_rect().size
-	print("PERF frames=%d avg_ms=%.2f avg_fps=%.1f p95_ms=%.2f max_ms=%.2f viewport=%dx%d" % [
-		sorted.size(), average, 1000.0 / average, p95, sorted[sorted.size() - 1], size.x, size.y])
+	print("PERF frames=%d avg_ms=%.2f avg_fps=%.1f p95_ms=%.2f max_ms=%.2f gpu_ms=%.2f cpu_ms=%.2f viewport=%dx%d" % [
+		sorted.size(), average, 1000.0 / average, p95, sorted[sorted.size() - 1],
+		_average(_perf_gpu_times), _average(_perf_cpu_times), size.x, size.y])
 	get_tree().quit()
+
+
+func _average(values: PackedFloat32Array) -> float:
+	var total: float = 0.0
+	for value: float in values:
+		total += value
+	return total / maxf(1.0, values.size())
