@@ -101,6 +101,14 @@ palette_night_tint={
 "type": "vec4",
 "value": Vector4(0.72, 0.74, 1.05, 1)
 }
+palette_zone_proximity={
+"type": "float",
+"value": 0.0
+}
+palette_zone_center_x={
+"type": "float",
+"value": 0.0
+}
 palette_gradient_width={
 "type": "float",
 "value": 15.0

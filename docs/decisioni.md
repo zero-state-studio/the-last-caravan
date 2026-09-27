@@ -59,3 +59,7 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Palette (51): calda con accenti freddi legati al mondo; verso la Notte blu-viola, verso il Giorno bianco e ocra.
 - Direzione (48): il Giorno è fisso a ovest, a sinistra dello schermo, la Notte a destra; sole da sinistra e un po' dal lato della camera. Eccezioni: Linea d'Ombra (41), Ombra della Montagna (43), interni dei mezzi.
 - Scartati per la camera: 40° e 60° e la proiezione ortografica. Scartato per gli sprite: il billboard ad asse verticale fisso, perché schiaccia lo sprite e rende i pixel rettangolari.
+- Palette (51): il freddo viene soprattutto dalla luce (ombre e luce ambientale del cielo verso il blu-viola); intensità del viraggio 1 per ora, da rivedere in fase 2.
+- Viraggio della palette calcolato sulla posizione nel mondo: valore di vicinanza alla Notte o al Giorno per zona (16) più gradiente lungo l'asse ovest-est dentro la zona; niente cambia colore con la camera.
+- Virano ambiente e modelli 3D; personaggi e creature tengono i colori disegnati ma ricevono la luce della scena, ombre fredde comprese; l'interfaccia non vira mai.
+- Fase 1 approvata; fase corrente: 2.

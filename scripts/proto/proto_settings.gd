@@ -17,7 +17,8 @@ var dof_amount: float = 0.2
 var sprite_pixel_size: float = 1.0 / 30.0
 var sprite_billboard_fixed_y: bool = false
 var sprite_upright_depth: bool = true
-var sprite_shaded: bool = false
+# Characters keep their drawn colors but receive the scene light (51).
+var sprite_shaded: bool = true
 var world_texels_per_meter: float = 30.0
 # World palette (51): drift toward the Day (west) and the Night (east).
 var palette_strength: float = 1.0

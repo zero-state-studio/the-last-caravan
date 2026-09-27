@@ -3,12 +3,17 @@
 // camera angle) but writes the depth of an upright quad standing on the
 // feet, so the top of the leaning sprite never sinks into walls behind it.
 // Shadows come from a separate upright proxy, not from this quad.
+// Lighting (lit variant) is sampled at one point for the whole sprite, so it
+// is lit or shaded as a block; the point sits a little toward the sun so the
+// shadow proxy never shades the sprite itself.
 
 uniform sampler2D sprite_texture : source_color, filter_nearest;
 // false: upright quad facing the camera yaw (fixed vertical axis).
 uniform bool full_billboard = true;
 // false: plain depth of the drawn quad (for comparison only).
 uniform bool upright_depth = true;
+// World offset from the sprite origin of the lighting sample point.
+uniform vec3 light_sample_offset = vec3(0.0, 0.9, 0.0);
 
 varying vec4 upright_clip;
 
@@ -21,6 +26,8 @@ void vertex() {
 	vec3 world = full_billboard ? facing : upright;
 	POSITION = PROJECTION_MATRIX * VIEW_MATRIX * vec4(world, 1.0);
 	upright_clip = PROJECTION_MATRIX * VIEW_MATRIX * vec4(upright_depth ? upright : world, 1.0);
+	// VERTEX only feeds lighting, shadows and fog here (POSITION is set above).
+	VERTEX = (inverse(MODEL_MATRIX) * vec4(origin + light_sample_offset, 1.0)).xyz;
 }
 
 void fragment() {

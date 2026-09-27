@@ -15,6 +15,7 @@ const CAPTURE_DIR: String = "res://docs/screenshots"
 @onready var camera_rig: FollowCameraRig = $CameraRig
 @onready var sun: DirectionalLight3D = $Sun
 @onready var world_environment: WorldEnvironment = $WorldEnvironment
+@onready var zone_palette: ZonePalette = $ZonePalette
 
 var settings: ProtoSettings = ProtoSettings.new()
 var tuning_panel: TuningPanel
@@ -40,6 +41,7 @@ func _ready() -> void:
 	if error != OK and error != ERR_FILE_NOT_FOUND:
 		push_warning("Cannot read settings %s (error %d)" % [settings_path, error])
 	ottavia.global_position = settings.player_position
+	ZonePalette.retint_models($Props)
 	camera_rig.target = ottavia
 	apply_settings()
 	camera_rig.snap_to_target()
@@ -75,7 +77,8 @@ func apply_settings() -> void:
 	ottavia.set_shaded(settings.sprite_shaded)
 	ottavia.set_sun_azimuth(settings.sun_azimuth)
 	RenderingServer.global_shader_parameter_set(&"world_texels_per_meter", settings.world_texels_per_meter)
-	RenderingServer.global_shader_parameter_set(&"palette_strength", settings.palette_strength)
+	zone_palette.strength = settings.palette_strength
+	zone_palette.apply()
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
 	# The light points along its -Z: at azimuth A the sun sits toward

@@ -15,7 +15,7 @@
 	],
 	"sprite_billboard_fixed_y": false,
 	"sprite_pixel_size": 0.0333333333333333,
-	"sprite_shaded": false,
+	"sprite_shaded": true,
 	"sprite_upright_depth": true,
 	"sun_azimuth": 300.0,
 	"sun_color": [

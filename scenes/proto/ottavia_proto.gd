@@ -8,6 +8,9 @@ const FRAMES_PER_ROW: int = 8
 const WALK_ROW_OFFSET: int = 8
 const IDLE_FRAME_TIME: float = 0.16
 const WALK_FRAME_TIME: float = 0.1
+## Where the lit sprite samples light and shadow: chest height, a bit toward the sun.
+const LIGHT_SAMPLE_HEIGHT: float = 0.9
+const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
 const UNSHADED_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_unshaded.gdshader")
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
 
@@ -68,8 +71,12 @@ func set_shaded(shaded: bool) -> void:
 
 
 ## The shadow proxy faces the sun horizontally; see diorama.gd for the angle.
+## The lighting sample point moves toward the sun, in front of the proxy.
 func set_sun_azimuth(degrees: float) -> void:
-	shadow_proxy.global_rotation = Vector3(0.0, deg_to_rad(degrees), 0.0)
+	var azimuth: float = deg_to_rad(degrees)
+	shadow_proxy.global_rotation = Vector3(0.0, azimuth, 0.0)
+	var toward_sun: Vector3 = Vector3(sin(azimuth), 0.0, cos(azimuth))
+	_material.set_shader_parameter(&"light_sample_offset", Vector3.UP * LIGHT_SAMPLE_HEIGHT + toward_sun * LIGHT_SAMPLE_TOWARD_SUN)
 
 
 func _animate(delta: float, moving: bool) -> void:

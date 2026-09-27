@@ -21,6 +21,7 @@ func _initialize() -> void:
 	_test_translations()
 	_test_facing()
 	_test_proto_settings()
+	_test_zone_palette_models()
 	_test_load_all_resources()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
@@ -99,6 +100,18 @@ func _test_proto_settings() -> void:
 	_check(copy.camera_orthographic, "settings: bool survives JSON")
 	_check(copy.sun_color.is_equal_approx(Color(0.25, 0.5, 0.75)), "settings: color survives JSON")
 	_check(copy.player_position.is_equal_approx(Vector3(1, 2, 3)), "settings: vector survives JSON")
+
+
+func _test_zone_palette_models() -> void:
+	var model: Node = (load("res://assets/models/proto/boulder.glb") as PackedScene).instantiate()
+	ZonePalette.retint_models(model)
+	var converted: int = 0
+	for node: Node in model.find_children("*", "MeshInstance3D", true, false):
+		var material: ShaderMaterial = (node as MeshInstance3D).get_surface_override_material(0) as ShaderMaterial
+		if material != null and material.shader == ZonePalette.MODEL_SHADER and material.get_shader_parameter(&"albedo_texture") != null:
+			converted += 1
+	_check(converted > 0, "zone palette: imported models get the palette shader with their texture")
+	model.free()
 
 
 func _test_load_all_resources() -> void:

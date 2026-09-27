@@ -38,9 +38,13 @@ Camera prospettica che guarda la scena dall'alto e segue il personaggio. L'orien
 
 ## 51. Palette ufficiale  [Definito]
 
-Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre e colori virano al blu-viola, verso il Giorno al bianco e all'ocra. Con il Giorno a sinistra (48), una scena si scalda verso il bordo sinistro dello schermo e si raffredda verso il destro.
+Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre e colori virano al blu-viola, verso il Giorno al bianco e all'ocra.
 
-**Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione.
+- Il freddo viene soprattutto dalla luce: il colore delle ombre e la luce ambientale del cielo tendono al blu-viola.
+- Il viraggio dipende solo dalla posizione nel mondo, mai dalla camera. Ogni zona ha un valore di vicinanza alla Notte o al Giorno (vedi 16), e dentro la zona il viraggio cresce lungo l'asse ovest-est del mondo, con il Giorno a ovest (48). Nessun oggetto cambia colore quando la camera si muove.
+- Virano l'ambiente e i suoi modelli 3D. Personaggi e creature mantengono i colori disegnati, per riconoscibilità e leggibilità in combattimento, ma ricevono la luce della scena, ombre fredde comprese. L'interfaccia non vira mai.
+
+**Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione. L'intensità del viraggio (per ora 1 nel prototipo), da rivedere nella fase 2 con le texture vere.
 
 ## 52. Immagini di riferimento  [Da definire]
 

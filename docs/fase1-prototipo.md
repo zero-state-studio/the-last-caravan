@@ -17,7 +17,7 @@ Stato al 27 settembre 2026. Serviva a scegliere, guardando, camera (50), misure 
 - Modelli Meshy (54): cassa, roccia, albero storto; 350-669 triangoli, texture ridotte a 24 colori con `tools/meshy_pixelize.py --texels-per-meter 30` (124, 120 e 276 px, ricavati dalla superficie). Non hanno collisioni.
 - Primo piano (53): 3 piante PixelLab su quad rivolti alla camera fissa. Quando stanno tra la camera e Ottavia si aprono attorno a lei con un retino (dithering 4×4) nello spazio della texture: niente trasparenze da ordinare, la grana dei pixel resta.
 - Luce (48): sole a 14° di altezza da ovest-sudovest (il Giorno è a sinistra), colore #FFB873, ombre lunghe, luce ambiente fredda (tono lilla-blu) per le ombre, bagliore, foschia volumetrica leggera, prospettiva aerea, SSAO.
-- Palette (51): terreno e piante virano verso bianco e ocra a ovest (Giorno) e verso il blu-viola a est (Notte), per ora con un gradiente lungo l'asse est-ovest della scena (piena intensità a 15 m dal centro, regolabile dal pannello). I modelli Meshy e Ottavia non virano.
+- Palette (51): `ZonePalette` (`scripts/world/zone_palette.gd`) dà alla zona un valore di vicinanza alla Notte o al Giorno (qui 0, centro del Crepuscolo) e un gradiente lungo l'asse ovest-est del mondo (un passo pieno a 15 m dal centro). Virano terreno, piante e modelli Meshy; Ottavia no, ma è illuminata dalla scena (luce e ombre calcolate in un solo punto, al petto, spostato verso il sole). Luce ambientale e cielo tendono al blu-viola, e da lì viene il freddo delle ombre.
 
 ## Le combinazioni consegnate
 
@@ -28,7 +28,7 @@ Rifatte dopo le scelte dell'autore. Valori comuni:
 | Distanza camera | 20 m dal punto di fuoco (petto di Ottavia) |
 | Campo visivo | 35° verticali, prospettica |
 | Sfocatura | vicina fino a 2 m prima del fuoco, lontana da 3 m dopo; intensità 0,2 |
-| Sprite | Ottavia v1, 1/30 m per pixel, billboard pieno con profondità verticale, non illuminato |
+| Sprite | Ottavia v1, 1/30 m per pixel, billboard pieno con profondità verticale, illuminata dalla scena |
 | Mondo | 30 pixel per metro |
 | Sole | altezza 14°, direzione 300° (da ovest-sudovest), intensità 2, colore (1,0; 0,72; 0,45) |
 | Foschia volumetrica | densità 0,008 |
@@ -42,6 +42,7 @@ Rifatte dopo le scelte dell'autore. Valori comuni:
 
 Altri screenshot:
 - `screenshots/2026-09-27-fase1-billboard-muro.png`: Ottavia appoggiata al muro della terrazza. Con la profondità del quad inclinato sparisce nel muro e restano solo i piedi; con la profondità verticale si vede intera.
+- `screenshots/2026-09-27-fase1-luce-ottavia.png`: Ottavia al sole (toni caldi) e all'ombra del muro (tutta blu-viola, senza tagli).
 - `screenshots/2026-09-27-fase1-ombra.png`: l'ombra di Ottavia al sole è la sua sagoma verticale, lunga verso est (la Notte), e si piega sul muretto.
 - `screenshots/2026-09-27-fase1-billboard-confronto.png` (prima prova, foglio di prova): billboard ad asse verticale fisso contro billboard pieno a 40° e 60°.
 - `screenshots/2026-09-27-fase1-pannello.png`: il pannello F1.
@@ -76,3 +77,5 @@ Configurazione scelta (camera a 50°, Ottavia v1, profondità verticale e ombra 
 4. Tela 64×64 di Ottavia v1; 30 pixel per metro per tutte le texture del mondo (49, 54).
 5. Palette calda con accenti freddi legati al mondo: verso la Notte blu-viola, verso il Giorno bianco e ocra (51).
 6. Il Giorno è fisso a ovest (sinistra dello schermo), la Notte a destra; sole da sinistra e un po' dal lato della camera. Eccezioni: 41, 43, interni dei mezzi (48).
+
+Seconda risposta (27 settembre 2026): intensità del viraggio 1; freddo dalla luce (ombre e cielo blu-viola); viraggio per zona più gradiente ovest-est nel mondo; virano i modelli 3D, non personaggi, creature e interfaccia; fase 1 approvata.

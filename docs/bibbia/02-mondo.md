@@ -40,7 +40,7 @@ Chi non riesce più a tenere il passo viene lasciato indietro con una lanterna e
 
 ## 16. Le fasce intermedie  [Definito]
 
-Tra il centro del Crepuscolo e i due estremi ci sono territori dove un avventuriero può spingersi. La loro larghezza si definisce dungeon per dungeon, in base a quanto la zona dell'episodio è vicina alla Notte o al Giorno; la fauna di ogni fascia è quella del bestiario. Sono la base del secondo capitolo.
+Tra il centro del Crepuscolo e i due estremi ci sono territori dove un avventuriero può spingersi. La loro larghezza si definisce dungeon per dungeon, in base a quanto la zona dell'episodio è vicina alla Notte o al Giorno; la fauna di ogni fascia è quella del bestiario. Sono la base del secondo capitolo. Ogni zona ha quindi un valore di vicinanza alla Notte o al Giorno, che guida anche il viraggio della palette (51).
 
 ## 17. La società della carovana  [Definito]
 
