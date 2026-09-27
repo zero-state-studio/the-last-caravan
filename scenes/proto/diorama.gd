@@ -12,6 +12,10 @@ extends Node3D
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
 ##   autocombat=1          fight the training dummy with a fixed sequence (captures)
+##   autofight=herd|sparti a bot fights the Voltafaccia herd or the Vecchio
+##                         Spartighiaccio, prints the result and quits
+##                         (videos and measures, phase 3 step 7)
+##   autofight_error=0.15  the bot's parries and steps come up to 0.15 s off
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
@@ -58,6 +62,7 @@ var _base_ambient_color: Color
 var _autowalk_elapsed: float = 0.0
 var _autocombat_time: float = -1.0
 var _autocombat_next: int = 0
+var _autofight_error: float = 0.0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
 var _perf_gpu_times: PackedFloat32Array = []
@@ -87,6 +92,10 @@ func _ready() -> void:
 			_autocombat_time = 0.0
 		elif argument == "autowalk=1":
 			_autowalk_step = 0
+		elif argument.begins_with("autofight="):
+			_start_autofight.call_deferred(argument.trim_prefix("autofight="))
+		elif argument.begins_with("autofight_error="):
+			_autofight_error = argument.trim_prefix("autofight_error=").to_float()
 		elif argument.begins_with("lantern_shadows="):
 			ottavia.force_lantern_shadows(argument.trim_prefix("lantern_shadows=").to_int())
 	var error: Error = settings.load_json(settings_path)
@@ -269,6 +278,52 @@ func _autocombat(delta: float) -> void:
 		else:
 			ottavia.combat.release(event["release"])
 		_autocombat_next += 1
+
+
+## Same fight at any chapter: the bot against the three Voltafaccia of the
+## meadow or the boss of the pond, Enea left out; a caption shows the chapter.
+func _start_autofight(fight: String) -> void:
+	var enea: Node3D = get_node(^"Enea")
+	enea.remove_from_group(&"fighters")
+	enea.process_mode = Node.PROCESS_MODE_DISABLED
+	enea.visible = false
+	var bot: AutoFighter = AutoFighter.new()
+	bot.ottavia = ottavia
+	bot.timing_error = _autofight_error
+	if fight == "sparti":
+		await ($RoomManager as RoomManager).travel(&"lago_ghiaccio", &"da_sentiero")
+		var arena: Node3D = get_node(^"PondArena")
+		bot.targets.append(arena.get_node(^"Spartighiaccio"))
+		bot.home = arena.global_position
+		bot.home_radius = 4.5
+		ottavia.global_position = arena.global_position + Vector3(-1.5, 0.05, 1.0)
+	else:
+		for node: Node in get_node(^"Creatures").get_children():
+			if node is Voltafaccia:
+				bot.targets.append(node)
+	add_child(bot)
+	var layer: CanvasLayer = CanvasLayer.new()
+	var caption: Label = Label.new()
+	caption.text = tr(&"DEV_VIDEO_CHAPTER").format({"n": ottavia.combat.chapter})
+	caption.add_theme_font_size_override(&"font_size", 28)
+	caption.add_theme_color_override(&"font_color", Color(1.0, 0.85, 0.55))
+	caption.add_theme_color_override(&"font_outline_color", Color(0.1, 0.07, 0.12))
+	caption.add_theme_constant_override(&"outline_size", 6)
+	caption.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_MINSIZE, 24)
+	caption.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	layer.add_child(caption)
+	add_child(layer)
+	bot.finished.connect(func(seconds: float, health_left: float, defeats: int) -> void:
+		print("AUTOFIGHT fight=%s error=%.2f chapter=%d difficulty=%d seconds=%.1f health=%.0f/%.0f defeats=%d" % [
+			fight, _autofight_error, ottavia.combat.chapter, GameOptions.difficulty, seconds, health_left, ottavia.max_health, defeats])
+		get_tree().create_timer(2.0).timeout.connect(_quit_clean))
+
+
+## Frees the scene before quitting, so no sound is left playing (leaks).
+func _quit_clean() -> void:
+	var tree: SceneTree = get_tree()
+	queue_free()
+	tree.create_timer(0.3, true, false, true).timeout.connect(tree.quit)
 
 
 ## Ends the current chapter (34): Ottavia moves to the next one and the

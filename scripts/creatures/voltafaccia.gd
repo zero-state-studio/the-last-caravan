@@ -43,6 +43,16 @@ func is_exposed() -> bool:
 	return phase == Phase.EXPOSED or super.is_exposed()
 
 
+func weak_side(_from: Vector3) -> Vector3:
+	return shaded_side()
+
+
+func attack_in() -> float:
+	if phase == Phase.WINDUP:
+		return maxf(0.0, creature.voltafaccia_windup * Difficulty.telegraph() - _time)
+	return INF
+
+
 func _behave(delta: float) -> void:
 	_time += delta
 	var player: OttaviaProto = find_player()

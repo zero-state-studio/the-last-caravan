@@ -41,6 +41,36 @@ func damage_multiplier(hit: CombatHit) -> float:
 	return 1.0
 
 
+func attack_in() -> float:
+	if phase == Phase.AIM:
+		return maxf(0.0, creature.sparti_aim_seconds * Difficulty.telegraph() - _time)
+	if phase == Phase.STOMP:
+		return maxf(0.0, creature.sparti_stomp_telegraph * Difficulty.telegraph() - _time)
+	return INF
+
+
+## Neither the charge nor the stomp can be deflected.
+func attack_deflectable() -> bool:
+	return false
+
+
+## Off the charge line, sideways; away from the stomp.
+func dodge_direction(from: Vector3) -> Vector3:
+	if phase == Phase.AIM:
+		return _flank(from)
+	return flat_direction_to(from)
+
+
+## The flanks, never the shielded front.
+func weak_side(from: Vector3) -> Vector3:
+	return _flank(from)
+
+
+func _flank(from: Vector3) -> Vector3:
+	var side: Vector3 = facing.cross(Vector3.UP).normalized()
+	return side if side.dot(from - global_position) >= 0.0 else -side
+
+
 func _behave(delta: float) -> void:
 	_time += delta
 	velocity = Vector3.ZERO

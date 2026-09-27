@@ -207,6 +207,28 @@ func find_target() -> Node3D:
 	return best
 
 
+## Seconds until the telegraphed attack lands, INF when none is coming
+## (read by the bot of the videos and by tests).
+func attack_in() -> float:
+	return INF
+
+
+## Whether the coming attack can be deflected; if not, it must be dodged.
+func attack_deflectable() -> bool:
+	return true
+
+
+## Which way to step to dodge the coming attack, for a fighter at `from`.
+func dodge_direction(from: Vector3) -> Vector3:
+	return flat_direction_to(from)
+
+
+## From which side the creature is best struck: the direction from the
+## creature toward the spot to attack from, for a fighter at `from`.
+func weak_side(from: Vector3) -> Vector3:
+	return flat_direction_to(from)
+
+
 ## Bosses go for Ottavia only.
 func targets_companions() -> bool:
 	return true
