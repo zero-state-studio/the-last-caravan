@@ -51,6 +51,7 @@ Camera prospettica che guarda la scena dall'alto e segue il personaggio. L'orien
 Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre e colori virano al blu-viola, verso il Giorno al bianco e all'ocra.
 
 - Il freddo viene soprattutto dalla luce: il colore delle ombre e la luce ambientale del cielo tendono al blu-viola.
+- Il valore della zona sposta anche la luce: verso la Notte il sole diventa più freddo, più debole e più basso e la luce del cielo più blu; verso il Giorno il sole diventa più bianco e un po' più alto. Dipende solo dal valore della zona, mai dalla posizione della camera.
 - Il viraggio dipende solo dalla posizione nel mondo, mai dalla camera. Ogni zona ha un valore di vicinanza alla Notte o al Giorno (vedi 16), e dentro la zona il viraggio cresce lungo l'asse ovest-est del mondo, con il Giorno a ovest (100). Nessun oggetto cambia colore quando la camera si muove.
 - Virano l'ambiente e i suoi modelli 3D. Personaggi e creature mantengono i colori disegnati, per riconoscibilità e leggibilità in combattimento, ma ricevono la luce della scena, ombre fredde comprese. L'interfaccia non vira mai.
 - Due palette di base: la v1 (32 colori) per personaggi, creature e interfaccia; la v2 degli ambienti (64 colori: la v1 più toni intermedi e alcune varianti di tinta) per terreno, rocce, piante e modelli 3D, così ogni materiale ha più sfumature.
@@ -69,9 +70,9 @@ Quando la vegetazione vicina alla camera copre il personaggio, come nell'immagin
 
 I modelli di Meshy vanno semplificati (low-poly) e ridipinti con texture in pixel art a bassa risoluzione, senza sfumature (filtro nearest), come le foglie nell'immagine di riferimento. Tutte le texture del mondo, cioè terreno, rocce, piante e modelli, hanno la stessa densità di pixel dei personaggi: 30 pixel per metro (49). La risoluzione di ogni texture si ricava da questa densità e dalla superficie del modello.
 
-**Resta da definire:** Limite di poligoni.
+Limiti di triangoli per tipo di elemento: albero 1000, alberello 600, cespuglio 600, cespuglio secco circa 1000, tronco caduto 1000, ceppo 400, roccia grande 600, gruppo di sassi 400, ciuffo a piani incrociati 4 (2 piani). I tipi nuovi si aggiungono a questa lista quando vengono fatti.
 
-## 101. Kit di vegetazione 3D  [In discussione]
+## 101. Kit di vegetazione 3D  [Definito]
 
 Vegetazione in vera geometria 3D con texture pixel art, fittissima e su più strati. Kit di 10-15 elementi (alberi, cespugli, felci, ciuffi d'erba, rocce), fatti con Meshy semplificato e con piani incrociati per l'erba, tutti alla stessa densità di pixel e distribuiti con MultiMesh. Le piante crescono piegate verso il Giorno, cioè verso ovest. Si costruisce al passo 4 della fase 2.
 

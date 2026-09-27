@@ -72,3 +72,7 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Palette (51): palette v2 per gli ambienti, 64 colori (la v1 più 25 toni intermedi e 7 varianti di tinta), in `assets/palette/palette_v2_env.*`, generata da `tools/palette_v2.py`. Personaggi, creature e interfaccia restano sulla v1.
 - Densità (54): prima di decidere tra 30 px/m per tutto e 60 px/m per le texture degli ambienti, prova delle due nel diorama con le texture esistenti (`docs/screenshots/2026-09-27-fase2-densita-*.png`). Scelta in attesa.
 - Densità (54): confermati 30 px/m per tutto, anche per gli ambienti. La ricchezza viene da palette v2, micro-dettaglio, geometria e luce. Scartati 60 px/m (sotto il pixel dello schermo a 1280×800, sfarfallio) e la camera più vicina. Passo 4, primo giro approvato.
+- Fase 2 approvata; fase corrente: 3.
+- Luce di zona (51): il valore della zona sposta anche la luce (verso la Notte sole più freddo, debole e basso, cielo più blu; verso il Giorno sole più bianco e più alto), solo in base al valore della zona e mai alla camera. Scelta al posto di alzare l'intensità del viraggio.
+- Limiti di triangoli (54) approvati per tipo di elemento; kit di vegetazione (101) Definito.
+- Terreno: tinta ocra-oliva sulla faccia superiore di terreno e terrazza.

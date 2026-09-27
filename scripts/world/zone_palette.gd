@@ -9,6 +9,20 @@ extends Node
 
 const MODEL_SHADER: Shader = preload("res://scenes/proto/materials/model_palette.gdshader")
 
+# Light of the zone (51): the cold comes above all from the light. Toward the
+# Night the sun turns colder, weaker and lower and the sky light bluer; toward
+# the Day the sun turns whiter and a little higher. It depends only on the
+# zone value (16), never on Ottavia's or the camera's position, so nothing
+# changes color while the camera moves. Values at the edges (+-1):
+const NIGHT_SUN_TINT: Color = Color(0.62, 0.7, 1.0)
+const DAY_SUN_TINT: Color = Color(1.0, 1.1, 1.25)
+const NIGHT_SUN_ENERGY_SCALE: float = 0.55
+const DAY_SUN_ENERGY_SCALE: float = 1.1
+const NIGHT_SUN_ELEVATION_SCALE: float = 0.5
+const DAY_SUN_ELEVATION_SCALE: float = 1.3
+const NIGHT_AMBIENT: Color = Color(0.28, 0.3, 0.9)
+const DAY_AMBIENT: Color = Color(0.75, 0.68, 0.72)
+
 ## -1 = at the edge of the Day, 0 = middle of the Twilight, +1 = edge of the Night.
 @export_range(-1.0, 1.0, 0.05) var night_proximity: float = 0.0
 ## World X of the zone center (the gradient is 0 here).
@@ -51,3 +65,32 @@ static func palette_material(original: Material) -> ShaderMaterial:
 	material.shader = MODEL_SHADER
 	material.set_shader_parameter(&"albedo_texture", base.albedo_texture)
 	return material
+
+
+## Multiplier for the base sun color at this zone value.
+static func sun_tint(proximity: float) -> Color:
+	var night: float = clampf(proximity, 0.0, 1.0)
+	var day: float = clampf(-proximity, 0.0, 1.0)
+	return Color.WHITE.lerp(NIGHT_SUN_TINT, night).lerp(DAY_SUN_TINT, day)
+
+
+static func sun_energy_scale(proximity: float) -> float:
+	return _toward_edges(proximity, NIGHT_SUN_ENERGY_SCALE, DAY_SUN_ENERGY_SCALE)
+
+
+static func sun_elevation_scale(proximity: float) -> float:
+	return _toward_edges(proximity, NIGHT_SUN_ELEVATION_SCALE, DAY_SUN_ELEVATION_SCALE)
+
+
+## Sky light color at this zone value, from the zone's base color.
+static func ambient_color(base: Color, proximity: float) -> Color:
+	var night: float = clampf(proximity, 0.0, 1.0)
+	var day: float = clampf(-proximity, 0.0, 1.0)
+	return base.lerp(NIGHT_AMBIENT, night).lerp(DAY_AMBIENT, day)
+
+
+## 1 in the Twilight, `night_value` at the Night edge, `day_value` at the Day edge.
+static func _toward_edges(proximity: float, night_value: float, day_value: float) -> float:
+	if proximity >= 0.0:
+		return lerpf(1.0, night_value, minf(proximity, 1.0))
+	return lerpf(1.0, day_value, minf(-proximity, 1.0))

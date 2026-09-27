@@ -25,6 +25,7 @@ func _initialize() -> void:
 	_test_load_all_resources()
 	_test_texture_imports()
 	_test_lantern()
+	_test_zone_light()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -133,6 +134,21 @@ func _test_load_all_resources() -> void:
 					_check(instance != null, "scene instantiates: " + path)
 					if instance != null:
 						instance.free()
+
+
+## Zone light (51): unchanged in the Twilight, colder, weaker and lower toward
+## the Night, whiter and higher toward the Day.
+func _test_zone_light() -> void:
+	var base: Color = Color(0.5, 0.45, 0.85)
+	_check(ZonePalette.sun_tint(0.0).is_equal_approx(Color.WHITE), "zone light: Twilight keeps the sun color")
+	_check(is_equal_approx(ZonePalette.sun_energy_scale(0.0), 1.0) and is_equal_approx(ZonePalette.sun_elevation_scale(0.0), 1.0), "zone light: Twilight keeps sun energy and height")
+	_check(ZonePalette.ambient_color(base, 0.0).is_equal_approx(base), "zone light: Twilight keeps the sky light")
+	var night: Color = ZonePalette.sun_tint(1.0)
+	_check(night.b > night.r and ZonePalette.sun_energy_scale(1.0) < 1.0 and ZonePalette.sun_elevation_scale(1.0) < 1.0, "zone light: Night sun colder, weaker, lower")
+	_check(ZonePalette.ambient_color(base, 1.0).b / ZonePalette.ambient_color(base, 1.0).r > base.b / base.r, "zone light: Night sky light bluer")
+	var day: Color = ZonePalette.sun_tint(-1.0)
+	_check(day.b > 1.0 and ZonePalette.sun_elevation_scale(-1.0) > 1.0, "zone light: Day sun whiter and higher")
+	_check(is_equal_approx(ZonePalette.sun_energy_scale(3.0), ZonePalette.sun_energy_scale(1.0)), "zone light: values past the edges clamp")
 
 
 ## Lantern of Ottavia (19): one lantern point per frame, near the top of the

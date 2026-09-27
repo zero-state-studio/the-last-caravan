@@ -1,6 +1,6 @@
 # Fasi di sviluppo
 
-**Fase corrente: 2**
+**Fase corrente: 3**
 
 Ogni fase finisce con un resoconto e con l'approvazione dell'autore. Non si passa alla fase successiva senza un ok esplicito. Quando una fase è approvata, aggiorna la riga "Fase corrente".
 
@@ -15,7 +15,7 @@ Una piccola scena a diorama per trovare camera (50), misure degli sprite (49) e 
 ## Fase 2: Stile definitivo
 Immagini di riferimento nostre (52), modello personalizzato su Scenario, Ottavia definitiva in 8 direzioni con PixelLab, regole per i modelli 3D verificate (54), vegetazione in primo piano (53).
 **Uscita:** una scena che ha l'aspetto del gioco finito.
-**Stato (27 settembre 2026):** passi 0-6 fatti; in attesa di approvazione. Scena dimostrativa: `scenes/proto/diorama.tscn`; screenshot `docs/screenshots/2026-09-27-fase2-demo-*.png`; video `docs/video/2026-09-27-fase2-demo.mp4`.
+**Stato (27 settembre 2026):** approvata. Scena dimostrativa: `scenes/proto/diorama.tscn`; screenshot `docs/screenshots/2026-09-27-fase2-demo-*.png`; video `docs/video/2026-09-27-fase2-demo.mp4`.
 
 ## Fase 3: Prototipo di combattimento e progressione
 Bastone, tempismo e posizione (33), progressione inversa (34), Enea che impara (81), lezioni di Ottavia (82), qualche creatura del Margine.

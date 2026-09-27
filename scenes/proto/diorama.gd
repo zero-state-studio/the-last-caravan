@@ -38,6 +38,8 @@ var tuning_panel: TuningPanel
 
 var _perf_seconds: float = 0.0
 var _autowalk_step: int = -1
+## Sky light color of the scene file, before the zone moves it.
+var _base_ambient_color: Color
 var _autowalk_elapsed: float = 0.0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
@@ -46,6 +48,7 @@ var _perf_cpu_times: PackedFloat32Array = []
 
 
 func _ready() -> void:
+	_base_ambient_color = world_environment.environment.ambient_light_color
 	var settings_path: String = USER_SETTINGS_PATH
 	var open_panel: bool = false
 	for argument: String in OS.get_cmdline_user_args():
@@ -112,9 +115,12 @@ func apply_settings() -> void:
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
 	# The light points along its -Z: at azimuth A the sun sits toward
 	# (sin A, 0, cos A); 300 degrees puts it west-south-west, on the Day side (100).
-	sun.rotation_degrees = Vector3(-settings.sun_elevation, settings.sun_azimuth, 0.0)
-	sun.light_color = settings.sun_color
-	sun.light_energy = settings.sun_energy
+	# The zone value also moves the light (51): colder and lower toward the Night.
+	var proximity: float = settings.zone_night_proximity
+	sun.rotation_degrees = Vector3(-settings.sun_elevation * ZonePalette.sun_elevation_scale(proximity), settings.sun_azimuth, 0.0)
+	sun.light_color = settings.sun_color * ZonePalette.sun_tint(proximity)
+	sun.light_energy = settings.sun_energy * ZonePalette.sun_energy_scale(proximity)
+	world_environment.environment.ambient_light_color = ZonePalette.ambient_color(_base_ambient_color, proximity)
 	world_environment.environment.volumetric_fog_density = settings.fog_density
 
 
