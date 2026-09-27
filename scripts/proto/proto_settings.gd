@@ -5,13 +5,13 @@ extends RefCounted
 
 # Camera (50)
 var camera_pitch: float = 50.0
-var camera_distance: float = 16.0
+var camera_distance: float = 20.0
 var camera_fov: float = 35.0
 var camera_orthographic: bool = false
 # Depth of field (47): offsets are measured from the focus point.
-var dof_near_offset: float = 6.0
-var dof_far_offset: float = 8.0
-var dof_amount: float = 0.1
+var dof_near_offset: float = 2.0
+var dof_far_offset: float = 3.0
+var dof_amount: float = 0.2
 # Sprites (49)
 var sprite_pixel_size: float = 0.038
 var sprite_billboard_fixed_y: bool = true
@@ -19,12 +19,12 @@ var sprite_shaded: bool = false
 var world_texels_per_meter: float = 26.0
 # Light (48)
 var sun_elevation: float = 14.0
-var sun_azimuth: float = 225.0
+var sun_azimuth: float = 300.0
 var sun_color: Color = Color(1.0, 0.72, 0.45)
 var sun_energy: float = 2.0
 var fog_density: float = 0.008
 # Where Ottavia starts; used to repeat screenshots from the same spot.
-var player_position: Vector3 = Vector3(0.0, 0.0, 6.0)
+var player_position: Vector3 = Vector3(-1.5, 0.0, -3.0)
 
 const _COLOR_KEYS: Array[String] = ["sun_color"]
 const _VECTOR_KEYS: Array[String] = ["player_position"]

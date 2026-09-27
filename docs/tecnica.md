@@ -27,10 +27,12 @@ Note sui servizi:
 
 - Comando per il controllo headless: **`tools/check.sh`**
   - `"$GODOT_PATH" --headless --path . --import` importa le risorse;
-  - `"$GODOT_PATH" --headless --path . --script res://tests/run_tests.gd` esegue i test: impostazioni del progetto, mappa di input (tastiera e gamepad per ogni azione), traduzioni IT/EN, caricamento e compilazione di ogni scena e script in `scenes/`, `scripts/`, `tests/`;
+  - `"$GODOT_PATH" --headless --path . --script res://tests/run_tests.gd` esegue i test: impostazioni del progetto, mappa di input (tastiera e gamepad per ogni azione), traduzioni IT/EN, `Facing`, `ProtoSettings`, caricamento e compilazione di ogni scena e script in `scenes/`, `scripts/`, `tests/`;
+  - poi esegue ogni `tests/test_*.gd` (per ora `test_proto_walk.gd`: scale, ponte e caduta nel diorama);
   - fallisce (exit 1, stampa i log) se un comando esce con errore o se compaiono righe `SCRIPT ERROR`, `Parse Error`, `ERROR:`, `Failed to load`, `FAIL:`. Verificato con uno script rotto di prova.
-- Comando per lo screenshot: **`tools/screenshot.sh <res://scena.tscn> <uscita.png> [fotogrammi=30] [LxA=1280x800]`**
+- Comando per lo screenshot: **`tools/screenshot.sh <res://scena.tscn> <uscita.png> [fotogrammi=30] [LxA=1280x800] [argomenti della scena...]`**
   - esempio: `tools/screenshot.sh res://scenes/dev/smoke_test.tscn docs/screenshots/2026-09-27-fase0-smoke-test.png`
+  - gli argomenti extra arrivano alla scena (`OS.get_cmdline_user_args()`); il diorama accetta `settings=<json assoluto>`, `panel=1`, `perf=<secondi>`.
   - apre una finestra vera (il rendering serve la GPU, quindi niente `--headless`), attende i fotogrammi, salva il PNG con `scripts/dev/screenshot_runner.gd` e chiude. Fallisce se il file non viene scritto.
 
 ## Progetto Godot
@@ -50,4 +52,12 @@ Note sui servizi:
 
   Zona morta 0,2. Tasti fisici (`physical_keycode`), così WASD resta nella stessa posizione anche su tastiere AZERTY. La mappatura completa dei tasti resta da definire (67).
 - Traduzioni: `localization/translations.csv` (colonne `keys,en,it`, chiavi in inglese), importato da Godot in `translations.en.translation` e `translations.it.translation`, che si versionano perché senza di essi il primo avvio segnala errori. Lingua di riserva: inglese. Chiave di prova: `UI_TEST_GREETING`. Un `Label` con testo uguale a una chiave si traduce da solo; nel codice si usa `tr()`.
-- Scena di prova: `scenes/dev/smoke_test.tscn` (scena principale provvisoria, da sostituire con il diorama in fase 1): cielo, sole, un cubo e l'etichetta tradotta. Screenshot: `docs/screenshots/2026-09-27-fase0-smoke-test.png`.
+- Scena di prova: `scenes/dev/smoke_test.tscn`: cielo, sole, un cubo e l'etichetta tradotta. Screenshot: `docs/screenshots/2026-09-27-fase0-smoke-test.png`. Dalla fase 1 la scena principale è `scenes/proto/diorama.tscn`.
+- Uniform globali degli shader (`[shader_globals]` in `project.godot`): `world_texels_per_meter` (densità dei pixel di terreno e pareti, 26) e `player_position` (aggiornata ogni fotogramma, usata dalla dissolvenza del primo piano).
+- Il riferimento a un nodo esportato (`@export var target: Node3D`) scritto a mano nel `.tscn` come `NodePath` non veniva risolto: si assegna dal codice.
+
+## Strumenti
+
+- `tools/meshy_pixelize.py` (Pillow via `uv run --with pillow`): prende un GLB texturizzato di Meshy, riduce la texture (per esempio 128 px, 24 colori, senza retino), la incorpora in PNG con filtro nearest e scala il modello a un'altezza in metri con la base a terra (54).
+- Pillow non è installato nel Python di sistema: usare `uv run --quiet --with pillow python3 ...`.
+- Misura delle prestazioni: `"$GODOT_PATH" --path . --resolution 1280x800 res://scenes/proto/diorama.tscn -- settings=<json> perf=8` stampa una riga `PERF` (media, FPS, 95° percentile) con vsync disattivato. Risultati della fase 1 in `docs/fase1-prototipo.md`.

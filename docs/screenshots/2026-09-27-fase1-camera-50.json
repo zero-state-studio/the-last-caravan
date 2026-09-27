@@ -1,0 +1,27 @@
+{
+	"camera_distance": 20.0,
+	"camera_fov": 35.0,
+	"camera_orthographic": false,
+	"camera_pitch": 50.0,
+	"dof_amount": 0.2,
+	"dof_far_offset": 3.0,
+	"dof_near_offset": 2.0,
+	"fog_density": 0.008,
+	"player_position": [
+		-1.5,
+		0.0,
+		-3.0
+	],
+	"sprite_billboard_fixed_y": true,
+	"sprite_pixel_size": 0.038,
+	"sprite_shaded": false,
+	"sun_azimuth": 300.0,
+	"sun_color": [
+		1.0,
+		0.720000028610229,
+		0.449999988079071
+	],
+	"sun_elevation": 14.0,
+	"sun_energy": 2.0,
+	"world_texels_per_meter": 26.0
+}

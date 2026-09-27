@@ -13,7 +13,7 @@ uniform vec4 tint : source_color = vec4(1.0);
 uniform float fade_radius = 1.4;
 uniform float fade_softness = 0.7;
 // Share of pixels removed at the center (1.0 = fully transparent).
-uniform float max_fade = 0.85;
+uniform float max_fade = 1.0;
 // How much closer than the player a fragment must be to fade.
 uniform float depth_margin = 0.3;
 
