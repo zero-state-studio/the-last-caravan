@@ -1,14 +1,14 @@
 [gd_resource type="ShaderMaterial" load_steps=4 format=3]
 
 [ext_resource type="Shader" path="res://scenes/proto/materials/terrain_triplanar.gdshader" id="1_shader"]
-[ext_resource type="Texture2D" path="res://assets/textures/proto/earth_layers.png" id="2_top"]
-[ext_resource type="Texture2D" path="res://assets/textures/proto/earth_layers.png" id="3_side"]
+[ext_resource type="Texture2D" path="res://assets/textures/terrain/rock_cliff_01.png" id="2_top"]
+[ext_resource type="Texture2D" path="res://assets/textures/terrain/rock_cliff_01.png" id="3_side"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_shader")
 shader_parameter/top_texture = ExtResource("2_top")
 shader_parameter/side_texture = ExtResource("3_side")
-shader_parameter/top_tint = Color(0.9, 0.8, 0.8, 1)
-shader_parameter/side_tint = Color(0.8, 0.7, 0.72, 1)
+shader_parameter/top_tint = Color(1, 1, 1, 1)
+shader_parameter/side_tint = Color(1, 1, 1, 1)
 shader_parameter/top_threshold = 0.7

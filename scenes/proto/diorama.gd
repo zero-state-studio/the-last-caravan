@@ -7,9 +7,24 @@ extends Node3D
 ##   perf=<seconds>        measure frame times with vsync off, print, quit
 ##   panel=1               open the tuning panel at start
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
+##   autowalk=1            walk a fixed path through the 8 directions (video)
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
+## Path for the demo video: every direction once (19), through the meadow
+## and the foreground band (53). Each step holds its actions for some seconds.
+const AUTOWALK: Array[Dictionary] = [
+	{"actions": [], "seconds": 1.5},
+	{"actions": [&"move_right"], "seconds": 2.0},
+	{"actions": [&"move_right", &"move_down"], "seconds": 1.2},
+	{"actions": [&"move_down"], "seconds": 1.4},
+	{"actions": [&"move_left", &"move_down"], "seconds": 1.0},
+	{"actions": [&"move_left"], "seconds": 2.2},
+	{"actions": [&"move_left", &"move_up"], "seconds": 1.2},
+	{"actions": [&"move_up"], "seconds": 1.6},
+	{"actions": [&"move_right", &"move_up"], "seconds": 1.2},
+	{"actions": [], "seconds": 10.0},
+]
 const CAPTURE_DIR: String = "res://docs/screenshots"
 
 @onready var ottavia: OttaviaProto = $Ottavia
@@ -22,6 +37,8 @@ var settings: ProtoSettings = ProtoSettings.new()
 var tuning_panel: TuningPanel
 
 var _perf_seconds: float = 0.0
+var _autowalk_step: int = -1
+var _autowalk_elapsed: float = 0.0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
 var _perf_gpu_times: PackedFloat32Array = []
@@ -38,6 +55,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument == "autowalk=1":
+			_autowalk_step = 0
 		elif argument.begins_with("lantern_shadows="):
 			ottavia.force_lantern_shadows(argument.trim_prefix("lantern_shadows=").to_int())
 	var error: Error = settings.load_json(settings_path)
@@ -58,6 +77,11 @@ func _ready() -> void:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		# Render times do not depend on vsync, which macOS may enforce anyway.
 		RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
+
+
+func _physics_process(delta: float) -> void:
+	if _autowalk_step >= 0:
+		_autowalk(delta)
 
 
 func _process(delta: float) -> void:
@@ -82,6 +106,7 @@ func apply_settings() -> void:
 	ottavia.set_sun_azimuth(settings.sun_azimuth)
 	RenderingServer.global_shader_parameter_set(&"world_texels_per_meter", settings.world_texels_per_meter)
 	zone_palette.strength = settings.palette_strength
+	zone_palette.night_proximity = settings.zone_night_proximity
 	zone_palette.apply()
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
@@ -145,3 +170,18 @@ func _average(values: PackedFloat32Array) -> float:
 	for value: float in values:
 		total += value
 	return total / maxf(1.0, values.size())
+
+
+func _autowalk(delta: float) -> void:
+	var step: Dictionary = AUTOWALK[_autowalk_step]
+	for action: StringName in step["actions"]:
+		Input.action_press(action)
+	_autowalk_elapsed += delta
+	if _autowalk_elapsed < float(step["seconds"]):
+		return
+	for action: StringName in step["actions"]:
+		Input.action_release(action)
+	_autowalk_elapsed = 0.0
+	_autowalk_step += 1
+	if _autowalk_step >= AUTOWALK.size():
+		_autowalk_step = -1

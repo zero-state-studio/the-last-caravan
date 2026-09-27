@@ -117,3 +117,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Lanterna (b): `OmniLight3D` `LanternLight` in `ottavia_proto.tscn` (colore `#FFC46B`, energia 1,5, raggio 5 m). A ogni fotogramma `OttaviaProto` la porta al punto della lanterna salvato nel JSON del foglio, sul piano verticale rivolto alla camera, all'altezza vera.
 - Ombre della lanterna: spente di norma, accese dentro un `DarkArea` (`scripts/world/dark_area.gd`, Area3D; nel diorama `DarkUnderBridge`). Per le misure: argomento `lantern_shadows=0|1` del diorama.
 - FPS a 1280×800, sole quasi spento, vicino ai barili: ombre della lanterna accese 133-137, spente 131-140 (tre prove ciascuno). Sul Mac mini la differenza è dentro il rumore; lo Steam Deck va misurato sul dispositivo.
+
+## Scena dimostrativa (fase 2, passo 6)
+
+- Il diorama (`scenes/proto/diorama.tscn`) è la scena dimostrativa: kit di vegetazione, texture nuove in `assets/textures/terrain/` (palette v2), Ottavia v1 con lanterna, viraggio ovest-est attivo.
+- Ombra profonda: `DarkArea` con `deep_shadow = true` abbassa in 0,8 s sole, luce ambientale e nebbia al 4 % mentre Ottavia è dentro (nel diorama: `DarkUnderBridge`, il corridoio sotto il ponte). Un `ReflectionProbe` interno con luce ambientale scura non bastava: la nebbia volumetrica tra camera e terreno schiariva comunque la zona.
+- Export tipizzati di nodi (`@export var sun: DirectionalLight3D`) con un NodePath scritto a mano nel `.tscn` non vengono risolti: usare `@export var ..._path: NodePath` e `get_node` in `_ready` (come in `DarkArea`).
+- `ProtoSettings.zone_night_proximity` (anche nel pannello F1) sposta il valore della zona verso la Notte (16, 51).
+- Video: `"$GODOT_PATH" --path . --resolution 1280x800 --write-movie <out.avi> --fixed-fps 30 --quit-after 600 res://scenes/proto/diorama.tscn -- settings=<json> autowalk=1` (Movie Maker, AVI MJPEG), poi MP4 con il binario di `imageio-ffmpeg` via `uv run --with imageio-ffmpeg` (ffmpeg non è installato nel sistema). `autowalk=1` fa percorrere a Ottavia le 8 direzioni.
+- FPS finali a 1280×800, vista normale: 138-143.

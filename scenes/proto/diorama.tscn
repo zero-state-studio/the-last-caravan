@@ -364,6 +364,9 @@ transform = Transform3D(0.9659, 0, 0.2588, 0, 1, 0, -0.2588, 0, 0.9659, -11.5, 3
 [node name="TallTreeSouthEast" parent="Vegetation" instance=ExtResource("30_tall_tree")]
 transform = Transform3D(0.9848, 0, -0.1736, 0, 1, 0, 0.1736, 0, 0.9848, 12.5, 0, 7)
 
+[node name="TallTreeSouth" parent="Vegetation" instance=ExtResource("30_tall_tree")]
+transform = Transform3D(0.9063, 0, -0.4226, 0, 1, 0, 0.4226, 0, 0.9063, -1, 0, 10.5)
+
 [node name="RockEast" parent="Vegetation" instance=ExtResource("34_rock")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -3.5)
 
@@ -436,6 +439,9 @@ random_seed = 31
 [node name="DarkUnderBridge" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, -10.5)
 script = ExtResource("36_dark")
+deep_shadow = true
+world_environment_path = NodePath("../WorldEnvironment")
+sun_path = NodePath("../Sun")
 
 [node name="Shape" type="CollisionShape3D" parent="DarkUnderBridge"]
 shape = SubResource("BoxShape3D_dark")

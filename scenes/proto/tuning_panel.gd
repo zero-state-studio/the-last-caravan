@@ -20,6 +20,7 @@ const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_SUN_ENERGY", "property": "sun_energy", "min": 0.0, "max": 5.0, "step": 0.05},
 	{"key": "DEV_FOG_DENSITY", "property": "fog_density", "min": 0.0, "max": 0.05, "step": 0.001},
 	{"key": "DEV_PALETTE_STRENGTH", "property": "palette_strength", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_ZONE_NIGHT_PROXIMITY", "property": "zone_night_proximity", "min": -1.0, "max": 1.0, "step": 0.05},
 ]
 const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_ORTHOGRAPHIC", "property": "camera_orthographic"},
