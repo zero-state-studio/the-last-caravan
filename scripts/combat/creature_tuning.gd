@@ -44,7 +44,7 @@ extends Resource
 @export var brinacchio_speed: float = 3.0
 @export var brinacchio_aggro: float = 4.0
 ## With the lantern open they sense Ottavia from farther away (36).
-@export var brinacchio_lantern_aggro: float = 11.0
+@export var brinacchio_lantern_aggro: float = 8.0
 ## Shutter closed and farther than this: they lose her track.
 @export var brinacchio_lose_track: float = 3.0
 @export var brinacchio_latch_range: float = 0.6

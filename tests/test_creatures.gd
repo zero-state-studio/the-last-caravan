@@ -82,12 +82,12 @@ func _test_raspagelo() -> void:
 
 func _test_brinacchio() -> void:
 	_ottavia.set_lantern_open(true)
-	var drawn: Brinacchio = _spawn("res://scenes/creatures/brinacchio.tscn", _ottavia.global_position + Vector3(8.0, -0.05, 0.0))
+	var drawn: Brinacchio = _spawn("res://scenes/creatures/brinacchio.tscn", _ottavia.global_position + Vector3(7.0, -0.05, 0.0))
 	await _wait(1.2)
 	_check(drawn.flat_distance_to(_ottavia.global_position) < 6.5, "brinacchio: drawn by the open lantern from far away")
 	drawn.free()
 	_ottavia.set_lantern_open(false)
-	var unaware: Brinacchio = _spawn("res://scenes/creatures/brinacchio.tscn", _ottavia.global_position + Vector3(8.0, -0.05, 0.0))
+	var unaware: Brinacchio = _spawn("res://scenes/creatures/brinacchio.tscn", _ottavia.global_position + Vector3(7.0, -0.05, 0.0))
 	await _wait(1.2)
 	_check(unaware.phase == Brinacchio.Phase.WANDER, "brinacchio: shutter closed, it does not sense Ottavia")
 	unaware.free()
