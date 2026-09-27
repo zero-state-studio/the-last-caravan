@@ -1,7 +1,8 @@
 """Turn a textured Meshy GLB into a pixel-art-ready model (bible element 54).
 
 - Downsamples the base color texture to a small square (box filter), then
-  reduces it to a limited palette without dithering. With --texels-per-meter
+  reduces it to a limited palette without dithering (or, with --palette, maps it
+  onto that palette in OKLab, see tools/palette_remap.py). With --texels-per-meter
   the size is computed from surface area / UV area, so the model gets the
   same pixel density as the rest of the world.
 - Embeds the result as PNG with a nearest-neighbour sampler (no mipmaps).
@@ -18,6 +19,8 @@ import io
 import json
 import math
 import struct
+import sys
+from pathlib import Path
 
 from PIL import Image
 
@@ -89,8 +92,13 @@ def surface_and_uv_area(gltf, binary):
     return surface, uv_area
 
 
-def pixelize(image, size, colors):
+def pixelize(image, size, colors, palette_path=None):
     small = image.convert("RGB").resize((size, size), Image.BOX)
+    if palette_path:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from palette_remap import load_palette, remap
+
+        return remap(small, load_palette(palette_path)).convert("RGB")
     return small.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert("RGB")
 
 
@@ -118,6 +126,7 @@ def main():
     parser.add_argument("--colors", type=int, default=24)
     parser.add_argument("--height", type=float, required=True, help="target height in meters")
     parser.add_argument("--preview", help="also save the reduced texture here")
+    parser.add_argument("--palette", help="map colors onto this palette strip (e.g. assets/palette/palette_v1.png)")
     args = parser.parse_args()
 
     gltf, binary = read_glb(args.input)
@@ -140,7 +149,7 @@ def main():
         view = gltf["bufferViews"][view_index]
         start = view.get("byteOffset", 0)
         source = Image.open(io.BytesIO(binary[start : start + view["byteLength"]]))
-        reduced = pixelize(source, texture_size, args.colors)
+        reduced = pixelize(source, texture_size, args.colors, args.palette)
         if args.preview:
             reduced.save(args.preview)
         buffer = io.BytesIO()
@@ -151,6 +160,10 @@ def main():
     for sampler in gltf.get("samplers", []):
         sampler["magFilter"] = GL_NEAREST
         sampler["minFilter"] = GL_NEAREST
+    if gltf.get("textures") and not gltf.get("samplers"):
+        gltf["samplers"] = [{"magFilter": GL_NEAREST, "minFilter": GL_NEAREST}]
+        for texture in gltf["textures"]:
+            texture["sampler"] = 0
     for material in gltf.get("materials", []):
         pbr = material.setdefault("pbrMetallicRoughness", {})
         pbr["metallicFactor"] = 0.0

@@ -42,6 +42,7 @@ func _ready() -> void:
 		push_warning("Cannot read settings %s (error %d)" % [settings_path, error])
 	ottavia.global_position = settings.player_position
 	ZonePalette.retint_models($Props)
+	ZonePalette.retint_models($Vegetation)
 	camera_rig.target = ottavia
 	apply_settings()
 	camera_rig.snap_to_target()
