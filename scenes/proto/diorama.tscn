@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3]
+[gd_scene load_steps=53 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -34,6 +34,9 @@
 [ext_resource type="Script" path="res://scripts/world/room_entry.gd" id="38_entry"]
 [ext_resource type="Script" path="res://scripts/world/room_exit.gd" id="39_exit"]
 [ext_resource type="Script" path="res://scripts/world/room_manager.gd" id="40_manager"]
+[ext_resource type="PackedScene" path="res://scenes/combat/training_dummy.tscn" id="41_dummy"]
+[ext_resource type="Script" path="res://scripts/audio/sound_bank.gd" id="42_sounds"]
+[ext_resource type="Script" path="res://scripts/ui/combat_hud.gd" id="43_hud"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_exit1"]
 size = Vector3(3, 2, 1.2)
@@ -602,6 +605,15 @@ target_entry = &"da_varco"
 
 [node name="Shape" type="CollisionShape3D" parent="Rooms/Piattaforma/VersoPrato"]
 shape = SubResource("BoxShape3D_exit6")
+
+[node name="TrainingDummy" parent="." instance=ExtResource("41_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, -1.2)
+
+[node name="SoundBank" type="Node" parent="."]
+script = ExtResource("42_sounds")
+
+[node name="CombatHud" type="CanvasLayer" parent="."]
+script = ExtResource("43_hud")
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("40_manager")

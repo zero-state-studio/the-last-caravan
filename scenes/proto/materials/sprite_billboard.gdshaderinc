@@ -18,6 +18,9 @@ uniform vec3 light_sample_offset = vec3(0.0, 0.9, 0.0);
 // glass stays lit in the shade and feeds the scene glow.
 uniform sampler2D emission_mask : filter_nearest, hint_default_black;
 uniform float emission_energy = 0.0;
+// Hit flash and attack telegraphs (33): 0 = drawn colors, 1 = flash color.
+uniform float flash = 0.0;
+uniform vec4 flash_color : source_color = vec4(1.0);
 
 varying vec4 upright_clip;
 
@@ -39,12 +42,14 @@ void fragment() {
 	if (texel.a < 0.5) {
 		discard;
 	}
-	ALBEDO = texel.rgb;
+	vec3 color = mix(texel.rgb, flash_color.rgb, clamp(flash, 0.0, 1.0));
+	ALBEDO = color;
 	float glass = texture(emission_mask, UV).r;
 #ifdef SPRITE_LIT
-	EMISSION = texel.rgb * glass * emission_energy;
+	// Squared: faint tints stay tints, full hit flashes still light up in the shade.
+	EMISSION = texel.rgb * glass * emission_energy + flash_color.rgb * pow(clamp(flash, 0.0, 1.0), 2.0) * 0.6;
 #else
-	ALBEDO = texel.rgb * (1.0 + glass * emission_energy);
+	ALBEDO = color * (1.0 + glass * emission_energy);
 #endif
 	// View-space normal toward the camera, used by the lit variant.
 	NORMAL = vec3(0.0, 0.0, 1.0);

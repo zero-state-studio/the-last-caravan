@@ -29,15 +29,21 @@ var _focus: Vector3 = Vector3.ZERO
 ## World X/Z rectangle the focus point stays inside (set by the room);
 ## an empty rectangle means no limits.
 var limits: Rect2 = Rect2()
+var _shake_left: float = 0.0
+var _shake_total: float = 0.0
+var _shake_meters: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group(&"camera_rig")
 	if target != null:
 		_focus = _target_point()
 	apply()
 
 
 func _process(delta: float) -> void:
+	# Real time: the shake keeps going during freeze frames.
+	_shake_left = maxf(0.0, _shake_left - delta / maxf(Engine.time_scale, 0.001))
 	if target == null:
 		return
 	var goal: Vector3 = _target_point()
@@ -89,3 +95,15 @@ func _place_camera() -> void:
 	offset = offset.rotated(Vector3.UP, deg_to_rad(yaw_degrees))
 	camera.global_position = _focus + offset
 	camera.look_at(_focus, Vector3.UP)
+	if _shake_left > 0.0:
+		var strength: float = _shake_meters * _shake_left / _shake_total
+		camera.global_position += camera.global_basis * Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), 0.0) * strength
+
+
+## Short camera shake (33), already scaled by the options (96).
+func shake(meters: float, seconds: float) -> void:
+	if meters <= 0.0 or seconds <= 0.0:
+		return
+	_shake_meters = maxf(meters, _shake_meters if _shake_left > 0.0 else 0.0)
+	_shake_left = seconds
+	_shake_total = seconds

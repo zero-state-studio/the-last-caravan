@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal settings_changed
 signal save_requested
+signal combat_save_requested
 
 const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_PITCH", "property": "camera_pitch", "min": 30.0, "max": 70.0, "step": 0.5},
@@ -21,24 +22,87 @@ const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_FOG_DENSITY", "property": "fog_density", "min": 0.0, "max": 0.05, "step": 0.001},
 	{"key": "DEV_PALETTE_STRENGTH", "property": "palette_strength", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_ZONE_NIGHT_PROXIMITY", "property": "zone_night_proximity", "min": -1.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_SHAKE_STRENGTH", "property": "shake_strength", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_FLASH_STRENGTH", "property": "flash_strength", "min": 0.0, "max": 1.0, "step": 0.05},
 ]
 const TOGGLES: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_ORTHOGRAPHIC", "property": "camera_orthographic"},
 	{"key": "DEV_SPRITE_BILLBOARD_FIXED_Y", "property": "sprite_billboard_fixed_y"},
 	{"key": "DEV_SPRITE_UPRIGHT_DEPTH", "property": "sprite_upright_depth"},
 	{"key": "DEV_SPRITE_SHADED", "property": "sprite_shaded"},
+	{"key": "DEV_SHOW_COMBAT_HUD", "property": "show_combat_hud"},
+]
+## Combat values (33), bound to CombatTuning; found by playing in phase 3.
+const COMBAT_SLIDERS: Array[Dictionary] = [
+	{"key": "DEV_C_MAX_HEALTH", "property": "max_health", "min": 20.0, "max": 300.0, "step": 5.0},
+	{"key": "DEV_C_MOVE_SPEED", "property": "move_speed", "min": 1.0, "max": 6.0, "step": 0.1},
+	{"key": "DEV_C_MAX_STAMINA", "property": "max_stamina", "min": 20.0, "max": 200.0, "step": 5.0},
+	{"key": "DEV_C_STAMINA_REGEN_PER_SECOND", "property": "stamina_regen_per_second", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_C_STAMINA_REGEN_DELAY", "property": "stamina_regen_delay", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_C_BREATHLESS_SECONDS", "property": "breathless_seconds", "min": 0.2, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_BREATHLESS_DAMAGE_MULTIPLIER", "property": "breathless_damage_multiplier", "min": 1.0, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_BREATHLESS_SPEED_MULTIPLIER", "property": "breathless_speed_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_STRIKE_DAMAGE", "property": "strike_damage", "min": 1.0, "max": 50.0, "step": 1.0},
+	{"key": "DEV_C_STRIKE_STAMINA_COST", "property": "strike_stamina_cost", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_C_STRIKE_STARTUP", "property": "strike_startup", "min": 0.0, "max": 0.6, "step": 0.01},
+	{"key": "DEV_C_STRIKE_ACTIVE", "property": "strike_active", "min": 0.02, "max": 0.3, "step": 0.01},
+	{"key": "DEV_C_STRIKE_RECOVERY", "property": "strike_recovery", "min": 0.0, "max": 1.0, "step": 0.01},
+	{"key": "DEV_C_STRIKE_REACH", "property": "strike_reach", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_C_STRIKE_ARC_DEGREES", "property": "strike_arc_degrees", "min": 30.0, "max": 200.0, "step": 5.0},
+	{"key": "DEV_C_COMBO_LENGTH", "property": "combo_length", "min": 1.0, "max": 5.0, "step": 1.0},
+	{"key": "DEV_C_COMBO_FINISHER_MULTIPLIER", "property": "combo_finisher_multiplier", "min": 1.0, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_STRIKE_KNOCKBACK", "property": "strike_knockback", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_C_STRIKE_LUNGE", "property": "strike_lunge", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_COUNTER_MULTIPLIER", "property": "counter_multiplier", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_C_HOOK_STAMINA_COST", "property": "hook_stamina_cost", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_C_HOOK_STARTUP", "property": "hook_startup", "min": 0.0, "max": 0.6, "step": 0.01},
+	{"key": "DEV_C_HOOK_ACTIVE", "property": "hook_active", "min": 0.02, "max": 0.3, "step": 0.01},
+	{"key": "DEV_C_HOOK_RECOVERY", "property": "hook_recovery", "min": 0.0, "max": 1.0, "step": 0.01},
+	{"key": "DEV_C_HOOK_REACH", "property": "hook_reach", "min": 1.0, "max": 5.0, "step": 0.05},
+	{"key": "DEV_C_HOOK_ARC_DEGREES", "property": "hook_arc_degrees", "min": 10.0, "max": 120.0, "step": 5.0},
+	{"key": "DEV_C_HOOK_HOLD_SECONDS", "property": "hook_hold_seconds", "min": 0.1, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_HOOK_PULL_DISTANCE", "property": "hook_pull_distance", "min": 0.5, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_HOOK_PUSH_DISTANCE", "property": "hook_push_distance", "min": 0.5, "max": 6.0, "step": 0.1},
+	{"key": "DEV_C_HOOK_DAMAGE", "property": "hook_damage", "min": 0.0, "max": 20.0, "step": 1.0},
+	{"key": "DEV_C_PARRY_PRESS_COST", "property": "parry_press_cost", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_C_BLOCK_HIT_COST", "property": "block_hit_cost", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_C_DEFLECT_WINDOW", "property": "deflect_window", "min": 0.02, "max": 0.6, "step": 0.01},
+	{"key": "DEV_C_PARRY_SPEED_MULTIPLIER", "property": "parry_speed_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_DEFLECT_STAGGER_SECONDS", "property": "deflect_stagger_seconds", "min": 0.2, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_STEP_STAMINA_COST", "property": "step_stamina_cost", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_C_STEP_DISTANCE", "property": "step_distance", "min": 0.5, "max": 4.0, "step": 0.05},
+	{"key": "DEV_C_STEP_SECONDS", "property": "step_seconds", "min": 0.05, "max": 0.5, "step": 0.01},
+	{"key": "DEV_C_STEP_INVULNERABLE_SECONDS", "property": "step_invulnerable_seconds", "min": 0.0, "max": 0.5, "step": 0.01},
+	{"key": "DEV_C_HITSTUN_SECONDS", "property": "hitstun_seconds", "min": 0.0, "max": 1.0, "step": 0.01},
+	{"key": "DEV_C_HIT_KNOCKBACK", "property": "hit_knockback", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_C_LANTERN_HOLD_SECONDS", "property": "lantern_hold_seconds", "min": 0.1, "max": 1.0, "step": 0.05},
+	{"key": "DEV_C_LANTERN_RAISED_RANGE_MULTIPLIER", "property": "lantern_raised_range_multiplier", "min": 1.0, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_HITSTOP_SECONDS", "property": "hitstop_seconds", "min": 0.0, "max": 0.3, "step": 0.01},
+	{"key": "DEV_C_HITSTOP_CRITICAL_SECONDS", "property": "hitstop_critical_seconds", "min": 0.0, "max": 0.4, "step": 0.01},
+	{"key": "DEV_C_SHAKE_METERS", "property": "shake_meters", "min": 0.0, "max": 0.4, "step": 0.01},
+	{"key": "DEV_C_SHAKE_CRITICAL_METERS", "property": "shake_critical_meters", "min": 0.0, "max": 0.5, "step": 0.01},
+	{"key": "DEV_C_AIM_ASSIST_DEGREES", "property": "aim_assist_degrees", "min": 0.0, "max": 90.0, "step": 1.0},
+	{"key": "DEV_C_INPUT_BUFFER_SECONDS", "property": "input_buffer_seconds", "min": 0.0, "max": 0.4, "step": 0.01},
+	{"key": "DEV_C_DUMMY_ATTACK_INTERVAL", "property": "dummy_attack_interval", "min": 0.3, "max": 6.0, "step": 0.05},
+	{"key": "DEV_C_DUMMY_WINDUP", "property": "dummy_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_C_DUMMY_ACTIVE", "property": "dummy_active", "min": 0.02, "max": 0.5, "step": 0.01},
+	{"key": "DEV_C_DUMMY_EXPOSED", "property": "dummy_exposed", "min": 0.0, "max": 2.0, "step": 0.05},
+	{"key": "DEV_C_DUMMY_DAMAGE", "property": "dummy_damage", "min": 0.0, "max": 50.0, "step": 1.0},
+	{"key": "DEV_C_DUMMY_REACH", "property": "dummy_reach", "min": 1.0, "max": 4.0, "step": 0.05},
 ]
 const PANEL_WIDTH: float = 380.0
 
 var settings: ProtoSettings
 
 var _root: PanelContainer
+var combat_tuning: CombatTuning
 var _fps_label: Label
 var _status_label: Label
 
 
-func _init(target_settings: ProtoSettings) -> void:
+func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null) -> void:
 	settings = target_settings
+	combat_tuning = target_combat
 	layer = 10
 
 
@@ -90,7 +154,7 @@ func _build() -> void:
 	box.add_child(_fps_label)
 
 	for definition: Dictionary in SLIDERS:
-		_add_slider(box, definition)
+		_add_slider(box, definition, settings)
 	for definition: Dictionary in TOGGLES:
 		_add_toggle(box, definition)
 	_add_color(box, "DEV_SUN_COLOR", "sun_color")
@@ -104,8 +168,20 @@ func _build() -> void:
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_status_label)
 
+	if combat_tuning != null:
+		var section: Label = Label.new()
+		section.text = "DEV_SECTION_COMBAT"
+		box.add_child(HSeparator.new())
+		box.add_child(section)
+		for definition: Dictionary in COMBAT_SLIDERS:
+			_add_slider(box, definition, combat_tuning)
+		var combat_save: Button = Button.new()
+		combat_save.text = "DEV_SAVE_COMBAT"
+		combat_save.pressed.connect(func() -> void: combat_save_requested.emit())
+		box.add_child(combat_save)
 
-func _add_slider(box: VBoxContainer, definition: Dictionary) -> void:
+
+func _add_slider(box: VBoxContainer, definition: Dictionary, target: Object) -> void:
 	var property: String = definition["property"]
 	var header: HBoxContainer = HBoxContainer.new()
 	var label: Label = Label.new()
@@ -120,10 +196,13 @@ func _add_slider(box: VBoxContainer, definition: Dictionary) -> void:
 	slider.min_value = definition["min"]
 	slider.max_value = definition["max"]
 	slider.step = definition["step"]
-	slider.value = float(settings.get(property))
+	slider.value = float(target.get(property))
 	value_label.text = _format_value(slider.value, slider.step)
 	slider.value_changed.connect(func(value: float) -> void:
-		settings.set(property, value)
+		if target.get(property) is int:
+			target.set(property, roundi(value))
+		else:
+			target.set(property, value)
 		value_label.text = _format_value(value, slider.step)
 		settings_changed.emit())
 	box.add_child(slider)

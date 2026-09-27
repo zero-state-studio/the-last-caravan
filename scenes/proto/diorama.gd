@@ -8,11 +8,21 @@ extends Node3D
 ##   panel=1               open the tuning panel at start
 ##   lantern_shadows=<0|1> force the lantern shadows off or on (measurements)
 ##   autowalk=1            walk a fixed path through the 8 directions (video)
+##   autocombat=1          fight the training dummy with a fixed sequence (captures)
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
 ## Path for the demo video: every direction once (19), through the meadow
 ## and the foreground band (53). Each step holds its actions for some seconds.
+## Fixed fight for captures and videos: a combo, a parry held through the
+## dummy's swing, a counter-hit, a step. Times in seconds from the start.
+const AUTOCOMBAT: Array[Dictionary] = [
+	{"at": 0.4, "press": &"attack"}, {"at": 0.62, "press": &"attack"}, {"at": 0.9, "press": &"attack"},
+	{"at": 2.72, "press": &"parry"}, {"at": 3.2, "release": &"parry"},
+	{"at": 3.25, "press": &"attack"}, {"at": 3.5, "press": &"attack"},
+	{"at": 4.6, "press": &"step"},
+	{"at": 5.4, "press": &"hook"}, {"at": 5.45, "release": &"hook"},
+]
 const AUTOWALK: Array[Dictionary] = [
 	{"actions": [], "seconds": 1.5},
 	{"actions": [&"move_right"], "seconds": 2.0},
@@ -32,6 +42,7 @@ const CAPTURE_DIR: String = "res://docs/screenshots"
 @onready var sun: DirectionalLight3D = $Sun
 @onready var world_environment: WorldEnvironment = $WorldEnvironment
 @onready var zone_palette: ZonePalette = $ZonePalette
+@onready var combat_hud: CombatHud = $CombatHud
 
 var settings: ProtoSettings = ProtoSettings.new()
 var tuning_panel: TuningPanel
@@ -41,6 +52,8 @@ var _autowalk_step: int = -1
 ## Sky light color of the scene file, before the zone moves it.
 var _base_ambient_color: Color
 var _autowalk_elapsed: float = 0.0
+var _autocombat_time: float = -1.0
+var _autocombat_next: int = 0
 var _perf_elapsed: float = 0.0
 var _perf_frame_times: PackedFloat32Array = []
 var _perf_gpu_times: PackedFloat32Array = []
@@ -58,6 +71,8 @@ func _ready() -> void:
 			_perf_seconds = argument.trim_prefix("perf=").to_float()
 		elif argument == "panel=1":
 			open_panel = true
+		elif argument == "autocombat=1":
+			_autocombat_time = 0.0
 		elif argument == "autowalk=1":
 			_autowalk_step = 0
 		elif argument.begins_with("lantern_shadows="):
@@ -71,20 +86,29 @@ func _ready() -> void:
 	camera_rig.target = ottavia
 	apply_settings()
 	camera_rig.snap_to_target()
-	tuning_panel = TuningPanel.new(settings)
+	combat_hud.bind(ottavia)
+	tuning_panel = TuningPanel.new(settings, ottavia.combat.tuning)
 	add_child(tuning_panel)
 	tuning_panel.set_panel_visible(open_panel)
 	tuning_panel.settings_changed.connect(apply_settings)
 	tuning_panel.save_requested.connect(_save_capture)
+	tuning_panel.combat_save_requested.connect(_save_combat_tuning)
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		# Render times do not depend on vsync, which macOS may enforce anyway.
 		RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
 
 
+func _exit_tree() -> void:
+	CombatEffects.clear_cache()
+	Engine.time_scale = 1.0
+
+
 func _physics_process(delta: float) -> void:
 	if _autowalk_step >= 0:
 		_autowalk(delta)
+	if _autocombat_time >= 0.0:
+		_autocombat(delta)
 
 
 func _process(delta: float) -> void:
@@ -110,6 +134,9 @@ func apply_settings() -> void:
 	RenderingServer.global_shader_parameter_set(&"world_texels_per_meter", settings.world_texels_per_meter)
 	zone_palette.strength = settings.palette_strength
 	zone_palette.night_proximity = settings.zone_night_proximity
+	HitFeedback.shake_scale = settings.shake_strength
+	HitFeedback.flash_scale = settings.flash_strength
+	combat_hud.visible = settings.show_combat_hud
 	zone_palette.apply()
 	for plant: Node in get_tree().get_nodes_in_group(&"foreground_plants"):
 		(plant as ForegroundPlant).pixel_size = 1.0 / settings.world_texels_per_meter
@@ -191,3 +218,28 @@ func _autowalk(delta: float) -> void:
 	_autowalk_step += 1
 	if _autowalk_step >= AUTOWALK.size():
 		_autowalk_step = -1
+
+
+## Writes the combat values back to their resource file (phase 3 tuning).
+func _save_combat_tuning() -> void:
+	var tuning: CombatTuning = ottavia.combat.tuning
+	var error: Error = ResourceSaver.save(tuning, tuning.resource_path)
+	if error == OK:
+		tuning_panel.show_saved(tuning.resource_path)
+	else:
+		push_warning("Cannot save %s (error %d)" % [tuning.resource_path, error])
+
+
+func _autocombat(delta: float) -> void:
+	if _autocombat_time == 0.0:
+		var dummy: Node3D = get_node_or_null(^"TrainingDummy") as Node3D
+		if dummy != null:
+			ottavia.face_toward(dummy.global_position - ottavia.global_position)
+	_autocombat_time += delta
+	while _autocombat_next < AUTOCOMBAT.size() and _autocombat_time >= float(AUTOCOMBAT[_autocombat_next]["at"]):
+		var event: Dictionary = AUTOCOMBAT[_autocombat_next]
+		if event.has("press"):
+			ottavia.combat.press(event["press"])
+		else:
+			ottavia.combat.release(event["release"])
+		_autocombat_next += 1

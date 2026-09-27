@@ -1,0 +1,455 @@
+class_name OttaviaCombat
+extends Node
+## Ottavia's six actions, the breath and the counter-hit (33). Child of
+## OttaviaProto, which calls physics_update() every physics frame and asks
+## for the movement allowed by the current action.
+##
+## Strike: slow, precise swings in a combo of up to `combo_length` hits.
+## Hook: tap pulls small creatures (or tears shields off), hold pushes away.
+## Parry: hold to block (costs breath per hit); a hit right after the press
+## is deflected and the attacker is left staggered.
+## Step: a short sidestep, not a roll; costs a lot of breath.
+## Lantern: tap opens or closes the shutter, hold raises it to light farther.
+## Call: calls the companion present in the chapter (20).
+## Breath is the only resource. Empty breath: breathless for an instant.
+## Counter-hit: striking a creature that is open after its own attack.
+
+signal message(key: StringName)
+
+enum State { FREE, STRIKE, HOOK, PARRY, STEP, HITSTUN, BREATHLESS }
+
+const ACTIONS: Array[StringName] = [&"attack", &"hook", &"parry", &"step", &"lantern", &"call"]
+const SWING_COLOR: Color = Color(1.0, 0.95, 0.8, 0.9)
+const COUNTER_COLOR: Color = Color(1.0, 0.77, 0.42, 1.0)
+const DEFLECT_COLOR: Color = Color(0.85, 0.9, 1.0, 1.0)
+
+@export var tuning: CombatTuning
+
+var ottavia: OttaviaProto
+var state: State = State.FREE
+var stamina: float = 100.0
+## The companion present in the chapter (20), or null.
+var companion: Node = null
+## Index of the current strike in the combo (0 = first).
+var combo_index: int = 0
+
+var _state_time: float = 0.0
+var _hit_done: bool = false
+var _combo_queued: bool = false
+var _buffer: Dictionary = {}
+var _since_action: float = 10.0
+var _aim: Vector3 = Vector3.BACK
+var _hook_push: bool = false
+var _hook_charge: float = -1.0
+var _step_direction: Vector3 = Vector3.ZERO
+var _invulnerable_left: float = 0.0
+var _knock_velocity: Vector3 = Vector3.ZERO
+var _lantern_charge: float = -1.0
+var _lantern_raised: bool = false
+var _parry_held: bool = false
+## Only a fresh press opens the deflect window, not a parry held through
+## another action.
+var _parry_can_deflect: bool = false
+
+
+func _ready() -> void:
+	ottavia = get_parent() as OttaviaProto
+	stamina = tuning.max_stamina
+
+
+## Full breath and no action in progress (after a defeat, 105).
+func reset() -> void:
+	stamina = tuning.max_stamina
+	_enter(State.FREE)
+	_buffer.clear()
+	_parry_held = false
+	_knock_velocity = Vector3.ZERO
+	_hook_charge = -1.0
+
+
+func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> void:
+	if controls_enabled:
+		_read_input(input)
+	_update_charges(delta)
+	for action: StringName in _buffer.keys():
+		_buffer[action] = float(_buffer[action]) - delta
+		if float(_buffer[action]) <= 0.0:
+			_buffer.erase(action)
+	_state_time += delta
+	_since_action += delta
+	_invulnerable_left = maxf(0.0, _invulnerable_left - delta)
+	_knock_velocity = _knock_velocity.move_toward(Vector3.ZERO, 8.0 * delta)
+	_advance_state(input)
+	_regenerate(delta)
+
+
+# --- Input ---------------------------------------------------------------
+
+func _read_input(input: Vector2) -> void:
+	for action: StringName in ACTIONS:
+		if Input.is_action_just_pressed(action):
+			press(action, input)
+		elif Input.is_action_just_released(action):
+			release(action)
+
+
+## One button press; public so tests and cutscenes can drive Ottavia.
+func press(action: StringName, input: Vector2 = Vector2.ZERO) -> void:
+	match action:
+		&"attack":
+			_buffer[&"attack"] = tuning.input_buffer_seconds
+		&"hook":
+			_hook_charge = 0.0
+		&"parry":
+			_buffer[&"parry"] = tuning.input_buffer_seconds
+			_parry_held = true
+		&"step":
+			_buffer[&"step"] = tuning.input_buffer_seconds
+			_step_direction = _step_direction_for(input)
+		&"lantern":
+			_lantern_charge = 0.0
+		&"call":
+			_call_companion()
+
+
+func release(action: StringName) -> void:
+	match action:
+		&"hook":
+			if _hook_charge >= 0.0:
+				_buffer[&"hook_pull"] = tuning.input_buffer_seconds
+			_hook_charge = -1.0
+		&"parry":
+			_buffer.erase(&"parry")
+			_parry_held = false
+			if state == State.PARRY:
+				_enter(State.FREE)
+		&"lantern":
+			if _lantern_charge >= 0.0 and not _lantern_raised:
+				ottavia.set_lantern_open(not ottavia.lantern_open)
+				SoundBank.play_sound(get_tree(), &"sportello_lanterna")
+			_lantern_charge = -1.0
+			if _lantern_raised:
+				_lantern_raised = false
+				ottavia.set_lantern_raised(false)
+
+
+func _update_charges(delta: float) -> void:
+	if _hook_charge >= 0.0:
+		_hook_charge += delta
+		if _hook_charge >= tuning.hook_hold_seconds:
+			_buffer[&"hook_push"] = tuning.input_buffer_seconds
+			_hook_charge = -1.0
+	if _lantern_charge >= 0.0 and not _lantern_raised:
+		_lantern_charge += delta
+		if _lantern_charge >= tuning.lantern_hold_seconds:
+			_lantern_raised = true
+			if not ottavia.lantern_open:
+				ottavia.set_lantern_open(true)
+				SoundBank.play_sound(get_tree(), &"sportello_lanterna")
+			ottavia.set_lantern_raised(true)
+
+
+# --- State machine ---------------------------------------------------------
+
+func _advance_state(input: Vector2) -> void:
+	match state:
+		State.FREE:
+			_start_buffered_action(input)
+		State.STRIKE:
+			_advance_strike()
+		State.HOOK:
+			_advance_hook()
+		State.PARRY:
+			if _buffer.has(&"step"):
+				_start_step()
+		State.STEP:
+			if _state_time >= tuning.step_seconds:
+				_enter(State.FREE)
+		State.HITSTUN:
+			if _state_time >= tuning.hitstun_seconds:
+				_enter(State.FREE)
+		State.BREATHLESS:
+			if _state_time >= tuning.breathless_seconds:
+				_enter(State.FREE)
+
+
+func _start_buffered_action(_input: Vector2) -> void:
+	if _buffer.has(&"step"):
+		_start_step()
+	elif _buffer.has(&"parry") or _parry_held:
+		_parry_can_deflect = _buffer.has(&"parry")
+		_buffer.erase(&"parry")
+		_enter(State.PARRY)
+		# Only a fresh press costs breath: holding through breathlessness
+		# must not loop back into it.
+		if _parry_can_deflect:
+			_spend(tuning.parry_press_cost)
+	elif _buffer.has(&"attack"):
+		_buffer.erase(&"attack")
+		combo_index = 0
+		_start_strike()
+	elif _buffer.has(&"hook_push"):
+		_buffer.erase(&"hook_push")
+		_start_hook(true)
+	elif _buffer.has(&"hook_pull"):
+		_buffer.erase(&"hook_pull")
+		_start_hook(false)
+
+
+func _start_strike() -> void:
+	_aim = _aim_direction(tuning.strike_reach)
+	_enter(State.STRIKE)
+	_combo_queued = false
+	_spend(tuning.strike_stamina_cost)
+
+
+func _advance_strike() -> void:
+	var active_start: float = tuning.strike_startup
+	var recovery_start: float = active_start + tuning.strike_active
+	var end: float = recovery_start + tuning.strike_recovery
+	if not _hit_done and _state_time >= active_start:
+		_hit_done = true
+		_strike_hit()
+	if _state_time >= active_start and _buffer.has(&"attack") and combo_index + 1 < tuning.combo_length:
+		_combo_queued = true
+	if _combo_queued and _state_time >= recovery_start:
+		_buffer.erase(&"attack")
+		combo_index += 1
+		_start_strike()
+		return
+	if _state_time >= end:
+		combo_index = 0
+		_enter(State.FREE)
+
+
+func _start_hook(push: bool) -> void:
+	_hook_push = push
+	_aim = _aim_direction(tuning.hook_reach)
+	_enter(State.HOOK)
+	_spend(tuning.hook_stamina_cost)
+
+
+func _advance_hook() -> void:
+	if not _hit_done and _state_time >= tuning.hook_startup:
+		_hit_done = true
+		_hook_hit()
+	if _state_time >= tuning.hook_startup + tuning.hook_active + tuning.hook_recovery:
+		_enter(State.FREE)
+
+
+func _start_step() -> void:
+	_buffer.erase(&"step")
+	if stamina <= 0.0:
+		return
+	if _step_direction.is_zero_approx():
+		_step_direction = _step_direction_for(Vector2.ZERO)
+	_enter(State.STEP)
+	_invulnerable_left = tuning.step_invulnerable_seconds
+	SoundBank.play_sound(get_tree(), &"passo")
+	_spend(tuning.step_stamina_cost)
+
+
+func _enter(new_state: State) -> void:
+	state = new_state
+	_state_time = 0.0
+	_hit_done = false
+	if new_state != State.FREE and new_state != State.HITSTUN and new_state != State.BREATHLESS:
+		_since_action = 0.0
+	if new_state == State.PARRY:
+		ottavia.face_toward(_aim_direction(tuning.strike_reach))
+
+
+# --- Hits ------------------------------------------------------------------
+
+func _strike_hit() -> void:
+	var finisher: bool = combo_index == tuning.combo_length - 1 and tuning.combo_length > 1
+	var origin: Vector3 = ottavia.global_position
+	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.strike_reach, tuning.strike_arc_degrees, SWING_COLOR)
+	var landed: bool = false
+	var critical_any: bool = false
+	for target: CombatEnemy in targets_in_arc(tuning.strike_reach, tuning.strike_arc_degrees):
+		var hit: CombatHit = CombatHit.new()
+		hit.kind = CombatHit.Kind.STRIKE
+		hit.source = ottavia
+		hit.direction = _flat_direction(target.global_position - origin)
+		hit.knockback = tuning.strike_knockback
+		hit.critical = target.is_exposed()
+		hit.damage = tuning.strike_damage * (tuning.combo_finisher_multiplier if finisher else 1.0) * (tuning.counter_multiplier if hit.critical else 1.0)
+		target.receive_hit(hit)
+		landed = true
+		critical_any = critical_any or hit.critical
+		CombatEffects.spark(get_tree().current_scene, target.global_position + Vector3.UP * 0.9, COUNTER_COLOR if hit.critical else Color.WHITE)
+	SoundBank.play_sound(get_tree(), &"colpo_bastone")
+	if landed:
+		var tree: SceneTree = get_tree()
+		HitFeedback.hitstop(tree, tuning.hitstop_critical_seconds if critical_any else tuning.hitstop_seconds)
+		HitFeedback.shake(tree, tuning.shake_critical_meters if critical_any else tuning.shake_meters)
+		if critical_any:
+			message.emit(&"COMBAT_COUNTER")
+
+
+func _hook_hit() -> void:
+	SoundBank.play_sound(get_tree(), &"uncino")
+	var origin: Vector3 = ottavia.global_position
+	CombatEffects.swing(get_tree().current_scene, origin + Vector3.UP * 0.9, _aim, tuning.hook_reach, tuning.hook_arc_degrees, SWING_COLOR)
+	var targets: Array[CombatEnemy] = targets_in_arc(tuning.hook_reach, tuning.hook_arc_degrees)
+	if targets.is_empty():
+		return
+	# The hook catches the nearest creature only.
+	var target: CombatEnemy = targets[0]
+	var hit: CombatHit = CombatHit.new()
+	hit.kind = CombatHit.Kind.HOOK_PUSH if _hook_push else CombatHit.Kind.HOOK_PULL
+	hit.source = ottavia
+	hit.direction = _flat_direction(target.global_position - origin)
+	hit.damage = tuning.hook_damage
+	target.receive_hit(hit)
+	if _hook_push:
+		target.push_away(hit.direction, tuning.hook_push_distance)
+	elif target.has_shield:
+		target.tear_shield()
+	elif target.is_small:
+		target.pull_to(origin + hit.direction * tuning.hook_pull_distance)
+	HitFeedback.hitstop(get_tree(), tuning.hitstop_seconds)
+
+
+## Creatures within `reach` and `arc_degrees` around the current aim,
+## nearest first.
+func targets_in_arc(reach: float, arc_degrees: float) -> Array[CombatEnemy]:
+	var result: Array[CombatEnemy] = []
+	var origin: Vector3 = ottavia.global_position
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var target: CombatEnemy = node as CombatEnemy
+		if target == null or not target.is_alive():
+			continue
+		var offset: Vector3 = target.global_position - origin
+		offset.y = 0.0
+		if offset.length() > reach + target.radius:
+			continue
+		if offset.length() > 0.01 and rad_to_deg(_aim.angle_to(offset.normalized())) > arc_degrees * 0.5:
+			continue
+		result.append(target)
+	result.sort_custom(func(a: CombatEnemy, b: CombatEnemy) -> bool:
+		return a.global_position.distance_squared_to(origin) < b.global_position.distance_squared_to(origin))
+	return result
+
+
+## An attack from a creature. Returns how it ended (CombatAttack.Result).
+func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
+	if _invulnerable_left > 0.0:
+		return CombatAttack.Result.EVADED
+	if state == State.PARRY:
+		if attack.deflectable and _parry_can_deflect and _state_time <= tuning.deflect_window:
+			if attack.source != null:
+				attack.source.stagger(tuning.deflect_stagger_seconds)
+				CombatEffects.spark(get_tree().current_scene, ottavia.global_position.lerp(attack.source.global_position, 0.5) + Vector3.UP * 1.0, DEFLECT_COLOR, 14.0)
+			SoundBank.play_sound(get_tree(), &"deviazione")
+			HitFeedback.hitstop(get_tree(), tuning.hitstop_critical_seconds)
+			HitFeedback.shake(get_tree(), tuning.shake_meters)
+			message.emit(&"COMBAT_DEFLECT")
+			return CombatAttack.Result.DEFLECTED
+		SoundBank.play_sound(get_tree(), &"parata")
+		_spend(tuning.block_hit_cost)
+		HitFeedback.shake(get_tree(), tuning.shake_meters * 0.5)
+		return CombatAttack.Result.BLOCKED
+	var damage: float = attack.damage * (tuning.breathless_damage_multiplier if state == State.BREATHLESS else 1.0)
+	ottavia.take_damage(damage)
+	ottavia.flash(1.0, Color(1.0, 0.45, 0.4))
+	SoundBank.play_sound(get_tree(), &"colpo_subito")
+	HitFeedback.hitstop(get_tree(), tuning.hitstop_seconds)
+	HitFeedback.shake(get_tree(), tuning.shake_critical_meters)
+	if attack.source != null:
+		_knock_velocity = _flat_direction(ottavia.global_position - attack.source.global_position) * tuning.hit_knockback / 0.15
+	if ottavia.health > 0.0 and state != State.BREATHLESS:
+		_enter(State.HITSTUN)
+	return CombatAttack.Result.HIT
+
+
+# --- Breath ----------------------------------------------------------------
+
+func _spend(amount: float) -> void:
+	stamina = maxf(0.0, stamina - amount)
+	_since_action = 0.0
+	if stamina <= 0.0 and state != State.BREATHLESS:
+		_enter(State.BREATHLESS)
+		SoundBank.play_sound(get_tree(), &"fiato_esaurito")
+		message.emit(&"COMBAT_BREATHLESS")
+
+
+func _regenerate(delta: float) -> void:
+	if state == State.FREE and _since_action >= tuning.stamina_regen_delay:
+		stamina = minf(tuning.max_stamina, stamina + tuning.stamina_regen_per_second * delta)
+
+
+# --- Movement queries (used by OttaviaProto) --------------------------------
+
+func move_speed_multiplier() -> float:
+	match state:
+		State.FREE:
+			return 1.0
+		State.PARRY:
+			return tuning.parry_speed_multiplier
+		State.BREATHLESS:
+			return tuning.breathless_speed_multiplier
+	return 0.0
+
+
+## Extra velocity from the current action: sidestep, strike lunge, knockback.
+func forced_velocity() -> Vector3:
+	var velocity: Vector3 = _knock_velocity
+	if state == State.STEP:
+		velocity += _step_direction * tuning.step_distance / maxf(tuning.step_seconds, 0.01)
+	elif state == State.STRIKE and _state_time >= tuning.strike_startup and _state_time < tuning.strike_startup + tuning.strike_active:
+		velocity += _aim * tuning.strike_lunge / maxf(tuning.strike_active, 0.01)
+	return velocity
+
+
+func can_turn() -> bool:
+	return state == State.FREE or state == State.BREATHLESS
+
+
+func is_acting() -> bool:
+	return state == State.STRIKE or state == State.HOOK or state == State.STEP
+
+
+# --- Helpers ---------------------------------------------------------------
+
+## The facing direction, turned toward the nearest creature in range within
+## the aim assist angle (the eight views make exact aiming hard).
+func _aim_direction(reach: float) -> Vector3:
+	var facing: Vector3 = ottavia.facing_vector()
+	var origin: Vector3 = ottavia.global_position
+	var best: Vector3 = facing
+	var best_angle: float = tuning.aim_assist_degrees
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var target: CombatEnemy = node as CombatEnemy
+		if target == null or not target.is_alive():
+			continue
+		var offset: Vector3 = target.global_position - origin
+		offset.y = 0.0
+		if offset.length() > reach * 1.3 + target.radius or offset.length() < 0.01:
+			continue
+		var angle: float = rad_to_deg(facing.angle_to(offset.normalized()))
+		if angle < best_angle:
+			best_angle = angle
+			best = offset.normalized()
+	ottavia.face_toward(best)
+	return best
+
+
+func _step_direction_for(input: Vector2) -> Vector3:
+	if not input.is_zero_approx():
+		return Vector3(input.x, 0.0, input.y).normalized()
+	# No direction: a sidestep to Ottavia's left.
+	return ottavia.facing_vector().rotated(Vector3.UP, PI * 0.5)
+
+
+func _call_companion() -> void:
+	if companion != null and companion.has_method(&"call_in"):
+		companion.call(&"call_in")
+	else:
+		message.emit(&"COMBAT_NO_COMPANION")
+
+
+static func _flat_direction(offset: Vector3) -> Vector3:
+	offset.y = 0.0
+	return offset.normalized() if offset.length_squared() > 0.0001 else Vector3.BACK

@@ -133,3 +133,14 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - `RoomManager` (`scripts/world/room_manager.gd`): dissolvenza al nero (0,25 s), spostamento all'entrata, limiti della camera (`FollowCameraRig.limits`); segue Ottavia senza dissolvenza quando lascia una stanza senza passaggio (caduta dalla piattaforma). Sconfitta (105): `OttaviaProto.defeated` → dissolvenza, ripartenza dall'entrata usata per entrare nella stanza, vita piena.
 - Nel diorama: Prato (terreno e corridoio), Terrazza, Piattaforma. Passaggi: la scala (Prato ↔ Terrazza), il ponte (Terrazza ↔ Piattaforma), il varco tra i cespugli in cima alla rampa nuova (Piattaforma ↔ Prato). A 20 m di camera l'inquadratura copre circa ±10 m: nelle stanze alte la camera resta quasi ferma.
 - Test: `tests/test_rooms.gd` (passaggi, caduta, limiti della camera, sconfitta).
+
+## Combattimento (fase 3, passo 2; 33, 67)
+
+- Valori: `CombatTuning` (`scripts/combat/combat_tuning.gd`), file `assets/combat/combat_tuning.tres`. Tutti nel pannello F1 (sezione "Combattimento"); il pulsante "Salva i valori del combattimento" riscrive il `.tres`.
+- `OttaviaCombat` (`scripts/combat/ottavia_combat.gd`, nodo `Combat` di Ottavia): le sei azioni, il fiato, il contrattempo; `press`/`release` pilotabili da test e sequenze. `OttaviaProto` chiede a ogni fotogramma la velocità permessa e la spinta dell'azione (passo, affondo, contraccolpo).
+- Nemici: `CombatEnemy` (`scripts/combat/combat_enemy.gd`), gruppo `combat_targets`: vita, lampo, contraccolpo, sbilanciamento dopo una deviazione, uncino (tira i piccoli, spinge, strappa gli scudi). `TrainingDummy`: fantoccio dei Voltacampi a ritmo regolabile (`scenes/combat/training_dummy.tscn`).
+- Sensazione: `HitFeedback` (fermo immagine con `Engine.time_scale`, tremolio della camera), lampo nello shader dello sprite (`flash`, `flash_color`), `CombatEffects` (scia ad arco in pixel e scintilla, provvisorie), `SoundBank` (12 effetti ElevenLabs). Tremolio e lampi riducibili dal pannello (opzioni, 96).
+- Misure a schermo: `CombatHud` (`scripts/ui/combat_hud.gd`), vita, fiato e segnali "Deviato!", "Contrattempo!", "Senza fiato".
+- Mappatura: gamepad come in 67 (A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo); tastiera e mouse proposti: J o clic sinistro Colpo, I Uncino, L o clic destro Parata, K o Spazio Passo, U Lanterna, O Richiamo, E interagire; movimento WASD o frecce.
+- Test: `tests/test_combat.gd`. Un suono ancora in riproduzione alla chiusura conta come risorsa trapelata: il test aspetta la fine dei suoni, `SoundBank` li ferma all'uscita.
+- Diorama: `autocombat=1` esegue una sequenza fissa contro il fantoccio (per catture e video).

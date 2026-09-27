@@ -18,3 +18,10 @@ static func nearest_direction(input: Vector2, current: Direction) -> Direction:
 	# atan2(x, y) is 0 for south and grows clockwise on screen: east is +90 degrees.
 	var octant: int = roundi(atan2(input.x, input.y) / (TAU / DIRECTION_COUNT))
 	return posmod(octant, DIRECTION_COUNT) as Direction
+
+
+## Horizontal world direction of a view, with the fixed camera yaw of 0:
+## south is +Z (toward the camera), east is +X (right of the screen).
+static func to_world(direction: Direction) -> Vector3:
+	var angle: float = float(direction) * TAU / DIRECTION_COUNT
+	return Vector3(sin(angle), 0.0, cos(angle))

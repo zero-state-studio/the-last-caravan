@@ -3,7 +3,7 @@ extends SceneTree
 ## Usage: godot --headless --path . --script res://tests/run_tests.gd
 ## Exits with code 0 when every check passes, 1 otherwise.
 
-const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel"]
+const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"step", &"parry", &"lantern", &"call"]
 const LOAD_ROOTS: Array[String] = ["res://scenes", "res://scripts", "res://tests"]
 const TEST_KEY: StringName = &"UI_TEST_GREETING"
 const EXPECTED_TRANSLATIONS: Dictionary = {

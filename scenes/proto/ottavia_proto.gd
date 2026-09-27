@@ -20,8 +20,8 @@ const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboar
 
 signal defeated
 
-@export var move_speed: float = 3.0
-@export var max_health: float = 100.0
+## Health and speed come from the combat tuning (see OttaviaCombat).
+var max_health: float = 100.0
 @export var gravity: float = 20.0
 ## Yaw of the camera, so "up" on the stick always means "away from the camera".
 @export var camera_yaw_degrees: float = 0.0
@@ -34,6 +34,7 @@ signal defeated
 ## Night (45), and the one whose shadows matter to B15 and to the creatures
 ## drawn to light (36).
 @onready var lantern_light: OmniLight3D = $LanternLight
+@onready var combat: OttaviaCombat = $Combat
 
 ## Brightness of the lantern glass (emission mask), feeding the scene glow.
 @export var lantern_glass_energy: float = 2.5
@@ -49,10 +50,19 @@ var health: float = 0.0
 var _lantern_points: PackedVector2Array = []
 var _dark_areas: int = 0
 var _forced_lantern_shadows: int = -1
+var lantern_open: bool = true
+var _lantern_base_range: float = 5.0
+var _lantern_base_energy: float = 1.5
+var _flash: float = 0.0
+var _flash_color: Color = Color.WHITE
 
 
 func _ready() -> void:
+	add_to_group(&"player")
+	max_health = combat.tuning.max_health
 	health = max_health
+	_lantern_base_range = lantern_light.omni_range
+	_lantern_base_energy = lantern_light.light_energy
 	_material.shader = UNSHADED_SHADER
 	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
 	_material.set_shader_parameter(&"emission_mask", EMISSION_MASK)
@@ -66,16 +76,21 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down") if controls_enabled else Vector2.ZERO
+	combat.physics_update(delta, input, controls_enabled)
 	var direction: Vector3 = Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, deg_to_rad(camera_yaw_degrees))
-	velocity.x = direction.x * move_speed
-	velocity.z = direction.z * move_speed
+	var speed: float = combat.tuning.move_speed * combat.move_speed_multiplier()
+	var forced: Vector3 = combat.forced_velocity()
+	velocity.x = direction.x * speed + forced.x
+	velocity.z = direction.z * speed + forced.z
 	if is_on_floor():
 		velocity.y = 0.0
 	else:
 		velocity.y -= gravity * delta
 	move_and_slide()
-	_facing = Facing.nearest_direction(input, _facing)
-	_animate(delta, not input.is_zero_approx())
+	if combat.can_turn():
+		_facing = Facing.nearest_direction(input, _facing)
+	_animate(delta, not input.is_zero_approx() and combat.move_speed_multiplier() > 0.0)
+	_update_flash(delta)
 
 
 func set_billboard_fixed_y(fixed_y: bool) -> void:
@@ -182,3 +197,48 @@ func take_damage(amount: float) -> void:
 
 func restore_health() -> void:
 	health = max_health
+	combat.reset()
+
+
+## Horizontal world direction Ottavia is facing (one of the eight views).
+func facing_vector() -> Vector3:
+	return Facing.to_world(_facing)
+
+
+func face_toward(direction: Vector3) -> void:
+	_facing = Facing.nearest_direction(Vector2(direction.x, direction.z), _facing)
+
+
+func flash(amount: float, color: Color) -> void:
+	_flash = maxf(_flash, amount * HitFeedback.flash_scale)
+	_flash_color = color
+
+
+## Lantern shutter (33): closed, the glass goes dark and the light is off.
+func set_lantern_open(open: bool) -> void:
+	lantern_open = open
+	lantern_light.visible = open
+	_material.set_shader_parameter(&"emission_energy", lantern_glass_energy if open else 0.0)
+
+
+## Raised lantern (33): lights farther while the button is held.
+func set_lantern_raised(raised: bool) -> void:
+	var tuning: CombatTuning = combat.tuning
+	lantern_light.omni_range = _lantern_base_range * (tuning.lantern_raised_range_multiplier if raised else 1.0)
+	lantern_light.light_energy = _lantern_base_energy * (1.3 if raised else 1.0)
+
+
+## Hit flash, plus a faint tint while parrying (pale) or breathless (blue).
+func _update_flash(delta: float) -> void:
+	_flash = maxf(0.0, _flash - 8.0 * delta)
+	var amount: float = _flash
+	var color: Color = _flash_color
+	if _flash <= 0.05:
+		if combat.state == OttaviaCombat.State.PARRY:
+			amount = 0.15 * HitFeedback.flash_scale
+			color = Color(0.85, 0.92, 1.0)
+		elif combat.state == OttaviaCombat.State.BREATHLESS:
+			amount = (0.25 + 0.15 * sin(Time.get_ticks_msec() * 0.02)) * HitFeedback.flash_scale
+			color = Color(0.45, 0.55, 1.0)
+	_material.set_shader_parameter(&"flash", amount)
+	_material.set_shader_parameter(&"flash_color", color)
