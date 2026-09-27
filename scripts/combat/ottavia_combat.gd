@@ -57,6 +57,8 @@ var _parry_held: bool = false
 ## Share of speed taken by creatures clinging to Ottavia (B1), 0-1.
 var slowdown: float = 0.0
 var _moving: bool = false
+## Stick (or keys) direction this frame; zero when untouched.
+var _input: Vector2 = Vector2.ZERO
 ## Only a fresh press opens the deflect window, not a parry held through
 ## another action.
 var _parry_can_deflect: bool = false
@@ -79,6 +81,7 @@ func reset() -> void:
 
 func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> void:
 	_moving = controls_enabled and not input.is_zero_approx()
+	_input = input if controls_enabled else Vector2.ZERO
 	if controls_enabled:
 		_read_input(input)
 	_update_charges(delta)
@@ -331,13 +334,21 @@ func _hook_hit() -> void:
 	technique_done.emit(&"hook")
 
 
-## The creature the hook catches: the nearest one in front of Ottavia, inside
-## the aim assist cone (or the hook arc when aim assist is off), never one
-## behind her.
+## The creature the hook catches: the same aim rule as the strike (33).
 func hook_target() -> CombatEnemy:
-	var cone: float = tuning.aim_assist_degrees if GameOptions.aim_assist else tuning.hook_arc_degrees * 0.5
-	var facing: Vector3 = ottavia.facing_vector()
+	return aim_target(tuning.hook_reach)
+
+
+## The creature an action goes for (33). Stick held: the nearest creature
+## within `reach` inside the aim cone around the stick direction. Stick
+## still: the nearest creature within reach in any direction (Ottavia turns
+## to it). Null when there is none, or when aim assist is off (options, 96).
+func aim_target(reach: float) -> CombatEnemy:
+	if not GameOptions.aim_assist:
+		return null
 	var origin: Vector3 = ottavia.global_position
+	var stick: Vector3 = _stick_direction()
+	var half_cone: float = aim_cone_degrees() * 0.5
 	var best: CombatEnemy = null
 	var best_distance: float = INF
 	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
@@ -347,13 +358,24 @@ func hook_target() -> CombatEnemy:
 		var offset: Vector3 = target.global_position - origin
 		offset.y = 0.0
 		var distance: float = offset.length()
-		if distance > tuning.hook_reach + target.radius or distance >= best_distance:
+		if distance > reach + target.radius or distance >= best_distance:
 			continue
-		if distance > 0.01 and rad_to_deg(facing.angle_to(offset / distance)) > cone:
+		if not stick.is_zero_approx() and distance > 0.01 and rad_to_deg(stick.angle_to(offset / distance)) > half_cone:
 			continue
 		best = target
 		best_distance = distance
 	return best
+
+
+## Whole aim cone angle; the easy level (40) widens it from step 6.
+func aim_cone_degrees() -> float:
+	return tuning.aim_cone_degrees
+
+
+func _stick_direction() -> Vector3:
+	if _input.is_zero_approx():
+		return Vector3.ZERO
+	return Vector3(_input.x, 0.0, _input.y).normalized()
 
 
 ## Creatures within `reach` and `arc_degrees` around the current aim,
@@ -465,29 +487,17 @@ func is_acting() -> bool:
 
 # --- Helpers ---------------------------------------------------------------
 
-## The facing direction, turned toward the nearest creature in range within
-## the aim assist angle (the eight views make exact aiming hard).
+## Where an action goes (33): toward the aim target if there is one,
+## otherwise the stick direction, otherwise where Ottavia already faces.
 func _aim_direction(reach: float) -> Vector3:
-	var facing: Vector3 = ottavia.facing_vector()
-	if not GameOptions.aim_assist:
-		return facing
-	var origin: Vector3 = ottavia.global_position
-	var best: Vector3 = facing
-	var best_angle: float = tuning.aim_assist_degrees
-	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
-		var target: CombatEnemy = node as CombatEnemy
-		if target == null or not target.can_be_targeted():
-			continue
-		var offset: Vector3 = target.global_position - origin
-		offset.y = 0.0
-		if offset.length() > reach * 1.3 + target.radius or offset.length() < 0.01:
-			continue
-		var angle: float = rad_to_deg(facing.angle_to(offset.normalized()))
-		if angle < best_angle:
-			best_angle = angle
-			best = offset.normalized()
-	ottavia.face_toward(best)
-	return best
+	var target: CombatEnemy = aim_target(reach)
+	var direction: Vector3 = ottavia.facing_vector()
+	if target != null:
+		direction = _flat_direction(target.global_position - ottavia.global_position)
+	elif not _stick_direction().is_zero_approx():
+		direction = _stick_direction()
+	ottavia.face_toward(direction)
+	return direction
 
 
 func _step_direction_for(input: Vector2) -> Vector3:

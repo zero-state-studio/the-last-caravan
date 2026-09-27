@@ -26,7 +26,8 @@ extends Resource
 @export var strike_active: float = 0.08
 @export var strike_recovery: float = 0.22
 @export var strike_reach: float = 2.3
-@export var strike_arc_degrees: float = 120.0
+## The strike sweeps this arc in front of Ottavia and hits everything in it.
+@export var strike_arc_degrees: float = 90.0
 @export var combo_length: int = 3
 @export var combo_finisher_multiplier: float = 1.8
 @export var strike_knockback: float = 0.4
@@ -78,7 +79,11 @@ extends Resource
 @export var hitstop_critical_seconds: float = 0.12
 @export var shake_meters: float = 0.08
 @export var shake_critical_meters: float = 0.16
-@export var aim_assist_degrees: float = 35.0
+## Aim cone around the stick direction (whole angle): strikes and the hook go
+## for the nearest creature inside it (33).
+@export var aim_cone_degrees: float = 60.0
+## The same cone at the easy level (40), used from phase 3 step 6.
+@export var aim_cone_easy_degrees: float = 90.0
 ## A press this early is kept and used as soon as the action is possible.
 @export var input_buffer_seconds: float = 0.2
 

@@ -203,9 +203,12 @@ func _test_rules_from_review() -> void:
 	_dummy.global_position = Vector3(20.0, 0.0, 20.0)
 	behind.global_position = _ottavia.global_position + Vector3(0.0, 0.0, 1.5)
 	_ottavia.face_toward(Vector3.FORWARD)
-	_check(_combat.hook_target() == null, "the hook never catches a creature behind Ottavia")
-	_ottavia.face_toward(Vector3.BACK)
-	_check(_combat.hook_target() == behind, "turned toward it, the hook catches it")
+	_combat._input = Vector2.UP
+	_check(_combat.hook_target() == null, "stick held away: the hook does not catch a creature behind Ottavia")
+	_combat._input = Vector2.ZERO
+	_check(_combat.hook_target() == behind, "stick still: the hook goes for the nearest creature, turning to it")
+	_combat._input = Vector2(0.45, 0.9).normalized()
+	_check(_combat.hook_target() == behind, "stick held within 30 degrees of it: the hook catches it")
 	behind.queue_free()
 
 	_ottavia.set_physics_process(false)
@@ -224,11 +227,16 @@ func _test_rules_from_review() -> void:
 	# About 22 degrees off the facing: inside the 35 degree assist cone.
 	_dummy.global_position = _ottavia.global_position + Vector3(0.8, 0.0, -2.0)
 	_ottavia.face_toward(Vector3.FORWARD)
+	_combat._input = Vector2.ZERO
 	GameOptions.aim_assist = false
 	_check(_combat._aim_direction(3.0).is_equal_approx(Vector3.FORWARD), "aim assist off: strikes follow the facing only")
 	GameOptions.aim_assist = true
 	_ottavia.face_toward(Vector3.FORWARD)
-	_check(not _combat._aim_direction(3.0).is_equal_approx(Vector3.FORWARD), "aim assist on: strikes turn toward the creature")
+	_check(not _combat._aim_direction(3.0).is_equal_approx(Vector3.FORWARD), "stick still: strikes turn toward the nearest creature")
+	# Stick held east, the creature is north-north-east: outside the 30 degrees.
+	_combat._input = Vector2.RIGHT
+	_check(_combat._aim_direction(3.0).is_equal_approx(Vector3.RIGHT), "stick held, nobody in the cone: the strike goes along the stick")
+	_combat._input = Vector2.ZERO
 	_place_in_front()
 
 
