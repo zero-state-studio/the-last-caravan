@@ -31,12 +31,15 @@ func _initialize() -> void:
 	var meshes: Array[Node] = model.find_children("*", "MeshInstance3D", true, false)
 	for node: Node in meshes:
 		var mesh_instance: MeshInstance3D = node
+		# Bounds in model space: the scaling parent written by meshy_pixelize.py counts.
+		var to_model: Transform3D = VegetationScatter.transform_in(model, mesh_instance)
 		for surface: int in mesh_instance.mesh.get_surface_count():
 			var arrays: Array = mesh_instance.mesh.surface_get_arrays(surface)
 			var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 			var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
 			triangles += (indices.size() if indices.size() > 0 else vertices.size()) / 3
-			for vertex: Vector3 in vertices:
+			for local_vertex: Vector3 in vertices:
+				var vertex: Vector3 = to_model * local_vertex
 				if first:
 					bounds = AABB(vertex, Vector3.ZERO)
 					first = false
@@ -44,8 +47,10 @@ func _initialize() -> void:
 					bounds = bounds.expand(vertex)
 	for node: Node in meshes:
 		var mesh_instance: MeshInstance3D = node
+		var to_model: Transform3D = VegetationScatter.transform_in(model, mesh_instance)
 		for surface: int in mesh_instance.mesh.get_surface_count():
-			for vertex: Vector3 in mesh_instance.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]:
+			for local_vertex: Vector3 in mesh_instance.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]:
+				var vertex: Vector3 = to_model * local_vertex
 				if vertex.y > bounds.position.y + bounds.size.y * 0.66:
 					upper_sum += vertex
 					upper_count += 1

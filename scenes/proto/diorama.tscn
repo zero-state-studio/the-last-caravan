@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3]
+[gd_scene load_steps=38 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -9,18 +9,26 @@
 [ext_resource type="Material" path="res://scenes/proto/materials/mat_stone.tres" id="7_stone"]
 [ext_resource type="Material" path="res://scenes/proto/materials/mat_far_rock.tres" id="8_far"]
 [ext_resource type="PackedScene" path="res://assets/models/proto/crate.glb" id="9_crate"]
-[ext_resource type="PackedScene" path="res://assets/models/proto/boulder.glb" id="10_boulder"]
-[ext_resource type="PackedScene" path="res://assets/models/proto/tree_crooked.glb" id="11_tree"]
-[ext_resource type="Script" path="res://scenes/proto/foreground_plant.gd" id="12_plant"]
-[ext_resource type="Texture2D" path="res://assets/sprites/proto/plants/grass_reeds.png" id="13_grass"]
-[ext_resource type="Texture2D" path="res://assets/sprites/proto/plants/shrub_crooked.png" id="14_shrub"]
-[ext_resource type="Texture2D" path="res://assets/sprites/proto/plants/fern.png" id="15_fern"]
 [ext_resource type="Script" path="res://scripts/world/zone_palette.gd" id="16_zone"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/albero_storto_01.glb" id="17_tree"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_01.glb" id="18_bush"]
 [ext_resource type="Script" path="res://scripts/world/vegetation_scatter.gd" id="19_scatter"]
 [ext_resource type="Resource" path="res://assets/vegetation_kit/ciuffo_erba_01.tres" id="20_tuft"]
 [ext_resource type="Resource" path="res://assets/vegetation_kit/ciuffo_erba_02.tres" id="21_tuft2"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/felce_01.tres" id="22_fern"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/fiori_01.tres" id="23_flowers"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/erba_alta_01.tres" id="24_tallgrass"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/muschio_01.tres" id="25_moss"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/sassi_01.tres" id="26_stones"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/cespuglio_01.tres" id="27_bush_entry"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/cespuglio_secco_01.tres" id="28_drybush_entry"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/alberello_01.tres" id="29_sapling_entry"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/albero_alto_01.glb" id="30_tall_tree"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/alberello_01.glb" id="31_sapling"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/tronco_caduto_01.glb" id="32_log"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/ceppo_01.glb" id="33_stump"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/roccia_grande_01.glb" id="34_rock"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_secco_01.glb" id="35_drybush"]
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
 sky_top_color = Color(0.3, 0.26, 0.56, 1)
@@ -308,115 +316,11 @@ material = ExtResource("8_far")
 
 [node name="Props" type="Node3D" parent="."]
 
-[node name="Tree1" parent="Props" instance=ExtResource("11_tree")]
-transform = Transform3D(0.9397, 0, 0.342, 0, 1, 0, -0.342, 0, 0.9397, -11.5, 3, -12)
-
-[node name="Tree2" parent="Props" instance=ExtResource("11_tree")]
-transform = Transform3D(0.866, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866, 12.5, 0, 7)
-
-[node name="Boulder1" parent="Props" instance=ExtResource("10_boulder")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -3.5)
-
-[node name="Boulder2" parent="Props" instance=ExtResource("10_boulder")]
-transform = Transform3D(0.342, 0, 0.9397, 0, 1, 0, -0.9397, 0, 0.342, -12, 0, 9)
-
 [node name="MeshyCrate1" parent="Props" instance=ExtResource("9_crate")]
 transform = Transform3D(0.9659, 0, 0.2588, 0, 1, 0, -0.2588, 0, 0.9659, 8, 3, -12.5)
 
 [node name="MeshyCrate2" parent="Props" instance=ExtResource("9_crate")]
 transform = Transform3D(0.9903, 0, -0.1392, 0, 1, 0, 0.1392, 0, 0.9903, 9.3, 0, -3.2)
-
-[node name="Foreground" type="Node3D" parent="."]
-
-[node name="Plant0" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 0, 14.2)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant1" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, 14.6)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant2" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 14)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
-
-[node name="Plant3" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 14.5)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant4" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 14.1)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant5" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 14.6)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
-
-[node name="Plant6" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 14.2)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant7" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 14.5)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant8" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 14)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
-
-[node name="Plant9" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2, 0, 14.6)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant10" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, -1.3)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
-
-[node name="Plant11" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 0, -1)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant12" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, -0.6)
-script = ExtResource("12_plant")
-texture = ExtResource("13_grass")
-
-[node name="Plant13" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 2.2)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant14" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, 2.6)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
-
-[node name="Plant15" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 0, 1.8)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant16" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 6.5)
-script = ExtResource("12_plant")
-texture = ExtResource("14_shrub")
-
-[node name="Plant17" type="MeshInstance3D" parent="Foreground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 10)
-script = ExtResource("12_plant")
-texture = ExtResource("15_fern")
 
 [node name="Vegetation" type="Node3D" parent="."]
 
@@ -429,7 +333,7 @@ transform = Transform3D(0.9659, 0, -0.2588, 0, 1, 0, 0.2588, 0, 0.9659, -0.6, 0,
 [node name="GrassA" type="Node3D" parent="Vegetation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, -0.6)
 script = ExtResource("19_scatter")
-entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft")])
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft"), ExtResource("23_flowers"), ExtResource("25_moss")])
 extents = Vector2(3, 1.8)
 density = 10.0
 random_seed = 3
@@ -437,7 +341,7 @@ random_seed = 3
 [node name="GrassB" type="Node3D" parent="Vegetation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0, 1.2)
 script = ExtResource("19_scatter")
-entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft")])
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("24_tallgrass"), ExtResource("23_flowers"), ExtResource("26_stones")])
 extents = Vector2(2.4, 1.8)
 density = 10.0
 random_seed = 7
@@ -449,6 +353,81 @@ entries = Array[Resource]([ExtResource("20_tuft"), ExtResource("21_tuft2")])
 extents = Vector2(2, 1.6)
 density = 8.0
 random_seed = 11
+
+[node name="TallTreeTerrace" parent="Vegetation" instance=ExtResource("30_tall_tree")]
+transform = Transform3D(0.9659, 0, 0.2588, 0, 1, 0, -0.2588, 0, 0.9659, -11.5, 3, -12)
+
+[node name="TallTreeSouthEast" parent="Vegetation" instance=ExtResource("30_tall_tree")]
+transform = Transform3D(0.9848, 0, -0.1736, 0, 1, 0, 0.1736, 0, 0.9848, 12.5, 0, 7)
+
+[node name="RockEast" parent="Vegetation" instance=ExtResource("34_rock")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -3.5)
+
+[node name="RockWest" parent="Vegetation" instance=ExtResource("34_rock")]
+transform = Transform3D(0.3078, 0, 0.8457, 0, 0.9, 0, -0.8457, 0, 0.3078, -12, 0, 9)
+
+[node name="FallenLog" parent="Vegetation" instance=ExtResource("32_log")]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -3.5, 0, 6.2)
+
+[node name="Stump" parent="Vegetation" instance=ExtResource("33_stump")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 11.5, 0, 3)
+
+[node name="SaplingWest" parent="Vegetation" instance=ExtResource("31_sapling")]
+transform = Transform3D(0.9962, 0, -0.0872, 0, 1, 0, 0.0872, 0, 0.9962, -10.5, 0, 5.5)
+
+[node name="SaplingSouth" parent="Vegetation" instance=ExtResource("31_sapling")]
+transform = Transform3D(0.8803, 0, 0.1871, 0, 0.9, 0, -0.1871, 0, 0.8803, 2.5, 0, 9.5)
+
+[node name="DryBush" parent="Vegetation" instance=ExtResource("35_drybush")]
+transform = Transform3D(0.9903, 0, -0.1392, 0, 1, 0, 0.1392, 0, 0.9903, -4.5, 0, 10.5)
+
+[node name="MeadowWest" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 9.5)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("24_tallgrass"), ExtResource("21_tuft2"), ExtResource("23_flowers"), ExtResource("25_moss"), ExtResource("26_stones")])
+extents = Vector2(3, 2.5)
+density = 5.0
+random_seed = 21
+
+[node name="MeadowSouthEast" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 9.5)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft"), ExtResource("23_flowers"), ExtResource("28_drybush_entry"), ExtResource("26_stones")])
+extents = Vector2(3.5, 2.5)
+density = 5.0
+random_seed = 23
+
+[node name="TerraceMeadow" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 3, -9.5)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("23_flowers"), ExtResource("25_moss"), ExtResource("26_stones"), ExtResource("29_sapling_entry")])
+extents = Vector2(4.5, 3)
+density = 5.0
+random_seed = 25
+
+[node name="PlatformMeadow" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 3, -11)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("22_fern"), ExtResource("24_tallgrass"), ExtResource("27_bush_entry")])
+extents = Vector2(3.5, 2.5)
+density = 5.0
+random_seed = 27
+
+[node name="ForegroundBand" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.2)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("22_fern"), ExtResource("24_tallgrass"), ExtResource("21_tuft2"), ExtResource("23_flowers"), ExtResource("27_bush_entry")])
+extents = Vector2(14, 0.9)
+density = 3.0
+random_seed = 29
+
+[node name="GroundCover" type="Node3D" parent="Vegetation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft"), ExtResource("25_moss"), ExtResource("23_flowers")])
+extents = Vector2(15, 15)
+density = 1.2
+random_seed = 31
 
 [node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)

@@ -142,14 +142,14 @@ static func load_model_mesh(model: PackedScene) -> Array:
 	var result: Array = []
 	if not found.is_empty():
 		var mesh_instance: MeshInstance3D = found[0]
-		result = [mesh_instance.mesh, _transform_in(root, mesh_instance)]
+		result = [mesh_instance.mesh, transform_in(root, mesh_instance)]
 	root.free()
 	return result
 
 
 ## Transform of `node` relative to `root`, including the root's own one
 ## (the scaling parent written by tools/meshy_pixelize.py sits in between).
-static func _transform_in(root: Node3D, node: Node3D) -> Transform3D:
+static func transform_in(root: Node3D, node: Node3D) -> Transform3D:
 	var result: Transform3D = node.transform
 	var parent: Node = node.get_parent()
 	while parent != null and parent != root:

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="VegetationEntry" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/vegetation_entry.gd" id="1_entry"]
+[ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_secco_01.glb" id="2_source"]
+
+[resource]
+script = ExtResource("1_entry")
+model = ExtResource("2_source")
+weight = 1.0
+footprint_radius = 0.6
+scale_range = Vector2(0.8, 1.2)
+cast_shadow = true
