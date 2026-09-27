@@ -153,3 +153,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Effetto `CombatEffects.ground_ring`: anello sul terreno sopra l'erba, per i preavvisi che la vegetazione fitta nasconderebbe.
 - `screenshot_runner.gd` libera la scena e aspetta qualche fotogramma prima di chiudere: un suono ancora in riproduzione alla chiusura conta come risorsa trapelata e fa fallire lo screenshot.
 - Test: `tests/test_creatures.gd`; i test di camminata, stanze e combattimento tolgono le creature all'avvio.
+
+## Boss (fase 3, passo 4; 83, 41, 105)
+
+- `BossEnemy` (`scripts/bosses/boss_enemy.gd`): nome e barra della vita nell'HUD mentre il combattimento è attivo (gruppo `active_boss`). `BossArena` (`scripts/bosses/boss_arena.gd`): sveglia il boss all'ingresso nella stanza, ripristina l'arena a schermo nero dopo una sconfitta (`RoomManager.room_restarted`), mostra la vittoria.
+- Il Foglione Radicato (`FoglioneRadicato`, `FoglioneArena`): campo a est della Piattaforma (passaggio: il cancello sul bordo est), a x = 60. Foglie sul lato del sole (×0,15), leva (`FieldLever`, un `Interactable` usato con A o E) che sposta il sole a est e inclina il campo (`AnimatableBody3D` incernierato sul bordo est); il boss si gira a 40°/s e scopre il fianco ovest; radici con anello di preavviso, spazzata frontale, foglie chiuse dopo 60 danni.
+- Il Vecchio Spartighiaccio (`VecchioSpartighiaccio`, `IceArena`): lago a ovest della Terrazza (passaggio: il sentiero sul bordo ovest), a x = −60. Carica con striscia di preavviso, scudo frontale (×0,1), lastre di ghiaccio 8×8 da 1,5 m: incrinate da una carica, spezzate da una carica successiva; carica verso un buco: fermo sul bordo e scoperto; caduta in acqua: danno e ritorno sull'ultimo punto sicuro (anche il bordo di pietra); pestone se Ottavia è troppo vicina.
+- Durante dissolvenze e ripartenze tutte le creature restano ferme (`CombatEnemy` non agisce se Ottavia non ha i comandi).
+- Interazione: `OttaviaProto.interact()` usa l'`Interactable` più vicino entro il suo raggio.
+- Test: `tests/test_bosses.gd`. I test di combattimento, creature e boss liberano la scena prima di chiudere (suoni ancora in riproduzione = risorse trapelate).

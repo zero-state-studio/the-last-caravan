@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/vecchio_spartighiaccio.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/creatures/spartighiaccio.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://assets/combat/creature_tuning.tres" id="3_tuning"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_body"]
+height = 2.2
+radius = 1.0
+
+[node name="VecchioSpartighiaccio" type="CharacterBody3D"]
+script = ExtResource("1_script")
+creature = ExtResource("3_tuning")
+title_key = &"BOSS_SPARTIGHIACCIO"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+shape = SubResource("CylinderShape3D_body")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 41.5)
+pixel_size = 0.0333
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_sprite")

@@ -65,6 +65,31 @@ static func ground_ring(parent: Node, center: Vector3, radius: float, color: Col
 	tween.tween_callback(instance.queue_free)
 
 
+## A flat strip on the ground from `origin` along `direction`: the path of a
+## charge (telegraph).
+static func ground_line(parent: Node, origin: Vector3, direction: Vector3, length: float, width: float, color: Color, seconds: float) -> void:
+	var flat: Vector3 = Vector3(direction.x, 0.0, direction.z).normalized()
+	var mesh: PlaneMesh = PlaneMesh.new()
+	mesh.size = Vector2(width, length)
+	var material: StandardMaterial3D = StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	material.no_depth_test = true
+	material.albedo_texture = _ring_texture(maxi(6, roundi(width * WorldScale.PIXELS_PER_METER * 0.5)))
+	material.uv1_scale = Vector3(1.0, maxf(1.0, length / width), 1.0)
+	material.albedo_color = color
+	var instance: MeshInstance3D = MeshInstance3D.new()
+	instance.mesh = mesh
+	instance.material_override = material
+	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(instance)
+	instance.global_transform = Transform3D(Basis.looking_at(flat, Vector3.UP), origin + flat * length * 0.5 + Vector3.UP * 0.05)
+	var tween: Tween = instance.create_tween()
+	tween.tween_property(material, "albedo_color:a", color.a, seconds).from(color.a * 0.3)
+	tween.tween_callback(instance.queue_free)
+
+
 static func _ring_texture(radius: int) -> ImageTexture:
 	var key: String = "ring_%d" % radius
 	if _arc_textures.has(key):

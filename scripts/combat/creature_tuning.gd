@@ -68,3 +68,43 @@ extends Resource
 @export var grappolo_shell_multiplier: float = 0.5
 @export var grappolo_reform_seconds: float = 3.0
 @export var grappolo_bit_speed: float = 1.5
+
+@export_group("Foglione Radicato (83)")
+@export var foglione_health: float = 300.0
+## How fast the rooted beast turns its leaves after the sun (degrees/s).
+@export var foglione_turn_degrees_per_second: float = 40.0
+## Share of damage that gets through the leaves.
+@export var foglione_leaf_multiplier: float = 0.15
+## Half-angle of the leaf-covered side, around its facing (toward the sun).
+@export var foglione_leaf_degrees: float = 80.0
+@export var foglione_root_interval: float = 3.2
+@export var foglione_root_telegraph: float = 0.9
+@export var foglione_root_damage: float = 14.0
+@export var foglione_root_radius: float = 1.3
+@export var foglione_sweep_range: float = 3.2
+@export var foglione_sweep_windup: float = 0.8
+@export var foglione_sweep_damage: float = 16.0
+@export var foglione_sweep_exposed: float = 0.7
+## Damage taken before it closes its leaves all around.
+@export var foglione_close_after_damage: float = 60.0
+@export var foglione_close_seconds: float = 2.5
+## The field stays tilted (sun on the other side) this long after the lever.
+@export var field_tilt_seconds: float = 9.0
+@export var field_lever_cooldown: float = 12.0
+
+@export_group("Vecchio Spartighiaccio (41)")
+@export var sparti_health: float = 350.0
+@export var sparti_aim_seconds: float = 1.0
+@export var sparti_charge_speed: float = 9.0
+@export var sparti_charge_max_distance: float = 16.0
+@export var sparti_charge_damage: float = 25.0
+@export var sparti_recover_seconds: float = 1.6
+## Stopped at the edge of broken ice: open for longer.
+@export var sparti_stuck_seconds: float = 3.0
+## Share of damage that gets through the front shield.
+@export var sparti_shield_multiplier: float = 0.1
+@export var sparti_shield_degrees: float = 60.0
+@export var sparti_stomp_range: float = 2.2
+@export var sparti_stomp_telegraph: float = 0.6
+@export var sparti_stomp_damage: float = 15.0
+@export var ice_fall_damage: float = 15.0

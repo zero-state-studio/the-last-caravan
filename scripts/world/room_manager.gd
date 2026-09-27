@@ -7,6 +7,9 @@ extends Node
 
 signal room_changed(room: Room)
 signal player_respawned(room: Room)
+## Emitted during the black screen of a restart, after the creatures of the
+## room are back at their start (arenas reset their mechanics here).
+signal room_restarted(room: Room)
 
 ## Paths, not typed node exports: hand-written paths in a .tscn do not
 ## resolve into typed node exports (see docs/tecnica.md).
@@ -119,6 +122,7 @@ func _on_player_defeated() -> void:
 	_place_player(respawn_position)
 	player.restore_health()
 	reset_room_enemies(current_room)
+	room_restarted.emit(current_room)
 	await _fade_to(0.0, defeat_fade_seconds)
 	player.controls_enabled = true
 	_busy = false

@@ -33,8 +33,11 @@ func _initialize() -> void:
 	await _test_lantern_and_call()
 	await _test_rules_from_review()
 
-	# Let the last sounds end: a playing stream at exit counts as a leak.
-	await _wait(1.5)
+	# Free the level (its creatures keep fighting and playing sounds) and let
+	# the audio server drop them: a stream playing at exit counts as a leak.
+	current_scene.queue_free()
+	for index: int in 10:
+		await process_frame
 	print("TESTS: combat %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 

@@ -127,7 +127,12 @@ func _physics_process(delta: float) -> void:
 		velocity = _move_velocity
 	else:
 		velocity = Vector3.ZERO
-	_behave(delta)
+	# Creatures wait while Ottavia has no control (fades, passages, restarts).
+	var player: OttaviaProto = find_player()
+	if player == null or player.controls_enabled:
+		_behave(delta)
+	elif not is_being_moved():
+		velocity = Vector3.ZERO
 	move_and_slide()
 
 

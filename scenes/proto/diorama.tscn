@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3]
+[gd_scene load_steps=71 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/diorama.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
@@ -42,6 +42,36 @@
 [ext_resource type="PackedScene" path="res://scenes/creatures/raspagelo.tscn" id="46_raspa"]
 [ext_resource type="PackedScene" path="res://scenes/creatures/brinacchio.tscn" id="47_brina"]
 [ext_resource type="PackedScene" path="res://scenes/creatures/grappolo.tscn" id="48_grappolo"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/foglione_radicato.tscn" id="49_foglione"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/vecchio_spartighiaccio.tscn" id="50_sparti"]
+[ext_resource type="Script" path="res://scripts/bosses/foglione_arena.gd" id="51_field_arena"]
+[ext_resource type="Script" path="res://scripts/bosses/ice_arena.gd" id="52_ice_arena"]
+[ext_resource type="Script" path="res://scripts/bosses/field_lever.gd" id="53_lever"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_field"]
+size = Vector3(16, 1, 16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_field"]
+size = Vector3(16, 1, 16)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_water"]
+size = Vector2(12, 12)
+
+[sub_resource type="StandardMaterial3D" id="Material_water"]
+albedo_color = Color(0.12, 0.16, 0.3, 1)
+roughness = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit_campo"]
+size = Vector3(1, 1.6, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit_lago"]
+size = Vector3(1, 1.6, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back_campo"]
+size = Vector3(1.2, 2, 1.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back_lago"]
+size = Vector3(1.2, 2, 1.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_exit1"]
 size = Vector3(3, 2, 1.2)
@@ -253,6 +283,65 @@ material = ExtResource("7_stone")
 transform = Transform3D(1, 0, 0, 0, 0.8572, -0.5150, 0, 0.5150, 0.8572, 13, 1.3286, -3.603)
 size = Vector3(2.4, 0.4, 6.4)
 material = ExtResource("4_ground")
+
+[node name="Arenas" type="CSGCombiner3D" parent="Level"]
+use_collision = true
+
+[node name="FieldWallN" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.4, -8.5)
+size = Vector3(17, 0.8, 1)
+material = ExtResource("7_stone")
+
+[node name="FieldWallS" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.4, 8.5)
+size = Vector3(17, 0.8, 1)
+material = ExtResource("7_stone")
+
+[node name="FieldWallW" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.5, 0.4, 0)
+size = Vector3(1, 0.8, 16)
+material = ExtResource("7_stone")
+
+[node name="FieldCliff" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68.5, 2.5, 0)
+size = Vector3(1, 5, 18)
+material = ExtResource("8_far")
+
+[node name="FieldBase" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -2.5, 0)
+size = Vector3(16, 3, 16)
+material = ExtResource("4_ground")
+
+[node name="PondRim" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -1.5, 0)
+size = Vector3(16, 3, 16)
+material = ExtResource("5_terrace")
+
+[node name="PondHole" type="CSGBox3D" parent="Level/Arenas/PondRim"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+operation = 2
+size = Vector3(12, 3.2, 12)
+material = ExtResource("5_terrace")
+
+[node name="PondWallN" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.4, -8.5)
+size = Vector3(17, 0.8, 1)
+material = ExtResource("7_stone")
+
+[node name="PondWallS" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.4, 8.5)
+size = Vector3(17, 0.8, 1)
+material = ExtResource("7_stone")
+
+[node name="PondWallE" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.5, 0.4, 0)
+size = Vector3(1, 0.8, 16)
+material = ExtResource("7_stone")
+
+[node name="PondWallW" type="CSGBox3D" parent="Level/Arenas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68.5, 0.4, 0)
+size = Vector3(1, 0.8, 16)
+material = ExtResource("7_stone")
 
 [node name="Stairs" type="CSGCombiner3D" parent="Level"]
 
@@ -663,6 +752,119 @@ script = ExtResource("43_hud")
 
 [node name="OptionsMenu" type="CanvasLayer" parent="."]
 script = ExtResource("44_options")
+
+[node name="CampoFoglione" type="Node3D" parent="Rooms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.5, 0)
+script = ExtResource("37_room")
+room_id = &"campo_foglione"
+size = Vector3(18, 6, 18)
+camera_limits_rect = Rect2(59.5, -0.5, 1, 1)
+default_entry = &"da_cancello"
+
+[node name="Entry_da_cancello" type="Marker3D" parent="Rooms/CampoFoglione"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, -1.2, 5.2)
+script = ExtResource("38_entry")
+entry_id = &"da_cancello"
+
+[node name="VersoPiattaforma" type="Area3D" parent="Rooms/CampoFoglione"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, -0.5, 7)
+script = ExtResource("39_exit")
+target_room = &"piattaforma"
+target_entry = &"da_campo"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/CampoFoglione/VersoPiattaforma"]
+shape = SubResource("BoxShape3D_back_campo")
+
+[node name="LagoGhiaccio" type="Node3D" parent="Rooms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.5, 0)
+script = ExtResource("37_room")
+room_id = &"lago_ghiaccio"
+size = Vector3(18, 6, 18)
+camera_limits_rect = Rect2(-60.5, -0.5, 1, 1)
+default_entry = &"da_sentiero"
+
+[node name="Entry_da_sentiero" type="Marker3D" parent="Rooms/LagoGhiaccio"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -1.5, 5)
+script = ExtResource("38_entry")
+entry_id = &"da_sentiero"
+
+[node name="VersoTerrazza" type="Area3D" parent="Rooms/LagoGhiaccio"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1, -0.5, 7.2)
+script = ExtResource("39_exit")
+target_room = &"terrazza"
+target_entry = &"da_lago"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/LagoGhiaccio/VersoTerrazza"]
+shape = SubResource("BoxShape3D_back_lago")
+
+[node name="Entry_da_campo" type="Marker3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, -1.25, -3)
+script = ExtResource("38_entry")
+entry_id = &"da_campo"
+
+[node name="VersoCampo" type="Area3D" parent="Rooms/Piattaforma"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, -0.45, -3)
+script = ExtResource("39_exit")
+target_room = &"campo_foglione"
+target_entry = &"da_cancello"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Piattaforma/VersoCampo"]
+shape = SubResource("BoxShape3D_exit_campo")
+
+[node name="Entry_da_lago" type="Marker3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7, -1.25, -3.5)
+script = ExtResource("38_entry")
+entry_id = &"da_lago"
+
+[node name="VersoLago" type="Area3D" parent="Rooms/Terrazza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, -0.45, -3.5)
+script = ExtResource("39_exit")
+target_room = &"lago_ghiaccio"
+target_entry = &"da_sentiero"
+
+[node name="Shape" type="CollisionShape3D" parent="Rooms/Terrazza/VersoLago"]
+shape = SubResource("BoxShape3D_exit_lago")
+
+[node name="FieldArena" type="Node3D" parent="."]
+script = ExtResource("51_field_arena")
+room_path = NodePath("../Rooms/CampoFoglione")
+boss_path = NodePath("Foglione")
+lever_path = NodePath("Field/Lever")
+sun_path = NodePath("../Sun")
+field_path = NodePath("Field")
+
+[node name="Field" type="AnimatableBody3D" parent="FieldArena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="FieldArena/Field"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -0.5, 0)
+shape = SubResource("BoxShape3D_field")
+
+[node name="Mesh" type="MeshInstance3D" parent="FieldArena/Field"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -0.5, 0)
+mesh = SubResource("BoxMesh_field")
+surface_material_override/0 = ExtResource("4_ground")
+
+[node name="Lever" type="Node3D" parent="FieldArena/Field"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -14.5, 0, -5.5)
+script = ExtResource("53_lever")
+
+[node name="Foglione" parent="FieldArena" instance=ExtResource("49_foglione")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66.3, 0, 0)
+
+[node name="PondArena" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
+script = ExtResource("52_ice_arena")
+room_path = NodePath("../Rooms/LagoGhiaccio")
+boss_path = NodePath("Spartighiaccio")
+
+[node name="Water" type="MeshInstance3D" parent="PondArena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_water")
+surface_material_override/0 = SubResource("Material_water")
+
+[node name="Spartighiaccio" parent="PondArena" instance=ExtResource("50_sparti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("40_manager")

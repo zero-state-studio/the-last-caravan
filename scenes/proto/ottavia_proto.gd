@@ -77,6 +77,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down") if controls_enabled else Vector2.ZERO
 	combat.physics_update(delta, input, controls_enabled)
+	if controls_enabled and Input.is_action_just_pressed(&"interact"):
+		interact()
 	var direction: Vector3 = Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, deg_to_rad(camera_yaw_degrees))
 	var speed: float = combat.tuning.move_speed * combat.move_speed_multiplier()
 	var forced: Vector3 = combat.forced_velocity()
@@ -198,6 +200,24 @@ func take_damage(amount: float) -> void:
 func restore_health() -> void:
 	health = max_health
 	combat.reset()
+
+
+## Uses the nearest interactable within its radius (levers, doors...).
+func interact() -> bool:
+	var best: Interactable = null
+	var best_distance: float = INF
+	for node: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var item: Interactable = node as Interactable
+		if item == null or not item.can_use():
+			continue
+		var distance: float = Vector2(item.global_position.x - global_position.x, item.global_position.z - global_position.z).length()
+		if distance <= item.radius and distance < best_distance:
+			best = item
+			best_distance = distance
+	if best == null:
+		return false
+	best.use()
+	return true
 
 
 ## Horizontal world direction Ottavia is facing (one of the eight views).
