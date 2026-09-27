@@ -24,14 +24,14 @@ PixelLab per sprite e animazioni. Aseprite per rifinirli ed esportare gli sprite
 
 Per ogni strumento: accesso tramite API o connettore, gestione delle chiavi, script che Claude Code usa per generare e importare gli asset.
 
-## 65. Regole per Claude Code  [Da definire]
+## 65. Regole per Claude Code  [Definito]
 
-Il file CLAUDE.md nel progetto, con specifiche, convenzioni e divieti. Claude Code lo legge a ogni sessione: è lì che confluisce tutto ciò che definiamo in questa pagina.
+Sono nel file `CLAUDE.md` del progetto: fonte di verità, lavoro a passi con verifica e commit, nessuna decisione di design presa da Claude Code, segnaposti `TODO-DESIGN` per ciò che è da definire, registro degli asset generati per la dichiarazione AI, soglie di budget oltre le quali chiedere conferma, divieto di usare immagini di altri giochi. Claude Code lo legge a ogni sessione, e si affina man mano.
 
-## 66. Struttura del progetto  [Da definire]
+## 66. Struttura del progetto  [Definito]
 
-Cartelle, nomi dei file, organizzazione degli asset.
+Quella descritta in `CLAUDE.md`: progetto Godot nella radice, cartelle per scene, script, asset approvati, traduzioni, test, strumenti, output grezzi dei servizi e documentazione. Le cartelle che Godot non deve importare hanno un file `.gdignore`. I file binari passano da Git LFS.
 
-## 67. Controlli  [In discussione]
+## 67. Controlli  [Definito]
 
 Pensati prima per il gamepad, come richiede la verifica Steam Deck. Gamepad: A interagire, X Colpo, Y Uncino, B Passo, LB Parata, RB Lanterna, RT Richiamo, Menu opzioni (su PlayStation: croce, quadrato, triangolo, cerchio, L1, R1, R2, Options). Tastiera e mouse, con la mano sinistra su WASD senza spostarla: tasto sinistro del mouse Colpo, tasto destro Parata, barra spaziatrice Passo, Q Uncino, E interagire, R Richiamo, F Lanterna, Esc opzioni. Il mouse non mira: Colpo e Uncino seguono la direzione del movimento con l'aiuto alla mira, come con il gamepad, così la sensazione è la stessa su tutti i comandi. Tutti i comandi sono rimappabili dalle opzioni (96).

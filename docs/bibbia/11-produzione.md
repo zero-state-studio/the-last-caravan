@@ -6,9 +6,9 @@
 
 Un pezzo breve ma completo, con grafica, suoni e combattimento definitivi, per verificare che tutta la catena di produzione funzioni prima di costruire il resto. Proposta: il prologo più i Carri-campo.
 
-## 69. Tappe di sviluppo  [Da definire]
+## 69. Tappe di sviluppo  [Definito]
 
-Le fasi dal prototipo al lancio, con cosa deve essere pronto in ognuna.
+Sette fasi, dalle fondamenta all'uscita, descritte in `docs/fasi.md`. Ogni fase si chiude con un resoconto e con l'approvazione dell'autore. Fasi 0, 1 e 2 concluse; fase corrente: 3, combattimento e progressione.
 
 ## 70. Dichiarazione AI su Steam  [Definito]
 

@@ -98,10 +98,10 @@ Capitolo 9. Un cratere nel cuore del Giorno, dove il calore è insopportabile. P
 
 ## 45. La Notte  [Definito]
 
-Capitolo 10. L'unica zona completamente buia. Ottavia la attraversa con la sola lanterna, mentre arrivano nemici senza fine: non si possono sconfiggere, solo evitare e tenere a distanza. Tutte le strade portano a un vicolo cieco, dove si svolge il finale (28). Lì l'unica cosa che il giocatore può fare è posare la lanterna e spegnerla: gli altri comandi producono solo un tentativo stanco di rialzarsi. Non c'è un timer, il gioco aspetta. L'esitazione del giocatore diventa quella di Ottavia, e il momento lo sceglie lui. Solo con la lanterna spenta il buio è abbastanza profondo per vedere le stelle. Dopo un intero gioco di tramonti dorati, il contrasto è fortissimo. La Notte non è un livello a stanze: resta uno spazio continuo (102).
+Capitolo 10. L'unica zona completamente buia. Ottavia la attraversa con la sola lanterna, mentre arrivano nemici senza fine: non si possono sconfiggere, solo evitare e tenere a distanza. Tutte le strade portano a un vicolo cieco, dove si svolge il finale (28). Lì l'unica cosa che il giocatore può fare è posare la lanterna e spegnerla: gli altri comandi producono solo un tentativo stanco di rialzarsi. Non c'è un timer, il gioco aspetta. L'esitazione del giocatore diventa quella di Ottavia, e il momento lo sceglie lui. Solo con la lanterna spenta il buio è abbastanza profondo per vedere le stelle. Dopo un intero gioco di tramonti dorati, il contrasto è fortissimo. La Notte non è un livello a stanze: resta uno spazio continuo (102). In questa sequenza i nemici non possono uccidere Ottavia: i colpi la spingono, la rallentano e le tolgono fiato, ma non c'è sconfitta (105). Così resta vero che non sono i mostri a vincerla.
 
 **Creature:** Falena di pece (B13), Mangiaombre (B15), Sudario (B23), Trampoliere (B22), Coro (B19), Tamburo (B14), Canne d'organo (B26), Il Paziente (B25). Arrivano a ondate infinite, attirate dalla lanterna.
 
 **Boss:** Nessun boss: il boss è la Notte stessa.
 
-**Resta da definire:** Mappa. Proposta: in questa sequenza i nemici non possono uccidere Ottavia. I colpi la spingono, la rallentano e le tolgono fiato, ma non c'è sconfitta: così resta vero che non sono i mostri a vincerla.
+**Resta da definire:** Mappa.

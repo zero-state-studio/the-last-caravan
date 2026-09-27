@@ -58,9 +58,9 @@ Palette calda, con accenti freddi voluti e legati al mondo: verso la Notte ombre
 
 **Resta da definire:** I codici esatti dei colori di riferimento per personaggi, ambienti e interfaccia, da fornire a tutti gli strumenti di generazione. L'intensità del viraggio (per ora 1 nel prototipo), da rivedere nella fase 2 con le texture vere.
 
-## 52. Immagini di riferimento  [Da definire]
+## 52. Immagini di riferimento  [Definito]
 
-Una raccolta di 10-20 immagini approvate con cui addestrare un modello personalizzato su Scenario, così che tutte le generazioni seguano lo stesso stile. Devono essere immagini nostre: gli screenshot di Elliot servono come obiettivo da guardare, non come materiale di addestramento. Addestrare un modello su grafica altrui esporrebbe a problemi di copyright, e su Steam dobbiamo garantire che gli asset non violino diritti.
+12 texture nostre, approvate nella fase 2, con cui è stato addestrato il modello personalizzato su Scenario. Le vedute d'insieme dei Carri-campo servono solo come riferimento per l'aspetto generale e non sono state usate per l'addestramento. Mai immagini di altri giochi, né come riferimento né come materiale di addestramento: esporrebbe a problemi di copyright, e su Steam dobbiamo garantire che gli asset non violino diritti.
 
 ## 53. Oggetti in primo piano  [Da definire]
 

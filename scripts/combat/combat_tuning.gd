@@ -5,30 +5,30 @@ extends Resource
 ## panel. Times are in seconds, distances in meters, breath in points.
 
 @export_group("Ottavia")
-@export var max_health: float = 100.0
+@export var max_health: float = 150.0
 @export var move_speed: float = 3.0
 
 @export_group("Breath")
 @export var max_stamina: float = 100.0
-@export var stamina_regen_per_second: float = 40.0
+@export var stamina_regen_per_second: float = 55.0
 ## Time without actions before the breath starts coming back.
 @export var stamina_regen_delay: float = 0.6
 ## Share of the regeneration while walking: stopping is worth it (33).
 @export var walking_regen_multiplier: float = 0.5
 @export var breathless_seconds: float = 1.0
-@export var breathless_damage_multiplier: float = 1.5
+@export var breathless_damage_multiplier: float = 1.3
 @export var breathless_speed_multiplier: float = 0.5
 
 @export_group("Strike")
-@export var strike_damage: float = 10.0
-@export var strike_stamina_cost: float = 6.0
-@export var strike_startup: float = 0.16
+@export var strike_damage: float = 14.0
+@export var strike_stamina_cost: float = 4.0
+@export var strike_startup: float = 0.12
 @export var strike_active: float = 0.08
-@export var strike_recovery: float = 0.3
+@export var strike_recovery: float = 0.22
 @export var strike_reach: float = 2.3
 @export var strike_arc_degrees: float = 120.0
 @export var combo_length: int = 3
-@export var combo_finisher_multiplier: float = 1.6
+@export var combo_finisher_multiplier: float = 1.8
 @export var strike_knockback: float = 0.4
 @export var strike_lunge: float = 0.35
 
@@ -39,7 +39,7 @@ extends Resource
 @export var hook_stamina_cost: float = 8.0
 @export var hook_startup: float = 0.14
 @export var hook_active: float = 0.1
-@export var hook_recovery: float = 0.3
+@export var hook_recovery: float = 0.24
 @export var hook_reach: float = 3.2
 @export var hook_arc_degrees: float = 60.0
 ## Holding the button this long turns the pull into a push.
@@ -53,20 +53,20 @@ extends Resource
 ## Breath spent just by pressing parry; 0: only blocked hits cost breath, and
 ## a deflection is always free (the reward for timing).
 @export var parry_press_cost: float = 0.0
-@export var block_hit_cost: float = 22.0
+@export var block_hit_cost: float = 15.0
 ## A hit landing this soon after pressing parry is deflected.
-@export var deflect_window: float = 0.2
+@export var deflect_window: float = 0.25
 @export var parry_speed_multiplier: float = 0.4
 @export var deflect_stagger_seconds: float = 1.2
 
 @export_group("Step")
-@export var step_stamina_cost: float = 25.0
+@export var step_stamina_cost: float = 20.0
 @export var step_distance: float = 1.7
 @export var step_seconds: float = 0.16
 @export var step_invulnerable_seconds: float = 0.12
 
 @export_group("Hit taken")
-@export var hitstun_seconds: float = 0.35
+@export var hitstun_seconds: float = 0.25
 @export var hit_knockback: float = 0.7
 
 @export_group("Lantern")
@@ -80,7 +80,7 @@ extends Resource
 @export var shake_critical_meters: float = 0.16
 @export var aim_assist_degrees: float = 35.0
 ## A press this early is kept and used as soon as the action is possible.
-@export var input_buffer_seconds: float = 0.15
+@export var input_buffer_seconds: float = 0.2
 
 @export_group("Training dummy")
 @export var dummy_attack_interval: float = 2.2
@@ -88,7 +88,7 @@ extends Resource
 @export var dummy_active: float = 0.12
 ## After its swing the dummy is open: a strike now is a counter-hit.
 @export var dummy_exposed: float = 0.7
-@export var dummy_damage: float = 12.0
+@export var dummy_damage: float = 8.0
 @export var dummy_reach: float = 2.4
 @export var dummy_health: float = 150.0
 @export var dummy_respawn_seconds: float = 2.5
