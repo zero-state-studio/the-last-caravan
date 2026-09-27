@@ -3,8 +3,8 @@ extends RefCounted
 ## Crossed-plane mesh for grass tufts and small plants (101).
 ## Quads are turned by +-45 degrees around Y with their front faces toward
 ## the fixed camera, so art drawn leaning left still leans west (toward the
-## Day, 100) on both planes. Normals point up: the tuft is lit evenly
-## instead of going dark on one plane.
+## Day, 100) on both planes. Normals point up and toward the camera: the
+## tuft is lit evenly instead of going dark on one plane.
 
 
 ## Builds a mesh of `plane_count` crossed quads, `size` meters wide and tall,

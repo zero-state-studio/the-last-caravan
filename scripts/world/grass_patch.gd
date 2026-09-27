@@ -6,6 +6,8 @@ extends MultiMeshInstance3D
 ## within +-max_yaw_degrees around the vertical axis.
 
 const CARD_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fade.gdshader")
+## Fraction of the radius where tufts start to thin out toward the rim.
+const EDGE_FADE_START: float = 0.55
 
 @export var texture: Texture2D:
 	set(value):
@@ -15,7 +17,7 @@ const CARD_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fad
 	set(value):
 		count = value
 		_rebuild()
-## Half size of the rectangle the tufts are spread in, in meters (x, z).
+## Radii of the ellipse the tufts are spread in, in meters (x, z).
 @export var extents: Vector2 = Vector2(2.0, 2.0):
 	set(value):
 		extents = value
@@ -52,7 +54,8 @@ func _rebuild() -> void:
 		var yaw: float = deg_to_rad(random.randf_range(-max_yaw_degrees, max_yaw_degrees))
 		var tuft_scale: float = random.randf_range(scale_range.x, scale_range.y)
 		var basis: Basis = Basis(Vector3.UP, yaw).scaled(Vector3.ONE * tuft_scale)
-		var origin: Vector3 = Vector3(random.randf_range(-extents.x, extents.x), 0.0, random.randf_range(-extents.y, extents.y))
+		var spot: Vector2 = _random_spot(random)
+		var origin: Vector3 = Vector3(spot.x * extents.x, 0.0, spot.y * extents.y)
 		tufts.set_instance_transform(index, Transform3D(basis, origin))
 	multimesh = tufts
 	var material: ShaderMaterial = ShaderMaterial.new()
@@ -60,3 +63,14 @@ func _rebuild() -> void:
 	material.set_shader_parameter(&"albedo_texture", texture)
 	material_override = material
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+
+## A point in the unit disk, thinning out toward the rim so the patch has a
+## soft, irregular edge instead of a rectangle.
+func _random_spot(random: RandomNumberGenerator) -> Vector2:
+	while true:
+		var spot: Vector2 = Vector2(random.randf_range(-1.0, 1.0), random.randf_range(-1.0, 1.0))
+		var radius: float = spot.length()
+		if radius <= 1.0 and random.randf() > smoothstep(EDGE_FADE_START, 1.0, radius):
+			return spot
+	return Vector2.ZERO

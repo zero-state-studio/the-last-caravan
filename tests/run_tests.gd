@@ -23,6 +23,7 @@ func _initialize() -> void:
 	_test_proto_settings()
 	_test_zone_palette_models()
 	_test_load_all_resources()
+	_test_texture_imports()
 	print("TESTS: %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -131,6 +132,15 @@ func _test_load_all_resources() -> void:
 					_check(instance != null, "scene instantiates: " + path)
 					if instance != null:
 						instance.free()
+
+
+## Pixel-art textures never get mipmaps, also the ones extracted from GLB models.
+func _test_texture_imports() -> void:
+	var mipmapped: PackedStringArray = []
+	for path: String in _list_files("res://assets"):
+		if path.ends_with(".png.import") and FileAccess.get_file_as_string(path).contains("mipmaps/generate=true"):
+			mipmapped.append(path)
+	_check(mipmapped.is_empty(), "no texture in assets/ generates mipmaps %s" % [mipmapped])
 
 
 func _list_files(dir_path: String) -> PackedStringArray:

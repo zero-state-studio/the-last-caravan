@@ -38,7 +38,7 @@ Prima di portare una texture in `assets/`:
    - Sprite e piante piatte: `pixel_size = WorldScale.METERS_PER_PIXEL`, mai un valore scritto a mano.
    - Modelli 3D: `tools/meshy_pixelize.py --texels-per-meter 30`, che ricava la dimensione della texture dalla superficie del modello.
 2. **Filtro nearest.** Nel materiale (`texture_filter = Nearest`) o nello shader (`filter_nearest`). Mai lineare. Per i GLB lo imposta il campionatore scritto da `meshy_pixelize.py`: verificare il materiale importato.
-3. **Mipmap spente.** Nel file `.import`: `mipmaps/generate=false` (predefinito del progetto). Fanno eccezione le texture estratte dai GLB, dove Godot le genera comunque: sono accettabili solo se il materiale usa nearest senza mipmap.
+3. **Mipmap spente.** Nel file `.import`: `mipmaps/generate=false` (predefinito del progetto). Anche le texture estratte dai GLB (`<nome>_0.png.import`), dove Godot le accende: vanno spente a mano dopo il primo import, e il reimport le lascia spente. Il test `_test_texture_imports` in `tests/run_tests.gd` fallisce se una texture di `assets/` genera mipmap.
 4. **Compressione lossless.** Nel file `.import`: `compress/mode=0` e `detect_3d/compress_to=0`. La compressione VRAM altera i colori della pixel art.
 5. **Dimensioni.**
    - Tessere quadrate, 64 o 128 px, senza cuciture visibili: provarle in una griglia 2×2.
@@ -55,7 +55,7 @@ find assets -name "*.png.import" -print0 | xargs -0 command grep -L "mipmaps/gen
 find assets -name "*.png.import" -print0 | xargs -0 command grep -L "compress/mode=0"          # non lossless
 ```
 
-Stato al 27 settembre 2026: tutte lossless; mipmap accese solo sulle tre texture estratte dai GLB di `assets/models/proto/` (eccezione verificata, materiale nearest).
+Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture estratte dai GLB (spente il 27 settembre, screenshot identico al pixel).
 
 ## Comandi di verifica
 
@@ -96,6 +96,6 @@ Stato al 27 settembre 2026: tutte lossless; mipmap accese solo sulle tre texture
 ## Strumenti
 
 - `tools/meshy_pixelize.py` (Pillow via `uv run --with pillow`): prende un GLB texturizzato di Meshy, riduce la texture (per esempio 128 px, 24 colori, senza retino), la incorpora in PNG con filtro nearest e scala il modello a un'altezza in metri con la base a terra (54).
-- Import dei GLB: Godot estrae le texture (`<nome>_0.png`) generando comunque le mipmap, ma il campionatore nearest scritto da `meshy_pixelize.py` diventa `texture_filter = Nearest` nel materiale (verificato), quindi le mipmap non vengono usate.
+- Import dei GLB: Godot estrae le texture (`<nome>_0.png`) accendendo le mipmap: spegnerle nel `.import` (vedi la lista di controllo sopra). Il campionatore nearest scritto da `meshy_pixelize.py` diventa `texture_filter = Nearest` nel materiale (verificato).
 - Pillow non è installato nel Python di sistema: usare `uv run --quiet --with pillow python3 ...`.
 - Misura delle prestazioni: `"$GODOT_PATH" --path . --resolution 1280x800 res://scenes/proto/diorama.tscn -- settings=<json> perf=8` stampa una riga `PERF` (media, FPS, 95° percentile) con vsync disattivato. Risultati della fase 1 in `docs/fase1-prototipo.md`.
