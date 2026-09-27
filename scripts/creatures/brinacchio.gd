@@ -66,7 +66,8 @@ func _behave(delta: float) -> void:
 				move = flat_direction_to(player.global_position) * creature.brinacchio_speed
 		Phase.LATCHED:
 			global_position = player.global_position + _latch_offset
-			player.take_damage(creature.brinacchio_latch_damage_per_second * delta)
+			if creature.brinacchio_latch_damage_per_second > 0.0:
+				player.take_damage(creature.brinacchio_latch_damage_per_second * delta)
 			velocity = Vector3.ZERO
 			return
 		Phase.CRUSTED:
@@ -87,6 +88,9 @@ func _latch(player: OttaviaProto) -> void:
 	collision_mask = 0
 	latched.append(self)
 	_update_slowdown(player)
+	# Say it the first time one clings: they are small and easy to miss.
+	if latched.size() == 1:
+		player.combat.message.emit(&"COMBAT_CLINGING")
 
 
 ## Comes off Ottavia with a frost crust, thrown a little away.

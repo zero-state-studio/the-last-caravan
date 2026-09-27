@@ -14,6 +14,7 @@ const MESSAGE_COLORS: Dictionary = {
 	&"COMBAT_COUNTER": Color(1.0, 0.77, 0.42),
 	&"COMBAT_BREATHLESS": Color(0.6, 0.65, 1.0),
 	&"COMBAT_NO_COMPANION": Color(0.9, 0.87, 0.8),
+	&"COMBAT_CLINGING": Color(0.75, 0.88, 1.0),
 }
 
 var ottavia: OttaviaProto

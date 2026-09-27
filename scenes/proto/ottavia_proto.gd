@@ -257,6 +257,10 @@ func _update_flash(delta: float) -> void:
 		if combat.state == OttaviaCombat.State.PARRY:
 			amount = 0.15 * HitFeedback.flash_scale
 			color = Color(0.85, 0.92, 1.0)
+		elif combat.slowdown > 0.0:
+			# Parasites clinging to her (B1): an icy tint while she is slowed.
+			amount = (0.2 + 0.1 * sin(Time.get_ticks_msec() * 0.01)) * HitFeedback.flash_scale
+			color = Color(0.75, 0.88, 1.0)
 		elif combat.state == OttaviaCombat.State.BREATHLESS:
 			amount = (0.25 + 0.15 * sin(Time.get_ticks_msec() * 0.02)) * HitFeedback.flash_scale
 			color = Color(0.45, 0.55, 1.0)

@@ -734,13 +734,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.4, 3, -12.3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 3, -10.6)
 
 [node name="BrinacchioCorridoio1" parent="Creatures" instance=ExtResource("47_brina")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -12.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -14.3)
 
 [node name="BrinacchioCorridoio2" parent="Creatures" instance=ExtResource("47_brina")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -14.6)
 
 [node name="BrinacchioCorridoio3" parent="Creatures" instance=ExtResource("47_brina")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -11.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -13.9)
 
 [node name="Grappolo1" parent="Creatures" instance=ExtResource("48_grappolo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 3, -12)

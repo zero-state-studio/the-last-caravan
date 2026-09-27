@@ -48,7 +48,9 @@ extends Resource
 ## Shutter closed and farther than this: they lose her track.
 @export var brinacchio_lose_track: float = 3.0
 @export var brinacchio_latch_range: float = 0.6
-@export var brinacchio_latch_damage_per_second: float = 2.0
+## The bible (B1) says they slow down whoever they cling to: no damage by
+## default, the value is here only to try it.
+@export var brinacchio_latch_damage_per_second: float = 0.0
 ## Speed lost per parasite attached (sum capped by brinacchio_max_slow).
 @export var brinacchio_slow: float = 0.15
 @export var brinacchio_max_slow: float = 0.6
