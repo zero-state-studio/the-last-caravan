@@ -36,10 +36,18 @@ static func retint_models(root: Node) -> void:
 	for node: Node in root.find_children("*", "MeshInstance3D", true, false):
 		var mesh_instance: MeshInstance3D = node
 		for surface: int in mesh_instance.mesh.get_surface_count():
-			var original: BaseMaterial3D = mesh_instance.mesh.surface_get_material(surface) as BaseMaterial3D
-			if original == null or original.albedo_texture == null:
-				continue
-			var material: ShaderMaterial = ShaderMaterial.new()
-			material.shader = MODEL_SHADER
-			material.set_shader_parameter(&"albedo_texture", original.albedo_texture)
-			mesh_instance.set_surface_override_material(surface, material)
+			var material: ShaderMaterial = palette_material(mesh_instance.mesh.surface_get_material(surface))
+			if material != null:
+				mesh_instance.set_surface_override_material(surface, material)
+
+
+## The palette shader material for an imported model material, keeping its
+## albedo texture; null when the material has no texture.
+static func palette_material(original: Material) -> ShaderMaterial:
+	var base: BaseMaterial3D = original as BaseMaterial3D
+	if base == null or base.albedo_texture == null:
+		return null
+	var material: ShaderMaterial = ShaderMaterial.new()
+	material.shader = MODEL_SHADER
+	material.set_shader_parameter(&"albedo_texture", base.albedo_texture)
+	return material

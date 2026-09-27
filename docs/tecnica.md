@@ -99,3 +99,10 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Import dei GLB: Godot estrae le texture (`<nome>_0.png`) accendendo le mipmap: spegnerle nel `.import` (vedi la lista di controllo sopra). Il campionatore nearest scritto da `meshy_pixelize.py` diventa `texture_filter = Nearest` nel materiale (verificato).
 - Pillow non è installato nel Python di sistema: usare `uv run --quiet --with pillow python3 ...`.
 - Misura delle prestazioni: `"$GODOT_PATH" --path . --resolution 1280x800 res://scenes/proto/diorama.tscn -- settings=<json> perf=8` stampa una riga `PERF` (media, FPS, 95° percentile) con vsync disattivato. Risultati della fase 1 in `docs/fase1-prototipo.md`.
+
+## Vegetazione (101)
+
+- Kit: ogni elemento è un `VegetationEntry` (`scripts/world/vegetation_entry.gd`) salvato in `assets/vegetation_kit/<nome>.tres`: un modello GLB oppure una texture per i piani incrociati, con peso, raggio di ingombro, scala e ombra.
+- Distribuzione: `VegetationScatter` (`scripts/world/vegetation_scatter.gd`, @tool) sparge gli elementi su un'ellisse (`extents`), con `density` istanze per m², bordo che si dirada, distanza minima data dagli ingombri, rotazione entro ±20° (le piante restano piegate verso ovest, 100). Una MultiMesh per elemento, figli interni che non finiscono nel file della scena. Le istanze stanno sul piano XZ del nodo: un nodo per livello del terreno.
+- Headless: il renderer finto non conserva le trasformazioni delle MultiMesh (`get_instance_transform` dà l'identità, `get_aabb` è vuoto). Il test `tests/test_vegetation_scatter.gd` controlla quindi i piazzamenti calcolati e la mesh sorgente.
+- Prestazioni del diorama a 1280×800 con la vegetazione del primo giro (circa 500 ciuffi, albero, cespuglio): 151 FPS medi, 95° percentile 13,7 ms (Mac mini M4 Pro, vsync spento).

@@ -18,9 +18,9 @@
 [ext_resource type="Script" path="res://scripts/world/zone_palette.gd" id="16_zone"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/albero_storto_01.glb" id="17_tree"]
 [ext_resource type="PackedScene" path="res://assets/models/vegetation/cespuglio_01.glb" id="18_bush"]
-[ext_resource type="Script" path="res://scripts/world/grass_patch.gd" id="19_grass"]
-[ext_resource type="Texture2D" path="res://assets/textures/vegetation/grass_tuft_01.png" id="20_tuft"]
-[ext_resource type="Texture2D" path="res://assets/textures/vegetation/grass_tuft_02.png" id="21_tuft2"]
+[ext_resource type="Script" path="res://scripts/world/vegetation_scatter.gd" id="19_scatter"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/ciuffo_erba_01.tres" id="20_tuft"]
+[ext_resource type="Resource" path="res://assets/vegetation_kit/ciuffo_erba_02.tres" id="21_tuft2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
 sky_top_color = Color(0.3, 0.26, 0.56, 1)
@@ -426,28 +426,28 @@ transform = Transform3D(0.9848, 0, 0.1736, 0, 1, 0, -0.1736, 0, 0.9848, 3.4, 0, 
 [node name="Bush" parent="Vegetation" instance=ExtResource("18_bush")]
 transform = Transform3D(0.9659, 0, -0.2588, 0, 1, 0, 0.2588, 0, 0.9659, -0.6, 0, 0.4)
 
-[node name="GrassA" type="MultiMeshInstance3D" parent="Vegetation"]
+[node name="GrassA" type="Node3D" parent="Vegetation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, -0.6)
-script = ExtResource("19_grass")
-texture = ExtResource("21_tuft2")
-count = 150
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft")])
 extents = Vector2(3, 1.8)
+density = 10.0
 random_seed = 3
 
-[node name="GrassB" type="MultiMeshInstance3D" parent="Vegetation"]
+[node name="GrassB" type="Node3D" parent="Vegetation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0, 1.2)
-script = ExtResource("19_grass")
-texture = ExtResource("21_tuft2")
-count = 110
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("21_tuft2"), ExtResource("20_tuft")])
 extents = Vector2(2.4, 1.8)
+density = 10.0
 random_seed = 7
 
-[node name="GrassC" type="MultiMeshInstance3D" parent="Vegetation"]
+[node name="GrassC" type="Node3D" parent="Vegetation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 0, 2.2)
-script = ExtResource("19_grass")
-texture = ExtResource("20_tuft")
-count = 60
+script = ExtResource("19_scatter")
+entries = Array[Resource]([ExtResource("20_tuft"), ExtResource("21_tuft2")])
 extents = Vector2(2, 1.6)
+density = 8.0
 random_seed = 11
 
 [node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]

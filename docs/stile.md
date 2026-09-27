@@ -14,7 +14,7 @@ Per le texture si aggiunge: "seamless tileable texture, detailed pixel-art shadi
 
 **30 pixel per metro** per tutto: personaggi, terreno, rocce, piante, modelli (49, 54). Un pixel vale 3,3 cm. Regole e controlli in `tecnica.md`, "Lista di controllo per ogni texture".
 
-A 1280×800 con la camera della fase 1 (20 m, 35°) un texel a 30 px/m occupa circa 1,8 pixel dello schermo; a 60 px/m circa 0,9, e sul terreno inclinato meno ancora. Prova delle due densità: `screenshots/2026-09-27-fase2-densita-30-60.png` (scelta in attesa, 54).
+A 1280×800 con la camera della fase 1 (20 m, 35°) un texel a 30 px/m occupa circa 1,8 pixel dello schermo; a 60 px/m circa 0,9, e sul terreno inclinato meno ancora. Prova delle due densità: `screenshots/2026-09-27-fase2-densita-30-60.png`. Scelta (54): 30 px/m anche per gli ambienti; a 60 px/m la grana va sotto il pixel dello schermo e sfarfalla.
 
 ## Palette di base (51)
 
@@ -78,7 +78,7 @@ Regole generiche, scritte dopo aver guardato esempi della direzione voluta (le i
 2. **Più sfumature e tinta che varia.** Ogni materiale usa 6-8 toni e cambia tinta al suo interno: il muschio va dal verde al giallo, la terra del sentiero verso il rosso-bruno, l'erba fresca verso il verde acqua.
 3. **Rilievo da geometria e luce.** Crepe e spigoli delle rocce sono modellati, non solo dipinti; ombre di contatto e occlusione forti; nelle zone buie pozze di luce calda.
 4. **Vegetazione a ciuffi.** Piante fatte di molte foglie o fili sottili, con un bordo chiaro di 1 px sul lato del Giorno; contrasto di tinta forte tra piante vicine.
-5. **Grana più fine degli sprite:** solo se la prova di densità la sceglie (54, in attesa).
+5. **Stessa grana degli sprite** (54): la ricchezza non viene da pixel più piccoli ma dai punti 1-4.
 
 - **Legno** (carri, ponti, casse): assi larghe 15-20 cm, cioè 5-6 px, separate da una riga scura di 1 px. Venatura con righe di 1 px ogni 2-3 px, nel verso dell'asse. Nodi di 2×2 px. Il legno dei carri è sbiadito dal sole, verso le tinte "pietra calda" e "sabbia".
 - **Pietra** (muri, terrazze, rocce): blocchi di 30-60 cm, cioè 9-18 px, con fughe scure di 1 px. Tre toni per blocco più un bordo chiaro di 1 px sul lato alto. Crepe diagonali di 1 px, poche.
