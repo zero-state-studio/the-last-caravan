@@ -2,6 +2,10 @@
 
 *Dieci dungeon, uno per capitolo, nell'ordine della storia (vedi 30). Ognuno è uno spazio 3D esplorabile in tutte le direzioni e su più livelli di altezza, con la durata che serve a renderlo credibile e bello da giocare, da 10 a 40 minuti. Ognuno fornisce un pezzo della lanterna di Ottavia (vedi 88).*
 
+## 102. Livelli a stanze  [Definito]
+
+Ogni livello in cui si salvano persone è fatto a stanze: piccoli diorami chiusi, collegati da passaggi che appartengono al luogo (portelli tra i mezzi, ponti tra le navi, scale tra le terrazze). Dentro un dungeon si può tornare nelle stanze già visitate; tra un capitolo e l'altro no, perché la carovana va avanti. Ai livelli medio e difficile, rami lunghi e percorsi bonus (40) sono stanze che si aprono o restano chiuse. Fa eccezione la Notte (45), che non è un livello di salvataggio: resta uno spazio continuo.
+
 ## 83. I Carri-campo  [Definito]
 
 Capitolo 1. Terrazze di campi mobili inclinate verso il sole basso, dove tutte le piante crescono storte. La fauna migratoria saccheggia i raccolti, e i Voltacampi ruotano i campi: cambiando inclinazione, cambia cosa sta in luce e cosa in ombra. Pezzo della lanterna: lo stoppino, intrecciato con le fibre delle piante storte.
@@ -14,7 +18,7 @@ Capitolo 1. Terrazze di campi mobili inclinate verso il sole basso, dove tutte l
 
 ## 41. La Linea d'Ombra  [Definito]
 
-Capitolo 2. Il confine tra luce e buio attraversa il dungeon mentre sei dentro: le stanze passano da roventi a ghiacciate, gli stagni evaporano, si formano ponti di ghiaccio. Qui lavorano i Brinaioli. Pezzo della lanterna: il vetro, fatto di brina.
+Capitolo 2. Il confine tra luce e buio attraversa il dungeon mentre sei dentro: le stanze passano da roventi a ghiacciate, gli stagni evaporano, si formano ponti di ghiaccio. Qui lavorano i Brinaioli. Pezzo della lanterna: il vetro, fatto di brina. Il dungeon è a stanze (102): la linea d'ombra si sposta di stanza in stanza.
 
 **Creature:** Brinacchio (B1), Grappolo (B7), Cornamusa (B9), Fumacoccia (B4), Mantomuschio (B8), Salinaro (B35), Pentola (B34), Riverbero (B40)
 
@@ -44,7 +48,7 @@ Capitolo 4. Le rovine del campo della carovana, cotte da un giorno e gelate da u
 
 ## 43. L'Ombra della Montagna  [Definito]
 
-Capitolo 5. Una montagna proietta sul Giorno una sacca d'ombra che si sposta lentamente: per attraversare il deserto rovente bisogna muoversi insieme all'ombra. Pezzo della lanterna: la gabbia, dal metallo trovato nell'ombra.
+Capitolo 5. Una montagna proietta sul Giorno una sacca d'ombra che si sposta lentamente: per attraversare il deserto rovente bisogna muoversi insieme all'ombra. Pezzo della lanterna: la gabbia, dal metallo trovato nell'ombra. Il dungeon è a stanze (102): l'ombra della montagna si sposta di stanza in stanza.
 
 **Creature:** Stendardo (B41), Lente (B42), Brunito (B48), Fornaio (B49), Aquilone (B44), Ombrellaio (B36), Ampolla (B37), Muta (B45), Otre (B47)
 
@@ -64,7 +68,7 @@ Capitolo 6. Una flotta che un tempo seguiva il crepuscolo attraverso il mare, ri
 
 ## 44. La Carovana in marcia  [Definito]
 
-Capitolo 7. Una mandria in fuga travolge la colonna. Si combatte e si salva gente dentro e tra i mezzi, senza che la carovana possa fermarsi. Gli interni riusano gli elementi dei capitoli 1 e 3, il che contiene il lavoro. Pezzo della lanterna: il gancio, dal mezzo del Sindaco.
+Capitolo 7. Una mandria in fuga travolge la colonna. Si combatte e si salva gente dentro e tra i mezzi, senza che la carovana possa fermarsi. Gli interni riusano gli elementi dei capitoli 1 e 3, il che contiene il lavoro. Pezzo della lanterna: il gancio, dal mezzo del Sindaco. Il tratto all'aperto si svolge sulla mappa in marcia (103); gli interni dei mezzi sono le stanze del dungeon (102).
 
 **Creature:** Pellegrino di feltro (B2), Ferratore (B20), Serpe-sciarpa (B6), Brinacchio (B1), Cornamusa (B9), Spartighiaccio (B11)
 
@@ -94,7 +98,7 @@ Capitolo 9. Un cratere nel cuore del Giorno, dove il calore è insopportabile. P
 
 ## 45. La Notte  [Definito]
 
-Capitolo 10. L'unica zona completamente buia. Ottavia la attraversa con la sola lanterna, mentre arrivano nemici senza fine: non si possono sconfiggere, solo evitare e tenere a distanza. Tutte le strade portano a un vicolo cieco, dove si svolge il finale (28). Lì l'unica cosa che il giocatore può fare è posare la lanterna e spegnerla: gli altri comandi producono solo un tentativo stanco di rialzarsi. Non c'è un timer, il gioco aspetta. L'esitazione del giocatore diventa quella di Ottavia, e il momento lo sceglie lui. Solo con la lanterna spenta il buio è abbastanza profondo per vedere le stelle. Dopo un intero gioco di tramonti dorati, il contrasto è fortissimo.
+Capitolo 10. L'unica zona completamente buia. Ottavia la attraversa con la sola lanterna, mentre arrivano nemici senza fine: non si possono sconfiggere, solo evitare e tenere a distanza. Tutte le strade portano a un vicolo cieco, dove si svolge il finale (28). Lì l'unica cosa che il giocatore può fare è posare la lanterna e spegnerla: gli altri comandi producono solo un tentativo stanco di rialzarsi. Non c'è un timer, il gioco aspetta. L'esitazione del giocatore diventa quella di Ottavia, e il momento lo sceglie lui. Solo con la lanterna spenta il buio è abbastanza profondo per vedere le stelle. Dopo un intero gioco di tramonti dorati, il contrasto è fortissimo. La Notte non è un livello a stanze: resta uno spazio continuo (102).
 
 **Creature:** Falena di pece (B13), Mangiaombre (B15), Sudario (B23), Trampoliere (B22), Coro (B19), Tamburo (B14), Canne d'organo (B26), Il Paziente (B25). Arrivano a ondate infinite, attirate dalla lanterna.
 

@@ -36,7 +36,11 @@ Niente mostri malvagi: la fauna che migra nel Crepuscolo come la carovana, i pre
 
 ## 37. La carovana come base  [Definito]
 
-Tra un dungeon e l'altro si torna ai carri: si parla con i compagni, si migliora l'equipaggiamento, si accolgono i Salvati.
+Tra un dungeon e l'altro si torna ai carri: si parla con i compagni, si migliora l'equipaggiamento, si accolgono i Salvati. La base esiste in due forme: ferma durante la Tregua e in marcia durante la Rincorsa (103).
+
+## 103. La carovana in marcia come mappa  [Definito]
+
+Durante la Rincorsa la carovana è una grande mappa continua in movimento, che avanza verso il Giorno, cioè verso sinistra. Ottavia cammina in fondo alla colonna. Lei e gli altri personaggi entrano nei mezzi avvicinandosi al retro, tra le Code; gli interni sono stanze. Nota tecnica: valutare di tenere ferma la carovana nel motore e far scorrere il terreno a pezzi.
 
 ## 38. Recuperare gli attardati  [Definito]
 
