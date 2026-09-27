@@ -20,3 +20,7 @@ Sono le uniche immagini destinate all'addestramento del modello personalizzato (
 | 27_metallo_ali | pannello scuro delle Ali dei Generatori |
 
 Mancano le foglie: i due tentativi (14-17 e 31-34) sono falliti. Candidata aggiuntiva da confermare: `04_terreno_solchi` con la cornice rimossa (`cuciture_corrette/`).
+
+## Addestramento (passo 3)
+
+`addestramento_1024/`: le 12 texture ingrandite 8× con nearest (1024×1024), caricate su Scenario come immagini di addestramento del modello `model_SU9gw4R9QvdxPcDtbd598gak` ("The Last Caravan - texture pixel art v1", LoRA Z-Image De-Turbo, privato). L'ingrandimento nearest mostra all'addestramento la griglia dei pixel netta.
