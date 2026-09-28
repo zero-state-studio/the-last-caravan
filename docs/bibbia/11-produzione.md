@@ -8,7 +8,7 @@ Un pezzo breve ma completo, con grafica, suoni e combattimento definitivi, per v
 
 ## 69. Tappe di sviluppo  [Definito]
 
-Sette fasi, dalle fondamenta all'uscita, descritte in `docs/fasi.md`. Ogni fase si chiude con un resoconto e con l'approvazione dell'autore. Fasi 0, 1 e 2 concluse; fase corrente: 3, combattimento e progressione.
+Sette fasi, dalle fondamenta all'uscita, descritte in `docs/fasi.md`. Ogni fase si chiude con un resoconto e con l'approvazione dell'autore. Fasi 0, 1, 2 e 3 concluse; fase corrente: 4, prima fetta giocabile.
 
 ## 70. Dichiarazione AI su Steam  [Definito]
 

@@ -1,6 +1,6 @@
 # Fasi di sviluppo
 
-**Fase corrente: 3**
+**Fase corrente: 4**
 
 Ogni fase finisce con un resoconto e con l'approvazione dell'autore. Non si passa alla fase successiva senza un ok esplicito. Quando una fase è approvata, aggiorna la riga "Fase corrente".
 
@@ -20,7 +20,7 @@ Immagini di riferimento nostre (52), modello personalizzato su Scenario, Ottavia
 ## Fase 3: Prototipo di combattimento e progressione
 Bastone, tempismo e posizione (33), progressione inversa (34), Enea che impara (81), lezioni di Ottavia (82), qualche creatura del Margine.
 **Uscita:** il combattimento è divertente e la progressione inversa non frustra.
-**Stato:** in corso, dal `PROMPT-03.md`.
+**Stato (28 settembre 2026):** approvata, prototipo chiuso. Diorama: `scenes/proto/diorama.tscn`; consegna `docs/fase3-consegna.md`; video `docs/video/2026-09-28-fase3-capitolo1-vs-9.mp4`. Restano aperte: la tabella della progressione (`docs/progressione.md`, proposta), la crescita della forza nei capitoli avanzati e il colpo pesante con combinazione da 1.
 
 ## Fase 4: Prima fetta giocabile
 Il prologo e i Carri-campo (68), con grafica, musica, effetti e testi IT/EN definitivi, la carovana come base (37), la Tregua a tempo (39), i salvataggi (95).
