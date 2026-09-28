@@ -292,6 +292,11 @@ func _start_jump() -> void:
 
 
 ## The upward speed of a jump just started (0 when none); read once.
+## Seconds spent in the current state (animations follow it).
+func state_time() -> float:
+	return _state_time
+
+
 func take_jump_impulse() -> float:
 	var impulse: float = _jump_impulse
 	_jump_impulse = 0.0

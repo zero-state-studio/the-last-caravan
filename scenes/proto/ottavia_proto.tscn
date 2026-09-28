@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/proto/ottavia_proto.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ottavia/ottavia_v1_sheet.png" id="2_sheet"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ottavia/ottavia_v2_sheet.png" id="2_sheet"]
 
 [ext_resource type="Script" path="res://scripts/combat/ottavia_combat.gd" id="3_combat"]
 [ext_resource type="Resource" path="res://assets/combat/combat_tuning.tres" id="4_tuning"]
@@ -24,8 +24,8 @@ pixel_size = 0.0333
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("2_sheet")
-hframes = 8
-vframes = 16
+hframes = 12
+vframes = 76
 
 [node name="ShadowProxy" type="Sprite3D" parent="."]
 offset = Vector2(0, 29)
@@ -33,8 +33,8 @@ pixel_size = 0.0333
 alpha_cut = 1
 texture_filter = 0
 texture = ExtResource("2_sheet")
-hframes = 8
-vframes = 16
+hframes = 12
+vframes = 76
 
 [node name="LanternLight" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.6, 0)

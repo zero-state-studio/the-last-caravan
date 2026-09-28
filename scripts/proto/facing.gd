@@ -25,3 +25,8 @@ static func nearest_direction(input: Vector2, current: Direction) -> Direction:
 static func to_world(direction: Direction) -> Vector3:
 	var angle: float = float(direction) * TAU / DIRECTION_COUNT
 	return Vector3(sin(angle), 0.0, cos(angle))
+
+
+## Short name of a view as used in the sheet tags (s, se, e, ne, n, nw, w, sw).
+static func suffix(direction: Direction) -> String:
+	return ["s", "se", "e", "ne", "n", "nw", "w", "sw"][int(direction)]

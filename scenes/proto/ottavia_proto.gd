@@ -1,19 +1,23 @@
 class_name OttaviaProto
 extends CharacterBody3D
-## Provisional Ottavia for the visual prototype (19, 49).
-## Uses assets/sprites/ottavia/ottavia_v1_sheet.png: 64x64 cells, 8 frames per
-## row, rows idle_s..idle_sw then walk_s..walk_sw (see ottavia_v1_sheet.md).
+## Ottavia (19, 49). Uses assets/sprites/ottavia/ottavia_v2_sheet.png: 64x64
+## cells, COLUMNS per row, one row per animation and direction, listed in
+## ottavia_v2_sheet.json ("animations": row, frames, ms, loop), built by
+## tools/ottavia_sheet_v2.py.
 
-const FRAMES_PER_ROW: int = 8
-const WALK_ROW_OFFSET: int = 8
-const IDLE_FRAME_TIME: float = 0.16
-const WALK_FRAME_TIME: float = 0.1
+const COLUMNS: int = 12
+## Animations drawn in two directions only (south, west): the others use the
+## nearer of the two.
+const TWO_WAY: Array[String] = ["tie_rope", "give_hand"]
+const CLIMB_UP_SECONDS: float = 1.0
+const CLIMB_OVER_SECONDS: float = 0.35
+const LANDING_SECONDS: float = 0.18
 ## Where the lit sprite samples light and shadow: chest height, a bit toward the sun.
 const LIGHT_SAMPLE_HEIGHT: float = 0.9
 const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
 ## Frame data with the lantern point of every frame (see tools/lantern_mask.lua).
-const SHEET_DATA: JSON = preload("res://assets/sprites/ottavia/ottavia_v1_sheet.json")
-const EMISSION_MASK: Texture2D = preload("res://assets/sprites/ottavia/ottavia_v1_emission.png")
+const SHEET_DATA: JSON = preload("res://assets/sprites/ottavia/ottavia_v2_sheet.json")
+const EMISSION_MASK: Texture2D = preload("res://assets/sprites/ottavia/ottavia_v2_emission.png")
 const CELL_PIXELS: float = 64.0
 const UNSHADED_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_unshaded.gdshader")
 const LIT_SHADER: Shader = preload("res://scenes/proto/materials/sprite_billboard_lit.gdshader")
@@ -41,9 +45,14 @@ var max_health: float = 100.0
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _facing: Facing.Direction = Facing.Direction.SOUTH
-var _frame_timer: float = 0.0
-var _frame: int = 0
-var _moving: bool = false
+var _animations: Dictionary = {}
+var _animation: String = ""
+var _animation_time: float = 0.0
+## A one-off action played by a scene (tying the rope, giving the hand).
+var _scripted: String = ""
+var _climbing: bool = false
+var _was_airborne: bool = false
+var _landing_left: float = 0.0
 ## Height of the ground last stood on: the camera stays there during a jump.
 var _ground_y: float = 0.0
 ## False during room transitions and cutscenes: input is ignored.
@@ -71,12 +80,16 @@ func _ready() -> void:
 	_material.set_shader_parameter(&"emission_energy", lantern_glass_energy)
 	sprite.material_override = _material
 	_lantern_points = lantern_points_from(SHEET_DATA.data)
+	_animations = SHEET_DATA.data["animations"]
 	_update_lantern_shadows()
 	sprite.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	shadow_proxy.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 
 
 func _physics_process(delta: float) -> void:
+	if _climbing:
+		_animate(delta, false)
+		return
 	var input: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down") if controls_enabled else Vector2.ZERO
 	combat.physics_update(delta, input, controls_enabled)
 	if controls_enabled and Input.is_action_just_pressed(&"interact"):
@@ -138,25 +151,118 @@ func set_sun_azimuth(degrees: float) -> void:
 
 
 func _animate(delta: float, moving: bool) -> void:
-	if moving != _moving:
-		_moving = moving
-		_frame = 0
-		_frame_timer = 0.0
-	var frame_time: float = WALK_FRAME_TIME if moving else IDLE_FRAME_TIME
-	if combat.running:
-		frame_time /= combat.tuning.run_speed_multiplier
-	# Provisional jump: the walk pose held in the air (no jump frames yet).
-	if combat.is_airborne():
-		moving = true
-		frame_time = INF
-	_frame_timer += delta
-	while _frame_timer >= frame_time:
-		_frame_timer -= frame_time
-		_frame = (_frame + 1) % FRAMES_PER_ROW
-	var row: int = int(_facing) + (WALK_ROW_OFFSET if moving else 0)
-	sprite.frame = row * FRAMES_PER_ROW + _frame
+	var airborne: bool = combat.is_airborne() and not _climbing
+	if _was_airborne and not airborne:
+		_landing_left = LANDING_SECONDS
+	_was_airborne = airborne
+	_landing_left = maxf(0.0, _landing_left - delta)
+	var name: String = _pick_animation(moving, airborne)
+	if name != _animation:
+		_animation = name
+		_animation_time = 0.0
+	_animation_time += delta
+	var entry: Dictionary = animation_entry(name, _facing)
+	var count: int = int(entry["frames"])
+	var index: int = 0
+	match name:
+		"combo":
+			# Three strikes of the chapter-1 combo, four frames each.
+			var strike: float = combat.tuning.strike_startup + combat.tuning.strike_active + combat.tuning.strike_recovery
+			var progress: float = clampf(combat.state_time() / maxf(strike, 0.01), 0.0, 0.999)
+			index = (combat.combo_index % 3) * 4 + int(progress * 4.0)
+		"hurt":
+			index = int(clampf(combat.state_time() / maxf(combat.tuning.hitstun_seconds, 0.01), 0.0, 0.999) * count)
+		"jump":
+			if _landing_left > 0.0:
+				index = 6 + int((1.0 - _landing_left / LANDING_SECONDS) * 2.0)
+			elif velocity.y > 1.5:
+				index = 2 if combat.state_time() > 0.08 else 1
+			elif velocity.y > -1.5:
+				index = 4
+			else:
+				index = 5
+		_:
+			var frame_time: float = float(entry["ms"]) / 1000.0
+			if name == "walk" and combat.running:
+				frame_time /= combat.tuning.run_speed_multiplier
+			var step: int = int(_animation_time / frame_time)
+			index = step % count if bool(entry["loop"]) else mini(step, count - 1)
+			if name == "parry" and combat.state == OttaviaCombat.State.PARRY:
+				# Guard held: stay on the block pose until the parry ends.
+				index = mini(index, 3)
+	index = clampi(index, 0, count - 1)
+	sprite.frame = int(entry["row"]) * COLUMNS + index
 	shadow_proxy.frame = sprite.frame
 	_update_lantern_light()
+
+
+func _pick_animation(moving: bool, airborne: bool) -> String:
+	if _scripted != "":
+		return _scripted
+	if _climbing:
+		return "climb"
+	match combat.state:
+		OttaviaCombat.State.STRIKE:
+			return "combo"
+		OttaviaCombat.State.PARRY:
+			return "parry"
+		OttaviaCombat.State.HITSTUN:
+			return "hurt"
+		OttaviaCombat.State.BREATHLESS:
+			return "breathless"
+	if airborne or _landing_left > 0.0:
+		return "jump"
+	if moving and combat.running:
+		return "run"
+	return "walk" if moving else "idle"
+
+
+## Row data of an animation in a direction (two-way ones fall back to s/w).
+func animation_entry(name: String, direction: Facing.Direction) -> Dictionary:
+	var key: String = "%s_%s" % [name, Facing.suffix(direction)]
+	if _animations.has(key):
+		return _animations[key]
+	if name in TWO_WAY:
+		var world: Vector3 = Facing.to_world(direction)
+		return _animations["%s_%s" % [name, "w" if world.x < -0.3 else "s"]]
+	return _animations["idle_%s" % Facing.suffix(direction)]
+
+
+## Plays a one-off action to its last frame (tie_rope, give_hand) and holds
+## it; `stop_scripted` goes back to the normal animations.
+func play_scripted(name: String) -> void:
+	_scripted = name
+	_animation = ""
+	var entry: Dictionary = animation_entry(name, _facing)
+	await get_tree().create_timer(float(entry["frames"]) * float(entry["ms"]) / 1000.0).timeout
+
+
+func stop_scripted() -> void:
+	_scripted = ""
+
+
+func is_climbing() -> bool:
+	return _climbing
+
+
+## Automatic climb (33): up the wall, then over the edge onto `top`.
+func climb_to(top: Vector3, wall_normal: Vector3) -> void:
+	if _climbing:
+		return
+	_climbing = true
+	var was_enabled: bool = controls_enabled
+	controls_enabled = false
+	velocity = Vector3.ZERO
+	face_toward(-wall_normal)
+	var start: Vector3 = global_position
+	var up: Vector3 = Vector3(start.x, top.y + 0.05, start.z)
+	var tween: Tween = create_tween()
+	tween.tween_property(self, "global_position", up, CLIMB_UP_SECONDS)
+	tween.tween_property(self, "global_position", top + Vector3.UP * 0.05, CLIMB_OVER_SECONDS)
+	await tween.finished
+	_ground_y = global_position.y
+	_climbing = false
+	controls_enabled = was_enabled
 
 
 ## Lantern points (cell pixels) of every frame, in sheet order.

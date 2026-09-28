@@ -187,17 +187,27 @@ func _test_zone_light() -> void:
 ## Lantern of Ottavia (19): one lantern point per frame, near the top of the
 ## staff, and a light offset at about the height of the drawn lantern.
 func _test_lantern() -> void:
-	var data: JSON = load("res://assets/sprites/ottavia/ottavia_v1_sheet.json")
+	var data: JSON = load("res://assets/sprites/ottavia/ottavia_v2_sheet.json")
 	var points: PackedVector2Array = OttaviaProto.lantern_points_from(data.data)
-	_check(points.size() == 128, "lantern: one point per frame (got %d)" % points.size())
+	var rows: int = int(data.data["meta"]["rows"])
+	_check(points.size() == rows * OttaviaProto.COLUMNS, "lantern: one point per cell (got %d)" % points.size())
+	var idle: Dictionary = data.data["animations"]["idle_s"]
 	var inside: bool = true
-	for point: Vector2 in points:
-		inside = inside and point.x > 4.0 and point.x < 60.0 and point.y > 4.0 and point.y < 20.0
-	_check(inside, "lantern: every point sits near the top of the staff")
-	var offset: Vector3 = OttaviaProto.lantern_offset(points[0], WorldScale.METERS_PER_PIXEL, 29.0, Vector3.RIGHT)
+	for row: int in 16:
+		for column: int in 8:
+			var point: Vector2 = points[row * OttaviaProto.COLUMNS + column]
+			inside = inside and point.x > 4.0 and point.x < 60.0 and point.y > 4.0 and point.y < 20.0
+	_check(inside, "lantern: idle and walk points sit near the top of the staff")
+	var offset: Vector3 = OttaviaProto.lantern_offset(points[int(idle["row"]) * OttaviaProto.COLUMNS], WorldScale.METERS_PER_PIXEL, 29.0, Vector3.RIGHT)
 	_check(offset.y > 1.4 and offset.y < 1.8 and offset.x < 0.0, "lantern: idle_s light at the drawn lantern (got %s)" % offset)
-	var mask: Texture2D = load("res://assets/sprites/ottavia/ottavia_v1_emission.png")
-	var sheet: Texture2D = load("res://assets/sprites/ottavia/ottavia_v1_sheet.png")
+	var names: Array = data.data["animations"].keys()
+	var complete: bool = true
+	for anim: String in ["idle", "walk", "run", "jump", "climb", "combo", "parry", "hurt", "breathless"]:
+		for suffix: String in ["s", "se", "e", "ne", "n", "nw", "w", "sw"]:
+			complete = complete and names.has("%s_%s" % [anim, suffix])
+	_check(complete and names.has("tie_rope_s") and names.has("give_hand_w"), "sheet: every animation of phase 4a in its directions (19)")
+	var mask: Texture2D = load("res://assets/sprites/ottavia/ottavia_v2_emission.png")
+	var sheet: Texture2D = load("res://assets/sprites/ottavia/ottavia_v2_sheet.png")
 	_check(mask.get_size() == sheet.get_size(), "lantern: emission mask matches the sheet size")
 
 

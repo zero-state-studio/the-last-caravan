@@ -7,6 +7,7 @@ var _failures: int = 0
 
 
 func _initialize() -> void:
+	await _test_animations()
 	await _test_floor()
 	await _test_camp_intro()
 	print("TESTS: prologue %d checks, %d failures" % [_checks, _failures])
@@ -62,6 +63,64 @@ func _test_camp_intro() -> void:
 	_check(camp.ottavia.controls_enabled and not PrologueState.entered_from_door, "camp: after the narration the controls come back")
 	camp.queue_free()
 	await _frames(2)
+
+
+## Ottavia's v2 sheet (19, 33): every state shows its own row.
+func _test_animations() -> void:
+	var floor: Node3D = (load(PrologueState.FLOOR_SCENE) as PackedScene).instantiate()
+	floor.intro_seconds = 0.0
+	floor.leave_scene = false
+	root.add_child(floor)
+	current_scene = floor
+	await _frames(4)
+	var ottavia: OttaviaProto = floor.ottavia
+	ottavia.set_lantern_open(true)
+	await _frames(2)
+	_check(_row_of(ottavia) == _row(ottavia, "idle"), "animation: standing still shows the idle row")
+	ottavia.combat.press(&"attack")
+	await _frames(4)
+	_check(_row_of(ottavia) == _row(ottavia, "combo"), "animation: a strike shows the combo row")
+	ottavia.combat.release(&"attack")
+	await create_timer(0.8).timeout
+	ottavia.combat.press(&"jump")
+	await _frames(6)
+	ottavia.combat.release(&"jump")
+	_check(_row_of(ottavia) == _row(ottavia, "jump"), "animation: in the air, the jump row")
+	await create_timer(1.0).timeout
+	Input.action_press(&"move_right")
+	ottavia.combat.press(&"run")
+	await _frames(8)
+	_check(_row_of(ottavia) == _row(ottavia, "run"), "animation: holding run while moving shows the run row")
+	ottavia.combat.release(&"run")
+	Input.action_release(&"move_right")
+	await _frames(4)
+	var attack: CombatAttack = CombatAttack.new()
+	attack.damage = 1.0
+	attack.deflectable = false
+	ottavia.combat.receive_attack(attack)
+	await _frames(3)
+	_check(_row_of(ottavia) == _row(ottavia, "hurt"), "animation: a hit shows the hurt row")
+	await create_timer(0.8).timeout
+	ottavia.climb_to(ottavia.global_position + Vector3(1.0, 1.0, 0.0), Vector3.LEFT)
+	await _frames(3)
+	_check(ottavia.is_climbing() and _row_of(ottavia) == _row(ottavia, "climb"), "animation: climbing shows the climb row")
+	while ottavia.is_climbing():
+		await physics_frame
+	_check(ottavia.global_position.y > 0.9, "climb: Ottavia ends on top of the ledge")
+	ottavia.play_scripted("give_hand")
+	await _frames(2)
+	_check(_row_of(ottavia) == int(ottavia.animation_entry("give_hand", Facing.Direction.EAST)["row"]), "animation: scene actions (give hand) play their row")
+	ottavia.stop_scripted()
+	floor.queue_free()
+	await _frames(2)
+
+
+func _row_of(ottavia: OttaviaProto) -> int:
+	return ottavia.sprite.frame / OttaviaProto.COLUMNS
+
+
+func _row(ottavia: OttaviaProto, name: String) -> int:
+	return int(ottavia.animation_entry(name, ottavia._facing)["row"])
 
 
 func _frames(count: int) -> void:
