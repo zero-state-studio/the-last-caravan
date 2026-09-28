@@ -10,6 +10,7 @@ Il prologo è il tutorial dei comandi. Ogni comando si impara facendo un pezzo d
 - **Com'è:** un piano del camion-condominio, lungo e stretto, diviso da pesanti tende che pendono dal soffitto. Dietro le tende si intuiscono sagome che dormono. Si sente attutito il battito dei Generatori che si risvegliano (77).
 - **Luce:** nessuna, solo la lanterna di Ottavia.
 - **Si impara:** a camminare; ad aprire e chiudere lo sportello della lanterna.
+- **Il risveglio si sente e non si vede:** nel buio, il cigolio della branda e un respiro; poi il primo comando è aprire la lanterna.
 - **Cosa succede:** Ottavia si sveglia su una branda. Il primo comando del gioco è aprire la lanterna. Tra le tende incontra Zelinda, che tesse al buio e le chiede di chiudere la lanterna mentre le passa accanto. Così il giocatore impara anche a chiuderla. In fondo al piano, una scala e la porta sul retro.
 - **Dimensioni:** circa 6 × 20 metri.
 

@@ -16,7 +16,7 @@
 
 > **Descrizione per PixelLab, in inglese:** 66-year-old woman, hunched on a stool, about 40 px tall seated on a 64x64 canvas. Eyes covered by a band of dark cloth. Wrapped in layers of heavy dark purple-brown fabric, like a heap of curtains. Very pale skin, long white braid. Hands weaving on a small loom.
 
-*Sprite:* seduta, in due viste, con un'animazione di attesa mentre tesse.
+*Sprite:* seduta, in una sola vista, quella da cui la inquadra la camera: non si alza e non si gira. Attesa mentre tesse: ciclo breve di 6-8 fotogrammi, con mani e navetta che si muovono piano.
 
 ## 119. Ruggero  [In discussione]
 
