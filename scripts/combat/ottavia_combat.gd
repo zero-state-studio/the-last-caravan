@@ -164,7 +164,7 @@ func release(action: StringName) -> void:
 		&"lantern":
 			if _lantern_charge >= 0.0 and not _lantern_raised:
 				ottavia.set_lantern_open(not ottavia.lantern_open)
-				SoundBank.play_sound(get_tree(), &"sportello_lanterna")
+				SoundBank.play_sound(get_tree(), &"lanterna_apre" if ottavia.lantern_open else &"lanterna_chiude")
 			_lantern_charge = -1.0
 			if _lantern_raised:
 				_lantern_raised = false
@@ -183,7 +183,7 @@ func _update_charges(delta: float) -> void:
 			_lantern_raised = true
 			if not ottavia.lantern_open:
 				ottavia.set_lantern_open(true)
-				SoundBank.play_sound(get_tree(), &"sportello_lanterna")
+				SoundBank.play_sound(get_tree(), &"lanterna_apre")
 			ottavia.set_lantern_raised(true)
 			dazzle()
 
@@ -289,7 +289,7 @@ func _start_jump() -> void:
 	_enter(State.JUMP)
 	_invulnerable_left = jump_invulnerable_seconds()
 	_jump_impulse = sqrt(2.0 * ottavia.gravity * tuning.jump_height)
-	SoundBank.play_sound(get_tree(), &"passo")
+	SoundBank.play_sound(get_tree(), &"salto")
 	jumped.emit()
 	_spend(tuning.jump_stamina_cost)
 
@@ -480,7 +480,7 @@ func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 	var damage: float = attack.damage * (tuning.breathless_damage_multiplier if state == State.BREATHLESS else 1.0) * patch_damage_taken(attack.source)
 	ottavia.take_damage(damage)
 	ottavia.flash(1.0, Color(1.0, 0.45, 0.4))
-	SoundBank.play_sound(get_tree(), &"colpo_subito")
+	SoundBank.play_sound(get_tree(), &"colpo_subito_ottavia")
 	HitFeedback.hitstop(get_tree(), tuning.hitstop_seconds)
 	HitFeedback.shake(get_tree(), tuning.shake_critical_meters)
 	if attack.source != null:
@@ -497,7 +497,7 @@ func _spend(amount: float) -> void:
 	_since_action = 0.0
 	if stamina <= 0.0 and state != State.BREATHLESS:
 		_enter(State.BREATHLESS)
-		SoundBank.play_sound(get_tree(), &"fiato_esaurito")
+		SoundBank.play_sound(get_tree(), &"respiro_affannato", 0.0)
 		message.emit(&"COMBAT_BREATHLESS")
 
 

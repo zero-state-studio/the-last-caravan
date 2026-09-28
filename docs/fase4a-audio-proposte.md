@@ -1,6 +1,6 @@
 # Fase 4a, passo 6: proposte per l'audio
 
-*Da approvare prima di generare (PROMPT-04, passo 6). Voci solo per la narrazione di Ottavia e per la catena del verdetto, come prova provvisoria, con voci già presenti nella libreria di ElevenLabs (59). Musica come in 126, effetti come in 127.*
+*Approvate e generate il 2026-09-28: voci O1, A2 e la catena proposta; testi della musica M1-M4 come sotto; 27 effetti (lista in `source-assets/elevenlabs/2026-09-28-sfx-prologo/effetti.json`). Proposta originale (PROMPT-04, passo 6): Voci solo per la narrazione di Ottavia e per la catena del verdetto, come prova provvisoria, con voci già presenti nella libreria di ElevenLabs (59). Musica come in 126, effetti come in 127.*
 
 ## Voci
 

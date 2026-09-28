@@ -26,6 +26,8 @@ const TEX_PLANKS: Texture2D = preload("res://assets/textures/terrain/wood_planks
 ## The task area, east of the camion-condominio, toward the frost.
 const TENTS: Vector3 = Vector3(56.0, 0.0, -4.0)
 const TENTS_RADIUS: float = 5.0
+## The skittering of the Brinacchi swarm while it lives (127).
+const SWARM_DB: float = -6.0
 const TAIL_ROWS: Array[float] = [22.0, 27.0, 32.0]
 const TAIL_ROW_Z: Vector2 = Vector2(-13.0, 9.0)
 const TAIL_HEIGHT: float = 0.42
@@ -136,6 +138,7 @@ func _on_breakable_broken() -> void:
 		return
 	_hints.hide_hint()
 	# The Tail comes free with a metallic groan (127) and lifts off the ice.
+	SoundBank.play_sound(get_tree(), &"coda_libera", 0.0)
 	var tween: Tween = create_tween()
 	tween.tween_property(_stuck_tail, "rotation:z", 0.0, 0.8).set_trans(Tween.TRANS_BACK)
 	_start_fight()
@@ -147,6 +150,7 @@ func _start_fight() -> void:
 	_parry_hint_shown = false
 	_hints.show_hint(&"PRO_HINT_STRIKE", &"attack")
 	_spawn_swarm()
+	GameAudio.play_loop(&"swarm", GameAudio.load_sfx(&"sciame_zampettio"), SWARM_DB, 0.8)
 
 
 func _spawn_swarm() -> void:
@@ -157,12 +161,15 @@ func _spawn_swarm() -> void:
 	for index: int in SWARM_SIZE:
 		var angle: float = TAU * index / SWARM_SIZE
 		var creature: CombatEnemy = BRINACCHIO.instantiate()
+		creature.hit_sound = &"bastone_creatura"
+		creature.defeat_sound = &"brinacchio_sconfitto"
 		creature.position = _ottavia.global_position + Vector3(cos(angle), 0.0, sin(angle)) * 4.0
 		add_child(creature)
 		swarm.append(creature)
 
 
 func _last_call() -> void:
+	GameAudio.stop_loop(&"swarm", 0.6)
 	_set_task(Task.LAST_CALL)
 	_hints.hide_hint()
 	_say(&"SPEAKER_GNOMONE", &"PRO_GNOMONE_02")
@@ -186,6 +193,9 @@ func _on_defeated() -> void:
 
 
 func _say(speaker: StringName, line: StringName) -> void:
+	# The Gnomon speaks through his brass trumpet (127).
+	if speaker == &"SPEAKER_GNOMONE":
+		SoundBank.play_sound(get_tree(), &"tromba_gnomone", 0.0)
 	_dialogue.show_line(speaker, line)
 	await get_tree().create_timer(LINE_SECONDS).timeout
 	if _dialogue.current_line() == String(line):
@@ -268,6 +278,9 @@ func _build_stuck_tail() -> void:
 			look = DRY_BUSH.instantiate()
 		var item: Breakable = Breakable.create(self, STUCK_TAIL + spots[index], look, 12.0, Color(0.85, 0.92, 1.0) if index % 2 == 0 else Color(0.8, 0.65, 0.4))
 		item.heavy = true
+		var crust: bool = index % 2 == 0
+		item.hit_sound = &"bastone_ghiaccio" if crust else &"bastone_legno"
+		item.defeat_sound = &"crosta_spezza" if crust else &"arbusto_spezza"
 		item.broken.connect(_on_breakable_broken)
 		breakables.append(item)
 	var worker: NpcSprite = NpcSprite.new()

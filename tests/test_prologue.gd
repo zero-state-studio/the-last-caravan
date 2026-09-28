@@ -53,6 +53,7 @@ func _test_floor() -> void:
 	var hints: HintBanner = floor.hints
 	var dialogue: DialogueBox = floor.dialogue
 	_check(not ottavia.lantern_open, "floor: Ottavia wakes with the lantern closed")
+	_check(GameAudio.music_stream() == null and GameAudio.is_loop_playing(&"generator"), "audio: on the dark floor no music, only the muffled Generators (126)")
 	var zelinda: NpcSprite = floor.level.get_node("Zelinda")
 	var first_frame: int = zelinda.frame
 	await create_timer(0.5).timeout
@@ -61,6 +62,7 @@ func _test_floor() -> void:
 	ottavia.set_lantern_open(true)
 	await _frames(2)
 	_check(hints.current_hint() == &"PRO_HINT_MOVE", "floor: once the lantern is open, the hint is to move")
+	_check(GameAudio.is_loop_playing(&"lantern_flame"), "audio: the open lantern's flame hums (127)")
 	ottavia.global_position += Vector3(2.0, 0.0, 0.0)
 	await _frames(2)
 	_check(hints.current_hint() == &"", "floor: walking clears the move hint")
@@ -88,8 +90,14 @@ func _test_camp_intro() -> void:
 	await _frames(4)
 	_check(camp.vehicles.size() >= 20 and camp.vehicles.size() <= 25, "camp: the caravan counts 20-25 vehicles (%d)" % camp.vehicles.size())
 	_check(camp.intro_running and not camp.ottavia.controls_enabled, "camp: coming from the door, the glare and the wide shot play first")
+	_check(GameAudio.music_stream() == camp.THEME_MUSIC and GameAudio.is_loop_playing(&"crowd"), "audio: Ottavia's theme under the door and the narration, the crowd murmurs (126)")
+	var voiced: bool = true
+	for line: StringName in camp.NARRATION:
+		voiced = voiced and GameAudio.voice_stream(line) != null
+	_check(voiced, "audio: every narration line has its voice, found by line ID (59)")
 	await camp.intro_finished
 	_check(camp.ottavia.controls_enabled and not PrologueState.entered_from_door, "camp: after the narration the controls come back")
+	_check(GameAudio.music_stream() == camp.CAMP_MUSIC, "audio: then the light version of the theme for the camp (126)")
 	camp.queue_free()
 	await _frames(2)
 
@@ -203,6 +211,7 @@ func _test_column() -> void:
 	await create_timer(5.6).timeout
 	var ottavia: OttaviaProto = column.ottavia
 	_check(column.step == column.Step.GO_BACK and column.column.size() >= 3, "column: the caravan marches with three or four vehicles in view (103)")
+	_check(GameAudio.music_stream() == column.RETURN_MUSIC, "audio: going back for Mirco, the tense music (126)")
 	var start_x: float = column.column[0].position.x
 	await create_timer(0.5).timeout
 	_check(column.column[0].position.x < start_x, "column: the vehicles move west")
@@ -226,8 +235,10 @@ func _test_column() -> void:
 	var marching_x: float = column.column[0].position.x
 	await create_timer(0.1).timeout
 	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")
+	_check(GameAudio.music_stream() == null, "audio: in the verdict the music falls silent, only the voices (126)")
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
+	_check(GameAudio.music_stream() == column.TITLE_MUSIC, "audio: on the title, the first phrase of the theme (126)")
 	column.queue_free()
 	await _frames(2)
 

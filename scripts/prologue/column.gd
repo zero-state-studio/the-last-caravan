@@ -32,6 +32,18 @@ const ROADS: Array[Dictionary] = [{"points": [Vector2(-450.0, 0.0), Vector2(200.
 const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn")
 const ANSELMO_WALK: String = "res://assets/sprites/comparse/anselmo_walk_west.png"
 const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/anselmo_north.png")
+## Sound (126, 127): tension and a faster beat on the way back; the music
+## falls silent for the verdict, only the voices remain, each one closer;
+## the first phrase of the theme on the title.
+const RETURN_MUSIC: AudioStream = preload("res://assets/audio/music/m3_ritorno_mirco.ogg")
+const TITLE_MUSIC: AudioStream = preload("res://assets/audio/music/m4_titolo.ogg")
+const RETURN_MUSIC_DB: float = -3.0
+const GENERATOR_DB: float = -14.0
+const GENERATOR_PITCH: float = 1.25
+const CROWD_DB: float = -18.0
+const CHAIN_VOICE_DB: Array[float] = [-12.0, -8.0, -4.0, 0.0]
+## East of this the ground is frosted: steps crunch.
+const FROST_X: float = 25.0
 const SUN_ELEVATION_DEGREES: float = 14.0
 const SUN_AZIMUTH_DEGREES: float = 300.0
 
@@ -88,6 +100,10 @@ func _ready() -> void:
 	ottavia.face_toward(Vector3.RIGHT)
 	ottavia.set_lantern_open(PrologueState.lantern_open)
 	ottavia.defeated.connect(_on_defeated)
+	ottavia.footstep_sound = &"passo_erba"
+	GameAudio.play_music(RETURN_MUSIC, 2.0, RETURN_MUSIC_DB)
+	GameAudio.play_loop(&"generator", GameAudio.load_sfx(&"generatore_fuori"), GENERATOR_DB, 1.5, GENERATOR_PITCH)
+	GameAudio.play_loop(&"crowd", GameAudio.load_sfx(&"brusio_folla"), CROWD_DB, 2.0)
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("start_x="):
 			ottavia.global_position.x = argument.trim_prefix("start_x=").to_float()
@@ -128,6 +144,7 @@ func _physics_process(delta: float) -> void:
 			walker.position.x -= COLUMN_SPEED * delta
 		_head.position.x -= COLUMN_SPEED * delta
 	var here: Vector3 = ottavia.global_position
+	ottavia.footstep_sound = &"passo_brina" if here.x > FROST_X else &"passo_erba"
 	match step:
 		Step.GO_BACK:
 			if _flat(here, mirco.global_position) < MEET_RADIUS:
@@ -163,6 +180,8 @@ func _meet() -> void:
 	step = Step.FIGHT
 	for index: int in 2:
 		var creature: CombatEnemy = BRINACCHIO.instantiate()
+		creature.hit_sound = &"bastone_creatura"
+		creature.defeat_sound = &"brinacchio_sconfitto"
 		creature.position = mirco.global_position + Vector3(4.0 + index * 1.5, 0.0, -2.0 + index * 4.0)
 		level.add_child(creature)
 		brinacchi.append(creature)
@@ -179,6 +198,7 @@ func _on_mirco_used() -> void:
 	await ottavia.play_scripted("tie_rope")
 	ottavia.stop_scripted()
 	PrologueState.knots += 1
+	SoundBank.play_sound(get_tree(), &"corda_nodo", 0.0)
 	rope.add_knot()
 	ottavia.controls_enabled = true
 	_return_start_x = ottavia.global_position.x
@@ -219,9 +239,11 @@ func _verdict() -> void:
 	ottavia.auto_move = Vector3(-COLUMN_SPEED, 0.0, 0.0)
 	hints.hide_hint()
 	_place_anselmo()
-	for line: StringName in [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_03", &"PRO_CHAIN_04"]:
-		dialogue.show_line(&"", line)
-		await get_tree().create_timer(chain_seconds).timeout
+	GameAudio.stop_music(1.5)
+	var chain: Array[StringName] = [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_03", &"PRO_CHAIN_04"]
+	for index: int in chain.size():
+		var voice: float = dialogue.show_line(&"", chain[index], CHAIN_VOICE_DB[index])
+		await get_tree().create_timer(DialogueBox.line_wait(chain_seconds, voice)).timeout
 	dialogue.hide_box()
 	# Cut to the head of the column: Arold walks on without turning, Enea turns.
 	_head_shot = true
@@ -238,13 +260,18 @@ func _verdict() -> void:
 	_anselmo.set_strip(ANSELMO_FACING_NORTH)
 	_anselmo.global_position = ottavia.global_position + Vector3(0.0, 0.0, 1.3)
 	ottavia.face_toward(Vector3.BACK)
-	dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_02")
+	var hand_voice: float = dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_02")
+	var hand_started: float = Time.get_ticks_msec() / 1000.0
 	await ottavia.play_scripted("give_hand")
-	await get_tree().create_timer(line_seconds * 0.6).timeout
+	var hand_left: float = hand_voice - (Time.get_ticks_msec() / 1000.0 - hand_started)
+	await get_tree().create_timer(maxf(line_seconds * 0.6, hand_left + 0.4) if line_seconds >= 1.0 else line_seconds * 0.6).timeout
 	dialogue.hide_box()
 	await title.show_lantern_silhouette(line_seconds)
+	GameAudio.stop_loop(&"generator", 1.2)
+	GameAudio.stop_loop(&"crowd", 1.2)
 	await title.fade_to_black(1.2)
-	await title.show_title(&"PRO_TITLE_CH1", line_seconds)
+	GameAudio.play_music(TITLE_MUSIC, 0.0)
+	await title.show_title(&"PRO_TITLE_CH1", line_seconds if line_seconds < 1.0 else maxf(line_seconds, TITLE_MUSIC.get_length()))
 	step = Step.DONE
 	prologue_finished.emit()
 
@@ -259,8 +286,8 @@ func _place_anselmo() -> void:
 
 
 func _say(speaker: StringName, line: StringName) -> void:
-	dialogue.show_line(speaker, line)
-	await get_tree().create_timer(line_seconds).timeout
+	var voice: float = dialogue.show_line(speaker, line)
+	await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice)).timeout
 	if dialogue.current_line() == String(line):
 		dialogue.hide_box()
 

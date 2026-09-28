@@ -27,6 +27,10 @@ const OPEN_COLOR: Color = Color(1.0, 0.9, 0.6)
 @export var world_side: StringName = &"twilight"
 
 var health: float = 0.0
+## Effects when struck and when defeated (58); creatures and breakables
+## with their own sound change them.
+var hit_sound: StringName = &"nemico_colpito"
+var defeat_sound: StringName = &"nemico_sconfitto"
 ## Health before the difficulty scaling (40).
 var base_max_health: float = 0.0
 ## Where the creature starts; it comes back here when the room restarts (105).
@@ -101,12 +105,12 @@ func receive_hit(hit: CombatHit) -> void:
 		return
 	health = maxf(0.0, health - hit.damage * damage_multiplier(hit))
 	flash(1.0, Color(1.0, 0.95, 0.85) if not hit.critical else Color(1.0, 0.77, 0.42))
-	SoundBank.play_sound(get_tree(), &"nemico_colpito")
+	SoundBank.play_sound(get_tree(), hit_sound)
 	if hit.knockback > 0.0 and not heavy:
 		_move_by(hit.direction * hit.knockback)
 	_on_hit(hit)
 	if health <= 0.0:
-		SoundBank.play_sound(get_tree(), &"nemico_sconfitto")
+		SoundBank.play_sound(get_tree(), defeat_sound)
 		_become_defeated()
 		_on_defeated()
 		defeated.emit()

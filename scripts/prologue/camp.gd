@@ -38,6 +38,14 @@ const RETURN_SECONDS: float = 3.5
 const GLARE_SECONDS: float = 1.6
 ## Same sun as the approved diorama (phase 2): low, from the west-south-west.
 const SUN_ELEVATION_DEGREES: float = 14.0
+## Music (126): the theme at the door, a light version while the camp packs.
+const THEME_MUSIC: AudioStream = preload("res://assets/audio/music/m1_porta_narrazione.ogg")
+const CAMP_MUSIC: AudioStream = preload("res://assets/audio/music/m2_accampamento.ogg")
+const CAMP_MUSIC_DB: float = -3.0
+## Under the narration the theme stays well below the voice.
+const THEME_MUSIC_DB: float = -9.0
+const GENERATOR_DB: float = -14.0
+const CROWD_DB: float = -12.0
 const SUN_AZIMUTH_DEGREES: float = 300.0
 
 ## Seconds each narration line stays on screen; tests shorten it.
@@ -94,6 +102,10 @@ func _ready() -> void:
 			ottavia.global_position.z = argument.trim_prefix("start_z=").to_float()
 	ottavia.face_toward(Vector3.BACK)
 	ottavia.set_lantern_open(PrologueState.lantern_open)
+	ottavia.footstep_sound = &"passo_erba"
+	# The camp packing up: the Generators beat in the open, the crowd (127).
+	GameAudio.play_loop(&"generator", GameAudio.load_sfx(&"generatore_fuori"), GENERATOR_DB, 1.5)
+	GameAudio.play_loop(&"crowd", GameAudio.load_sfx(&"brusio_folla"), CROWD_DB, 2.0)
 	camera_rig.target = ottavia
 	camera_rig.limits = Rect2(Vector2(-90.0, -40.0), Vector2(180.0, 70.0))
 	camera_rig.snap_to_target()
@@ -117,14 +129,18 @@ func _ready() -> void:
 	if play_intro or PrologueState.entered_from_door:
 		intro_finished.connect(tasks.begin, CONNECT_ONE_SHOT)
 		_intro.call_deferred()
-	elif not "tasks=0" in OS.get_cmdline_user_args():
-		tasks.begin.call_deferred()
+	else:
+		GameAudio.play_music(CAMP_MUSIC, 1.0, CAMP_MUSIC_DB)
+		if not "tasks=0" in OS.get_cmdline_user_args():
+			tasks.begin.call_deferred()
 
 
 ## The glare of the sunset, the rise over the caravan with the narration,
 ## and the way back to Ottavia (space 2).
 func _intro() -> void:
 	intro_running = true
+	# Ottavia's theme, whole, under the door and the narration (126).
+	GameAudio.play_music(THEME_MUSIC, 0.0, THEME_MUSIC_DB)
 	ottavia.controls_enabled = false
 	var glare: Color = Color(1.0, 0.93, 0.8).lerp(Color(0.55, 0.42, 0.32), 1.0 - GameOptions.flash_strength)
 	_fade.color = Color(glare, 1.0)
@@ -145,11 +161,15 @@ func _intro() -> void:
 	await out.finished
 	# A slow drift toward the Night while Ottavia speaks.
 	var drift_end: Transform3D = wide.translated(Vector3(6.0, 0.0, 0.0))
-	var drift: Tween = create_tween()
-	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = wide.interpolate_with(drift_end, t), 0.0, 1.0, line_seconds * NARRATION.size())
+	var narration_seconds: float = 0.0
 	for line: StringName in NARRATION:
-		dialogue.show_line(&"SPEAKER_OTTAVIA", line)
-		await get_tree().create_timer(line_seconds).timeout
+		var stream: AudioStream = GameAudio.voice_stream(line)
+		narration_seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0)
+	var drift: Tween = create_tween()
+	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = wide.interpolate_with(drift_end, t), 0.0, 1.0, narration_seconds)
+	for line: StringName in NARRATION:
+		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", line)
+		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice)).timeout
 	dialogue.hide_box()
 	if drift.is_running():
 		drift.kill()
@@ -161,6 +181,7 @@ func _intro() -> void:
 	await home.finished
 	camera_rig.camera.current = true
 	ottavia.controls_enabled = true
+	GameAudio.play_music(CAMP_MUSIC, 3.0, CAMP_MUSIC_DB)
 	intro_running = false
 	PrologueState.entered_from_door = false
 	intro_finished.emit()

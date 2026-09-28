@@ -12,6 +12,10 @@ const TWO_WAY: Array[String] = ["tie_rope", "give_hand"]
 const CLIMB_UP_SECONDS: float = 1.0
 const CLIMB_OVER_SECONDS: float = 0.35
 const LANDING_SECONDS: float = 0.18
+## One footstep sound every this many metres walked (a run takes longer
+## strides).
+const STEP_METERS: float = 0.8
+const FLAME_HUM_DB: float = -22.0
 ## Where the lit sprite samples light and shadow: chest height, a bit toward the sun.
 const LIGHT_SAMPLE_HEIGHT: float = 0.9
 const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
@@ -60,6 +64,10 @@ var controls_enabled: bool = true
 ## During cutscenes: Ottavia walks at this velocity (for example with the
 ## column on the march), animated as walking.
 var auto_move: Vector3 = Vector3.ZERO
+## Footstep effect for the ground under her (127): set by each scene, empty
+## for silence.
+var footstep_sound: StringName = &""
+var _step_distance: float = 0.0
 var health: float = 0.0
 var _lantern_points: PackedVector2Array = []
 var _dark_areas: int = 0
@@ -114,9 +122,11 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0
 	else:
 		velocity.y -= gravity * delta
+	var before: Vector3 = global_position
 	move_and_slide()
 	if is_on_floor():
 		_ground_y = global_position.y
+		_step(Vector2(global_position.x - before.x, global_position.z - before.z).length())
 	if combat.can_turn():
 		_facing = Facing.nearest_direction(input, _facing)
 	_animate(delta, not input.is_zero_approx() and combat.move_speed_multiplier() > 0.0)
@@ -158,10 +168,21 @@ func set_sun_azimuth(degrees: float) -> void:
 	_material.set_shader_parameter(&"light_sample_offset", Vector3.UP * LIGHT_SAMPLE_HEIGHT + toward_sun * LIGHT_SAMPLE_TOWARD_SUN)
 
 
+func _step(distance: float) -> void:
+	if footstep_sound.is_empty() or _climbing:
+		return
+	_step_distance += distance
+	var stride: float = STEP_METERS * (1.3 if _animation == "run" else 1.0)
+	if _step_distance >= stride:
+		_step_distance = fmod(_step_distance, stride)
+		SoundBank.play_sound(get_tree(), footstep_sound, 0.1)
+
+
 func _animate(delta: float, moving: bool) -> void:
 	var airborne: bool = combat.is_airborne() and not _climbing
 	if _was_airborne and not airborne:
 		_landing_left = LANDING_SECONDS
+		SoundBank.play_sound(get_tree(), &"atterraggio")
 	_was_airborne = airborne
 	_landing_left = maxf(0.0, _landing_left - delta)
 	var name: String = _pick_animation(moving, airborne)
@@ -258,6 +279,7 @@ func climb_to(top: Vector3, wall_normal: Vector3) -> void:
 	if _climbing:
 		return
 	_climbing = true
+	SoundBank.play_sound(get_tree(), &"presa_arrampicata")
 	var was_enabled: bool = controls_enabled
 	controls_enabled = false
 	velocity = Vector3.ZERO
@@ -374,6 +396,12 @@ func flash(amount: float, color: Color) -> void:
 func set_lantern_open(open: bool) -> void:
 	lantern_open = open
 	lantern_light.visible = open
+	# The flame hums softly while the shutter is open (127).
+	if is_inside_tree():
+		if open:
+			GameAudio.play_loop(&"lantern_flame", GameAudio.load_sfx(&"fiamma_ronzio"), FLAME_HUM_DB, 0.4)
+		else:
+			GameAudio.stop_loop(&"lantern_flame", 0.2)
 	_material.set_shader_parameter(&"emission_energy", lantern_glass_energy if open else 0.0)
 
 
@@ -403,3 +431,7 @@ func _update_flash(delta: float) -> void:
 			color = Color(0.45, 0.55, 1.0)
 	_material.set_shader_parameter(&"flash", amount)
 	_material.set_shader_parameter(&"flash_color", color)
+
+
+func _exit_tree() -> void:
+	GameAudio.stop_loop(&"lantern_flame", 0.1)

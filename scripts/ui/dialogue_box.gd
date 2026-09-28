@@ -1,8 +1,8 @@
 class_name DialogueBox
 extends CanvasLayer
 ## Provisional dialogue box: speaker name and line, both translation keys.
-## Every line has a unique ID (its key), which will link the voice acting
-## (59).
+## Every line has a unique ID (its key), which links the voice acting (59):
+## a line with a recorded voice plays it (GameAudio.play_voice).
 
 var _panel: PanelContainer
 var _speaker: Label
@@ -30,10 +30,19 @@ func _ready() -> void:
 	_panel.visible = false
 
 
-func show_line(speaker_key: StringName, line_key: StringName) -> void:
+## Shows a line and plays its voice; returns the voice length in seconds
+## (0 when the line has no voice).
+func show_line(speaker_key: StringName, line_key: StringName, voice_db: float = 0.0) -> float:
 	_speaker.text = speaker_key
 	_line.text = line_key
 	_panel.visible = true
+	return GameAudio.play_voice(line_key, voice_db)
+
+
+## How long a line stays up: `seconds`, or longer if its voice needs it.
+## Short dev pacing (under a second, tests) is kept as it is.
+static func line_wait(seconds: float, voice_seconds: float) -> float:
+	return seconds if seconds < 1.0 else maxf(seconds, voice_seconds + 0.6)
 
 
 func hide_box() -> void:

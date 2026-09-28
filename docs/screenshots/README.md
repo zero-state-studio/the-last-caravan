@@ -205,6 +205,9 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/07-verdetto-con-audio.mp4`: **da valutare (con le cuffie)**. Il verdetto: la musica tace, la catena di voci sempre più vicine, Anselmo, il titolo sulla prima frase del tema (50 s)
+- `capitoli/00-prologo/06-porta-e-narrazione-con-audio.mp4`: **da valutare (con le cuffie)**. Porta, tema di Ottavia, narrazione con la voce, poi la versione leggera dell'accampamento, folla e Generatori (58 s)
+- `capitoli/00-prologo/05-risveglio-al-buio-con-audio.mp4`: **da valutare (con le cuffie)**. Il risveglio nel buio: cigolio della branda, respiro, battito attutito dei Generatori (11 s)
 - `capitoli/00-prologo/04-colonna-code-che-serpeggiano.mp4`: **da valutare**. Le Code da vicino, mentre il mezzo avanza (4 s)
 - `capitoli/00-prologo/03-colonna-ruote-in-movimento.mp4`: **da valutare**. La colonna in marcia: ruote che girano, mezzi che ondeggiano, Generatori che battono (8 s)
 - `capitoli/00-prologo/02-verdetto.mp4`: **da valutare**. Il verdetto, dalla catena delle voci al titolo (38 s)

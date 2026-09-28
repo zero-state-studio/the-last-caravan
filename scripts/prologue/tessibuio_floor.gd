@@ -34,6 +34,8 @@ const TEX_CURTAIN: Texture2D = preload("res://assets/textures/interior/curtain_d
 const TEX_CLOTH: Texture2D = preload("res://assets/textures/interior/cloth_patched_01.png")
 const TEX_METAL: Texture2D = preload("res://assets/textures/interior/metal_plates_01.png")
 const TEX_PAINTED: Texture2D = preload("res://assets/textures/interior/wood_painted_01.png")
+## The Generators' beat, muffled by the floor's walls and curtains.
+const GENERATOR_DB: float = -9.0
 
 ## Seconds of black while Ottavia wakes up; 0 skips it (tests).
 @export var intro_seconds: float = 2.5
@@ -41,6 +43,7 @@ const TEX_PAINTED: Texture2D = preload("res://assets/textures/interior/wood_pain
 @export var leave_scene: bool = true
 
 var step: Step = Step.WAKE
+var _was_in_bay: bool = true
 var zelinda_spoke: bool = false
 
 @onready var ottavia: OttaviaProto = $Ottavia
@@ -65,6 +68,9 @@ func _ready() -> void:
 	ottavia.global_position = START
 	ottavia.face_toward(Vector3.BACK)
 	ottavia.set_lantern_open(false)
+	# No music on the dark floor: only the muffled beat of the Generators (126).
+	GameAudio.stop_music(0.0)
+	GameAudio.play_loop(&"generator", GameAudio.load_sfx(&"generatore_attutito"), GENERATOR_DB, 1.5)
 	# Dev arguments for captures: intro=0, lantern=1, start_x=<metres>, step=walk.
 	for argument: String in OS.get_cmdline_user_args():
 		if argument == "intro=0":
@@ -90,6 +96,8 @@ func _ready() -> void:
 func _wake() -> void:
 	ottavia.controls_enabled = false
 	if intro_seconds > 0.0:
+		# The waking is heard, not seen (106, 127): the cot, then a breath.
+		_wake_sounds()
 		var tween: Tween = create_tween()
 		tween.tween_property(_fade, "color:a", 0.0, intro_seconds)
 		await tween.finished
@@ -101,7 +109,19 @@ func _wake() -> void:
 	hints.show_hint(&"PRO_HINT_OPEN_LANTERN", &"lantern")
 
 
+func _wake_sounds() -> void:
+	await get_tree().create_timer(0.3).timeout
+	SoundBank.play_sound(get_tree(), &"branda_cigolio", 0.0)
+	await get_tree().create_timer(1.1).timeout
+	SoundBank.play_sound(get_tree(), &"respiro_risveglio", 0.0)
+
+
 func _physics_process(_delta: float) -> void:
+	# The bay curtains rustle when she walks through them (127).
+	var in_bay: bool = ottavia.global_position.z < BAY_FRONT_Z
+	if in_bay != _was_in_bay:
+		_was_in_bay = in_bay
+		SoundBank.play_sound(get_tree(), &"fruscio_tende")
 	match step:
 		Step.OPEN_LANTERN:
 			if ottavia.lantern_open:
@@ -150,6 +170,8 @@ func go_outside() -> void:
 	dialogue.hide_box()
 	PrologueState.entered_from_door = true
 	PrologueState.lantern_open = ottavia.lantern_open
+	SoundBank.play_sound(get_tree(), &"porta_camion_vento", 0.0)
+	GameAudio.stop_loop(&"generator", 0.8)
 	var glare: Color = Color(1.0, 0.93, 0.8).lerp(Color(0.55, 0.42, 0.32), 1.0 - GameOptions.flash_strength)
 	_fade.color = Color(glare, 0.0)
 	var tween: Tween = create_tween()
