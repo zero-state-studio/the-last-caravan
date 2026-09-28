@@ -16,3 +16,9 @@ Stati: **Definito** (si può implementare), **In discussione** (proposta non anc
 - [Tecnica e pipeline](10-tecnica.md)
 - [Produzione e Steam](11-produzione.md)
 - [Semi del secondo capitolo](12-seguito.md)
+- [Capitoli](14-capitoli.md)
+- [Comparse](15-comparse.md)
+- [I mezzi della carovana](16-mezzi.md)
+- [Interfaccia e audio](17-interfaccia-e-audio.md)
+
+Livelli nel dettaglio: [Prologo](../livelli/prologo.md)

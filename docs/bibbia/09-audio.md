@@ -8,9 +8,11 @@ Un tema di Ottavia che si trasforma lungo il gioco e accompagna il suo invecchia
 
 **Resta da definire:** Strumenti, atmosfera, temi dei compagni e delle zone.
 
+Vedi 126.
+
 ## 58. Effetti sonori  [Da definire]
 
-L'elenco completo: passi, bastone, fauna, vento del Giorno, silenzio della Notte.
+L'elenco completo: passi, bastone, fauna, vento del Giorno, silenzio della Notte. Per il prologo vedi 127.
 
 ## 59. Voci  [Definito]
 

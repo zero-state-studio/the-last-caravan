@@ -78,7 +78,7 @@ Vegetazione in vera geometria 3D con texture pixel art, fittissima e su più str
 
 ## 55. Interfaccia  [Da definire]
 
-Stile di menu e dialoghi, indicatori di vita e fiato.
+Stile di menu e dialoghi, indicatori di vita e fiato. Vedi 125.
 
 ## 56. Nome dello stile nel marketing  [Definito]
 

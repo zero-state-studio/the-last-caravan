@@ -1,6 +1,6 @@
 # Fasi di sviluppo
 
-**Fase corrente: 4**
+**Fase corrente: 4a**
 
 Ogni fase finisce con un resoconto e con l'approvazione dell'autore. Non si passa alla fase successiva senza un ok esplicito. Quando una fase è approvata, aggiorna la riga "Fase corrente".
 
@@ -23,7 +23,14 @@ Bastone, tempismo e posizione (33), progressione inversa (34), Enea che impara (
 **Stato (28 settembre 2026):** approvata, prototipo chiuso. Diorama: `scenes/proto/diorama.tscn`; consegna `docs/fase3-consegna.md`; video `docs/video/2026-09-28-fase3-capitolo1-vs-9.mp4`. Restano aperte: la tabella della progressione (`docs/progressione.md`, proposta), la crescita della forza nei capitoli avanzati e il colpo pesante con combinazione da 1.
 
 ## Fase 4: Prima fetta giocabile
-Il prologo e i Carri-campo (68), con grafica, musica, effetti e testi IT/EN definitivi, la carovana come base (37), la Tregua a tempo (39), i salvataggi (95).
+In due tempi (68), con grafica, musica, effetti e testi IT/EN definitivi.
+
+### Fase 4a: Il prologo
+Il prologo completo (106, `docs/livelli/prologo.md`), dall'inizio al titolo «Ne restano dieci», per verificare la grafica e i comandi. Prompt: `docs/prompts/PROMPT-04.md`.
+**Uscita:** l'autore l'ha giocato sul Mac con il gamepad, e lo convince.
+
+### Fase 4b: I Carri-campo
+Il capitolo 1 (107), che verifica dungeon, la carovana come base (37), la Tregua a tempo (39), boss, Salvati e salvataggi (95).
 **Uscita:** un pezzo di gioco che si potrebbe far provare a qualcuno.
 
 ## Fase 5: Produzione
