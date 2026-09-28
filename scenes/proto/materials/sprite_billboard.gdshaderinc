@@ -31,6 +31,10 @@ uniform vec3 garment_dark : source_color = vec3(0.2);
 uniform vec3 garment_light : source_color = vec3(0.8);
 uniform float garment_fade = 0.0;
 
+// A one-pixel outline around the sprite (small creatures, B1); off while
+// its alpha is 0.
+uniform vec4 outline_color : source_color = vec4(0.0);
+
 varying vec4 upright_clip;
 
 vec3 dyed(vec3 texel, vec2 uv) {
@@ -57,7 +61,16 @@ void vertex() {
 void fragment() {
 	vec4 texel = texture(sprite_texture, UV);
 	if (texel.a < 0.5) {
-		discard;
+		if (outline_color.a <= 0.0) {
+			discard;
+		}
+		vec2 step_uv = 1.0 / vec2(textureSize(sprite_texture, 0));
+		float near = texture(sprite_texture, UV + vec2(step_uv.x, 0.0)).a + texture(sprite_texture, UV - vec2(step_uv.x, 0.0)).a
+			+ texture(sprite_texture, UV + vec2(0.0, step_uv.y)).a + texture(sprite_texture, UV - vec2(0.0, step_uv.y)).a;
+		if (near < 0.5) {
+			discard;
+		}
+		texel = vec4(outline_color.rgb, 1.0);
 	}
 	vec3 base = garment_strength > 0.0 ? dyed(texel.rgb, UV) : texel.rgb;
 	vec3 color = mix(base, flash_color.rgb, clamp(flash, 0.0, 1.0));

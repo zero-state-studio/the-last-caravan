@@ -227,7 +227,6 @@ func _test_column() -> void:
 	PrologueState.reset()
 	var column: Node3D = (load(PrologueState.COLUMN_SCENE) as PackedScene).instantiate()
 	column.line_seconds = 0.05
-	column.chain_seconds = 0.05
 	root.add_child(column)
 	current_scene = column
 	await create_timer(5.6).timeout
@@ -237,6 +236,11 @@ func _test_column() -> void:
 	var start_x: float = column.column[0].position.x
 	await create_timer(0.5).timeout
 	_check(column.column[0].position.x < start_x, "column: the vehicles move west")
+	var tail_x: float = column._last_vehicle_back()
+	_check(column._anselmo.visible and absf(column._anselmo.global_position.x - tail_x) < 6.0, "column: Anselmo walks at the tail from the start, seen from afar (106)")
+	var space: PhysicsDirectSpaceState3D = column.get_world_3d().direct_space_state
+	var straight: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(Vector3(20.0, 1.0, 5.0), Vector3(column.MIRCO_START.x - 10.0, 1.0, 5.0))
+	_check(column.MIRCO_START.x > 100.0 and not space.intersect_ray(straight).is_empty(), "column: the way to Mirco is long, with walls and rocks across it (106)")
 	ottavia.global_position = column.mirco.global_position + Vector3(-1.5, 0.05, 0.0)
 	await create_timer(0.4).timeout
 	_check(column.step == column.Step.FIGHT and column.brinacchi.size() == 2, "column: Mirco speaks, Ottavia answers, a couple of Brinacchi come")
@@ -247,6 +251,7 @@ func _test_column() -> void:
 	ottavia.interact()
 	await create_timer(1.8).timeout
 	_check(column.step == column.Step.RETURN and PrologueState.knots == 1 and column.rope.knots == 1, "column: tied to the rope, a knot is added (125)")
+	_check(column.dusk > 0.6, "column: near Mirco the light dims, as if night were coming (%.2f)" % column.dusk)
 	var back: float = column._last_vehicle_back()
 	ottavia.global_position.x = back + (column._return_start_x - back) * 0.3
 	await _frames(3)
@@ -254,26 +259,20 @@ func _test_column() -> void:
 	ottavia.global_position.x = column._last_vehicle_back() + 1.0
 	await _frames(3)
 	_check(column.step == column.Step.VERDICT, "column: reaching the column past the limit starts the verdict")
+	_check(column.dialogue.current_line() == "PRO_ANSELMO_LATE", "column: Anselmo is the one who speaks: «Sei in ritardo, Ottavia.» (106)")
 	var marching_x: float = column.column[0].position.x
 	await create_timer(0.1).timeout
 	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")
 	_check(GameAudio.music_stream() == null, "audio: in the verdict the music falls silent, only the voices (126)")
-	var speakers: Array[Node3D] = column.chain_speakers()
-	var nearer: bool = speakers.size() == 5
-	for index: int in range(1, speakers.size()):
-		nearer = nearer and absf(speakers[index].global_position.x - ottavia.global_position.x) < absf(speakers[index - 1].global_position.x - ottavia.global_position.x)
-	_check(nearer and speakers[0].global_position.x < ottavia.global_position.x - 30.0, "column: the chain starts far toward the head and each voice is nearer Ottavia (106)")
-	_check(column.bubble.is_showing() and StringName(column.bubble.current_line()) in column.CHAIN and column.bubble.current_target() in column.walkers, "column: each chain line shows above the one in the crowd who says it (96)")
 	var title_music: Array[AudioStream] = []
 	column.title.title_leaving.connect(func(_seconds: float) -> void: title_music.append(GameAudio.music_stream()), CONNECT_ONE_SHOT)
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
 	_check(title_music.size() == 1 and title_music[0] == column.TITLE_MUSIC and GameAudio.music_stream() == null, "audio: on the title the first phrase of the theme, broken off as the title fades (126)")
-	_check(column._enea.get_parent() == column.level and column._enea.texture == column.ENEA_LOOKING_BACK, "column: in the head shot Enea stops and turns to look back (106)")
-	var chain_voiced: bool = column.CHAIN.size() == 5
-	for line: StringName in column.CHAIN:
-		chain_voiced = chain_voiced and GameAudio.voice_stream(line) != null and not tr(line).is_empty()
-	_check(chain_voiced, "column: the verdict chain has five voiced lines (106)")
+	var voiced: bool = column.VERDICT.size() == 7
+	for line: Array in column.VERDICT:
+		voiced = voiced and GameAudio.voice_stream(line[1]) != null
+	_check(voiced, "column: every line of the verdict has its voice (59, 106)")
 	column.queue_free()
 	await _frames(2)
 

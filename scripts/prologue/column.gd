@@ -3,12 +3,13 @@ extends Node3D
 ## of the caravan on the march (103) and the verdict.
 ## The column moves west (toward the Day, left) with three or four vehicles
 ## in view; Mirco has stayed behind looking at the dark to the east. Ottavia
-## goes back for him against the column, drives off a couple of Brinacchi,
-## ties him to her rope (a knot is added) and runs back: halfway, her breath
-## runs out faster than usual. Past the limit she reaches the column, the
-## verdict comes back from voice to voice, a cut to the head (Arold does not
-## turn, Enea does), Anselmo is the last voice and takes her measure; the
-## empty lantern appears in the menu (88); black, «Ne restano dieci».
+## goes back for him against the column, a long way round fallen walls and
+## rocks while the light dims as if night were coming; drives off the
+## Brinacchi, ties him to her rope (a knot is added) and runs back through
+## more of them: halfway, her breath runs out faster than usual. Past the
+## limit she reaches the tail, where Anselmo walks: he tells her the verdict,
+## slowly, and takes her measure; the empty lantern appears in the menu (88);
+## black, «Ne restano dieci».
 
 enum Step { INTRO, GO_BACK, MEET, FIGHT, TIE, RETURN, VERDICT, DONE }
 
@@ -17,7 +18,7 @@ const COLUMN_Z: float = -3.0
 const COLUMN_START_X: Array[float] = [-7.0, -31.0, -55.0, -79.0]
 const COLUMN_RECIPES: Array[String] = ["casa_due_piani", "tenda_e_carico", "orto_e_serbatoio", "casa_torre"]
 const HEAD_X: float = -330.0
-const MIRCO_START: Vector3 = Vector3(52.0, 0.0, 7.0)
+const MIRCO_START: Vector3 = Vector3(125.0, 0.0, 6.0)
 const OTTAVIA_START: Vector3 = Vector3(0.0, 0.0, 2.5)
 const MEET_RADIUS: float = 3.0
 const FOLLOW_DISTANCE: float = 1.3
@@ -26,15 +27,14 @@ const HALFWAY_SHARE: float = 0.5
 const TIRED_DRAIN: float = 2.2
 const CATCH_DISTANCE: float = 4.0
 const LINE_SECONDS: float = 3.2
-const CHAIN_SECONDS: float = 2.3
+## Silence after each line of the verdict: two old friends, slowly (106).
+const VERDICT_PAUSE: float = 1.2
 const CROWD_TYPES: Array[String] = ["uomo_giovane", "uomo_adulto", "uomo_anziano", "donna_giovane", "donna_adulta", "donna_anziana", "bambino", "bambina"]
 const ROADS: Array[Dictionary] = [{"points": [Vector2(-450.0, 0.0), Vector2(200.0, -1.0)], "half_width": 4.0}]
 const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn")
 const ANSELMO_WALK: String = "res://assets/sprites/comparse/anselmo_walk_west.png"
-const ENEA_WALK: String = "res://assets/sprites/comparse/enea_walk_west.png"
-const ENEA_LOOKING_BACK: Texture2D = preload("res://assets/sprites/comparse/enea_east.png")
-## Seconds into the head shot when Enea stops and turns.
-const ENEA_TURN_SECONDS: float = 1.2
+## Anselmo walks at the tail, behind the last vehicle, seen from afar.
+const ANSELMO_BEHIND: Vector3 = Vector3(2.5, 0.0, 3.2)
 const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/anselmo_north.png")
 ## Sound (126, 127): tension and a faster beat on the way back; the music
 ## falls silent for the verdict, only the voices remain, each one closer;
@@ -45,14 +45,40 @@ const RETURN_MUSIC_DB: float = -3.0
 const GENERATOR_DB: float = -14.0
 const GENERATOR_PITCH: float = 1.25
 const CROWD_DB: float = -18.0
-## The verdict from voice to voice (106): line IDs in the order they are
-## heard, each voice closer than the one before.
-const CHAIN: Array[StringName] = [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_05", &"PRO_CHAIN_06", &"PRO_CHAIN_04"]
-## How far ahead of Ottavia (metres, toward the head) the first four
-## speakers walk; the fifth is Anselmo at her side. Distance softens the
-## voices; the volume steps add to it.
-const CHAIN_SPEAKER_METERS: Array[float] = [55.0, 32.0, 17.0, 8.0]
-const CHAIN_VOICE_DB: Array[float] = [-4.0, -3.0, -2.0, -1.0, 0.0]
+## The verdict (106): who says each line, in order. Anselmo carries the
+## Mayor's words; he and Ottavia both know what is coming.
+const VERDICT: Array[Array] = [
+	[&"SPEAKER_ANSELMO", &"PRO_ANSELMO_LATE"],
+	[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_LATE"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_01"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_02"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_03"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_04"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_05"],
+]
+## The way to Mirco (106): barriers of fallen rock and walls across the
+## way, each with a gap on one side, to be walked round. (x, z_from, z_to).
+const BARRIERS: Array[Vector3] = [
+	Vector3(28.0, -2.0, 9.0), Vector3(46.0, 5.0, 16.0), Vector3(64.0, -2.0, 4.0),
+	Vector3(64.0, 10.0, 16.0), Vector3(82.0, -2.0, 10.0), Vector3(100.0, 4.0, 16.0),
+]
+## Waypoints through the gaps, from Ottavia's start to Mirco (the autoplay
+## walks them; a player finds them by eye).
+const ROUTE: Array[Vector3] = [
+	Vector3(24.0, 0.0, 12.5), Vector3(32.0, 0.0, 12.5), Vector3(42.0, 0.0, 1.5), Vector3(50.0, 0.0, 1.5),
+	Vector3(60.0, 0.0, 7.0), Vector3(68.0, 0.0, 7.0), Vector3(78.0, 0.0, 13.0), Vector3(86.0, 0.0, 13.0),
+	Vector3(96.0, 0.0, 1.0), Vector3(104.0, 0.0, 1.0),
+]
+## Brinacchi on the way (B1): where each group waits; the first on the way
+## out, the others cut across the way back.
+const WAY_OUT_SWARM: Vector3 = Vector3(72.0, 0.0, 7.0)
+const WAY_BACK_SWARMS: Array[Vector3] = [Vector3(90.0, 0.0, 12.0), Vector3(40.0, 0.0, 2.0)]
+const SWARM_COUNT: int = 3
+## Nightfall toward Mirco (106): how much the light dims at his place.
+const DUSK_START_X: float = 20.0
+const DUSK_SUN_SCALE: float = 0.62
+const DUSK_AMBIENT_SCALE: float = 0.72
+const DUSK_FOG_COLOR: Color = Color(0.32, 0.33, 0.45)
 ## East of this the ground is frosted: steps crunch.
 const FROST_X: float = 25.0
 const SUN_ELEVATION_DEGREES: float = 14.0
@@ -60,7 +86,6 @@ const SUN_AZIMUTH_DEGREES: float = 300.0
 
 ## Seconds each verdict line stays; tests shorten it.
 @export var line_seconds: float = LINE_SECONDS
-@export var chain_seconds: float = CHAIN_SECONDS
 
 signal prologue_finished
 
@@ -78,7 +103,6 @@ var column_moving: bool = true
 @onready var hints: HintBanner = $HintBanner
 @onready var rope: RopeCounter = $RopeCounter
 @onready var title: ChapterTitle = $ChapterTitle
-var bubble: SpeechBubble
 ## Where to go next (106).
 var marker: ObjectiveMarker
 @onready var level: Node3D = $Level
@@ -89,9 +113,16 @@ var _mirco_walk: Dictionary = {}
 var _return_start_x: float = 0.0
 var _anselmo: NpcSprite
 var _head: Node3D
-var _enea: NpcSprite
-var _anselmo_walking: bool = false
-var _head_shot: bool = false
+var _anselmo_walking: bool = true
+## Dusk (0 day, 1 at Mirco's place) and the light it scales.
+var dusk: float = 0.0
+var _sun: DirectionalLight3D
+var _environment: Environment
+var _sun_energy: float = 1.0
+var _ambient_energy: float = 1.0
+var _fog_color: Color = Color.WHITE
+## Brinacchi groups not yet woken.
+var _waiting_swarms: Array[Vector3] = []
 
 
 func _ready() -> void:
@@ -109,6 +140,13 @@ func _ready() -> void:
 	ZonePalette.retint_models(level)
 	var sun: DirectionalLight3D = $Sun
 	sun.rotation_degrees = Vector3(-SUN_ELEVATION_DEGREES, SUN_AZIMUTH_DEGREES, 0.0)
+	_sun = sun
+	_sun_energy = sun.light_energy
+	_environment = ($WorldEnvironment as WorldEnvironment).environment
+	_ambient_energy = _environment.ambient_light_energy
+	_fog_color = _environment.fog_light_color
+	_build_barriers()
+	_waiting_swarms = [WAY_OUT_SWARM]
 	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
 	ottavia.global_position = OTTAVIA_START
@@ -123,7 +161,7 @@ func _ready() -> void:
 		if argument.begins_with("start_x="):
 			ottavia.global_position.x = argument.trim_prefix("start_x=").to_float()
 	camera_rig.target = ottavia
-	camera_rig.limits = Rect2(Vector2(-460.0, -30.0), Vector2(560.0, 60.0))
+	camera_rig.limits = Rect2(Vector2(-460.0, -30.0), Vector2(620.0, 60.0))
 	camera_rig.snap_to_target()
 	var hud: CombatHud = CombatHud.new()
 	add_child(hud)
@@ -134,8 +172,6 @@ func _ready() -> void:
 	PrologueAutoplay.attach_if_requested(get_tree())
 	marker = ObjectiveMarker.new()
 	level.add_child(marker)
-	bubble = SpeechBubble.new()
-	add_child(bubble)
 	hud.bind(ottavia)
 	if "verdict=1" in OS.get_cmdline_user_args():
 		_verdict.call_deferred()
@@ -169,7 +205,11 @@ func _physics_process(delta: float) -> void:
 		for walker: NpcSprite in walkers:
 			walker.position.x -= COLUMN_SPEED * delta
 		_head.position.x -= COLUMN_SPEED * delta
+		if _anselmo_walking:
+			_anselmo.global_position.x -= COLUMN_SPEED * delta
 	var here: Vector3 = ottavia.global_position
+	_update_dusk(here.x, delta)
+	_wake_swarms(here)
 	ottavia.footstep_sound = &"passo_brina" if here.x > FROST_X else &"passo_erba"
 	match step:
 		Step.GO_BACK:
@@ -183,11 +223,6 @@ func _physics_process(delta: float) -> void:
 				marker.point_to_node(mirco)
 		Step.VERDICT:
 			_follow(delta)
-			if _anselmo_walking:
-				_anselmo.global_position.x -= COLUMN_SPEED * delta
-			if _head_shot:
-				var head_point: Vector3 = _head.global_position + Vector3(4.0, 1.2, 0.0)
-				cinema_camera.global_transform = Transform3D.IDENTITY.translated(head_point + Vector3(-2.0, 7.0, 14.0)).looking_at(head_point, Vector3.UP)
 		Step.RETURN:
 			_follow(delta)
 			var way: float = _return_start_x - _last_vehicle_back()
@@ -232,6 +267,7 @@ func _on_mirco_used() -> void:
 	rope.add_knot()
 	ottavia.controls_enabled = true
 	_return_start_x = ottavia.global_position.x
+	_waiting_swarms = WAY_BACK_SWARMS.duplicate()
 	# Back to the tail of the column, which keeps walking away.
 	var last: Node3D = column[0]
 	var box: AABB = VehicleKit.bounds(last)
@@ -265,8 +301,8 @@ func _last_vehicle_back() -> float:
 	return last.position.x + box.end.x
 
 
-## Space 5: the verdict, from voice to voice, the head of the column,
-## Anselmo. The column never stops: Ottavia, Mirco and Anselmo walk with it.
+## Space 5: the verdict. Anselmo walks at the tail; he tells Ottavia the
+## Mayor's words, slowly, and asks for her hand. The column never stops.
 func _verdict() -> void:
 	step = Step.VERDICT
 	ottavia.controls_enabled = false
@@ -275,26 +311,14 @@ func _verdict() -> void:
 	ottavia.combat.run_drain_multiplier = 1.0
 	ottavia.auto_move = Vector3(-COLUMN_SPEED, 0.0, 0.0)
 	hints.hide_hint()
-	_place_anselmo()
+	# Anselmo falls in beside her; both walk on with the column.
+	_anselmo.global_position = Vector3(ottavia.global_position.x - 0.6, 0.0, ottavia.global_position.z + 1.3)
 	GameAudio.stop_music(1.5)
-	# Each line above the one who says it, each speaker nearer Ottavia; the
-	# voice comes from them, the first far away toward the head (left).
-	var speakers: Array[Node3D] = chain_speakers()
-	for index: int in CHAIN.size():
-		bubble.show_over(speakers[index], CHAIN[index])
-		var voice: float = GameAudio.play_voice_at(CHAIN[index], speakers[index].global_position + Vector3.UP * 1.5, CHAIN_VOICE_DB[index])
-		await get_tree().create_timer(DialogueBox.line_wait(chain_seconds, voice)).timeout
-	bubble.hide_bubble()
-	# Cut to the head of the column: Arold walks on without turning, Enea turns.
-	_head_shot = true
-	cinema_camera.current = true
-	_enea_turns()
-	await get_tree().create_timer(line_seconds * 1.5).timeout
-	_head_shot = false
-	camera_rig.snap_to_target()
-	camera_rig.camera.current = true
-	await _say(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_01")
-	await get_tree().create_timer(0.8).timeout
+	for line: Array in VERDICT:
+		var voice: float = dialogue.show_line(line[0], line[1])
+		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, VERDICT_PAUSE)).timeout
+	dialogue.hide_box()
+	await get_tree().create_timer(0.8 if line_seconds >= 1.0 else line_seconds).timeout
 	# For the hand they stop, face to face; the column walks on.
 	ottavia.auto_move = Vector3.ZERO
 	_anselmo_walking = false
@@ -322,45 +346,57 @@ func _verdict() -> void:
 	prologue_finished.emit()
 
 
-## Who says each line of the chain: people of the crowd ahead of Ottavia,
-## each nearer than the one before, and Anselmo last.
-func chain_speakers() -> Array[Node3D]:
-	var speakers: Array[Node3D] = []
-	var here: float = ottavia.global_position.x
-	var taken: Array[NpcSprite] = []
-	for ahead: float in CHAIN_SPEAKER_METERS:
-		var best: NpcSprite = null
-		for walker: NpcSprite in walkers:
-			# On the camera side of the column, so they are seen saying it.
-			if walker in taken or walker.global_position.x > here - 2.0 or walker.global_position.z < COLUMN_Z:
-				continue
-			if best == null or absf(here - walker.global_position.x - ahead) < absf(here - best.global_position.x - ahead):
-				best = walker
-		if best == null:
-			best = walkers[0]
-		taken.append(best)
-		speakers.append(best)
-	speakers.append(_anselmo)
-	return speakers
+## The light dims toward Mirco, as if night were coming (106), and comes
+## back on the way to the column.
+func _update_dusk(x: float, delta: float) -> void:
+	var target: float = clampf((x - DUSK_START_X) / (MIRCO_START.x - DUSK_START_X), 0.0, 1.0)
+	dusk = move_toward(dusk, target, delta * 0.5)
+	_sun.light_energy = _sun_energy * lerpf(1.0, DUSK_SUN_SCALE, dusk)
+	_environment.ambient_light_energy = _ambient_energy * lerpf(1.0, DUSK_AMBIENT_SCALE, dusk)
+	_environment.fog_light_color = _fog_color.lerp(DUSK_FOG_COLOR, dusk * 0.8)
 
 
-## Enea stops where he is and looks back; the head walks on without him.
-func _enea_turns() -> void:
-	await get_tree().create_timer(minf(ENEA_TURN_SECONDS, line_seconds * 0.5)).timeout
-	var at: Vector3 = _enea.global_position
-	_head.remove_child(_enea)
-	level.add_child(_enea)
-	_enea.global_position = at
-	_enea.set_strip(ENEA_LOOKING_BACK)
+## Brinacchi groups wake up as Ottavia comes near their place.
+func _wake_swarms(here: Vector3) -> void:
+	for index: int in range(_waiting_swarms.size() - 1, -1, -1):
+		var at: Vector3 = _waiting_swarms[index]
+		if Vector2(at.x - here.x, at.z - here.z).length() < 16.0:
+			_waiting_swarms.remove_at(index)
+			for creature_index: int in SWARM_COUNT:
+				var angle: float = TAU * creature_index / SWARM_COUNT
+				_spawn_brinacchio(at + Vector3(cos(angle), 0.0, sin(angle)) * 2.0)
 
 
-## Anselmo walks at Ottavia's side, toward the Day, as the last voice.
-func _place_anselmo() -> void:
-	_anselmo.global_position = Vector3(ottavia.global_position.x - 0.4, 0.0, ottavia.global_position.z + 1.3)
-	if ResourceLoader.exists(ANSELMO_WALK):
-		_anselmo.set_strip(load(ANSELMO_WALK), 7.0)
-	_anselmo.visible = true
-	_anselmo_walking = true
+func _spawn_brinacchio(at: Vector3) -> CombatEnemy:
+	var creature: CombatEnemy = BRINACCHIO.instantiate()
+	creature.hit_sound = &"bastone_creatura"
+	creature.defeat_sound = &"brinacchio_sconfitto"
+	creature.position = at
+	level.add_child(creature)
+	brinacchi.append(creature)
+	return creature
+
+
+## Fallen rock and broken walls across the way to Mirco, to walk round
+## (106): rows of rock blocks of uneven height, a ruined wall in two rows.
+func _build_barriers() -> void:
+	var rock: ShaderMaterial = LevelBlocks.material(CampScenery.TEX_ROCK, CampScenery.TEX_ROCK, Color(0.5, 0.46, 0.44))
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = 1060
+	for barrier: Vector3 in BARRIERS:
+		var z: float = barrier.y
+		while z < barrier.z:
+			# Boulders, not crates: uneven, tilted, half sunk in the ground.
+			var width: float = random.randf_range(1.4, 2.4)
+			var height: float = random.randf_range(1.1, 2.0)
+			var block: Node3D = LevelBlocks.box(level, Vector3(barrier.x + random.randf_range(-0.6, 0.6), height * 0.38, z + width * 0.5), Vector3(random.randf_range(1.4, 2.4), height, width), rock)
+			block.rotation = Vector3(random.randf_range(-0.3, 0.3), random.randf_range(-PI, PI), random.randf_range(-0.3, 0.3))
+			z += width * 0.8
+	for at: Vector3 in [Vector3(46.0, 0.0, 10.5), Vector3(82.0, 0.0, 4.0)]:
+		var wall: Node3D = (load("res://assets/models/ruins/muro_arco.glb") as PackedScene).instantiate()
+		wall.position = at
+		wall.rotation.y = PI * 0.5
+		level.add_child(wall)
 
 
 func _say(speaker: StringName, line: StringName) -> void:
@@ -373,7 +409,10 @@ func _say(speaker: StringName, line: StringName) -> void:
 func _on_defeated() -> void:
 	ottavia.controls_enabled = false
 	await get_tree().create_timer(0.8).timeout
-	ottavia.global_position = mirco.global_position + Vector3(-5.0, 0.0, 0.0)
+	# A few steps back along her way: toward the start going out, toward
+	# Mirco's place coming back.
+	var back: float = -5.0 if step != Step.RETURN else 5.0
+	ottavia.global_position = ottavia.global_position + Vector3(back, 0.0, 0.0)
 	ottavia.velocity = Vector3.ZERO
 	ottavia.restore_health()
 	for enemy: CombatEnemy in brinacchi:
@@ -419,7 +458,7 @@ func _build_column() -> void:
 
 
 ## The head of the column, far to the west: the lead vehicle with the Gnomon
-## on the sundial, Arold walking ahead, Enea beside him looking back.
+## on the sundial (Arold is not seen in the prologue).
 func _build_head() -> void:
 	_head = Node3D.new()
 	_head.position = Vector3(HEAD_X, 0.0, COLUMN_Z)
@@ -433,29 +472,17 @@ func _build_head() -> void:
 	gnomone.sprite_texture = load("res://assets/sprites/comparse/gnomone_south.png")
 	gnomone.position = Vector3(8.0, box.size.y + 0.05, 0.0)
 	_head.add_child(gnomone)
-	var arold: NpcSprite = NpcSprite.new()
-	if ResourceLoader.exists("res://assets/sprites/comparse/arold_walk_west.png"):
-		arold.sprite_texture = load("res://assets/sprites/comparse/arold_walk_west.png")
-		arold.frame_count = 8
-		arold.frames_per_second = 7.0
-	else:
-		arold.sprite_texture = load("res://assets/sprites/comparse/arold_south.png")
-	arold.position = Vector3(0.0, 0.0, 2.2)
-	_head.add_child(arold)
-	# Enea walks beside his father toward the Day; in the head shot he stops
-	# and turns to look back (106).
-	_enea = NpcSprite.new()
-	if ResourceLoader.exists(ENEA_WALK):
-		_enea.sprite_texture = load(ENEA_WALK)
-		_enea.frame_count = 8
-		_enea.frames_per_second = 8.0
-	else:
-		_enea.sprite_texture = ENEA_LOOKING_BACK
-	_enea.position = Vector3(1.4, 0.0, 3.4)
-	_head.add_child(_enea)
+	# Anselmo at the tail of the column, walking with it from the start, so
+	# Ottavia sees him long before she reaches him.
 	_anselmo = NpcSprite.new()
-	_anselmo.sprite_texture = load("res://assets/sprites/comparse/anselmo_east.png")
-	_anselmo.visible = false
+	if ResourceLoader.exists(ANSELMO_WALK):
+		_anselmo.sprite_texture = load(ANSELMO_WALK)
+		_anselmo.frame_count = 8
+		_anselmo.frames_per_second = 7.0
+	else:
+		_anselmo.sprite_texture = load("res://assets/sprites/comparse/anselmo_east.png")
+	var tail: AABB = VehicleKit.bounds(column[0])
+	_anselmo.position = Vector3(column[0].position.x + tail.end.x, 0.0, COLUMN_Z) + ANSELMO_BEHIND
 	level.add_child(_anselmo)
 
 

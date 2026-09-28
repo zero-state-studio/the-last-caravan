@@ -12,6 +12,13 @@ enum Phase { WANDER, CHASE, LATCHED, CRUSTED }
 
 const CRUST_COLOR: Color = Color(0.85, 0.92, 1.0)
 const WANDER_RADIUS: float = 1.2
+## Fist-sized, so it needs help to be seen (B1): a pale outline, a frost
+## glint, a shadow on the ground and a trail of frost where it runs.
+const OUTLINE_COLOR: Color = Color(0.86, 0.95, 1.0)
+const GLINT_COLOR: Color = Color(0.7, 0.85, 1.0)
+const TRAIL_STEP_METERS: float = 0.35
+const TRAIL_SECONDS: float = 1.6
+const TRAIL_MAX: int = 8
 
 ## Parasites clinging to Ottavia right now (they share one slowdown).
 static var latched: Array[Brinacchio] = []
@@ -23,6 +30,8 @@ var _time: float = 0.0
 var _latch_offset: Vector3 = Vector3.ZERO
 var _wander_goal: Vector3
 var _connected: bool = false
+var _trail_from: Vector3
+var _trail: Array[Sprite3D] = []
 
 
 func _ready() -> void:
@@ -31,6 +40,65 @@ func _ready() -> void:
 	radius = 0.2
 	super._ready()
 	_wander_goal = global_position
+	_material.set_shader_parameter(&"outline_color", OUTLINE_COLOR)
+	var glint: OmniLight3D = OmniLight3D.new()
+	glint.light_color = GLINT_COLOR
+	glint.light_energy = 0.6
+	glint.omni_range = 1.4
+	glint.position = Vector3.UP * 0.25
+	add_child(glint)
+	var shadow: Sprite3D = _ground_disc(Color(0.05, 0.05, 0.1, 0.45), 0.42)
+	add_child(shadow)
+	_trail_from = global_position
+
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if not is_alive() or phase == Phase.LATCHED:
+		return
+	var moved: Vector3 = global_position - _trail_from
+	moved.y = 0.0
+	if moved.length() >= TRAIL_STEP_METERS:
+		_trail_from = global_position
+		_leave_frost()
+
+
+## A pale patch of frost left on the ground, fading out.
+func _leave_frost() -> void:
+	var scene: Node = get_tree().current_scene
+	if scene == null:
+		return
+	if _trail.size() >= TRAIL_MAX:
+		var oldest: Sprite3D = _trail.pop_front()
+		if is_instance_valid(oldest):
+			oldest.queue_free()
+	var patch: Sprite3D = _ground_disc(Color(0.85, 0.93, 1.0, 0.55), 0.3)
+	scene.add_child(patch)
+	patch.global_position = Vector3(global_position.x, 0.02, global_position.z)
+	_trail.append(patch)
+	var tween: Tween = patch.create_tween()
+	tween.tween_property(patch, "modulate:a", 0.0, TRAIL_SECONDS)
+	tween.tween_callback(patch.queue_free)
+
+
+## A flat disc on the ground, `size` metres across.
+static func _ground_disc(color: Color, size: float) -> Sprite3D:
+	var disc: Sprite3D = Sprite3D.new()
+	var image: Image = Image.create(8, 8, false, Image.FORMAT_RGBA8)
+	for y: int in 8:
+		for x: int in 8:
+			var inside: bool = Vector2(x - 3.5, y - 3.5).length() < 3.6
+			image.set_pixel(x, y, Color(1, 1, 1, 1) if inside else Color(1, 1, 1, 0))
+	disc.texture = ImageTexture.create_from_image(image)
+	disc.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	disc.pixel_size = size / 8.0
+	disc.modulate = color
+	disc.shaded = false
+	disc.transparent = true
+	disc.rotation.x = -PI * 0.5
+	disc.position = Vector3.UP * 0.02
+	disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	return disc
 
 
 func can_be_targeted() -> bool:

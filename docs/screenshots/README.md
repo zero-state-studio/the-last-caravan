@@ -52,6 +52,8 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `22-veduta-carovana-e-citta-morta.png`: **da valutare**. La veduta d'insieme nuova: carovana più grande nel quadro, città morta sullo sfondo
 - `23-segnale-e-obiettivo.png`: **da valutare**. Il bagliore sulle tende e l'obiettivo sopra il suggerimento
 - `24-folla-che-gira.png`: **da valutare**. La folla che cammina nell'accampamento, quattro momenti a 5 s l'uno dall'altro
+- `25-strada-verso-mirco-con-rocce.png`: **da valutare**. La strada verso Mirco: massi e un muro in rovina da aggirare, Brinacchi con il bagliore di brina (a sinistra), la freccia verso Mirco
+- `26-vicino-a-mirco-cala-la-notte.png`: **da valutare**. Vicino a Mirco la luce cala, come se arrivasse la notte; Mirco con il bagliore dell'obiettivo
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -71,6 +73,7 @@ Stato: approvato (fase 4a, passo 1).
 - `11-kit-concetti-dei-12-moduli.png`: i concetti dei 12 moduli (pianali, Generatore, Ali, Code, piani, terrazza, serbatoio, tenda, carico, casetta)
 - `12-kit-moduli-quattro-lati.png`: i 12 moduli in 3D, da quattro lati
 - `13-ruote-che-girano-a-un-secondo.png`: **da valutare**. Le ruote di un mezzo in marcia, a un secondo di distanza: i raggi hanno girato
+- `15-raggi-che-girano.png`: **da valutare**. Le ruote di un mezzo in marcia a mezzo secondo l'una dall'altra: ora girano anche raggi e mozzo
 - `14-code-che-serpeggiano.png`: **da valutare**. Le Code di un mezzo in marcia a mezzo secondo l'una dall'altra: pendono dal retro, strisciano verso est e serpeggiano
 
 ### `asset/personaggi/comparse-prologo/`: Comparse e personaggi del prologo (117-121, 21, 78, 81)

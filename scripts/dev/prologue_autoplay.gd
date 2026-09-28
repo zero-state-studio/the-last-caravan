@@ -122,7 +122,10 @@ func _play_camp(scene: Node) -> void:
 func _play_column(scene: Node) -> void:
 	var ottavia: OttaviaProto = scene.ottavia
 	await _until(scene, func() -> bool: return scene.step == scene.Step.GO_BACK and ottavia.controls_enabled, 30.0)
-	await _walk_to(scene, ottavia, scene.mirco.global_position + Vector3(-1.5, 0.0, 0.0), true, 60.0)
+	# Out to Mirco through the gaps in the barriers, fighting on the way.
+	for point: Vector3 in scene.ROUTE:
+		await _walk_fighting(scene, ottavia, point, true)
+	await _walk_to(scene, ottavia, scene.mirco.global_position + Vector3(-1.5, 0.0, 0.0), true, 30.0)
 	await _until(scene, func() -> bool: return scene.step == scene.Step.FIGHT, 20.0)
 	await _fight(scene, ottavia, func() -> Array: return scene.brinacchi, 60.0)
 	print("AUTOPLAY column fight done step=%d" % scene.step)
@@ -130,8 +133,17 @@ func _play_column(scene: Node) -> void:
 	await _walk_to(scene, ottavia, scene.mirco.global_position + Vector3(-1.2, 0.0, 0.0), false)
 	await _tap(scene, &"interact")
 	await _until(scene, func() -> bool: return scene.step == scene.Step.RETURN and ottavia.controls_enabled, 6.0)
-	# Back to the column, running while the breath lasts.
+	# Back the same way, then after the column, running while the breath lasts.
+	var back: Array = scene.ROUTE.duplicate()
+	back.reverse()
+	for point: Vector3 in back:
+		if scene.step != scene.Step.RETURN:
+			break
+		await _walk_fighting(scene, ottavia, point, ottavia.combat.stamina > ottavia.combat.max_stamina() * 0.2)
 	while _alive(scene) and scene.step == scene.Step.RETURN:
+		if _near_enemy(scene, ottavia) != null:
+			await _fight(scene, ottavia, func() -> Array: return scene.brinacchi, 10.0)
+			continue
 		var target: Vector3 = Vector3(scene._last_vehicle_back(), 0.0, ottavia.global_position.z)
 		_hold_toward(ottavia, target, ottavia.combat.stamina > ottavia.combat.max_stamina() * 0.2)
 		await get_tree().physics_frame
@@ -145,6 +157,25 @@ func _play_column(scene: Node) -> void:
 	for frame: int in 10:
 		await get_tree().process_frame
 	get_tree().quit()
+
+
+## Walks to a point; any Brinacchi that come close are fought first.
+func _walk_fighting(scene: Node, ottavia: OttaviaProto, target: Vector3, run: bool) -> void:
+	for attempt: int in 6:
+		if not _alive(scene):
+			return
+		if _near_enemy(scene, ottavia) != null:
+			await _fight(scene, ottavia, func() -> Array: return scene.brinacchi, 20.0)
+		await _walk_to(scene, ottavia, target, run, 25.0)
+		if _near_enemy(scene, ottavia) == null:
+			return
+
+
+func _near_enemy(scene: Node, ottavia: OttaviaProto) -> CombatEnemy:
+	for enemy: CombatEnemy in scene.brinacchi:
+		if is_instance_valid(enemy) and enemy.is_alive() and enemy.global_position.distance_to(ottavia.global_position) < 7.0:
+			return enemy
+	return null
 
 
 # --- Moves ------------------------------------------------------------------

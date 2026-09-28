@@ -142,7 +142,8 @@ func _cut_wheels(instance: MeshInstance3D) -> void:
 
 ## Splits `mesh` (first surface) into a body and wheels: islands of
 ## triangles connected by shared positions, kept as wheels when they sit at
-## the bottom, are round seen along one horizontal axis and thin along it.
+## the bottom, are round seen along one horizontal axis and thin along it;
+## the small islands inside a wheel's disc (spokes, hub) go with it.
 static func split_wheels(mesh: Mesh) -> Dictionary:
 	var result: Dictionary = {"body": mesh, "wheels": []}
 	if mesh.get_surface_count() != 1:
@@ -182,13 +183,15 @@ static func split_wheels(mesh: Mesh) -> Dictionary:
 	var height: float = bounds.size.y
 	var is_wheel: Dictionary = {}
 	var found: Array[Dictionary] = []
+	var rest: Array[Dictionary] = []
 	for faces: Array in groups.values():
-		if faces.size() < 20:
-			continue
 		var box: AABB = AABB(vertices[indices[faces[0]]], Vector3.ZERO)
 		for face: int in faces:
 			for corner: int in 3:
 				box = box.expand(vertices[indices[face + corner]])
+		if faces.size() < 20:
+			rest.append({"faces": faces, "box": box})
+			continue
 		var size: Vector3 = box.size
 		var axis: Vector3 = Vector3.ZERO
 		if absf(size.x - size.y) < size.y * 0.25 and size.z < size.y * 0.6:
@@ -199,9 +202,26 @@ static func split_wheels(mesh: Mesh) -> Dictionary:
 		if low and size.y > height * 0.1 and axis != Vector3.ZERO:
 			for face: int in faces:
 				is_wheel[face] = true
-			found.append({"faces": faces, "center": box.get_center(), "axis": axis, "radius": size.y * 0.5})
+			found.append({"faces": faces.duplicate(), "center": box.get_center(), "axis": axis, "radius": size.y * 0.5})
+		else:
+			rest.append({"faces": faces, "box": box})
 	if found.is_empty():
 		return result
+	# Spokes and hubs are often islands of their own inside the rim: they go
+	# with the wheel whose disc holds them, or they would stand still.
+	for part: Dictionary in rest:
+		var part_box: AABB = part["box"]
+		var centre: Vector3 = part_box.get_center()
+		for wheel: Dictionary in found:
+			var radius: float = wheel["radius"]
+			var offset: Vector3 = centre - (wheel["center"] as Vector3)
+			var along: float = absf(offset.dot(wheel["axis"]))
+			var across: float = (offset - (wheel["axis"] as Vector3) * offset.dot(wheel["axis"])).length()
+			if across < radius * 0.9 and along < radius * 0.6 and part_box.size.length() < radius * 2.4:
+				for face: int in part["faces"]:
+					is_wheel[face] = true
+				(wheel["faces"] as Array).append_array(part["faces"])
+				break
 	var body_faces: Array = []
 	for face: int in range(0, indices.size(), 3):
 		if not is_wheel.has(face):

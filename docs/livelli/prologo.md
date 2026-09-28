@@ -22,21 +22,20 @@ Il prologo è il tutorial dei comandi. Ogni comando si impara facendo un pezzo d
 - **Com'è:** una pianura del Crepuscolo. A sinistra il sole basso e il terreno asciutto, a destra la brina e il cielo più scuro. Intorno, la carovana si prepara: i Tessibuio arrotolano le tende, i Voltacampi inclinano i campi, i Traslocanti avviano i Generatori.
 - **Si impara, con un compito per comando, in quest'ordine:**
   1. **Scatto.** Lo Gnomone dà il primo richiamo. Ottavia deve raggiungere le tende dei Brinaioli, in fondo all'accampamento, prima del secondo richiamo. Non c'è sconfitta, solo il suggerimento di sbrigarsi.
-  2. **Salto.** Per arrivarci attraversa le Code che strisciano nella brina dietro i mezzi.
-  3. **Arrampicata.** Su una terrazza di un carro-campo dorme un vecchio Voltacampi: è Ruggero, che ritroveremo nel capitolo 1. Ottavia sale a svegliarlo.
+  2. **Salto.** Per arrivarci attraversa un tratto di terreno non pari, con sassi e scalini di roccia da saltare.
+  3. **Arrampicata.** Sulla testata di un carro-campo, accanto ai serbatoi, dorme seduto un vecchio Voltacampi: è Ruggero, che ritroveremo nel capitolo 1. Ottavia sale a svegliarlo con la scala del carro.
   4. **Colpo e rottura.** Una Coda si è piantata nel ghiaccio, tra arbusti secchi e croste di brina, e senza di lei il Generatore non parte. Ottavia la libera a colpi di bastone.
   5. **Primo combattimento.** Il calore della Coda liberata e la luce della lanterna attirano uno sciame di Brinacchi (B1). Si impara il colpo e la parata.
 - **Dimensioni:** circa 60 × 40 metri, con qualche dislivello per salto e arrampicata.
 
 ### 4. La coda della colonna (carovana in marcia, tratto breve)
-- **Com'è:** la carovana si mette in moto e Ottavia prende il suo posto, in fondo. A destra, lontano, il cielo è più scuro: la Notte. È un tratto breve della carovana in marcia (103), con tre o quattro mezzi visibili davanti.
-- **Cosa succede:** Mirco, un bambino di sette anni, è rimasto indietro a guardare il buio verso destra. Ottavia torna a prenderlo, contro il movimento della colonna. Lo raggiunge tra la brina, respinge un paio di Brinacchi, lo lega a sé con la corda dei salvati, e alla sua corda si aggiunge un nodo. Poi deve riprendere la colonna, scattando. A metà strada il fiato si esaurisce più in fretta del normale: per la prima volta il suo corpo non tiene il ritmo, e il giocatore lo sente nei comandi.
-- **Durata:** 1-2 minuti.
+- **Com'è:** la carovana si mette in moto e Ottavia prende il suo posto, in fondo. A destra, lontano, il cielo è più scuro: la Notte. È un tratto della carovana in marcia (103), con tre o quattro mezzi visibili davanti.
+- **Cosa succede:** Mirco, un bambino di sette anni, è rimasto indietro a guardare il buio verso destra, lontano. Ottavia torna a prenderlo, contro il movimento della colonna: la strada è lunga, tra muri caduti e rocce da aggirare, e più si va verso destra più cala una leggera ombra, come se la notte stesse arrivando. Lo raggiunge tra la brina, respinge un paio di Brinacchi, lo lega a sé con la corda dei salvati, e alla sua corda si aggiunge un nodo. Poi deve riprendere la colonna, scattando, mentre altri Brinacchi le tagliano la strada. A metà strada il fiato si esaurisce più in fretta del normale: per la prima volta il suo corpo non tiene il ritmo, e il giocatore lo sente nei comandi.
+- **Durata:** 2-3 minuti.
 
 ### 5. Il verdetto (scena)
-- Ottavia raggiunge la colonna oltre il limite. Il Sindaco è in testa e non si volta, quindi il verdetto arriva **di voce in voce**: ognuno ripete le parole di Arold a chi gli sta dietro, e la frase risale tutta la colonna fino alla coda, ripetuta da decine di voci sempre più vicine.
-- Stacco sulla testa della colonna: Arold parla guardando avanti. Accanto a lui un ragazzo si volta a guardare indietro. È Enea. Il padre non si volta; lui sì.
-- L'ultima voce della catena è quella di Anselmo, che poi le chiede la mano per prenderle le misure. Nel menu compare per la prima volta la sagoma vuota della lanterna (88).
+- Ottavia raggiunge la colonna oltre il limite. In coda, già visibile mentre lei si avvicina, cammina Anselmo. Il Sindaco non si vede: le sue parole le porta Anselmo, lento, solenne e dispiaciuto. È un dialogo tra due persone che sanno cosa stanno per dirsi, non vogliono, ma devono dirselo comunque.
+- Anselmo le dice il verdetto, poi le chiede la mano per prenderle le misure. Nel menu compare per la prima volta la sagoma vuota della lanterna (88).
 - Nero. Titolo: **Ne restano dieci.**
 
 ## La sceneggiatura
@@ -62,8 +61,9 @@ Accompagna l'inquadratura che mostra la carovana.
 - **Lo Gnomone, secondo richiamo:** «Ultimo richiamo! In marcia!»
 - **Mirco, in fondo, verso il buio:** «Guarda, Serrafila. Là è tutto nero. Com'è, dentro?»
 - **Ottavia:** «Freddo. Andiamo.»
-- **La catena delle voci**, sempre più vicina: «Il Sindaco dice...» «...la Serrafila è arrivata oltre il limite.» «...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.» «...per i suoi quarant'anni, dieci Tregue.» «...poi la lanterna.»
-- **Anselmo, l'ultima voce:** «Dieci Tregue, Ottavia. Poi la lanterna.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
+- **Anselmo, in coda alla colonna:** «Sei in ritardo, Ottavia.»
+- **Ottavia:** «Sì... Lo so!»
+- **Anselmo, il verdetto, lento:** «Il Sindaco dice...» «...la Serrafila è arrivata oltre il limite.» «...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.» «...per i suoi quarant'anni, dieci Tregue.» «...poi la lanterna.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
 - **Titolo del capitolo:** «Ne restano dieci.»
 
 ### Suggerimenti a schermo
@@ -88,25 +88,26 @@ Battute:
 - Gnomon, second call: "Last call! We march!"
 - Mirco: "Look, Filecloser. Over there it's all black. What's it like, inside?"
 - Ottavia: "Cold. Let's go."
-- The chain of voices: "The Mayor says..." "...the Filecloser came in past the limit." "...ten Truces." "...then the lantern."
-- Anselmo: "Ten Truces, Ottavia. Then the lantern." "Give me your hand. I need to take your measurements."
+- Anselmo: "You're late, Ottavia."
+- Ottavia: "Yes... I know!"
+- Anselmo, the verdict: "The Mayor says..." "...the Filecloser came in past the limit." "...a Filecloser who can't keep pace is one more person to go back for." "...for her forty years, ten Truces." "...then the lantern." "Give me your hand. I need to take your measurements."
 - Chapter title: "Ten Remain."
 
 Suggerimenti: "Move", "Open the lantern", "Close the lantern", "Hold to sprint", "Jump", "Climb", "Strike to break", "Strike", "Parry at the right moment".
 
 ## Cosa serve per costruirlo
 
-- **Mezzi:** il camion-condominio, fuori e dentro (il piano dei Tessibuio), un carro-campo con terrazze, il mezzo di testa con la meridiana (solo nello stacco del verdetto). Aspetto in 16-mezzi.md.
+- **Mezzi:** il camion-condominio, fuori e dentro (il piano dei Tessibuio), un carro-campo con terrazze, il mezzo di testa con la meridiana (sullo sfondo della colonna). Aspetto in 16-mezzi.md.
 - **Personaggi:** Ottavia con le animazioni definitive; lo Gnomone, Zelinda, Ruggero, un Traslocante, Mirco, Anselmo, Arold, Enea (una sola posa), 3-4 abitanti generici per la folla. Aspetto in 03-personaggi.md e 15-comparse.md.
 - **Creature:** Brinacchio (B1).
 - **Oggetti:** tende, brande, arbusti secchi e croste di ghiaccio che si rompono, le Code.
 - **Interfaccia:** vita, fiato, suggerimenti, finestre di dialogo, la corda dei salvati, la sagoma della lanterna nel menu, il titolo del capitolo. Regole in 17-interfaccia-e-audio.md (125).
-- **Audio:** musica ed effetti del prologo, descritti in 17-interfaccia-e-audio.md (126, 127). Voci vere solo per la narrazione e per la catena del verdetto, come prova provvisoria con voci della libreria di ElevenLabs.
+- **Audio:** musica ed effetti del prologo, descritti in 17-interfaccia-e-audio.md (126, 127). Voci vere solo per la narrazione e per il verdetto, come prova provvisoria con voci della libreria di ElevenLabs.
 
 ## Scelte approvate
 
 1. **Mirco** è la persona per cui Ottavia torna indietro: un bambino attratto dal buio, che nel capitolo 3 si perderà nei piani dei Tessibuio.
-2. **Il verdetto arriva di voce in voce**, perché Arold non si volta. L'ultima voce è quella di Anselmo.
+2. **Il verdetto lo porta Anselmo**, in coda alla colonna: Arold non si vede. È un dialogo breve e doloroso tra due vecchi che si conoscono.
 3. **La narrazione è di Ottavia, in prima persona.**
 4. **Zelinda e Ruggero compaiono per un attimo**, così quando li ritroveremo nei capitoli 3 e 1 il giocatore li riconoscerà.
 5. **Ogni persona salvata aggiunge un nodo alla corda di Ottavia**, e il giocatore lo vede: la corda diventa il conto dei salvati.
