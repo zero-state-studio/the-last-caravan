@@ -36,17 +36,17 @@ Rifatte dopo le scelte dell'autore. Valori comuni:
 
 | Combinazione | Screenshot | Valori |
 |---|---|---|
-| Camera a 40° | `screenshots/2026-09-27-fase1-camera-40.png` | `screenshots/2026-09-27-fase1-camera-40.json` |
-| **Camera a 50° (scelta)** | `screenshots/2026-09-27-fase1-camera-50.png` | `screenshots/2026-09-27-fase1-camera-50.json` |
-| Camera a 60° | `screenshots/2026-09-27-fase1-camera-60.png` | `screenshots/2026-09-27-fase1-camera-60.json` |
+| Camera a 40° | `screenshots/fasi/fase1-prototipo-visivo/01-camera-40-gradi.png` | `screenshots/fasi/fase1-prototipo-visivo/01-camera-40-gradi.json` |
+| **Camera a 50° (scelta)** | `screenshots/fasi/fase1-prototipo-visivo/02-camera-50-gradi.png` | `screenshots/fasi/fase1-prototipo-visivo/02-camera-50-gradi.json` |
+| Camera a 60° | `screenshots/fasi/fase1-prototipo-visivo/03-camera-60-gradi.png` | `screenshots/fasi/fase1-prototipo-visivo/03-camera-60-gradi.json` |
 
 Altri screenshot:
-- `screenshots/2026-09-27-fase1-billboard-muro.png`: Ottavia appoggiata al muro della terrazza. Con la profondità del quad inclinato sparisce nel muro e restano solo i piedi; con la profondità verticale si vede intera.
-- `screenshots/2026-09-27-fase1-luce-ottavia.png`: Ottavia al sole (toni caldi) e all'ombra del muro (tutta blu-viola, senza tagli).
-- `screenshots/2026-09-27-fase1-ombra.png`: l'ombra di Ottavia al sole è la sua sagoma verticale, lunga verso est (la Notte), e si piega sul muretto.
-- `screenshots/2026-09-27-fase1-billboard-confronto.png` (prima prova, foglio di prova): billboard ad asse verticale fisso contro billboard pieno a 40° e 60°.
-- `screenshots/2026-09-27-fase1-pannello.png`: il pannello F1.
-- `screenshots/2026-09-27-fase1-palette-50.png`: i 16 colori dominanti dello screenshot a 50°. Sono ancora quasi tutti bruni e oliva: il viraggio c'è ai bordi della scena, ma non cambia i colori che occupano più superficie.
+- `screenshots/fasi/fase1-prototipo-visivo/05-billboard-vicino-al-muro.png`: Ottavia appoggiata al muro della terrazza. Con la profondità del quad inclinato sparisce nel muro e restano solo i piedi; con la profondità verticale si vede intera.
+- `screenshots/fasi/fase1-prototipo-visivo/06-luce-su-ottavia.png`: Ottavia al sole (toni caldi) e all'ombra del muro (tutta blu-viola, senza tagli).
+- `screenshots/fasi/fase1-prototipo-visivo/07-ombra.png`: l'ombra di Ottavia al sole è la sua sagoma verticale, lunga verso est (la Notte), e si piega sul muretto.
+- `screenshots/fasi/fase1-prototipo-visivo/04-billboard-confronto.png` (prima prova, foglio di prova): billboard ad asse verticale fisso contro billboard pieno a 40° e 60°.
+- `screenshots/fasi/fase1-prototipo-visivo/09-pannello-f1.png`: il pannello F1.
+- `screenshots/fasi/fase1-prototipo-visivo/08-viraggio-palette.png`: i 16 colori dominanti dello screenshot a 50°. Sono ancora quasi tutti bruni e oliva: il viraggio c'è ai bordi della scena, ma non cambia i colori che occupano più superficie.
 
 Osservazioni dalla prima prova:
 - A 40° si legge meglio l'altezza e la sfocatura dà l'effetto miniatura più forte. A 60° la pianta del livello è più chiara, ma le pareti si accorciano e la sfocatura si nota poco.

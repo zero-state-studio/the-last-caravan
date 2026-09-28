@@ -1,6 +1,6 @@
 # Immagini di riferimento (52), texture
 
-Scelte dall'autore il 27 settembre 2026 tra le 34 candidate del passo 2 della fase 2 (fogli in `docs/screenshots/2026-09-27-fase2-candidate-*.png`). Generate con Retro Diffusion Plus su Scenario (stile mc_texture, palette v1 come riferimento, 128×128, ripetibili). Prompt e seed in `docs/asset-log.csv`.
+Scelte dall'autore il 27 settembre 2026 tra le 34 candidate del passo 2 della fase 2 (fogli in `docs/screenshots/asset/texture/0[1-4]-candidate-*.png`). Generate con Retro Diffusion Plus su Scenario (stile mc_texture, palette v1 come riferimento, 128×128, ripetibili). Prompt e seed in `docs/asset-log.csv`.
 
 Sono le uniche immagini destinate all'addestramento del modello personalizzato (passo 3). Le vedute d'insieme V1-V4 fatte con GPT Image restano solo riferimento visivo e non vanno nell'addestramento.
 

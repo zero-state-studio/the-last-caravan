@@ -3,7 +3,7 @@
 Input:  source-assets/pixellab/2026-09-27-ottavia-v1-anim/frames/<anim>/<dir>/<NN>.png (64x64 RGBA)
         source-assets/pixellab/2026-09-27-ottavia-v1-rotations/{,fixed/}<dir>.png (approved rotations)
 Output: source-assets/pixellab/2026-09-27-ottavia-v1-anim/clean/<anim>/<dir>/<NN>.png (checked frames)
-        docs/screenshots/<date>-ottavia-v1-gif/*.gif (preview GIFs, 4x)
+        docs/screenshots/asset/personaggi/ottavia-v1/12-gif-attesa-e-camminata/*.gif (preview GIFs, 4x)
         report printed to stdout
 
 Checks (tasks 49, 36):
@@ -123,7 +123,7 @@ def save_gif(frames: list[Image.Image], ms: int, path: Path) -> None:
 
 
 def main() -> int:
-    gif_dir = ROOT / sys.argv[1] if len(sys.argv) > 1 else ROOT / "docs/screenshots/ottavia-v1-gif"
+    gif_dir = ROOT / sys.argv[1] if len(sys.argv) > 1 else ROOT / "docs/screenshots/asset/personaggi/ottavia-v1/12-gif-attesa-e-camminata"
     gif_dir.mkdir(parents=True, exist_ok=True)
     pal_set = master_palette()
     pal = sorted(pal_set)

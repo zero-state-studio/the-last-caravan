@@ -50,7 +50,7 @@ const AUTOWALK: Array[Dictionary] = [
 	{"actions": [&"move_right", &"move_up"], "seconds": 1.2},
 	{"actions": [], "seconds": 10.0},
 ]
-const CAPTURE_DIR: String = "res://docs/screenshots"
+const CAPTURE_DIR: String = "res://docs/screenshots/catture"
 const CREATURE_TUNING: CreatureTuning = preload("res://assets/combat/creature_tuning.tres")
 
 @onready var ottavia: OttaviaProto = $Ottavia
@@ -201,7 +201,8 @@ func save_user_settings() -> void:
 
 
 ## Saves the current settings and a screenshot without the panel, both in
-## docs/screenshots/ with the same timestamped name.
+## docs/screenshots/catture/ with the same timestamped name, to be sorted
+## by hand (see docs/screenshots/README.md).
 func _save_capture() -> void:
 	save_user_settings()
 	var was_visible: bool = tuning_panel.is_panel_visible()

@@ -65,7 +65,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
   - poi esegue ogni `tests/test_*.gd` (per ora `test_proto_walk.gd`: scale, ponte e caduta nel diorama);
   - fallisce (exit 1, stampa i log) se un comando esce con errore o se compaiono righe `SCRIPT ERROR`, `Parse Error`, `ERROR:`, `Failed to load`, `FAIL:`. Verificato con uno script rotto di prova.
 - Comando per lo screenshot: **`tools/screenshot.sh <res://scena.tscn> <uscita.png> [fotogrammi=30] [LxA=1280x800] [argomenti della scena...]`**
-  - esempio: `tools/screenshot.sh res://scenes/proto/diorama.tscn docs/screenshots/prova.png`
+  - esempio: `tools/screenshot.sh res://scenes/proto/diorama.tscn docs/screenshots/catture/prova.png`
   - gli argomenti extra arrivano alla scena (`OS.get_cmdline_user_args()`); il diorama accetta `settings=<json assoluto>`, `panel=1`, `perf=<secondi>`.
   - apre una finestra vera (il rendering serve la GPU, quindi niente `--headless`), attende i fotogrammi, salva il PNG con `scripts/dev/screenshot_runner.gd` e chiude. Fallisce se il file non viene scritto o se Godot stampa una riga `ERROR`.
   - **Attenzione:** in headless gli shader non vengono compilati, quindi `tools/check.sh` non vede i loro errori. Dopo ogni modifica a uno shader serve anche uno screenshot: è quello il controllo di compilazione.
@@ -87,7 +87,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 
   Zona morta 0,2. Tasti fisici (`physical_keycode`), così WASD resta nella stessa posizione anche su tastiere AZERTY. La mappatura completa dei tasti resta da definire (67).
 - Traduzioni: `localization/translations.csv` (colonne `keys,en,it`, chiavi in inglese), importato da Godot in `translations.en.translation` e `translations.it.translation`, che si versionano perché senza di essi il primo avvio segnala errori. Lingua di riserva: inglese. Chiave di prova: `UI_TEST_GREETING`. Un `Label` con testo uguale a una chiave si traduce da solo; nel codice si usa `tr()`.
-- Scena principale: `scenes/proto/diorama.tscn`. La scena di prova della fase 0 (cielo, sole, un cubo e l'etichetta tradotta) è archiviata in `source-assets/archivio/smoke_test.tscn`; screenshot in `docs/screenshots/2026-09-27-fase0-smoke-test.png`.
+- Scena principale: `scenes/proto/diorama.tscn`. La scena di prova della fase 0 (cielo, sole, un cubo e l'etichetta tradotta) è archiviata in `source-assets/archivio/smoke_test.tscn`; screenshot in `docs/screenshots/fasi/fase0-fondamenta/01-scena-di-prova.png`.
 - Uniform globali degli shader (`[shader_globals]` in `project.godot`): `world_texels_per_meter` (densità dei pixel del mondo, 30), `player_position` (aggiornata ogni fotogramma, usata dalla dissolvenza del primo piano), `palette_day_tint`, `palette_night_tint`, `palette_zone_proximity`, `palette_zone_center_x`, `palette_gradient_width`, `palette_strength` (viraggio Giorno/Notte, 51), impostate da un nodo `ZonePalette` in ogni zona. `ZonePalette.retint_models(nodo)` passa i modelli importati allo shader con viraggio, tenendo la loro texture.
 - Nelle funzioni di un `.gdshaderinc` le variabili locali non devono avere il nome di una uniform dello shader che le include: Godot le risolve come la uniform e la compilazione fallisce.
 - Sprite dei personaggi (49, 99): `Sprite3D` con `material_override` di `scenes/proto/materials/sprite_billboard_*.gdshader`. Il quad si disegna rivolto alla camera, ma in `DEPTH` si scrive la profondità di un quad verticale sul punto d'appoggio; l'ombra la proietta un secondo `Sprite3D` verticale (`ShadowProxy`, solo ombra) ruotato verso il sole. Nella variante illuminata `VERTEX` è un punto unico (petto, 40 cm verso il sole): tutto lo sprite prende la stessa luce e la stessa ombra, e l'ombra della copia non lo taglia a metà.
@@ -112,7 +112,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 ## Primo piano, billboard e lanterna (53, 99, 19)
 
 - Dissolvenza in primo piano: `scenes/proto/materials/foreground_fade.gdshaderinc`, usata dalle carte della vegetazione (`foreground_fade.gdshader`) e dai modelli (`model_palette.gdshader`). Retino di Bayer 4×4 nello spazio della texture, entro 1,4 m da Ottavia sullo schermo, solo per i frammenti più vicini alla camera di lei. Nei modelli non vale nel passaggio delle ombre (`IN_SHADOW_PASS`, disponibile nel fragment di Godot 4.7): l'ombra dell'albero resta intera. Limite: un occlusore che cade nella sfocatura vicina ammorbidisce il retino.
-- Billboard vicino ai muri: con la profondità del quad verticale (fase 1) lo sprite non entra in muri bassi, terrazza e fianchi; l'ombra viene dalla sagoma verticale rivolta al sole. Casi in `screenshots/2026-09-27-fase2-billboard-muri.png` e `-ombre.png`.
+- Billboard vicino ai muri: con la profondità del quad verticale (fase 1) lo sprite non entra in muri bassi, terrazza e fianchi; l'ombra viene dalla sagoma verticale rivolta al sole. Casi in `screenshots/fasi/fase2-stile-definitivo/05-billboard-muri.png` e `-ombre.png`.
 - Lanterna (a): maschera di emissione `assets/sprites/ottavia/ottavia_v1_emission.png` (vedi `ottavia_v1_sheet.md`), letta dallo shader dello sprite (`emission_mask`, `emission_energy` = `lantern_glass_energy`, 2,5). Nella variante illuminata diventa EMISSION, nella variante senza luce moltiplica l'albedo.
 - Lanterna (b): `OmniLight3D` `LanternLight` in `ottavia_proto.tscn` (colore `#FFC46B`, energia 1,5, raggio 5 m). A ogni fotogramma `OttaviaProto` la porta al punto della lanterna salvato nel JSON del foglio, sul piano verticale rivolto alla camera, all'altezza vera.
 - Ombre della lanterna: spente di norma, accese dentro un `DarkArea` (`scripts/world/dark_area.gd`, Area3D; nel diorama `DarkUnderBridge`). Per le misure: argomento `lantern_shadows=0|1` del diorama.
@@ -180,7 +180,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - `CoatPatches` (`scripts/combat/coat_patches.gd`): tre spazi, quattro toppe di prova. `Difficulty` (`scripts/combat/difficulty.gd`): moltiplicatori per livello, applicati in `CombatEnemy.attack_player`, alla vita in `reset_enemy` e ai preavvisi di creature e boss; il livello sta in `GameOptions.difficulty` (`user://options.cfg`).
 - Schermata di fine capitolo: `ChapterScreen` (`scripts/ui/chapter_screen.gd`), mette in pausa e mostra le due righe; si apre con il pulsante del pannello F1 o l'argomento del diorama `chapter_end=1`.
 - Lato del mondo delle creature (`world_side` in `CombatEnemy`), usato dalle toppe del freddo e del caldo.
-- Test: `tests/test_progression.gd`. Screenshot: `docs/screenshots/2026-09-28-fase3-fine-capitolo.png`.
+- Test: `tests/test_progression.gd`. Screenshot: `docs/screenshots/fasi/fase3-combattimento/09-fine-capitolo.png`.
 - Bot di prova (`AutoFighter`, `scripts/proto/auto_fighter.gd`, solo sviluppo): argomento del diorama `autofight=herd` (i tre Voltafaccia del prato) o `autofight=sparti` (il Vecchio Spartighiaccio), con `autofight_error=<s>` per un errore di tempismo umano (seme fisso). Legge solo lo stato pubblico delle creature (`attack_in`, `attack_deflectable`, `dodge_direction`, `weak_side`, `is_exposed`), stampa una riga `AUTOFIGHT` (tempo, vita rimasta, sconfitte) ed esce. Con `--write-movie` fa il video di confronto tra capitoli.
 
 ## Salto e corsa (33, 67)
@@ -188,7 +188,7 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Salto: stato `JUMP` di `OttaviaCombat`; `take_jump_impulse()` dà a `OttaviaProto` la velocità verso l'alto (`sqrt(2 · gravità · jump_height)`); lo stato finisce all'atterraggio. Invulnerabilità al decollo (`jump_invulnerable_seconds`, salto sicuro al capitolo 5); in aria gli attacchi con `CombatAttack.ground` vanno a vuoto (`attack_player(..., ground = true)`: Raspagelo, rotolata del Grappolo, pestone dello Spartighiaccio, radici del Foglione). Il segnale `jumped` stacca i Brinacchio.
 - Corsa: `run` tenuto, velocità × `run_speed_multiplier`, `run_stamina_per_second` di fiato; niente ricarica mentre si corre; a fiato vuoto si cammina. Un salto preso correndo conserva la velocità di corsa.
 - Camera: segue `OttaviaProto.camera_anchor()`, che durante il salto resta all'altezza del terreno (niente sobbalzi; una caduta la porta giù).
-- Animazione provvisoria: in aria resta la posa del cammino; la corsa accelera i fotogrammi. Argomento del diorama `autojump=1` per le catture. Screenshot: `docs/screenshots/2026-09-28-fase3-salto.png`.
+- Animazione provvisoria: in aria resta la posa del cammino; la corsa accelera i fotogrammi. Argomento del diorama `autojump=1` per le catture. Screenshot: `docs/screenshots/fasi/fase3-combattimento/10-salto.png`.
 
 ## Mezzi e comparse (fase 4a, passo 1)
 

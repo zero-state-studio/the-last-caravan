@@ -1,6 +1,6 @@
 # Guida di stile
 
-Versione 1.1, 27 settembre 2026 (fase 2: passo 1, aggiornata dopo il passo 4). Traduce in regole pratiche gli elementi 46-54 e 99-101 della bibbia. Vale per chi genera asset (servizi e Claude Code) e per chi li rifinisce in Aseprite. Anteprima della palette accanto a Ottavia v1: `screenshots/2026-09-27-fase2-palette-ottavia.png`.
+Versione 1.1, 27 settembre 2026 (fase 2: passo 1, aggiornata dopo il passo 4). Traduce in regole pratiche gli elementi 46-54 e 99-101 della bibbia. Vale per chi genera asset (servizi e Claude Code) e per chi li rifinisce in Aseprite. Anteprima della palette accanto a Ottavia v1: `screenshots/asset/personaggi/ottavia-v1/13-palette-in-scena.png`.
 
 ## Descrizione dello stile per i servizi di generazione
 
@@ -14,7 +14,7 @@ Per le texture si aggiunge: "seamless tileable texture, detailed pixel-art shadi
 
 **30 pixel per metro** per tutto: personaggi, terreno, rocce, piante, modelli (49, 54). Un pixel vale 3,3 cm. Regole e controlli in `tecnica.md`, "Lista di controllo per ogni texture".
 
-A 1280×800 con la camera della fase 1 (20 m, 35°) un texel a 30 px/m occupa circa 1,8 pixel dello schermo; a 60 px/m circa 0,9, e sul terreno inclinato meno ancora. Prova delle due densità: `screenshots/2026-09-27-fase2-densita-30-60.png`. Scelta (54): 30 px/m anche per gli ambienti; a 60 px/m la grana va sotto il pixel dello schermo e sfarfalla.
+A 1280×800 con la camera della fase 1 (20 m, 35°) un texel a 30 px/m occupa circa 1,8 pixel dello schermo; a 60 px/m circa 0,9, e sul terreno inclinato meno ancora. Prova delle due densità: `screenshots/fasi/fase2-stile-definitivo/03-densita-30-contro-60.png`. Scelta (54): 30 px/m anche per gli ambienti; a 60 px/m la grana va sotto il pixel dello schermo e sfarfalla.
 
 ## Palette di base (51)
 
@@ -63,7 +63,7 @@ Valori della fase 1, ora predefiniti (`scenes/proto/diorama.tscn`, `scripts/prot
 | Occlusione ambientale (SSAO) | raggio 1,2, intensità 1,6 |
 | Sfocatura (47) | vicina fino a 2 m prima del punto di fuoco, lontana da 3 m dopo; intensità 0,2; camera a 20 m, 50°, campo visivo 35° (50) |
 | Viraggio (51) | intensità 1; verso il Giorno ×(1,12; 1,04; 0,86), verso la Notte ×(0,72; 0,74; 1,05) |
-| Luce di zona (51) | ai bordi della scala del valore di zona (±1): sole ×(0,62; 0,70; 1,00), energia ×0,55, altezza ×0,5 e luce del cielo verso `#474CE6` (0,28; 0,30; 0,90) verso la Notte; sole ×(1,00; 1,10; 1,25), energia ×1,1, altezza ×1,3 e cielo verso (0,75; 0,68; 0,72) verso il Giorno. Valori in `scripts/world/zone_palette.gd`; confronto in `screenshots/2026-09-27-fase2-luce-di-zona.png` |
+| Luce di zona (51) | ai bordi della scala del valore di zona (±1): sole ×(0,62; 0,70; 1,00), energia ×0,55, altezza ×0,5 e luce del cielo verso `#474CE6` (0,28; 0,30; 0,90) verso la Notte; sole ×(1,00; 1,10; 1,25), energia ×1,1, altezza ×1,3 e cielo verso (0,75; 0,68; 0,72) verso il Giorno. Valori in `scripts/world/zone_palette.gd`; confronto in `screenshots/fasi/fase2-stile-definitivo/12-luce-di-zona.png` |
 | Terreno | faccia superiore di terreno e terrazza tinta ocra-oliva ×(0,97; 0,95; 0,78), perché sotto l'ambiente viola il grigio della texture tendeva al malva |
 
 Nelle texture **non si dipingono luce e ombra direzionali forti**: le fa il motore, e un'ombra dipinta sarebbe sbagliata appena il modello ruota. Si dipinge solo il volume interno del materiale (fessure, venature, grumi), con la luce generica dall'alto a sinistra.

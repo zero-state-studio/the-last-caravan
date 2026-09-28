@@ -15,12 +15,12 @@ Una piccola scena a diorama per trovare camera (50), misure degli sprite (49) e 
 ## Fase 2: Stile definitivo
 Immagini di riferimento nostre (52), modello personalizzato su Scenario, Ottavia definitiva in 8 direzioni con PixelLab, regole per i modelli 3D verificate (54), vegetazione in primo piano (53).
 **Uscita:** una scena che ha l'aspetto del gioco finito.
-**Stato (27 settembre 2026):** approvata. Scena dimostrativa: `scenes/proto/diorama.tscn`; screenshot `docs/screenshots/2026-09-27-fase2-demo-*.png`; video `docs/video/2026-09-27-fase2-demo.mp4`.
+**Stato (27 settembre 2026):** approvata. Scena dimostrativa: `scenes/proto/diorama.tscn`; screenshot `docs/screenshots/fasi/fase2-stile-definitivo/1[4-8]-demo-*.png`; video `docs/video/fasi/fase2-stile-definitivo/01-diorama-dimostrativo.mp4`.
 
 ## Fase 3: Prototipo di combattimento e progressione
 Bastone, tempismo e posizione (33), progressione inversa (34), Enea che impara (81), lezioni di Ottavia (82), qualche creatura del Margine.
 **Uscita:** il combattimento è divertente e la progressione inversa non frustra.
-**Stato (28 settembre 2026):** approvata, prototipo chiuso. Diorama: `scenes/proto/diorama.tscn`; consegna `docs/fase3-consegna.md`; video `docs/video/2026-09-28-fase3-capitolo1-vs-9.mp4`. Restano aperte: la tabella della progressione (`docs/progressione.md`, proposta), la crescita della forza nei capitoli avanzati e il colpo pesante con combinazione da 1.
+**Stato (28 settembre 2026):** approvata, prototipo chiuso. Diorama: `scenes/proto/diorama.tscn`; consegna `docs/fase3-consegna.md`; video `docs/video/fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4`. Restano aperte: la tabella della progressione (`docs/progressione.md`, proposta), la crescita della forza nei capitoli avanzati e il colpo pesante con combinazione da 1.
 
 ## Fase 4: Prima fetta giocabile
 In due tempi (68), con grafica, musica, effetti e testi IT/EN definitivi.

@@ -46,7 +46,7 @@ docs/          bibbia, fasi, decisioni, tecnica, registro asset. Ha .gdignore
 ## Verifica
 
 - Dopo ogni modifica al codice, esegui un controllo headless che segnali errori di parsing o di caricamento. Trova il comando giusto per la versione installata e scrivilo in `docs/tecnica.md`.
-- Dopo ogni modifica visiva, cattura uno screenshot con lo strumento in `tools/`, guardalo, e solo allora considera il passo concluso. Salva gli screenshot importanti in `docs/screenshots/`.
+- Dopo ogni modifica visiva, cattura uno screenshot con lo strumento in `tools/`, guardalo, e solo allora considera il passo concluso. Salva gli screenshot importanti in `docs/screenshots/`, secondo la regola di `docs/screenshots/README.md` (rami `asset/`, `capitoli/`, `fasi/`; nomi `NN-descrizione.png` senza data), e aggiungi una riga all'indice dello stesso file. Nel resoconto indica sempre quali file sono da valutare.
 - La logica di gioco (combattimento, timer della Tregua, salvataggi) va coperta da test automatici quando verrà scritta.
 
 ## Servizi di generazione

@@ -14,7 +14,7 @@ cd ~/Progetti/the-last-caravan && "$GODOT_PATH" --path . res://scenes/proto/dior
 
 ## Video
 
-`docs/video/2026-09-28-fase3-capitolo1-vs-9.mp4` (38 s): il branco di tre Voltafaccia e il Vecchio Spartighiaccio al capitolo 1, poi gli stessi al capitolo 9. Li gioca un bot (`autofight=`, vedi `docs/tecnica.md`) con errore di tempismo di ±0,25 s. È sotto i 60 s previsti perché gli scontri durano poco (vedi la valutazione).
+`docs/video/fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4` (38 s): il branco di tre Voltafaccia e il Vecchio Spartighiaccio al capitolo 1, poi gli stessi al capitolo 9. Li gioca un bot (`autofight=`, vedi `docs/tecnica.md`) con errore di tempismo di ±0,25 s. È sotto i 60 s previsti perché gli scontri durano poco (vedi la valutazione).
 
 ## Misure del bot (medio)
 
