@@ -61,6 +61,7 @@ static func build(recipe: Dictionary) -> Node3D:
 
 	if bool(recipe.get("engine", true)):
 		var engine: Node3D = _module("generatore")
+		engine.name = VehicleWheels.ENGINE_NAME
 		root.add_child(engine)
 		_place_on(engine, Vector3(0.0, ENGINE_CLEARANCE, 0.0))
 	if bool(recipe.get("wings", true)):

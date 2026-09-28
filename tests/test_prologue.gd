@@ -8,12 +8,37 @@ var _failures: int = 0
 
 func _initialize() -> void:
 	await _test_animations()
+	await _test_vehicle_wheels()
 	await _test_floor()
 	await _test_camp_intro()
 	await _test_camp_tasks()
 	await _test_column()
 	print("TESTS: prologue %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
+
+
+## The column vehicles (16) roll on their wheels and the Generator beats (77).
+func _test_vehicle_wheels() -> void:
+	var recipe: Dictionary = VehicleKit.load_recipes()[0]
+	var vehicle: Node3D = VehicleKit.build(recipe)
+	root.add_child(vehicle)
+	var animator: VehicleWheels = VehicleWheels.attach(vehicle)
+	await _frames(2)
+	_check(animator.wheels.size() >= 4, "vehicle: the kit chassis has its wheels cut out (%d)" % animator.wheels.size())
+	var wheel: Node3D = animator.wheels[0]["node"]
+	var radius: float = animator.wheels[0]["radius"]
+	var start: Basis = wheel.basis
+	var engine: Node3D = vehicle.get_node(String(VehicleWheels.ENGINE_NAME))
+	var engine_rest: Vector3 = engine.scale
+	var biggest_beat: float = 0.0
+	for frame: int in 60:
+		vehicle.position.x -= 0.03
+		await physics_frame
+		biggest_beat = maxf(biggest_beat, engine.scale.x / engine_rest.x - 1.0)
+	var turned: float = start.get_rotation_quaternion().angle_to(wheel.basis.get_rotation_quaternion())
+	_check(absf(turned - 1.8 / radius) < 0.05, "vehicle: moving 1.8 m west turns a wheel of radius %.2f by distance / radius (%.2f rad)" % [radius, turned])
+	_check(biggest_beat > 0.005, "vehicle: while moving, the Generator beats")
+	vehicle.free()
 
 
 func _test_floor() -> void:

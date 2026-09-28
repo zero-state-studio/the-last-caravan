@@ -287,6 +287,7 @@ func _build_column() -> void:
 	for index: int in COLUMN_START_X.size():
 		var vehicle: Node3D = VehicleKit.build(recipes[COLUMN_RECIPES[index]])
 		level.add_child(vehicle)
+		VehicleWheels.attach(vehicle)
 		var box: AABB = VehicleKit.bounds(vehicle)
 		vehicle.position = Vector3(COLUMN_START_X[index], 0.0, COLUMN_Z) - Vector3(box.get_center().x, box.position.y, box.get_center().z)
 		column.append(vehicle)
@@ -316,6 +317,7 @@ func _build_head() -> void:
 	level.add_child(_head)
 	var lead: Node3D = (load("res://assets/models/vehicles/mezzo_di_testa_prova.glb") as PackedScene).instantiate()
 	_head.add_child(lead)
+	VehicleWheels.attach(lead)
 	var box: AABB = VehicleKit.bounds(lead)
 	lead.position = Vector3(8.0, 0.0, 0.0) - Vector3(box.get_center().x, box.position.y, box.get_center().z)
 	var gnomone: NpcSprite = NpcSprite.new()

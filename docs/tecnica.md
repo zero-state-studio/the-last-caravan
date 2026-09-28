@@ -200,6 +200,8 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - `meshy_pixelize.py --turn-180`: gira il modello di mezzo giro attorno all'asse verticale (rotazione del nodo radice), per mettere il davanti di un mezzo a ovest. Per rispettare lunghezza e altezza della bibbia si sceglie `--height` in modo che la lunghezza torni (camion-condominio: 12,35 m → 20,0 m).
 - Animazioni di Ottavia (fase 4a, passo 2): PixelLab consente 10 lavori insieme; lo zip del personaggio (`/mcp/characters/<id>/download`) risponde 423 finché ci sono lavori in corso, poi contiene `Idle/animations/<nome>/<direzione>/frame_NNN.png`. `tools/ottavia_anim_build.py <cartella zip> <cartella gif> anim:ms ...` pulisce con la pipeline v1 e fa le GIF in griglia. Il ritaglio a 64×64 taglia la punta del bastone in parte della combinazione e della parata.
 
+- Mezzi in movimento (16, 77): `VehicleWheels.attach(mezzo)` (`scripts/world/vehicle_wheels.gd`) taglia le ruote dal modello unico di Meshy (isole di geometria basse, tonde e sottili, trovate unendo i vertici per posizione), le appende a un perno nel loro centro e le fa girare di distanza / raggio; il corpo ondeggia di 5 cm e il Generatore del kit (nodo `Generatore`) batte mentre il mezzo si muove. Il taglio è in cache per mesh. Va chiamato prima di `ZonePalette.retint_models`. Ruote trovate: pianale lungo 6, pianale corto 4, camion-condominio 8, carro-campo 10, mezzo di testa 8.
+
 ## Prologo (fase 4a, passo 3)
 
 - Avvio: `"$GODOT_PATH" --path . res://scenes/prologo/piano_tessibuio.tscn`. Dalla porta sul retro si passa a `scenes/prologo/accampamento.tscn` (`PrologueState.entered_from_door`).
