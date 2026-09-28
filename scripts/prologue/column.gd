@@ -375,6 +375,9 @@ func _build_column() -> void:
 		vehicle.position = Vector3(COLUMN_START_X[index], 0.0, COLUMN_Z) - Vector3(box.get_center().x, box.position.y, box.get_center().z)
 		column.append(vehicle)
 	# The people walk beside the vehicles (76: whoever can walk, walks).
+	var trades: Array[StringName] = CrowdTrades.names()
+	var trade_random: RandomNumberGenerator = RandomNumberGenerator.new()
+	trade_random.seed = 121
 	for index: int in 22:
 		var kind: String = CROWD_TYPES[_random.randi() % CROWD_TYPES.size()]
 		var view: String = "west" if _random.randf() < 0.6 else "south-west"
@@ -386,6 +389,7 @@ func _build_column() -> void:
 			walker.frames_per_second = 8.0
 		else:
 			walker.sprite_texture = load("res://assets/sprites/folla/%s_%s.png" % [kind, view])
+		walker.trade = trades[trade_random.randi() % trades.size()]
 		var side: float = -1.0 if _random.randf() < 0.5 else 1.0
 		walker.position = Vector3(_random.randf_range(-95.0, -4.0), 0.0, COLUMN_Z + side * _random.randf_range(3.6, 6.0))
 		level.add_child(walker)

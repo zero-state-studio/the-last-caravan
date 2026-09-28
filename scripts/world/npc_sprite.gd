@@ -20,6 +20,8 @@ static var sun_azimuth_degrees: float = NAN
 ## 0 counts them from the texture width.
 @export var frame_count: int = 0
 @export var frames_per_second: float = 6.0
+## Trade of a crowd member (121), dyeing their clothes; empty for none.
+@export var trade: StringName = &""
 
 var _time: float = 0.0
 
@@ -44,6 +46,7 @@ func _ready() -> void:
 	material.set_shader_parameter(&"full_billboard", true)
 	material.set_shader_parameter(&"upright_depth", true)
 	material_override = material
+	_apply_trade()
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	if is_nan(sun_azimuth_degrees):
 		material.set_shader_parameter(&"light_sample_offset", Vector3.UP * LIGHT_SAMPLE_HEIGHT)
@@ -74,10 +77,30 @@ func set_strip(strip: Texture2D, fps: float = frames_per_second) -> void:
 	hframes = frame_count
 	frame = 0
 	(material_override as ShaderMaterial).set_shader_parameter(&"sprite_texture", strip)
+	_apply_trade()
 	for child: Node in get_children():
 		if child is Sprite3D:
 			(child as Sprite3D).texture = strip
 			(child as Sprite3D).hframes = frame_count
+
+
+func set_trade(next: StringName) -> void:
+	trade = next
+	if material_override != null:
+		_apply_trade()
+
+
+func _apply_trade() -> void:
+	var material: ShaderMaterial = material_override as ShaderMaterial
+	var colors: Dictionary = CrowdTrades.TRADES.get(trade, {})
+	var mask: Texture2D = CrowdTrades.mask_for(texture) if not colors.is_empty() else null
+	material.set_shader_parameter(&"garment_strength", CrowdTrades.STRENGTH if mask != null else 0.0)
+	if mask == null:
+		return
+	material.set_shader_parameter(&"garment_mask", mask)
+	material.set_shader_parameter(&"garment_dark", colors["dark"])
+	material.set_shader_parameter(&"garment_light", colors["light"])
+	material.set_shader_parameter(&"garment_fade", CrowdTrades.FRONT_FADE)
 
 
 func _process(delta: float) -> void:

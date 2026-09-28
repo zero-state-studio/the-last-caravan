@@ -276,6 +276,9 @@ func _place_tents() -> void:
 
 ## The people of the caravan getting ready (121): generic types, standing.
 func _place_crowd() -> void:
+	var trades: Array[StringName] = CrowdTrades.names()
+	var trade_random: RandomNumberGenerator = RandomNumberGenerator.new()
+	trade_random.seed = 121
 	var placed: int = 0
 	var tries: int = 0
 	while placed < 46 and tries < 600:
@@ -287,6 +290,9 @@ func _place_crowd() -> void:
 		var kind: String = CROWD_TYPES[_random.randi() % CROWD_TYPES.size()]
 		var view: String = CROWD_VIEWS[_random.randi() % CROWD_VIEWS.size()]
 		person.sprite_texture = load("res://assets/sprites/folla/%s_%s.png" % [kind, view])
+		# Each in the colours of their trade (121); a separate random
+		# stream, so the placement stays the same.
+		person.trade = trades[trade_random.randi() % trades.size()]
 		person.position = point
 		level.add_child(person)
 		placed += 1

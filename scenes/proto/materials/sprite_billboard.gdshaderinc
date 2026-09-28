@@ -22,7 +22,24 @@ uniform float emission_energy = 0.0;
 uniform float flash = 0.0;
 uniform vec4 flash_color : source_color = vec4(1.0);
 
+// Trade colours of the crowd (121): where the garment mask is white, the
+// cloth is dyed along a dark-to-light ramp that keeps its shading, then
+// sun-faded (98). Off while garment_strength is 0.
+uniform sampler2D garment_mask : filter_nearest, hint_default_black;
+uniform float garment_strength = 0.0;
+uniform vec3 garment_dark : source_color = vec3(0.2);
+uniform vec3 garment_light : source_color = vec3(0.8);
+uniform float garment_fade = 0.0;
+
 varying vec4 upright_clip;
+
+vec3 dyed(vec3 texel, vec2 uv) {
+	float luma = dot(texel, vec3(0.299, 0.587, 0.114));
+	vec3 cloth = mix(garment_dark, garment_light, smoothstep(0.06, 0.72, luma));
+	float cloth_luma = dot(cloth, vec3(0.299, 0.587, 0.114));
+	vec3 faded = mix(cloth, vec3(cloth_luma) * 1.08 + 0.06, garment_fade);
+	return mix(texel, faded, texture(garment_mask, uv).r * garment_strength);
+}
 
 void vertex() {
 	vec3 origin = MODEL_MATRIX[3].xyz;
@@ -42,7 +59,8 @@ void fragment() {
 	if (texel.a < 0.5) {
 		discard;
 	}
-	vec3 color = mix(texel.rgb, flash_color.rgb, clamp(flash, 0.0, 1.0));
+	vec3 base = garment_strength > 0.0 ? dyed(texel.rgb, UV) : texel.rgb;
+	vec3 color = mix(base, flash_color.rgb, clamp(flash, 0.0, 1.0));
 	ALBEDO = color;
 	float glass = texture(emission_mask, UV).r;
 #ifdef SPRITE_LIT

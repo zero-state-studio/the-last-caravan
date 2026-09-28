@@ -91,6 +91,12 @@ func _test_camp_intro() -> void:
 	root.add_child(camp)
 	await _frames(4)
 	_check(camp.vehicles.size() >= 20 and camp.vehicles.size() <= 25, "camp: the caravan counts 20-25 vehicles (%d)" % camp.vehicles.size())
+	var dyed: Dictionary = {}
+	for node: Node in camp.level.find_children("*", "NpcSprite", true, false):
+		var person: NpcSprite = node
+		if not String(person.trade).is_empty() and float((person.material_override as ShaderMaterial).get_shader_parameter(&"garment_strength")) > 0.0:
+			dyed[person.trade] = true
+	_check(dyed.size() == CrowdTrades.TRADES.size(), "camp: the crowd wears the colours of all six trades (121, %d)" % dyed.size())
 	_check(camp.intro_running and not camp.ottavia.controls_enabled, "camp: coming from the door, the glare and the wide shot play first")
 	_check(GameAudio.music_stream() == camp.THEME_MUSIC and GameAudio.is_loop_playing(&"crowd"), "audio: Ottavia's theme under the door and the narration, the crowd murmurs (126)")
 	var voiced: bool = true

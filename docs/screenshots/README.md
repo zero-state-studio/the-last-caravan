@@ -82,6 +82,8 @@ Stato: **da valutare** (fase 4a, passo 1).
 
 - `01-otto-tipi-direzioni-di-marcia.png`: Ottavia e gli otto tipi, nelle direzioni della marcia verso ovest (sud, ovest, nord-ovest, sud-ovest), con l'altezza in pixel; la riga gialla è la testa di Ottavia
 - `02-folla-accanto-al-mezzo-di-testa.png`: la folla accanto al mezzo di testa, alla distanza di gioco
+- `03-colori-dei-mestieri-sud.png`: **da valutare**. Gli otto tipi (colonne) nei sei mestieri (righe, dall'alto): senza tinta, Brinaioli, Tessibuio, Voltacampi, Traslocanti, Specchianti, Nodai; vista sud
+- `04-colori-dei-mestieri-sud-ovest.png`: **da valutare**. Lo stesso nella vista sud-ovest della marcia
 
 ### `asset/personaggi/ottavia-v1/`: Ottavia v1 (19, 36, 49)
 
