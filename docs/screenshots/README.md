@@ -17,7 +17,7 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
-- `asset/personaggi/comparse-prologo/01-viste-sud-con-altezze.png`: i 12 personaggi del prologo.
+- `asset/personaggi/comparse-prologo/02-personaggi-che-parlano-altezze-corrette.png`: i personaggi del prologo, alle altezze giuste.
 
 ## Indice
 
@@ -25,8 +25,8 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 Stato: **da valutare** (fase 4a, passo 1).
 
-- `01-prova-di-scala-in-fila.png`: i tre mezzi in fila con i personaggi davanti, per la scala
-- `02-prova-di-scala-camion-e-personaggi.png`: primo piano: camion-condominio e personaggi alla camera di gioco (20 m)
+- `01-prova-di-scala-in-fila.png`: i tre mezzi in fila con Ottavia, per la scala (camion-condominio da 20 m)
+- `02-prova-di-scala-camion-e-personaggi.png`: primo piano del camion-condominio (20 × 12 m) con Ottavia
 - `03-camion-condominio-quattro-lati.png`: camion-condominio da quattro lati (sud, est, nord, dall'alto)
 - `04-carro-campo-quattro-lati.png`: carro-campo da quattro lati
 - `05-mezzo-di-testa-quattro-lati.png`: mezzo di testa da quattro lati
@@ -42,7 +42,8 @@ Stato: **da valutare** (fase 4a, passo 1).
 
 Stato: **da valutare** (fase 4a, passo 1).
 
-- `01-viste-sud-con-altezze.png`: viste sud di Ottavia e dei 12 personaggi, ingrandite ×4, con l'altezza in pixel
+- `01-viste-sud-con-altezze.png`: prima versione, superata dalla 02: viste sud di Ottavia e dei 12 personaggi, con l'altezza in pixel
+- `02-personaggi-che-parlano-altezze-corrette.png`: i personaggi che parlano (117-120, Traslocante, Anselmo, Arold, Enea) con Zelinda, Ruggero, Mirco, Anselmo, Arold ed Enea rifatti alle altezze della bibbia; la riga gialla è la testa di Ottavia
 
 ### `asset/personaggi/folla-generici/`: Folla, otto tipi generici (121)
 

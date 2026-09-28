@@ -126,6 +126,7 @@ def main():
     parser.add_argument("--colors", type=int, default=24)
     parser.add_argument("--height", type=float, required=True, help="target height in meters")
     parser.add_argument("--preview", help="also save the reduced texture here")
+    parser.add_argument("--turn-180", action="store_true", help="turn the model half around the vertical axis")
     parser.add_argument("--palette", help="map colors onto this palette strip (e.g. assets/palette/palette_v1.png)")
     args = parser.parse_args()
 
@@ -172,12 +173,16 @@ def main():
     # Mesh bounds assume the original root transforms are identity-scaled,
     # which holds for Meshy exports; the new parent node does the resizing.
     scene = gltf["scenes"][gltf.get("scene", 0)]
-    gltf["nodes"].append({
+    root = {
         "name": "pixelized_root",
         "children": scene["nodes"],
         "scale": [scale, scale, scale],
         "translation": [0.0, -min_y * scale, 0.0],
-    })
+    }
+    if args.turn_180:
+        # Half turn around the vertical axis, e.g. to put a vehicle's front west.
+        root["rotation"] = [0.0, 1.0, 0.0, 0.0]
+    gltf["nodes"].append(root)
     scene["nodes"] = [len(gltf["nodes"]) - 1]
 
     write_glb(args.output, gltf, binary)
