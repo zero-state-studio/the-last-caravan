@@ -73,12 +73,15 @@ func _ready() -> void:
 			line_seconds = argument.trim_prefix("line_seconds=").to_float()
 		elif argument == "wide=1":
 			_show_wide_still.call_deferred()
+	NpcSprite.sun_azimuth_degrees = SUN_AZIMUTH_DEGREES
 	_build()
 	ZonePalette.retint_models(level)
 	# Low sunset from the west, a little from the camera side: long shadows
 	# to the east (right), faces lit (100).
 	var sun: DirectionalLight3D = $Sun
 	sun.rotation_degrees = Vector3(-SUN_ELEVATION_DEGREES, SUN_AZIMUTH_DEGREES, 0.0)
+	# Lit like every other person, so proportions and light match.
+	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
 	ottavia.global_position = DOOR_EXIT
 	ottavia.face_toward(Vector3.BACK)

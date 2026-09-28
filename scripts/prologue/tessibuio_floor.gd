@@ -58,7 +58,10 @@ func _ready() -> void:
 	GameOptions.load_options()
 	InputRemap.load_controls()
 	PrologueState.reset()
+	NpcSprite.sun_azimuth_degrees = NAN
 	_build()
+	# Lit by the scene like Zelinda: in the dark, only the lantern shows her.
+	ottavia.set_shaded(true)
 	ottavia.global_position = START
 	ottavia.face_toward(Vector3.BACK)
 	ottavia.set_lantern_open(false)
