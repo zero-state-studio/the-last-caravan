@@ -15,7 +15,8 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 ## Da valutare adesso
 
-- `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala.
+- `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12.
+- `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
 - `asset/personaggi/comparse-prologo/01-viste-sud-con-altezze.png`: i 12 personaggi del prologo.
 
 ## Indice
@@ -32,12 +33,23 @@ Stato: **da valutare** (fase 4a, passo 1).
 - `06-camion-condominio-concetto.png`: concetto del camion-condominio (da cui è nato il 3D)
 - `07-carro-campo-concetto.png`: concetto del carro-campo
 - `08-mezzo-di-testa-concetto.png`: concetto del mezzo di testa
+- `09-kit-i-25-mezzi.png`: i 25 mezzi della carovana: in basso a sinistra i tre tipi in cui si entra, poi i 22 generici montati dal kit
+- `10-kit-da-vicino-con-ottavia.png`: alcuni mezzi generici alla distanza di gioco, con Ottavia
+- `11-kit-concetti-dei-12-moduli.png`: i concetti dei 12 moduli (pianali, Generatore, Ali, Code, piani, terrazza, serbatoio, tenda, carico, casetta)
+- `12-kit-moduli-quattro-lati.png`: i 12 moduli in 3D, da quattro lati
 
 ### `asset/personaggi/comparse-prologo/`: Comparse e personaggi del prologo (117-121, 21, 78, 81)
 
 Stato: **da valutare** (fase 4a, passo 1).
 
 - `01-viste-sud-con-altezze.png`: viste sud di Ottavia e dei 12 personaggi, ingrandite ×4, con l'altezza in pixel
+
+### `asset/personaggi/folla-generici/`: Folla, otto tipi generici (121)
+
+Stato: **da valutare** (fase 4a, passo 1).
+
+- `01-otto-tipi-direzioni-di-marcia.png`: Ottavia e gli otto tipi, nelle direzioni della marcia verso ovest (sud, ovest, nord-ovest, sud-ovest), con l'altezza in pixel; la riga gialla è la testa di Ottavia
+- `02-folla-accanto-al-mezzo-di-testa.png`: la folla accanto al mezzo di testa, alla distanza di gioco
 
 ### `asset/personaggi/ottavia-v1/`: Ottavia v1 (19, 36, 49)
 
