@@ -296,3 +296,21 @@ OPTIONS_TEXT_SIZE,Text size,Dimensione del testo
 TEXT_SIZE_NORMAL,Normal,Normale
 TEXT_SIZE_LARGE,Large,Grande
 TEXT_SIZE_LARGEST,Largest,Molto grande
+PRO_CROWD_01,TODO-DESIGN #121 crowd line 1,TODO-DESIGN #121 frase della folla 1
+PRO_CROWD_02,TODO-DESIGN #121 crowd line 2,TODO-DESIGN #121 frase della folla 2
+PRO_CROWD_03,TODO-DESIGN #121 crowd line 3,TODO-DESIGN #121 frase della folla 3
+PRO_CROWD_04,TODO-DESIGN #121 crowd line 4,TODO-DESIGN #121 frase della folla 4
+PRO_CROWD_05,TODO-DESIGN #121 crowd line 5,TODO-DESIGN #121 frase della folla 5
+PRO_CROWD_06,TODO-DESIGN #121 crowd line 6,TODO-DESIGN #121 frase della folla 6
+PRO_CROWD_07,TODO-DESIGN #121 crowd line 7,TODO-DESIGN #121 frase della folla 7
+PRO_CROWD_08,TODO-DESIGN #121 crowd line 8,TODO-DESIGN #121 frase della folla 8
+PRO_GOAL_DOOR,Reach the back door,Raggiungi la porta sul retro
+PRO_GOAL_TAILS,Reach the Tails behind the vehicles,Raggiungi le Code dietro i mezzi
+PRO_GOAL_TENTS,Reach the Frostcutters' tents,Raggiungi le tende dei Brinaioli
+PRO_GOAL_CLIMB,"Climb onto the field-wagon, up to Ruggero","Sali sul carro-campo, da Ruggero"
+PRO_GOAL_WAKE,Wake Ruggero,Sveglia Ruggero
+PRO_GOAL_BREAK,Free the Tail stuck in the ice,Libera la Coda bloccata nel ghiaccio
+PRO_GOAL_SWARM,Drive off the Brinacchi,Scaccia i Brinacchi
+PRO_GOAL_MIRCO,Go back for Mirco,Torna indietro a prendere Mirco
+PRO_GOAL_TIE,Tie Mirco to your rope,Lega Mirco alla corda
+PRO_GOAL_COLUMN,Catch up with the tail of the column,Raggiungi la coda della colonna

@@ -12,6 +12,7 @@ func _initialize() -> void:
 	await _test_hints()
 	await _test_dialogue_size()
 	await _test_pause_lantern()
+	_test_translation_rows()
 	print("TESTS: ui %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -92,6 +93,20 @@ func _test_pause_lantern() -> void:
 	LanternProgress.pieces = 0
 	menu.queue_free()
 	await process_frame
+
+
+## Every row of the translation table has key, English and Italian: a
+## comma outside quotes would shift the columns.
+func _test_translation_rows() -> void:
+	var file: FileAccess = FileAccess.open("res://localization/translations.csv", FileAccess.READ)
+	var bad: Array[String] = []
+	while not file.eof_reached():
+		var row: PackedStringArray = file.get_csv_line()
+		if row.size() == 1 and row[0].is_empty():
+			continue
+		if row.size() != 3:
+			bad.append(row[0])
+	_check(bad.is_empty(), "translations: every row has three columns (%s)" % ", ".join(bad))
 
 
 func _frames(count: int) -> void:

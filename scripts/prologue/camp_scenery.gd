@@ -41,6 +41,24 @@ const RUINS: Array[Dictionary] = [
 	{"path": "res://assets/models/ruins/muro_arco.glb", "at": Vector3(-132.0, 0.0, -40.0), "yaw": 1.3},
 ]
 
+## The dead city (_place_dead_city): models and how often each appears.
+const CITY_RUINS: Array[Dictionary] = [
+	{"path": "res://assets/models/ruins/facciata.glb", "weight": 3.0},
+	{"path": "res://assets/models/ruins/palazzo_sventrato.glb", "weight": 3.0},
+	{"path": "res://assets/models/ruins/casa_diroccata.glb", "weight": 2.5},
+	{"path": "res://assets/models/ruins/muro_arco.glb", "weight": 2.0},
+	{"path": "res://assets/models/ruins/ciminiera.glb", "weight": 1.0},
+	{"path": "res://assets/models/ruins/torre_spezzata.glb", "weight": 1.0},
+	{"path": "res://assets/models/ruins/ponte_crollato.glb", "weight": 0.6},
+]
+const CITY_SEED: int = 4242
+const CITY_SIZE: int = 32
+const CITY_SPACING: float = 13.0
+const CITY_NEAR_Z: float = -82.0
+const CITY_FAR_Z: float = -165.0
+## Centres of the old city blocks (x, z).
+const CITY_BLOCKS: Array[Vector2] = [Vector2(-170.0, -115.0), Vector2(-105.0, -130.0), Vector2(-40.0, -110.0), Vector2(20.0, -135.0), Vector2(85.0, -115.0), Vector2(140.0, -140.0)]
+
 ## Roads as polylines (points in metres) with a half width.
 const ROADS: Array[Dictionary] = [
 	# The alley between the rows of the camp.
@@ -159,6 +177,42 @@ static func place_ruins(parent: Node3D) -> void:
 		model.position = ruin["at"]
 		model.rotation.y = ruin["yaw"]
 		parent.add_child(model)
+	_place_dead_city(parent)
+
+
+## The dead city behind the camp: a band of ruined blocks to the north,
+## between the plain and the hills, so the skyline is a city, not a few
+## lone buildings. Fixed seed: the same city every time.
+static func _place_dead_city(parent: Node3D) -> void:
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = CITY_SEED
+	var scenes: Array[PackedScene] = []
+	var weights: PackedFloat32Array = []
+	for entry: Dictionary in CITY_RUINS:
+		if ResourceLoader.exists(entry["path"]):
+			scenes.append(load(entry["path"]))
+			weights.append(entry["weight"])
+	if scenes.is_empty():
+		return
+	var placed: Array[Vector3] = []
+	for ruin: Dictionary in RUINS:
+		placed.append(ruin["at"])
+	var tries: int = 0
+	while placed.size() < RUINS.size() + CITY_SIZE and tries < 800:
+		tries += 1
+		# Blocks: a few centres, buildings scattered around each.
+		var block: int = random.randi() % CITY_BLOCKS.size()
+		var centre: Vector2 = CITY_BLOCKS[block]
+		var at: Vector3 = Vector3(centre.x + random.randfn(0.0, 22.0), 0.0, centre.y + random.randfn(0.0, 12.0))
+		if at.z > CITY_NEAR_Z or at.z < CITY_FAR_Z:
+			continue
+		if placed.any(func(other: Vector3) -> bool: return Vector2(other.x - at.x, other.z - at.z).length() < CITY_SPACING):
+			continue
+		var model: Node3D = scenes[random.rand_weighted(weights)].instantiate()
+		model.position = at
+		model.rotation.y = random.randf_range(-PI, PI)
+		parent.add_child(model)
+		placed.append(at)
 
 
 ## Two ridges of mountains to the north, the farther one higher and hazier:

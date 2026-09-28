@@ -25,15 +25,15 @@ Dal piano buio dei Tessibuio, alla porta, all'accampamento, alla coda della colo
 
 ## Video dall'inizio al titolo
 
-`docs/video/capitoli/00-prologo/10-prologo-intero-dall-inizio-al-titolo.mp4`: 4 minuti e 2 secondi, con musica, effetti e voci.
+`docs/video/capitoli/00-prologo/11-prologo-intero-folla-guida-citta-morta.mp4`: 4 minuti e 2 secondi, con musica, effetti e voci, dopo le correzioni della prima revisione (la versione precedente è il video 10).
 
 ## Crediti spesi nella fase 4a
 
 | Servizio | Speso | Tetto della fase | Come è misurato |
 |---|---|---|---|
-| PixelLab | 264 generazioni | 300 | somma del registro; l'account segna 340 nel ciclo del mese, che comprende la fase 3 |
+| PixelLab | 288 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
 | Scenario | 30 CU | 1.000 | confermato dall'account (3 texture) |
-| Meshy | 387 crediti | circa 500 | somma del registro |
+| Meshy | 459 crediti | circa 500 | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
 | ElevenLabs | 1.043 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
 
 ## Asset
@@ -73,3 +73,9 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 3. Per la catena, persone della folla messe apposta nel quadro, così le prime voci si vedono parlare.
 4. Nomi brevi per i tasti del mouse nelle icone (per esempio «Clic S»).
 5. Uno sciame un po' più aggressivo, che obblighi a usare la parata insegnata dal suggerimento.
+
+## Dopo la prima revisione
+
+- **Comparse vive:** la folla dell'accampamento gira tra tende e mezzi, con camminate in ogni direzione (24 generazioni PixelLab), e chi è vicino a Ottavia dice una frase. Le frasi sono segnaposti `TODO-DESIGN #121` (PRO_CROWD_01-08) in attesa dei testi dell'autore.
+- **Dove andare:** bagliore caldo sul punto da raggiungere, freccia sul bordo dello schermo quando è fuori quadro, obiettivo scritto sopra il suggerimento, in ogni compito del piano buio, dell'accampamento e della colonna.
+- **Veduta d'insieme:** camera a 18°, la carovana riempie la parte bassa e centrale; sullo sfondo una città morta di circa 35 rovine con 4 modelli nuovi (72 crediti Meshy).

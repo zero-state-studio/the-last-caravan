@@ -179,9 +179,23 @@ func _test_camp_tasks() -> void:
 	var ottavia: OttaviaProto = camp.ottavia
 	var hints: HintBanner = camp.hints
 	_check(tasks.task == CampTasks.Task.SPRINT and hints.current_hint() == &"PRO_HINT_SPRINT", "camp 1: after the first call, the hint is to hold to sprint")
+	_check(hints.current_goal() == &"PRO_GOAL_TAILS" and tasks.marker.is_active(), "camp: each task says where to go and marks the place (106)")
+	var start_positions: Array[Vector3] = []
+	for person: CrowdMember in camp.crowd:
+		start_positions.append(person.position)
+	await create_timer(7.0).timeout
+	var moved: int = 0
+	for index: int in camp.crowd.size():
+		if camp.crowd[index].position.distance_to(start_positions[index]) > 0.5:
+			moved += 1
+	_check(moved >= camp.crowd.size() / 3, "camp: the crowd goes about the camp (%d of %d moved)" % [moved, camp.crowd.size()])
+	camp.barks.say(camp.crowd[0], &"PRO_CROWD_01")
+	await process_frame
+	_check(camp.barks.bubble.is_showing() and not camp.crowd[0].wandering, "camp: someone of the crowd says a line and stands still to say it (121)")
 	ottavia.global_position = Vector3(CampTasks.TAIL_ROWS[0] - 3.0, 0.05, 0.0)
 	await _frames(2)
 	_check(tasks.task == CampTasks.Task.JUMP and hints.current_hint() == &"PRO_HINT_JUMP", "camp 2: at the Tails, the hint is to jump")
+	_check(hints.current_goal() == &"PRO_GOAL_TENTS" and tasks.marker.target_position().distance_to(CampTasks.TENTS) < 0.1, "camp: then the goal moves to the Frostcutters' tents")
 	ottavia.global_position = CampTasks.TENTS + Vector3(0.0, 0.05, 3.0)
 	await _frames(2)
 	_check(tasks.task == CampTasks.Task.CLIMB and hints.current_hint() == &"PRO_HINT_CLIMB", "camp 3: at the tents, the hint is to climb")

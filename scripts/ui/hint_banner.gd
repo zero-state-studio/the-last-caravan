@@ -9,6 +9,9 @@ const ROW_WIDTH: float = 700.0
 const BOTTOM_OFFSET: float = 196.0
 
 var _row: HBoxContainer
+var _goal: Label
+var _goal_key: StringName = &""
+var _goal_tween: Tween
 var _caps: HBoxContainer
 var _label: Label
 var _text_key: StringName = &""
@@ -28,6 +31,16 @@ func _ready() -> void:
 	_row.position = Vector2(-ROW_WIDTH * 0.5, -BOTTOM_OFFSET)
 	_row.modulate.a = 0.0
 	add_child(_row)
+	# The goal in words (106), above the key: where to go and why.
+	_goal = Label.new()
+	_goal.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_goal.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_goal.custom_minimum_size = Vector2(ROW_WIDTH, 36.0)
+	_goal.position = Vector2(-ROW_WIDTH * 0.5, -BOTTOM_OFFSET - 40.0)
+	_goal.add_theme_color_override(&"font_outline_color", UiStyle.OUTLINE)
+	_goal.add_theme_constant_override(&"outline_size", 6)
+	_goal.modulate.a = 0.0
+	add_child(_goal)
 	_caps = HBoxContainer.new()
 	_caps.add_theme_constant_override(&"separation", 4)
 	_row.add_child(_caps)
@@ -62,6 +75,32 @@ func show_hint(text_key: StringName, action: StringName) -> void:
 func hide_hint() -> void:
 	_text_key = &""
 	_fade_to(0.0)
+
+
+## The current goal, shown above the hint until changed or hidden.
+func show_goal(goal_key: StringName) -> void:
+	if goal_key == _goal_key:
+		return
+	_goal_key = goal_key
+	UiStyle.style_label(_goal, UiStyle.text_size(), UiStyle.SPEAKER)
+	_goal.text = goal_key
+	_fade_goal(1.0)
+
+
+func hide_goal() -> void:
+	_goal_key = &""
+	_fade_goal(0.0)
+
+
+func current_goal() -> StringName:
+	return _goal_key
+
+
+func _fade_goal(alpha: float) -> void:
+	if _goal_tween != null:
+		_goal_tween.kill()
+	_goal_tween = create_tween()
+	_goal_tween.tween_property(_goal, "modulate:a", alpha, FADE_SECONDS)
 
 
 func current_hint() -> StringName:

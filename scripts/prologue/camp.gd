@@ -28,9 +28,9 @@ const NARRATION: Array[StringName] = [
 	&"PRO_NARRATION_05", &"PRO_NARRATION_06", &"PRO_NARRATION_07",
 ]
 ## Where the wide shot looks and from how far (the whole camp in frame).
-const WIDE_CENTER: Vector3 = Vector3(-14.0, 9.0, -18.0)
-const WIDE_DISTANCE: float = 100.0
-const WIDE_PITCH_DEGREES: float = 13.0
+const WIDE_CENTER: Vector3 = Vector3(-10.0, 4.0, -8.0)
+const WIDE_DISTANCE: float = 92.0
+const WIDE_PITCH_DEGREES: float = 18.0
 const RISE_SECONDS: float = 6.0
 ## Height of the first leg of the rise, above the tallest vehicles.
 const RISE_HEIGHT: float = 30.0
@@ -62,6 +62,9 @@ signal intro_finished
 var intro_running: bool = false
 var tasks: CampTasks
 var vehicles: Array[Node3D] = []
+var crowd: Array[CrowdMember] = []
+var barks: CrowdBarks
+var _vehicle_boxes: Array[AABB] = []
 
 @onready var ottavia: OttaviaProto = $Ottavia
 @onready var camera_rig: FollowCameraRig = $CameraRig
@@ -141,6 +144,11 @@ func _ready() -> void:
 			menu.open.call_deferred()
 	PrologueAutoplay.attach_if_requested(get_tree())
 	tasks.finished.connect(_leave_for_column)
+	barks = CrowdBarks.new()
+	barks.ottavia = ottavia
+	barks.dialogue = dialogue
+	barks.crowd = crowd
+	add_child(barks)
 	if play_intro or PrologueState.entered_from_door:
 		intro_finished.connect(tasks.begin, CONNECT_ONE_SHOT)
 		_intro.call_deferred()
@@ -287,7 +295,8 @@ func _place_tents() -> void:
 		tent.rotation.y = _random.randf_range(-0.4, 0.4)
 
 
-## The people of the caravan getting ready (121): generic types, standing.
+## The people of the caravan getting ready (121): generic types going
+## about the camp, some saying a line as Ottavia passes.
 func _place_crowd() -> void:
 	var trades: Array[StringName] = CrowdTrades.names()
 	var trade_random: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -299,15 +308,18 @@ func _place_crowd() -> void:
 		var point: Vector3 = Vector3(_random.randf_range(-70.0, 50.0), 0.0, _random.randf_range(-30.0, 30.0))
 		if _near_vehicle(point) or in_task_area(point):
 			continue
-		var person: NpcSprite = NpcSprite.new()
+		var person: CrowdMember = CrowdMember.new()
 		var kind: String = CROWD_TYPES[_random.randi() % CROWD_TYPES.size()]
 		var view: String = CROWD_VIEWS[_random.randi() % CROWD_VIEWS.size()]
 		person.sprite_texture = load("res://assets/sprites/folla/%s_%s.png" % [kind, view])
+		# Going about the camp (121), away from the vehicles and the tasks.
+		person.setup(kind, 1000 + placed, func(at: Vector3) -> bool: return _near_vehicle(at) or in_task_area(at))
 		# Each in the colours of their trade (121); a separate random
 		# stream, so the placement stays the same.
 		person.trade = trades[trade_random.randi() % trades.size()]
 		person.position = point
 		level.add_child(person)
+		crowd.append(person)
 		placed += 1
 
 
@@ -317,10 +329,14 @@ static func in_task_area(point: Vector3) -> bool:
 
 
 func _near_vehicle(point: Vector3) -> bool:
-	for vehicle: Node3D in vehicles:
-		var box: AABB = VehicleKit.bounds(vehicle)
-		box.position += vehicle.position
-		box = box.grow(1.2)
+	# The camp vehicles stand still: their footprints are measured once.
+	if _vehicle_boxes.size() != vehicles.size():
+		_vehicle_boxes.clear()
+		for vehicle: Node3D in vehicles:
+			var measured: AABB = VehicleKit.bounds(vehicle)
+			measured.position += vehicle.position
+			_vehicle_boxes.append(measured.grow(1.2))
+	for box: AABB in _vehicle_boxes:
 		if point.x > box.position.x and point.x < box.end.x and point.z > box.position.z and point.z < box.end.z:
 			return true
 	return point.distance_to(DOOR_EXIT) < 3.0

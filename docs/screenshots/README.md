@@ -49,6 +49,9 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `19-titolo-ne-restano-dieci.png`: il titolo su nero
 - `20-buco-nel-telo-prima-e-dopo.png`: **da valutare**. Il telo della casa nella veduta d'insieme: prima (a sinistra) un buco retinato, la trasparenza di primo piano (53) ferma nell'origine del mondo; dopo (a destra) pieno
 - `21-catena-sopra-chi-parla.png`: **da valutare**. Le cinque battute della catena, ognuna sopra chi la dice: le prime al bordo sinistro (chi parla è più avanti, verso la testa), l'ultima sopra Anselmo
+- `22-veduta-carovana-e-citta-morta.png`: **da valutare**. La veduta d'insieme nuova: carovana più grande nel quadro, città morta sullo sfondo
+- `23-segnale-e-obiettivo.png`: **da valutare**. Il bagliore sulle tende e l'obiettivo sopra il suggerimento
+- `24-folla-che-gira.png`: **da valutare**. La folla che cammina nell'accampamento, quattro momenti a 5 s l'uno dall'altro
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -85,6 +88,7 @@ Stato: **da valutare** (fase 4a, passo 1).
 - `02-folla-accanto-al-mezzo-di-testa.png`: la folla accanto al mezzo di testa, alla distanza di gioco
 - `03-colori-dei-mestieri-sud.png`: **da valutare**. Gli otto tipi (colonne) nei sei mestieri (righe, dall'alto): senza tinta, Brinaioli, Tessibuio, Voltacampi, Traslocanti, Specchianti, Nodai; vista sud
 - `04-colori-dei-mestieri-sud-ovest.png`: **da valutare**. Lo stesso nella vista sud-ovest della marcia
+- `05-camminate-verso-est.png`: **da valutare**. Le camminate nuove: ovest (già fatta), est, nord-est, sud-est per tre tipi
 
 ### `asset/personaggi/ottavia-v1/`: Ottavia v1 (19, 36, 49)
 
@@ -125,6 +129,7 @@ Stato: approvato in fase 2.
 
 Stato: **da valutare** (fase 4a, passo 3).
 
+- `02-concetti-citta-morta.png`: **da valutare**. I concetti delle quattro rovine nuove: facciata, ciminiera, palazzo sventrato, ponte crollato
 - `01-concetti-delle-rovine.png`: casa diroccata, torre spezzata, muro con arco (in scena: `capitoli/00-prologo/07`)
 
 ### `asset/texture/`: Texture degli ambienti (54)
@@ -210,6 +215,7 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/11-prologo-intero-folla-guida-citta-morta.mp4`: **da valutare**. Il prologo intero con la folla che gira, il segnale di dove andare e la città morta
 - `capitoli/00-prologo/10-prologo-intero-dall-inizio-al-titolo.mp4`: **da valutare**. Tutto il prologo giocato dal pilota automatico, a 1280×800 con audio, dal risveglio al titolo (4 min 2 s)
 - `capitoli/00-prologo/09-verdetto-cinque-voci-ed-enea.mp4`: **da valutare (con le cuffie)**. Il verdetto con la catena di cinque voci; Enea cammina accanto ad Arold, poi si ferma e si volta (60 s)
 - `capitoli/00-prologo/08-porta-e-narrazione-senza-buco.mp4`: **da valutare**. Come 06, senza il buco nel telo della casa

@@ -45,6 +45,7 @@ const GENERATOR_DB: float = -9.0
 var step: Step = Step.WAKE
 var _was_in_bay: bool = true
 var zelinda_spoke: bool = false
+var marker: ObjectiveMarker
 
 @onready var ottavia: OttaviaProto = $Ottavia
 @onready var camera_rig: FollowCameraRig = $CameraRig
@@ -95,6 +96,8 @@ func _ready() -> void:
 	menu.name = "OptionsMenu"
 	add_child(menu)
 	PrologueAutoplay.attach_if_requested(get_tree())
+	marker = ObjectiveMarker.new()
+	level.add_child(marker)
 	_wake.call_deferred()
 
 
@@ -137,6 +140,9 @@ func _physics_process(_delta: float) -> void:
 			if _flat_distance(ottavia.global_position, _move_origin) >= MOVE_HINT_DISTANCE:
 				step = Step.WALK
 				hints.hide_hint()
+				# Where to go (106): the back door, marked with a warm glow.
+				hints.show_goal(&"PRO_GOAL_DOOR")
+				marker.point_to(DOOR_POSITION + Vector3(-0.6, 0.0, 0.0))
 		Step.WALK:
 			if ottavia.lantern_open and _flat_distance(ottavia.global_position, ZELINDA_POSITION) <= ZELINDA_RADIUS:
 				step = Step.CLOSE_LANTERN
@@ -172,6 +178,8 @@ func go_outside() -> void:
 	step = Step.OUTSIDE
 	ottavia.controls_enabled = false
 	hints.hide_hint()
+	hints.hide_goal()
+	marker.clear()
 	dialogue.hide_box()
 	PrologueState.entered_from_door = true
 	PrologueState.lantern_open = ottavia.lantern_open

@@ -45,6 +45,9 @@ const LINE_SECONDS: float = 3.5
 
 var task: Task = Task.WAIT
 var breakables: Array[Breakable] = []
+## Where to go next (106): glow, edge arrow and the goal above the hint.
+var marker: ObjectiveMarker
+var _climb_spot: ClimbSpot
 var swarm: Array[CombatEnemy] = []
 
 var _ottavia: OttaviaProto
@@ -61,6 +64,8 @@ func setup(ottavia: OttaviaProto, dialogue: DialogueBox, hints: HintBanner) -> v
 	_dialogue = dialogue
 	_hints = hints
 	_ottavia.defeated.connect(_on_defeated)
+	marker = ObjectiveMarker.new()
+	add_child(marker)
 	_build()
 
 
@@ -121,6 +126,34 @@ func _physics_process(delta: float) -> void:
 func _set_task(next: Task) -> void:
 	task = next
 	_task_time = 0.0
+	_show_goal()
+
+
+## Each task says where to go and why, and marks the place (106).
+func _show_goal() -> void:
+	match task:
+		Task.SPRINT:
+			_goal(&"PRO_GOAL_TAILS", Vector3(TAIL_ROWS[0] - 1.5, 0.0, 2.2))
+		Task.JUMP:
+			_goal(&"PRO_GOAL_TENTS", TENTS)
+		Task.CLIMB:
+			_goal(&"PRO_GOAL_CLIMB", Vector3(_climb_spot.global_position.x, 0.0, _climb_spot.global_position.z + 0.8))
+		Task.WAKE:
+			_hints.show_goal(&"PRO_GOAL_WAKE")
+			marker.point_to_node(_ruggero)
+		Task.BREAK:
+			_goal(&"PRO_GOAL_BREAK", STUCK_TAIL)
+		Task.FIGHT:
+			_hints.show_goal(&"PRO_GOAL_SWARM")
+			marker.clear()
+		_:
+			_hints.hide_goal()
+			marker.clear()
+
+
+func _goal(key: StringName, at: Vector3) -> void:
+	_hints.show_goal(key)
+	marker.point_to(at)
 
 
 ## Ruggero wakes up when Ottavia talks to him on the terrace.
@@ -244,7 +277,7 @@ func _build_field_wagon() -> void:
 	var deck: Node3D = LevelBlocks.box(self, FIELD_WAGON + Vector3(0.0, DECK_HEIGHT * 0.5, 0.0), Vector3(box.size.x * 0.9, DECK_HEIGHT, box.size.z * 0.7), LevelBlocks.material(TEX_PLANKS))
 	deck.visible = false
 	var front_z: float = FIELD_WAGON.z + box.size.z * 0.35
-	ClimbSpot.create(self, Vector3(RUGGERO_SPOT.x + 1.5, 1.0, front_z + 0.45), Vector3(3.0, 2.0, 0.9), Vector3(RUGGERO_SPOT.x + 1.5, DECK_HEIGHT, front_z - 0.8), Vector3.BACK)
+	_climb_spot = ClimbSpot.create(self, Vector3(RUGGERO_SPOT.x + 1.5, 1.0, front_z + 0.45), Vector3(3.0, 2.0, 0.9), Vector3(RUGGERO_SPOT.x + 1.5, DECK_HEIGHT, front_z - 0.8), Vector3.BACK)
 	_ruggero = NpcSprite.new()
 	_ruggero.sprite_texture = RUGGERO_ASLEEP
 	_ruggero.frame_count = 6

@@ -79,6 +79,8 @@ var column_moving: bool = true
 @onready var rope: RopeCounter = $RopeCounter
 @onready var title: ChapterTitle = $ChapterTitle
 var bubble: SpeechBubble
+## Where to go next (106).
+var marker: ObjectiveMarker
 @onready var level: Node3D = $Level
 
 var _random: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -130,6 +132,8 @@ func _ready() -> void:
 	menu.name = "OptionsMenu"
 	add_child(menu)
 	PrologueAutoplay.attach_if_requested(get_tree())
+	marker = ObjectiveMarker.new()
+	level.add_child(marker)
 	bubble = SpeechBubble.new()
 	add_child(bubble)
 	hud.bind(ottavia)
@@ -154,6 +158,8 @@ func _intro() -> void:
 	camera_rig.camera.current = true
 	ottavia.controls_enabled = true
 	step = Step.GO_BACK
+	hints.show_goal(&"PRO_GOAL_MIRCO")
+	marker.point_to_node(mirco)
 
 
 func _physics_process(delta: float) -> void:
@@ -173,6 +179,8 @@ func _physics_process(delta: float) -> void:
 			if brinacchi.all(func(enemy: CombatEnemy) -> bool: return not enemy.is_alive()):
 				step = Step.TIE
 				hints.show_hint(&"INPUT_INTERACT", &"interact")
+				hints.show_goal(&"PRO_GOAL_TIE")
+				marker.point_to_node(mirco)
 		Step.VERDICT:
 			_follow(delta)
 			if _anselmo_walking:
@@ -198,6 +206,8 @@ func _meet() -> void:
 	ottavia.controls_enabled = true
 	# A couple of Brinacchi drawn by the two of them in the frost.
 	step = Step.FIGHT
+	hints.show_goal(&"PRO_GOAL_SWARM")
+	marker.clear()
 	for index: int in 2:
 		var creature: CombatEnemy = BRINACCHIO.instantiate()
 		creature.hit_sound = &"bastone_creatura"
@@ -222,6 +232,11 @@ func _on_mirco_used() -> void:
 	rope.add_knot()
 	ottavia.controls_enabled = true
 	_return_start_x = ottavia.global_position.x
+	# Back to the tail of the column, which keeps walking away.
+	var last: Node3D = column[0]
+	var box: AABB = VehicleKit.bounds(last)
+	hints.show_goal(&"PRO_GOAL_COLUMN")
+	marker.point_to_node(last, Vector3(box.end.x + 1.0, 0.0, box.get_center().z))
 
 
 ## Mirco, tied to the rope, walks after Ottavia.
@@ -255,6 +270,8 @@ func _last_vehicle_back() -> float:
 func _verdict() -> void:
 	step = Step.VERDICT
 	ottavia.controls_enabled = false
+	hints.hide_goal()
+	marker.clear()
 	ottavia.combat.run_drain_multiplier = 1.0
 	ottavia.auto_move = Vector3(-COLUMN_SPEED, 0.0, 0.0)
 	hints.hide_hint()
