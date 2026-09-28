@@ -210,6 +210,7 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/10-prologo-intero-dall-inizio-al-titolo.mp4`: **da valutare**. Tutto il prologo giocato dal pilota automatico, a 1280×800 con audio, dal risveglio al titolo (4 min 2 s)
 - `capitoli/00-prologo/09-verdetto-cinque-voci-ed-enea.mp4`: **da valutare (con le cuffie)**. Il verdetto con la catena di cinque voci; Enea cammina accanto ad Arold, poi si ferma e si volta (60 s)
 - `capitoli/00-prologo/08-porta-e-narrazione-senza-buco.mp4`: **da valutare**. Come 06, senza il buco nel telo della casa
 - `capitoli/00-prologo/07-verdetto-con-audio.mp4`: superato da 09 (catena di quattro voci, Enea che scivola). Il verdetto: la musica tace, la catena di voci sempre più vicine, Anselmo, il titolo sulla prima frase del tema (50 s)

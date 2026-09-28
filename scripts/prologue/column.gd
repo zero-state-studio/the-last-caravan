@@ -129,6 +129,7 @@ func _ready() -> void:
 	var menu: OptionsMenu = OptionsMenu.new()
 	menu.name = "OptionsMenu"
 	add_child(menu)
+	PrologueAutoplay.attach_if_requested(get_tree())
 	bubble = SpeechBubble.new()
 	add_child(bubble)
 	hud.bind(ottavia)

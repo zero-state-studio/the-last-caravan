@@ -139,6 +139,7 @@ func _ready() -> void:
 			LanternProgress.pieces = argument.trim_prefix("lantern=").to_int()
 		elif argument == "pause=1":
 			menu.open.call_deferred()
+	PrologueAutoplay.attach_if_requested(get_tree())
 	tasks.finished.connect(_leave_for_column)
 	if play_intro or PrologueState.entered_from_door:
 		intro_finished.connect(tasks.begin, CONNECT_ONE_SHOT)
