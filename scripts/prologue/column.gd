@@ -48,7 +48,11 @@ const CROWD_DB: float = -18.0
 ## The verdict from voice to voice (106): line IDs in the order they are
 ## heard, each voice closer than the one before.
 const CHAIN: Array[StringName] = [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_05", &"PRO_CHAIN_06", &"PRO_CHAIN_04"]
-const CHAIN_VOICE_DB: Array[float] = [-14.0, -10.0, -7.0, -4.0, 0.0]
+## How far ahead of Ottavia (metres, toward the head) the first four
+## speakers walk; the fifth is Anselmo at her side. Distance softens the
+## voices; the volume steps add to it.
+const CHAIN_SPEAKER_METERS: Array[float] = [55.0, 32.0, 17.0, 8.0]
+const CHAIN_VOICE_DB: Array[float] = [-4.0, -3.0, -2.0, -1.0, 0.0]
 ## East of this the ground is frosted: steps crunch.
 const FROST_X: float = 25.0
 const SUN_ELEVATION_DEGREES: float = 14.0
@@ -74,6 +78,7 @@ var column_moving: bool = true
 @onready var hints: HintBanner = $HintBanner
 @onready var rope: RopeCounter = $RopeCounter
 @onready var title: ChapterTitle = $ChapterTitle
+var bubble: SpeechBubble
 @onready var level: Node3D = $Level
 
 var _random: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -120,6 +125,8 @@ func _ready() -> void:
 	camera_rig.snap_to_target()
 	var hud: CombatHud = CombatHud.new()
 	add_child(hud)
+	bubble = SpeechBubble.new()
+	add_child(bubble)
 	hud.bind(ottavia)
 	if "verdict=1" in OS.get_cmdline_user_args():
 		_verdict.call_deferred()
@@ -248,10 +255,14 @@ func _verdict() -> void:
 	hints.hide_hint()
 	_place_anselmo()
 	GameAudio.stop_music(1.5)
+	# Each line above the one who says it, each speaker nearer Ottavia; the
+	# voice comes from them, the first far away toward the head (left).
+	var speakers: Array[Node3D] = chain_speakers()
 	for index: int in CHAIN.size():
-		var voice: float = dialogue.show_line(&"", CHAIN[index], CHAIN_VOICE_DB[index])
+		bubble.show_over(speakers[index], CHAIN[index])
+		var voice: float = GameAudio.play_voice_at(CHAIN[index], speakers[index].global_position + Vector3.UP * 1.5, CHAIN_VOICE_DB[index])
 		await get_tree().create_timer(DialogueBox.line_wait(chain_seconds, voice)).timeout
-	dialogue.hide_box()
+	bubble.hide_bubble()
 	# Cut to the head of the column: Arold walks on without turning, Enea turns.
 	_head_shot = true
 	cinema_camera.current = true
@@ -278,10 +289,37 @@ func _verdict() -> void:
 	GameAudio.stop_loop(&"generator", 1.2)
 	GameAudio.stop_loop(&"crowd", 1.2)
 	await title.fade_to_black(1.2)
+	# The first phrase of the theme; it breaks off as the title fades (126).
 	GameAudio.play_music(TITLE_MUSIC, 0.0)
-	await title.show_title(&"PRO_TITLE_CH1", line_seconds if line_seconds < 1.0 else maxf(line_seconds, TITLE_MUSIC.get_length()))
+	title.title_leaving.connect(func(seconds: float) -> void: GameAudio.stop_music(seconds), CONNECT_ONE_SHOT)
+	if line_seconds < 1.0:
+		await title.show_title(&"PRO_TITLE_CH1", line_seconds, line_seconds, line_seconds)
+	else:
+		await title.show_title(&"PRO_TITLE_CH1")
 	step = Step.DONE
 	prologue_finished.emit()
+
+
+## Who says each line of the chain: people of the crowd ahead of Ottavia,
+## each nearer than the one before, and Anselmo last.
+func chain_speakers() -> Array[Node3D]:
+	var speakers: Array[Node3D] = []
+	var here: float = ottavia.global_position.x
+	var taken: Array[NpcSprite] = []
+	for ahead: float in CHAIN_SPEAKER_METERS:
+		var best: NpcSprite = null
+		for walker: NpcSprite in walkers:
+			# On the camera side of the column, so they are seen saying it.
+			if walker in taken or walker.global_position.x > here - 2.0 or walker.global_position.z < COLUMN_Z:
+				continue
+			if best == null or absf(here - walker.global_position.x - ahead) < absf(here - best.global_position.x - ahead):
+				best = walker
+		if best == null:
+			best = walkers[0]
+		taken.append(best)
+		speakers.append(best)
+	speakers.append(_anselmo)
+	return speakers
 
 
 ## Enea stops where he is and looks back; the head walks on without him.

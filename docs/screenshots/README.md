@@ -47,6 +47,7 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `18-sagoma-della-lanterna.png`: la sagoma vuota della lanterna del congedo (88), disegno provvisorio
 - `19-titolo-ne-restano-dieci.png`: il titolo su nero
 - `20-buco-nel-telo-prima-e-dopo.png`: **da valutare**. Il telo della casa nella veduta d'insieme: prima (a sinistra) un buco retinato, la trasparenza di primo piano (53) ferma nell'origine del mondo; dopo (a destra) pieno
+- `21-catena-sopra-chi-parla.png`: **da valutare**. Le cinque battute della catena, ognuna sopra chi la dice: le prime al bordo sinistro (chi parla è più avanti, verso la testa), l'ultima sopra Anselmo
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)

@@ -17,6 +17,15 @@ const VOICE_DIR: String = "res://assets/audio/voice/"
 const VOICE_FALLBACK: String = "it"
 const SILENT_DB: float = -60.0
 const NODE_PATH: NodePath = ^"/root/GameAudioNode"
+## Voices come first (126): while one speaks the music goes down this much,
+## and comes back up in the pauses.
+const DUCK_DB: float = -10.0
+const DUCK_DOWN_DB_PER_SECOND: float = 40.0
+const DUCK_UP_DB_PER_SECOND: float = 16.0
+## A voice placed in the world (the verdict chain): full at this distance
+## from the listener, softer farther away.
+const VOICE_3D_UNIT_METERS: float = 10.0
+const VOICE_3D_MAX_METERS: float = 150.0
 
 var _music: Array[AudioStreamPlayer] = []
 var _music_on: int = 0
@@ -25,6 +34,11 @@ var _current_music: AudioStream
 var _loops: Dictionary = {}
 var _loop_tweens: Dictionary = {}
 var _voice: AudioStreamPlayer
+var _voice_3d: AudioStreamPlayer3D
+## When the voice now speaking ends (msec); kept even where nothing is heard.
+var _voice_end_msec: int = 0
+var _duck_db: float = 0.0
+var _music_bus: int = -1
 ## Loops started and not stopped (their state, whether audible or not).
 var _active_loops: Dictionary = {}
 ## Headless test runs keep the state but start no playback: a stream still
@@ -45,6 +59,21 @@ func _ready() -> void:
 	_voice = AudioStreamPlayer.new()
 	_voice.bus = &"Voice"
 	add_child(_voice)
+	_voice_3d = AudioStreamPlayer3D.new()
+	_voice_3d.bus = &"Voice"
+	_voice_3d.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
+	_voice_3d.unit_size = VOICE_3D_UNIT_METERS
+	_voice_3d.max_distance = VOICE_3D_MAX_METERS
+	add_child(_voice_3d)
+	_music_bus = AudioServer.get_bus_index(&"Music")
+
+
+func _process(delta: float) -> void:
+	var target: float = DUCK_DB if _is_voice_playing() else 0.0
+	var rate: float = DUCK_DOWN_DB_PER_SECOND if target < _duck_db else DUCK_UP_DB_PER_SECOND
+	_duck_db = move_toward(_duck_db, target, rate * delta)
+	if _music_bus >= 0:
+		AudioServer.set_bus_volume_db(_music_bus, _duck_db)
 
 
 func _exit_tree() -> void:
@@ -55,6 +84,8 @@ func _exit_tree() -> void:
 	for player: AudioStreamPlayer in players:
 		player.stop()
 		player.stream = null
+	_voice_3d.stop()
+	_voice_3d.stream = null
 	_current_music = null
 
 
@@ -144,22 +175,41 @@ func _fade_loop(loop_name: StringName, player: AudioStreamPlayer, volume_db: flo
 ## in seconds (0 when the line has no voice yet).
 func _play_voice(line_key: StringName, volume_db: float = 0.0) -> float:
 	var stream: AudioStream = voice_stream(line_key)
-	_voice.stop()
+	_stop_voice()
 	if stream == null:
 		return 0.0
 	_voice.stream = stream
 	_voice.volume_db = volume_db
 	if _audible:
 		_voice.play()
+	_voice_end_msec = Time.get_ticks_msec() + int(stream.get_length() * 1000.0)
+	return stream.get_length()
+
+
+## A voice heard from a point in the world: far away it is soft and comes
+## from its side of the screen.
+func _play_voice_at(line_key: StringName, at: Vector3, volume_db: float = 0.0) -> float:
+	var stream: AudioStream = voice_stream(line_key)
+	_stop_voice()
+	if stream == null:
+		return 0.0
+	_voice_3d.stream = stream
+	_voice_3d.volume_db = volume_db
+	_voice_3d.global_position = at
+	if _audible:
+		_voice_3d.play()
+	_voice_end_msec = Time.get_ticks_msec() + int(stream.get_length() * 1000.0)
 	return stream.get_length()
 
 
 func _stop_voice() -> void:
 	_voice.stop()
+	_voice_3d.stop()
+	_voice_end_msec = 0
 
 
 func _is_voice_playing() -> bool:
-	return _voice.playing
+	return Time.get_ticks_msec() < _voice_end_msec
 
 
 static func _node() -> GameAudio:
@@ -210,6 +260,17 @@ static func stop_all(fade_seconds: float = 0.5) -> void:
 static func play_voice(line_key: StringName, volume_db: float = 0.0) -> float:
 	var node: GameAudio = _node()
 	return node._play_voice(line_key, volume_db) if node != null else 0.0
+
+
+static func play_voice_at(line_key: StringName, at: Vector3, volume_db: float = 0.0) -> float:
+	var node: GameAudio = _node()
+	return node._play_voice_at(line_key, at, volume_db) if node != null else 0.0
+
+
+## How far the music is pulled down under the voices now (dB, 0 or less).
+static func music_duck_db() -> float:
+	var node: GameAudio = _node()
+	return node._duck_db if node != null else 0.0
 
 
 static func stop_voice() -> void:

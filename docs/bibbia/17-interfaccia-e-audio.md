@@ -8,7 +8,7 @@ Poca, leggibile sullo schermo di Steam Deck (1280×800), e mai soggetta al virag
 - **Suggerimenti:** in basso al centro, testo breve con l'icona del tasto, che compare e sfuma.
 - **Dialoghi:** riquadro scuro in basso, con il nome di chi parla; per ora senza ritratti.
 - **La lanterna del congedo (88):** nel menu di pausa, la sagoma della lanterna che si riempie un pezzo alla volta.
-- **Titoli dei capitoli:** testo grande su nero, che appare e sfuma, per esempio «Ne restano dieci».
+- **Titoli dei capitoli:** testo grande su nero, che appare e sfuma, per esempio «Ne restano dieci». Circa 8 secondi in tutto: 1,5 per comparire, 4 fermo, 1,5 per sparire. Si può saltare con un tasto.
 - **Carattere:** un carattere pixel leggibile, con dimensione regolabile per sottotitoli e dialoghi (96).
 
 ## 126. Musica  [In discussione]
@@ -18,6 +18,7 @@ Completa la direzione del punto 57.
 - **Il tema di Ottavia** è affidato alla ghironda, uno strumento a ruota che gira, come il mondo. Nel prologo lo si sente intero. A ogni capitolo perde qualche nota e rallenta, come Ottavia perde colpi e fiato. Nel finale ne restano poche note, poi il silenzio; le stelle hanno un suono che non si è mai sentito prima, quello di bicchieri di vetro suonati a sfregamento.
 - **Le zone.** Al centro del Crepuscolo: ghironda, clarinetto basso, tamburo a cornice. Verso la Notte: archi gravi, suoni di vetro e ghiaccio, sempre più radi. Verso il Giorno: corde pizzicate metalliche, luccicanti.
 - **Il prologo:** nel piano buio nessuna musica, solo il battito attutito dei Generatori; all'apertura della porta, sotto la narrazione, il tema di Ottavia intero; nell'accampamento una versione leggera e ritmata; nel ritorno con Mirco tensione e battito più rapido; nella catena del verdetto la musica tace e restano solo le voci; sul titolo, la prima frase del tema, lasciata a metà.
+- **Le voci hanno sempre la precedenza.** Durante la narrazione la musica si abbassa sotto la voce e risale nelle pause tra una frase e l'altra; nella catena del verdetto la musica tace. Sul titolo la frase del tema si interrompe mentre il titolo sparisce.
 
 ## 127. Effetti sonori del prologo  [In discussione]
 

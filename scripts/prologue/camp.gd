@@ -42,8 +42,10 @@ const SUN_ELEVATION_DEGREES: float = 14.0
 const THEME_MUSIC: AudioStream = preload("res://assets/audio/music/m1_porta_narrazione.ogg")
 const CAMP_MUSIC: AudioStream = preload("res://assets/audio/music/m2_accampamento.ogg")
 const CAMP_MUSIC_DB: float = -3.0
-## Under the narration the theme stays well below the voice.
-const THEME_MUSIC_DB: float = -9.0
+## The theme at full voice; GameAudio pulls it down under every line.
+const THEME_MUSIC_DB: float = -1.0
+## Silence between narration lines, where the theme rises again.
+const NARRATION_PAUSE: float = 1.5
 const GENERATOR_DB: float = -14.0
 const CROWD_DB: float = -12.0
 const SUN_AZIMUTH_DEGREES: float = 300.0
@@ -164,12 +166,12 @@ func _intro() -> void:
 	var narration_seconds: float = 0.0
 	for line: StringName in NARRATION:
 		var stream: AudioStream = GameAudio.voice_stream(line)
-		narration_seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0)
+		narration_seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0, NARRATION_PAUSE)
 	var drift: Tween = create_tween()
 	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = wide.interpolate_with(drift_end, t), 0.0, 1.0, narration_seconds)
 	for line: StringName in NARRATION:
 		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", line)
-		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice)).timeout
+		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, NARRATION_PAUSE)).timeout
 	dialogue.hide_box()
 	if drift.is_running():
 		drift.kill()

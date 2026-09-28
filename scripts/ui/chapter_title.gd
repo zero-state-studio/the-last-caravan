@@ -5,14 +5,29 @@ extends CanvasLayer
 ## farewell lantern in the menu (88).
 
 const LANTERN_COLOR: Color = Color(0.93, 0.8, 0.52)
+## Title timing (125): 1.5 s to appear, 4 still, 1.5 to go.
+const TITLE_IN_SECONDS: float = 1.5
+const TITLE_HOLD_SECONDS: float = 4.0
+const TITLE_OUT_SECONDS: float = 1.5
+## Any of these skips the title straight to its fade-out.
+const SKIP_ACTIONS: Array[StringName] = [&"interact", &"attack", &"ui_accept"]
+
+## The title starts fading out (after the hold, or skipped): the music
+## that goes with it can stop in the same time.
+signal title_leaving(seconds: float)
+signal _title_gone
 
 var _black: ColorRect
 var _title: Label
 var _lantern: Control
+var _title_tween: Tween
+var _out_seconds: float = TITLE_OUT_SECONDS
+var _leaving: bool = false
 
 
 func _ready() -> void:
 	layer = 60
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_black = ColorRect.new()
 	_black.color = Color(0.0, 0.0, 0.0, 0.0)
 	_black.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -40,14 +55,43 @@ func fade_to_black(seconds: float) -> void:
 	await tween.finished
 
 
-## The title on black: in, hold, out.
-func show_title(key: StringName, hold_seconds: float) -> void:
+## The title on black: in, hold, out; a skip key jumps to the fade-out.
+func show_title(key: StringName, hold_seconds: float = TITLE_HOLD_SECONDS, in_seconds: float = TITLE_IN_SECONDS, out_seconds: float = TITLE_OUT_SECONDS) -> void:
 	_title.text = key
-	var tween: Tween = create_tween()
-	tween.tween_property(_title, "modulate:a", 1.0, 1.2)
-	tween.tween_interval(hold_seconds)
-	tween.tween_property(_title, "modulate:a", 0.0, 1.2)
-	await tween.finished
+	_out_seconds = out_seconds
+	_leaving = false
+	_title_tween = create_tween()
+	_title_tween.tween_property(_title, "modulate:a", 1.0, in_seconds)
+	_title_tween.tween_interval(hold_seconds)
+	_title_tween.tween_callback(_leave)
+	await _title_gone
+
+
+## Skips the title: straight to its fade-out.
+func skip_title() -> void:
+	if _title_tween != null and not _leaving:
+		_title_tween.kill()
+		_leave()
+
+
+func _leave() -> void:
+	if _leaving:
+		return
+	_leaving = true
+	title_leaving.emit(_out_seconds)
+	var out: Tween = create_tween()
+	out.tween_property(_title, "modulate:a", 0.0, _out_seconds)
+	out.tween_callback(_title_gone.emit)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _title_tween == null or not _title_tween.is_valid() or _leaving:
+		return
+	for action: StringName in SKIP_ACTIONS:
+		if InputMap.has_action(action) and event.is_action_pressed(action):
+			skip_title()
+			get_viewport().set_input_as_handled()
+			return
 
 
 func is_title_visible() -> bool:

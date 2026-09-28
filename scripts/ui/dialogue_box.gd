@@ -41,8 +41,9 @@ func show_line(speaker_key: StringName, line_key: StringName, voice_db: float = 
 
 ## How long a line stays up: `seconds`, or longer if its voice needs it.
 ## Short dev pacing (under a second, tests) is kept as it is.
-static func line_wait(seconds: float, voice_seconds: float) -> float:
-	return seconds if seconds < 1.0 else maxf(seconds, voice_seconds + 0.6)
+## `pause` is the silence after the voice (the music comes back up in it).
+static func line_wait(seconds: float, voice_seconds: float, pause: float = 0.6) -> float:
+	return seconds if seconds < 1.0 else maxf(seconds, voice_seconds + pause)
 
 
 func hide_box() -> void:

@@ -9,6 +9,8 @@ var _failures: int = 0
 func _initialize() -> void:
 	await _test_animations()
 	await _test_vehicle_wheels()
+	await _test_title()
+	await _test_ducking()
 	await _test_floor()
 	await _test_camp_intro()
 	await _test_camp_tasks()
@@ -236,9 +238,17 @@ func _test_column() -> void:
 	await create_timer(0.1).timeout
 	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")
 	_check(GameAudio.music_stream() == null, "audio: in the verdict the music falls silent, only the voices (126)")
+	var speakers: Array[Node3D] = column.chain_speakers()
+	var nearer: bool = speakers.size() == 5
+	for index: int in range(1, speakers.size()):
+		nearer = nearer and absf(speakers[index].global_position.x - ottavia.global_position.x) < absf(speakers[index - 1].global_position.x - ottavia.global_position.x)
+	_check(nearer and speakers[0].global_position.x < ottavia.global_position.x - 30.0, "column: the chain starts far toward the head and each voice is nearer Ottavia (106)")
+	_check(column.bubble.is_showing() and StringName(column.bubble.current_line()) in column.CHAIN and column.bubble.current_target() in column.walkers, "column: each chain line shows above the one in the crowd who says it (96)")
+	var title_music: Array[AudioStream] = []
+	column.title.title_leaving.connect(func(_seconds: float) -> void: title_music.append(GameAudio.music_stream()), CONNECT_ONE_SHOT)
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
-	_check(GameAudio.music_stream() == column.TITLE_MUSIC, "audio: on the title, the first phrase of the theme (126)")
+	_check(title_music.size() == 1 and title_music[0] == column.TITLE_MUSIC and GameAudio.music_stream() == null, "audio: on the title the first phrase of the theme, broken off as the title fades (126)")
 	_check(column._enea.get_parent() == column.level and column._enea.texture == column.ENEA_LOOKING_BACK, "column: in the head shot Enea stops and turns to look back (106)")
 	var chain_voiced: bool = column.CHAIN.size() == 5
 	for line: StringName in column.CHAIN:
@@ -246,6 +256,32 @@ func _test_column() -> void:
 	_check(chain_voiced, "column: the verdict chain has five voiced lines (106)")
 	column.queue_free()
 	await _frames(2)
+
+
+## Chapter title (125): 1.5 s in, 4 still, 1.5 out; a key skips it.
+func _test_title() -> void:
+	var title: ChapterTitle = ChapterTitle.new()
+	root.add_child(title)
+	await _frames(1)
+	var started: int = Time.get_ticks_msec()
+	var skip: Callable = func() -> void:
+		await create_timer(0.3).timeout
+		title.skip_title()
+	skip.call()
+	await title.show_title(&"PRO_TITLE_CH1")
+	var seconds: float = (Time.get_ticks_msec() - started) / 1000.0
+	_check(seconds > 1.6 and seconds < 2.5 and not title.is_title_visible(), "title: skipped, it fades out at once (%.1f s instead of 7)" % seconds)
+	title.queue_free()
+	await _frames(1)
+
+
+## Voices first (126): under a voice the music goes down, then back up.
+func _test_ducking() -> void:
+	var length: float = GameAudio.play_voice(&"PRO_NARRATION_05")
+	await create_timer(0.5).timeout
+	var ducked: float = GameAudio.music_duck_db()
+	await create_timer(length + 1.2).timeout
+	_check(ducked < -8.0 and GameAudio.music_duck_db() > -0.5, "audio: the music goes down under a voice (%.1f dB) and back up after it" % ducked)
 
 
 func _frames(count: int) -> void:
