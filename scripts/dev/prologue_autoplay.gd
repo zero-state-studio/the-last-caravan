@@ -78,8 +78,8 @@ func _play_camp(scene: Node) -> void:
 	await _wait(scene, 1.0)
 	# Sprint to the Tails, jump the three rows, on to the tents.
 	var lane_z: float = ottavia.global_position.z
-	await _walk_to(scene, ottavia, Vector3(CampTasks.TAIL_ROWS[0] - 3.0, 0.0, lane_z), true)
-	for row: float in CampTasks.TAIL_ROWS:
+	await _walk_to(scene, ottavia, Vector3(CampTasks.ROCK_ROWS[0] - 3.0, 0.0, lane_z), true)
+	for row: float in CampTasks.ROCK_ROWS:
 		await _walk_to(scene, ottavia, Vector3(row - 1.6, 0.0, lane_z), true)
 		_hold_toward(ottavia, Vector3(row + 3.0, 0.0, lane_z), true)
 		await _tap(scene, &"jump")
@@ -88,27 +88,26 @@ func _play_camp(scene: Node) -> void:
 	await _walk_to(scene, ottavia, CampTasks.TENTS + Vector3(-2.0, 0.0, 3.0), false)
 	await _until(scene, func() -> bool: return tasks.task == CampTasks.Task.CLIMB, 3.0)
 	await _wait(scene, 1.5)
-	# Round the field-wagon to its handholds and push against the wall.
+	# Round the field-wagon's head to the ladder and walk into it.
 	var climb: ClimbSpot = tasks.find_children("*", "ClimbSpot", true, false)[0]
-	var wagon_end_x: float = _wagon_end_x(tasks)
 	var below: Vector3 = Vector3(climb.global_position.x, 0.0, climb.global_position.z + 1.6)
-	await _walk_to(scene, ottavia, Vector3(wagon_end_x + 2.0, 0.0, CampTasks.TENTS.z + 3.0), false)
-	await _walk_to(scene, ottavia, Vector3(wagon_end_x + 2.0, 0.0, below.z), false)
+	await _walk_to(scene, ottavia, Vector3(CampTasks.LANDING_MIN.x - 3.0, 0.0, CampTasks.TENTS.z + 3.0), false)
+	await _walk_to(scene, ottavia, Vector3(CampTasks.LANDING_MIN.x - 3.0, 0.0, below.z), false)
 	await _walk_to(scene, ottavia, below, false)
 	_hold_toward(ottavia, climb.global_position - climb.wall_normal * 3.0, false)
 	await _until(scene, func() -> bool: return ottavia.is_climbing(), 4.0)
 	print("AUTOPLAY camp climbing=%s" % ottavia.is_climbing())
 	_release_moves()
 	await _until(scene, func() -> bool: return not ottavia.is_climbing(), 4.0)
-	await _walk_to(scene, ottavia, CampTasks.RUGGERO_SPOT + Vector3(1.2, 0.0, 0.0), false)
+	await _walk_to(scene, ottavia, CampTasks.RUGGERO_SPOT + Vector3(0.9, 0.0, 0.3), false)
 	await _wait(scene, 0.8)
 	print("AUTOPLAY camp ruggero task=%d" % tasks.task)
 	await _tap(scene, &"interact")
 	await _until(scene, func() -> bool: return tasks.task == CampTasks.Task.BREAK, 3.0)
 	await _wait(scene, 2.5)
-	# Down from the terrace, to the Homehauler and the stuck Tail.
+	# Down from the landing, to the Homehauler and the stuck Tail.
 	await _walk_to(scene, ottavia, Vector3(ottavia.global_position.x, 0.0, ottavia.global_position.z + 4.0), false, 6.0)
-	await _walk_to(scene, ottavia, Vector3(wagon_end_x + 2.0, 0.0, ottavia.global_position.z), false)
+	await _walk_to(scene, ottavia, Vector3(CampTasks.FIELD_WAGON.x + 10.0, 0.0, ottavia.global_position.z), false)
 	await _walk_to(scene, ottavia, CampTasks.TRASLOCANTE_SPOT + Vector3(-1.5, 0.0, 0.0), false)
 	await _wait(scene, 2.5)
 	for item: Breakable in tasks.breakables:
@@ -268,14 +267,6 @@ func _fight(scene: Node, ottavia: OttaviaProto, enemies: Callable, timeout: floa
 		await _defeat(scene, ottavia, alive[0], 4.0)
 		left -= Time.get_ticks_msec() / 1000.0 - started
 	_release_all()
-
-
-func _wagon_end_x(tasks: CampTasks) -> float:
-	for child: Node in tasks.get_children():
-		if child is Node3D and String(child.scene_file_path).contains("carro_campo"):
-			var box: AABB = VehicleKit.bounds(child as Node3D)
-			return (child as Node3D).position.x + box.end.x
-	return CampTasks.FIELD_WAGON.x + 9.0
 
 
 # --- Timing -----------------------------------------------------------------

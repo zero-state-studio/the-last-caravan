@@ -200,10 +200,11 @@ func _animate(delta: float, moving: bool) -> void:
 	var index: int = 0
 	match name:
 		"combo":
-			# Three strikes of the chapter-1 combo, four frames each.
-			var strike: float = combat.tuning.strike_startup + combat.tuning.strike_active + combat.tuning.strike_recovery
-			var progress: float = clampf(combat.state_time() / maxf(strike, 0.01), 0.0, 0.999)
-			index = (combat.combo_index % 3) * 4 + int(progress * 4.0)
+			# Three strikes of the chapter-1 combo, four frames each, timed on
+			# the strike: wind-up during the startup, the staff at full
+			# reach (frame 2) exactly while the hit and its sound land, then
+			# the follow-through.
+			index = (combat.combo_index % 3) * 4 + strike_frame(combat.state_time(), combat.tuning)
 		"hurt":
 			index = int(clampf(combat.state_time() / maxf(combat.tuning.hitstun_seconds, 0.01), 0.0, 0.999) * count)
 		"jump":
@@ -277,6 +278,17 @@ func stop_scripted() -> void:
 
 func is_climbing() -> bool:
 	return _climbing
+
+
+## Frame 0-3 of a strike at `time` seconds into it.
+static func strike_frame(time: float, tuning: CombatTuning) -> int:
+	if time < tuning.strike_startup * 0.5:
+		return 0
+	if time < tuning.strike_startup:
+		return 1
+	if time < tuning.strike_startup + tuning.strike_active + tuning.strike_recovery * 0.35:
+		return 2
+	return 3
 
 
 ## Automatic climb (33): up the wall, then over the edge onto `top`.

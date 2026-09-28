@@ -68,10 +68,11 @@ func _leave_frost() -> void:
 	var scene: Node = get_tree().current_scene
 	if scene == null:
 		return
+	# Patches free themselves when faded: drop those first.
+	_trail = _trail.filter(func(patch: Variant) -> bool: return is_instance_valid(patch))
 	if _trail.size() >= TRAIL_MAX:
-		var oldest: Sprite3D = _trail.pop_front()
-		if is_instance_valid(oldest):
-			oldest.queue_free()
+		var oldest: Variant = _trail.pop_front()
+		(oldest as Node).queue_free()
 	var patch: Sprite3D = _ground_disc(Color(0.85, 0.93, 1.0, 0.55), 0.3)
 	scene.add_child(patch)
 	patch.global_position = Vector3(global_position.x, 0.02, global_position.z)

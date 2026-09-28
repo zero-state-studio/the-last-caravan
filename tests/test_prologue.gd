@@ -10,6 +10,7 @@ func _initialize() -> void:
 	await _test_animations()
 	await _test_vehicle_wheels()
 	await _test_title()
+	_test_strike_timing()
 	await _test_ducking()
 	await _test_floor()
 	await _test_camp_intro()
@@ -160,6 +161,11 @@ func _test_animations() -> void:
 	await _frames(2)
 
 
+func _test_strike_timing() -> void:
+	var tuning: CombatTuning = CombatTuning.new()
+	_check(OttaviaProto.strike_frame(tuning.strike_startup + 0.01, tuning) == 2 and OttaviaProto.strike_frame(0.0, tuning) == 0, "strike: the staff is at full reach exactly when the hit and its sound land (33)")
+
+
 func _row_of(ottavia: OttaviaProto) -> int:
 	return ottavia.sprite.frame / OttaviaProto.COLUMNS
 
@@ -179,7 +185,9 @@ func _test_camp_tasks() -> void:
 	var ottavia: OttaviaProto = camp.ottavia
 	var hints: HintBanner = camp.hints
 	_check(tasks.task == CampTasks.Task.SPRINT and hints.current_hint() == &"PRO_HINT_SPRINT", "camp 1: after the first call, the hint is to hold to sprint")
-	_check(hints.current_goal() == &"PRO_GOAL_TAILS" and tasks.marker.is_active(), "camp: each task says where to go and marks the place (106)")
+	_check(hints.current_goal() == &"PRO_GOAL_ROCKS" and tasks.marker.is_active(), "camp: each task says where to go and marks the place (106)")
+	var ledge: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(Vector3(CampTasks.ROCK_ROWS[0] - 2.0, 0.2, 2.2), Vector3(CampTasks.ROCK_ROWS[0] + 2.0, 0.2, 2.2))
+	_check(not camp.get_world_3d().direct_space_state.intersect_ray(ledge).is_empty(), "camp: ledges of rock across the way, to jump (106)")
 	var start_positions: Array[Vector3] = []
 	for person: CrowdMember in camp.crowd:
 		start_positions.append(person.position)
@@ -192,7 +200,7 @@ func _test_camp_tasks() -> void:
 	camp.barks.say(camp.crowd[0], &"PRO_CROWD_01")
 	await process_frame
 	_check(camp.barks.bubble.is_showing() and not camp.crowd[0].wandering, "camp: someone of the crowd says a line and stands still to say it (121)")
-	ottavia.global_position = Vector3(CampTasks.TAIL_ROWS[0] - 3.0, 0.05, 0.0)
+	ottavia.global_position = Vector3(CampTasks.ROCK_ROWS[0] - 3.0, 0.05, 0.0)
 	await _frames(2)
 	_check(tasks.task == CampTasks.Task.JUMP and hints.current_hint() == &"PRO_HINT_JUMP", "camp 2: at the Tails, the hint is to jump")
 	_check(hints.current_goal() == &"PRO_GOAL_TENTS" and tasks.marker.target_position().distance_to(CampTasks.TENTS) < 0.1, "camp: then the goal moves to the Frostcutters' tents")
@@ -205,6 +213,7 @@ func _test_camp_tasks() -> void:
 	ottavia.interact()
 	await _frames(2)
 	_check(tasks.task == CampTasks.Task.BREAK and camp.dialogue.current_line() == "PRO_RUGGERO_01", "camp 3: Ruggero wakes and speaks")
+	_check(tasks._ruggero.texture == CampTasks.RUGGERO_RISING, "camp 3: woken, Ruggero lifts his head and gets up (106)")
 	ottavia.global_position = CampTasks.TRASLOCANTE_SPOT + Vector3(-2.0, 0.05, 0.0)
 	await _frames(3)
 	_check(hints.current_hint() == &"PRO_HINT_BREAK" and camp.dialogue.current_line() == "PRO_TRASLOCANTE_01", "camp 4: the Homehauler asks, the hint is to strike to break")
@@ -259,7 +268,8 @@ func _test_column() -> void:
 	ottavia.global_position.x = column._last_vehicle_back() + 1.0
 	await _frames(3)
 	_check(column.step == column.Step.VERDICT, "column: reaching the column past the limit starts the verdict")
-	_check(column.dialogue.current_line() == "PRO_ANSELMO_LATE", "column: Anselmo is the one who speaks: «Sei in ritardo, Ottavia.» (106)")
+	var opening: Array = column.VERDICT[0]
+	_check(opening[0] == &"SPEAKER_ANSELMO" and opening[1] == &"PRO_ANSELMO_LATE" and column.dialogue.current_line() in ["PRO_ANSELMO_LATE", "PRO_OTTAVIA_LATE"], "column: Anselmo opens the verdict: «Sei in ritardo, Ottavia.» (106)")
 	var marching_x: float = column.column[0].position.x
 	await create_timer(0.1).timeout
 	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")

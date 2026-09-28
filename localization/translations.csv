@@ -305,7 +305,6 @@ PRO_CROWD_06,TODO-DESIGN #121 crowd line 6,TODO-DESIGN #121 frase della folla 6
 PRO_CROWD_07,TODO-DESIGN #121 crowd line 7,TODO-DESIGN #121 frase della folla 7
 PRO_CROWD_08,TODO-DESIGN #121 crowd line 8,TODO-DESIGN #121 frase della folla 8
 PRO_GOAL_DOOR,Reach the back door,Raggiungi la porta sul retro
-PRO_GOAL_TAILS,Reach the Tails behind the vehicles,Raggiungi le Code dietro i mezzi
 PRO_GOAL_TENTS,Reach the Frostcutters' tents,Raggiungi le tende dei Brinaioli
 PRO_GOAL_CLIMB,"Climb onto the field-wagon, up to Ruggero","Sali sul carro-campo, da Ruggero"
 PRO_GOAL_WAKE,Wake Ruggero,Sveglia Ruggero
@@ -321,3 +320,4 @@ PRO_VERDICT_02,...the Filecloser came in past the limit.,...la Serrafila è arri
 PRO_VERDICT_03,...a Filecloser who can't keep pace is one more person to go back for.,...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.
 PRO_VERDICT_04,"...for her forty years, ten Truces.","...per i suoi quarant'anni, dieci Tregue."
 PRO_VERDICT_05,...then the lantern.,...poi la lanterna.
+PRO_GOAL_ROCKS,Run to the rocks beyond the vehicles,"Corri verso le rocce, oltre i mezzi"

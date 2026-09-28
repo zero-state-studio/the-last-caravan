@@ -2,8 +2,8 @@ class_name CampTasks
 extends Node3D
 ## The five tasks of the camp (106, docs/livelli/prologo.md, space 3), one
 ## command each, in this order: sprint to the Frost-cutters' tents after
-## the Gnomon's first call; jump the Tails crawling in the frost; climb onto
-## a field-wagon terrace to wake Ruggero; break the frost holding a Tail;
+## the Gnomon's first call; jump the ledges of rock on the way; climb
+## the ladder of a field-wagon to wake Ruggero; break the ice holding a Tail;
 ## fight the swarm of Brinacchi (B1) drawn by its warmth and the lantern.
 ## Then the Gnomon's second call. There is no real defeat: falling in the
 ## fight starts again a few steps back (105).
@@ -12,7 +12,10 @@ signal finished
 
 enum Task { WAIT, SPRINT, JUMP, CLIMB, WAKE, BREAK, FIGHT, LAST_CALL, DONE }
 
-const RUGGERO_ASLEEP: Texture2D = preload("res://assets/sprites/comparse/ruggero_dorme.png")
+## Asleep sitting on the landing, head on his chest; woken, he gets up.
+const RUGGERO_ASLEEP: Texture2D = preload("res://assets/sprites/comparse/ruggero_dorme_seduto.png")
+const RUGGERO_RISING: Texture2D = preload("res://assets/sprites/comparse/ruggero_si_alza.png")
+const RUGGERO_RISE_FPS: float = 8.0
 const RUGGERO_AWAKE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
 const TRASLOCANTE: Texture2D = preload("res://assets/sprites/comparse/traslocante_south.png")
 const GNOMONE: Texture2D = preload("res://assets/sprites/comparse/gnomone_south.png")
@@ -21,6 +24,9 @@ const TAIL: PackedScene = preload("res://assets/models/vehicles/moduli/code.glb"
 const TENT: PackedScene = preload("res://assets/models/vehicles/moduli/tenda.glb")
 const DRY_BUSH: PackedScene = preload("res://assets/models/vegetation/cespuglio_secco_01.glb")
 const TEX_FROST: Texture2D = preload("res://assets/textures/terrain/frost_ground.png")
+const ICE_COLOR: Color = Color(0.86, 0.94, 1.0)
+const ICE_GLOW: Color = Color(0.55, 0.72, 0.95)
+const TEX_ROCK: Texture2D = preload("res://assets/textures/terrain/rock_cliff_01.png")
 const TEX_PLANKS: Texture2D = preload("res://assets/textures/terrain/wood_planks_01.png")
 
 ## The task area, east of the camion-condominio, toward the frost.
@@ -28,12 +34,18 @@ const TENTS: Vector3 = Vector3(56.0, 0.0, -4.0)
 const TENTS_RADIUS: float = 5.0
 ## The skittering of the Brinacchi swarm while it lives (127).
 const SWARM_DB: float = -6.0
-const TAIL_ROWS: Array[float] = [22.0, 27.0, 32.0]
-const TAIL_ROW_Z: Vector2 = Vector2(-13.0, 9.0)
-const TAIL_HEIGHT: float = 0.42
+const ROCK_ROWS: Array[float] = [22.0, 27.0, 32.0]
+const ROCK_ROW_Z: Vector2 = Vector2(-13.0, 9.0)
+## Low enough to jump (jump height 0.6 m).
+const ROCK_HEIGHT: float = 0.45
 const FIELD_WAGON: Vector3 = Vector3(50.0, 0.0, 15.0)
-const DECK_HEIGHT: float = 2.1
-const RUGGERO_SPOT: Vector3 = Vector3(47.5, DECK_HEIGHT, 15.2)
+## The plank landing on the head of the field-wagon, by its tanks (106):
+## Ruggero sleeps there; a ladder goes up on the camera side.
+const DECK_HEIGHT: float = 2.2
+const LANDING_MIN: Vector2 = Vector2(40.2, 13.4)
+const LANDING_MAX: Vector2 = Vector2(42.8, 16.6)
+const LADDER_X: float = 41.9
+const RUGGERO_SPOT: Vector3 = Vector3(41.0, DECK_HEIGHT, 14.6)
 const STUCK_TAIL: Vector3 = Vector3(72.0, 0.0, 4.0)
 const TRASLOCANTE_SPOT: Vector3 = Vector3(68.5, 0.0, 7.5)
 const SWARM_START: Vector3 = Vector3(69.0, 0.0, 2.0)
@@ -96,7 +108,7 @@ func _physics_process(delta: float) -> void:
 	var here: Vector3 = _ottavia.global_position
 	match task:
 		Task.SPRINT:
-			if here.x > TAIL_ROWS[0] - 4.0:
+			if here.x > ROCK_ROWS[0] - 4.0:
 				_set_task(Task.JUMP)
 				_hints.show_hint(&"PRO_HINT_JUMP", &"jump")
 			elif _task_time > SPRINT_REMINDER_SECONDS:
@@ -133,7 +145,7 @@ func _set_task(next: Task) -> void:
 func _show_goal() -> void:
 	match task:
 		Task.SPRINT:
-			_goal(&"PRO_GOAL_TAILS", Vector3(TAIL_ROWS[0] - 1.5, 0.0, 2.2))
+			_goal(&"PRO_GOAL_ROCKS", Vector3(ROCK_ROWS[0] - 1.5, 0.0, 2.2))
 		Task.JUMP:
 			_goal(&"PRO_GOAL_TENTS", TENTS)
 		Task.CLIMB:
@@ -156,14 +168,32 @@ func _goal(key: StringName, at: Vector3) -> void:
 	marker.point_to(at)
 
 
-## Ruggero wakes up when Ottavia talks to him on the terrace.
+## A wooden ladder against the landing (33: Ottavia climbs it by walking
+## into it).
+func _build_ladder(wood: Material) -> void:
+	var ladder: Node3D = Node3D.new()
+	ladder.position = Vector3(LADDER_X, 0.0, LANDING_MAX.y + 0.18)
+	ladder.rotation.x = -0.12
+	add_child(ladder)
+	for side: float in [-0.28, 0.28]:
+		LevelBlocks.box(ladder, Vector3(side, DECK_HEIGHT * 0.55, 0.0), Vector3(0.08, DECK_HEIGHT * 1.1, 0.08), wood, false)
+	var rung: float = 0.3
+	while rung < DECK_HEIGHT * 1.05:
+		LevelBlocks.box(ladder, Vector3(0.0, rung, 0.0), Vector3(0.56, 0.06, 0.07), wood, false)
+		rung += 0.34
+
+
+## Ruggero wakes up when Ottavia talks to him on the landing.
 func _on_ruggero_used() -> void:
 	if task != Task.WAKE:
 		return
-	_ruggero.set_strip(RUGGERO_AWAKE)
 	_hints.hide_hint()
 	_say(&"SPEAKER_RUGGERO", &"PRO_RUGGERO_01")
 	_set_task(Task.BREAK)
+	# He lifts his head and gets up, slowly.
+	_ruggero.set_strip(RUGGERO_RISING, RUGGERO_RISE_FPS)
+	await get_tree().create_timer(RUGGERO_RISING.get_width() / 64.0 / RUGGERO_RISE_FPS).timeout
+	_ruggero.set_strip(RUGGERO_AWAKE)
 
 
 func _on_breakable_broken() -> void:
@@ -245,18 +275,23 @@ func _build() -> void:
 	gnomone.sprite_texture = GNOMONE
 	gnomone.position = GNOMONE_SPOT
 	add_child(gnomone)
-	# Tails crawling in the frost behind the vehicles: rows to jump over.
-	var tail_block: ShaderMaterial = LevelBlocks.material(TEX_FROST)
-	for x: float in TAIL_ROWS:
-		var z: float = TAIL_ROW_Z.x
-		while z < TAIL_ROW_Z.y:
-			var tail: Node3D = TAIL.instantiate()
-			tail.position = Vector3(x, 0.0, z + 1.1)
-			tail.rotation.y = PI * 0.5
-			add_child(tail)
-			z += 2.3
-		var block: Node3D = LevelBlocks.box(self, Vector3(x, TAIL_HEIGHT * 0.5, (TAIL_ROW_Z.x + TAIL_ROW_Z.y) * 0.5), Vector3(0.7, TAIL_HEIGHT, TAIL_ROW_Z.y - TAIL_ROW_Z.x), tail_block)
-		block.visible = false
+	# Uneven ground before the tents (106): low ledges of rock across the
+	# way, to jump, and loose stones between them.
+	var rock: ShaderMaterial = LevelBlocks.material(TEX_ROCK, TEX_ROCK, Color(0.62, 0.57, 0.54))
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = 1062
+	for x: float in ROCK_ROWS:
+		var z: float = ROCK_ROW_Z.x
+		while z < ROCK_ROW_Z.y:
+			var length: float = random.randf_range(1.2, 2.2)
+			var height: float = random.randf_range(ROCK_HEIGHT * 0.8, ROCK_HEIGHT)
+			var slab: Node3D = LevelBlocks.box(self, Vector3(x + random.randf_range(-0.2, 0.2), height * 0.5, z + length * 0.5), Vector3(random.randf_range(0.7, 1.0), height, length), rock)
+			slab.rotation = Vector3(random.randf_range(-0.08, 0.08), random.randf_range(-0.2, 0.2), random.randf_range(-0.08, 0.08))
+			z += length * 0.92
+		for stone: int in 5:
+			var at: Vector3 = Vector3(x + random.randf_range(1.2, 3.4), 0.0, random.randf_range(ROCK_ROW_Z.x, ROCK_ROW_Z.y))
+			var size: float = random.randf_range(0.25, 0.45)
+			LevelBlocks.box(self, at + Vector3.UP * size * 0.3, Vector3(size, size * 0.6, size * 0.8), rock, false).rotation.y = random.randf_range(-PI, PI)
 	# The Frost-cutters' tents, at the far end of the camp.
 	for offset: Vector3 in [Vector3(-2.5, 0.0, -1.0), Vector3(3.0, 0.0, 1.5)]:
 		var tent: Node3D = TENT.instantiate()
@@ -267,21 +302,28 @@ func _build() -> void:
 	_build_stuck_tail()
 
 
-## A field-wagon with a walkable terrace, a wall with handholds on the camera
-## side, and old Ruggero asleep on the deck.
+## A field-wagon with a plank landing on its head, by the tanks, reached by
+## a ladder on the camera side; old Ruggero asleep on the landing.
 func _build_field_wagon() -> void:
 	var wagon: Node3D = (load("res://assets/models/vehicles/carro_campo_prova.glb") as PackedScene).instantiate()
 	add_child(wagon)
 	var box: AABB = VehicleKit.bounds(wagon)
 	wagon.position = FIELD_WAGON - Vector3(box.get_center().x, box.position.y, box.get_center().z)
-	var deck: Node3D = LevelBlocks.box(self, FIELD_WAGON + Vector3(0.0, DECK_HEIGHT * 0.5, 0.0), Vector3(box.size.x * 0.9, DECK_HEIGHT, box.size.z * 0.7), LevelBlocks.material(TEX_PLANKS))
-	deck.visible = false
-	var front_z: float = FIELD_WAGON.z + box.size.z * 0.35
-	_climb_spot = ClimbSpot.create(self, Vector3(RUGGERO_SPOT.x + 1.5, 1.0, front_z + 0.45), Vector3(3.0, 2.0, 0.9), Vector3(RUGGERO_SPOT.x + 1.5, DECK_HEIGHT, front_z - 0.8), Vector3.BACK)
+	var planks: ShaderMaterial = LevelBlocks.material(TEX_PLANKS)
+	var size: Vector2 = LANDING_MAX - LANDING_MIN
+	var centre: Vector2 = (LANDING_MIN + LANDING_MAX) * 0.5
+	LevelBlocks.box(self, Vector3(centre.x, DECK_HEIGHT - 0.12, centre.y), Vector3(size.x, 0.24, size.y), planks)
+	# Four posts under the landing, and a low rail on the far side.
+	for corner: Vector2 in [LANDING_MIN, Vector2(LANDING_MIN.x, LANDING_MAX.y), Vector2(LANDING_MAX.x, LANDING_MIN.y), LANDING_MAX]:
+		var inset: Vector2 = corner + (centre - corner).normalized() * 0.2
+		LevelBlocks.box(self, Vector3(inset.x, (DECK_HEIGHT - 0.24) * 0.5, inset.y), Vector3(0.16, DECK_HEIGHT - 0.24, 0.16), planks)
+	LevelBlocks.box(self, Vector3(centre.x, DECK_HEIGHT + 0.45, LANDING_MIN.y + 0.08), Vector3(size.x, 0.1, 0.1), planks, false)
+	_build_ladder(planks)
+	_climb_spot = ClimbSpot.create(self, Vector3(LADDER_X, 1.0, LANDING_MAX.y + 0.45), Vector3(1.2, 2.0, 0.9), Vector3(LADDER_X, DECK_HEIGHT, LANDING_MAX.y - 0.7), Vector3.BACK)
 	_ruggero = NpcSprite.new()
 	_ruggero.sprite_texture = RUGGERO_ASLEEP
-	_ruggero.frame_count = 6
-	_ruggero.frames_per_second = 3.0
+	_ruggero.frame_count = 4
+	_ruggero.frames_per_second = 1.5
 	_ruggero.position = RUGGERO_SPOT
 	add_child(_ruggero)
 	var talk: Interactable = Interactable.new()
@@ -298,8 +340,18 @@ func _build_stuck_tail() -> void:
 	_stuck_tail.position = STUCK_TAIL
 	_stuck_tail.rotation = Vector3(0.0, PI * 0.5, -0.35)
 	add_child(_stuck_tail)
-	# Pale icy blue, so the crusts stand out on the frosted ground.
-	var frost: ShaderMaterial = LevelBlocks.material(TEX_FROST, TEX_FROST, Color(1.35, 1.45, 1.7))
+	# Ice, white and pale blue, with a little light of its own so the warm
+	# sunset does not turn it purple.
+	var frost: StandardMaterial3D = StandardMaterial3D.new()
+	frost.albedo_texture = TEX_FROST
+	frost.albedo_color = ICE_COLOR
+	frost.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	frost.uv1_triplanar = true
+	frost.uv1_scale = Vector3.ONE * 0.5
+	frost.roughness = 0.35
+	frost.emission_enabled = true
+	frost.emission = ICE_GLOW
+	frost.emission_energy_multiplier = 0.35
 	var spots: Array[Vector3] = [Vector3(-1.2, 0.0, 1.4), Vector3(0.9, 0.0, 1.6), Vector3(1.6, 0.0, -0.6), Vector3(-1.4, 0.0, -1.2), Vector3(0.2, 0.0, -1.9)]
 	for index: int in spots.size():
 		var look: Node3D

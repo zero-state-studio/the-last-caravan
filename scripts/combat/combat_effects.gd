@@ -4,9 +4,9 @@ extends RefCounted
 ## arc for swings, a small spark on impact. Drawn at the world density (49)
 ## with the nearest filter; the arc lies flat at chest height.
 
-const SWING_SECONDS: float = 0.14
+const SWING_SECONDS: float = 0.22
 const SPARK_SECONDS: float = 0.1
-const ARC_THICKNESS_PIXELS: int = 7
+const ARC_THICKNESS_PIXELS: int = 10
 
 static var _arc_textures: Dictionary = {}
 static var _spark_texture: ImageTexture
@@ -28,6 +28,8 @@ static func swing(parent: Node, origin: Vector3, direction: Vector3, reach: floa
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	material.albedo_texture = _arc_texture(radius_pixels, arc_degrees)
 	material.albedo_color = color
+	# Over the grass, so the swing of the staff always reads (33).
+	material.no_depth_test = true
 	var instance: MeshInstance3D = MeshInstance3D.new()
 	instance.mesh = mesh
 	instance.material_override = material

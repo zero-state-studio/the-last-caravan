@@ -54,6 +54,9 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `24-folla-che-gira.png`: **da valutare**. La folla che cammina nell'accampamento, quattro momenti a 5 s l'uno dall'altro
 - `25-strada-verso-mirco-con-rocce.png`: **da valutare**. La strada verso Mirco: massi e un muro in rovina da aggirare, Brinacchi con il bagliore di brina (a sinistra), la freccia verso Mirco
 - `26-vicino-a-mirco-cala-la-notte.png`: **da valutare**. Vicino a Mirco la luce cala, come se arrivasse la notte; Mirco con il bagliore dell'obiettivo
+- `27-ballatoio-scala-e-ruggero.png`: **da valutare**. Il ballatoio sulla testata del carro-campo, accanto ai serbatoi, con la scala; Ruggero dorme seduto
+- `28-croste-di-ghiaccio.png`: **da valutare**. Le croste da rompere, ora di ghiaccio bianco-azzurro
+- `29-rocce-da-saltare.png`: **da valutare**. Le file di rocce basse da saltare, al posto delle Code
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -81,6 +84,7 @@ Stato: approvato (fase 4a, passo 1).
 Stato: **da valutare** (fase 4a, passo 1).
 
 - `01-viste-sud-con-altezze.png`: prima versione, superata dalla 02: viste sud di Ottavia e dei 12 personaggi, con l'altezza in pixel
+- `03-ruggero-si-addormenta.png`: **da valutare**. L'animazione nuova di Ruggero: si siede e si addormenta (gli ultimi fotogrammi sono il sonno, al contrario il risveglio)
 - `02-personaggi-che-parlano-altezze-corrette.png`: i personaggi che parlano (117-120, Traslocante, Anselmo, Arold, Enea) con Zelinda, Ruggero, Mirco, Anselmo, Arold ed Enea rifatti alle altezze della bibbia; la riga gialla è la testa di Ottavia
 
 ### `asset/personaggi/folla-generici/`: Folla, otto tipi generici (121)
