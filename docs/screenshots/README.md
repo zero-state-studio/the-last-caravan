@@ -17,13 +17,14 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
+- `asset/personaggi/ottavia-v1/14-animazioni-fase4a/tutte_griglia.gif` e `15-fotogrammi-animazioni-fase4a.png`: le animazioni di Ottavia del passo 2.
 - `asset/personaggi/comparse-prologo/02-personaggi-che-parlano-altezze-corrette.png`: i personaggi del prologo, alle altezze giuste.
 
 ## Indice
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
 
-Stato: **da valutare** (fase 4a, passo 1).
+Stato: approvato (fase 4a, passo 1).
 
 - `01-prova-di-scala-in-fila.png`: i tre mezzi in fila con Ottavia, per la scala (camion-condominio da 20 m)
 - `02-prova-di-scala-camion-e-personaggi.png`: primo piano del camion-condominio (20 × 12 m) con Ottavia
@@ -69,6 +70,8 @@ Stato: approvata in fase 2.
 - `11-spritesheet.png`: spritesheet finale
 - `12-gif-attesa-e-camminata`: GIF di attesa e camminata, una per direzione più la griglia
 - `13-palette-in-scena.png`: palette di Ottavia nella scena
+- `14-animazioni-fase4a/`: **da valutare** (fase 4a, passo 2). GIF ingrandite ×4 delle nuove animazioni: `tutte_griglia.gif` (una riga per animazione, otto direzioni: scatto, salto, arrampicata, combinazione, parata, colpo subito, senza fiato, corda, mano) e una griglia per animazione (`run`, `jump`, `climb`, `combo`, `parry`, `hurt`, `breathless`, `tie_rope`, `give_hand`)
+- `15-fotogrammi-animazioni-fase4a.png`: **da valutare**. I fotogrammi uno per uno, due direzioni per animazione
 
 ### `asset/vegetazione/`: Kit di vegetazione (101)
 
