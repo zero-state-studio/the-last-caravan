@@ -291,3 +291,8 @@ PRO_CHAIN_06,"...for her forty years, ten Truces.","...per i suoi quarant'anni, 
 PRO_ANSELMO_01,"Ten Truces, Ottavia. Then the lantern.","Dieci Tregue, Ottavia. Poi la lanterna."
 PRO_ANSELMO_02,Give me your hand. I need to take your measurements.,Dammi la mano. Devo prenderti le misure.
 PRO_TITLE_CH1,Ten Remain.,Ne restano dieci.
+PAUSE_LANTERN,The farewell lantern,La lanterna del congedo
+OPTIONS_TEXT_SIZE,Text size,Dimensione del testo
+TEXT_SIZE_NORMAL,Normal,Normale
+TEXT_SIZE_LARGE,Large,Grande
+TEXT_SIZE_LARGEST,Largest,Molto grande

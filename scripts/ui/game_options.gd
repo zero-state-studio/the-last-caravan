@@ -1,6 +1,6 @@
 class_name GameOptions
 extends RefCounted
-## Player options (96): screen shake, flashes, aim assist. Saved in
+## Player options (96): screen shake, flashes, aim assist, text size. Saved in
 ## user://options.cfg and applied at start.
 
 const PATH: String = "user://options.cfg"
@@ -14,6 +14,9 @@ static var flash_strength: float = 1.0
 static var aim_assist: bool = true
 ## Difficulty level (40): 0 easy, 1 medium, 2 hard.
 static var difficulty: int = 1
+## Size of dialogues, subtitles and hints (96, 125).
+const TEXT_SCALES: Array[float] = [1.0, 1.25, 1.5]
+static var text_scale: float = 1.0
 
 
 static func load_options() -> void:
@@ -23,6 +26,7 @@ static func load_options() -> void:
 		flash_strength = float(config.get_value(SECTION, "flash_strength", 1.0))
 		aim_assist = bool(config.get_value(SECTION, "aim_assist", true))
 		difficulty = clampi(int(config.get_value(SECTION, "difficulty", 1)), 0, 2)
+		text_scale = clampf(float(config.get_value(SECTION, "text_scale", 1.0)), TEXT_SCALES[0], TEXT_SCALES[-1])
 	apply()
 
 
@@ -32,6 +36,7 @@ static func save_options() -> void:
 	config.set_value(SECTION, "flash_strength", flash_strength)
 	config.set_value(SECTION, "aim_assist", aim_assist)
 	config.set_value(SECTION, "difficulty", difficulty)
+	config.set_value(SECTION, "text_scale", text_scale)
 	config.save(PATH)
 	apply()
 

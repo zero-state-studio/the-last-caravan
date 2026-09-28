@@ -1,13 +1,17 @@
 class_name OptionsMenu
 extends CanvasLayer
-## Options menu (96): screen shake, flashes, aim assist and remappable
-## controls, one keyboard or mouse binding and one gamepad binding per
-## action. Opens with `open_options` (Esc, Menu/Start) and pauses the game.
-## Every visible text is a translation key.
+## Pause and options menu (96, 125): screen shake, flashes, aim assist,
+## text size and remappable controls, one keyboard or mouse binding and one
+## gamepad binding per action. Beside it, once the verdict has shown it, the
+## farewell lantern filling piece by piece (88). Opens with `open_options`
+## (Esc, Menu/Start) and pauses the game. Every visible text is a
+## translation key.
 
 const PANEL_SIZE: Vector2 = Vector2(620.0, 640.0)
 
 var _root: PanelContainer
+var _lantern_box: VBoxContainer
+var lantern: LanternEmblem
 var _waiting_action: StringName = &""
 var _waiting_device: InputRemap.Device = InputRemap.Device.KEYBOARD
 var _waiting_button: Button
@@ -27,6 +31,8 @@ func is_open() -> bool:
 
 func open() -> void:
 	_root.visible = true
+	_lantern_box.visible = LanternProgress.revealed
+	lantern.pieces = LanternProgress.pieces
 	get_tree().paused = true
 	_refresh_bindings()
 
@@ -34,6 +40,7 @@ func open() -> void:
 func close() -> void:
 	_cancel_wait()
 	_root.visible = false
+	_lantern_box.visible = false
 	get_tree().paused = false
 	GameOptions.save_options()
 
@@ -79,7 +86,23 @@ func _cancel_wait() -> void:
 
 
 func _build() -> void:
+	_lantern_box = VBoxContainer.new()
+	_lantern_box.set_anchors_preset(Control.PRESET_CENTER)
+	_lantern_box.position = Vector2(-PANEL_SIZE.x * 0.5 - LanternEmblem.SIZE.x - 40.0, -LanternEmblem.SIZE.y * 0.5 - 20.0)
+	_lantern_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	add_child(_lantern_box)
+	lantern = LanternEmblem.new()
+	_lantern_box.add_child(lantern)
+	var caption: Label = Label.new()
+	caption.text = "PAUSE_LANTERN"
+	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	caption.custom_minimum_size = Vector2(LanternEmblem.SIZE.x, 0.0)
+	caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	UiStyle.style_label(caption, UiStyle.SMALL_SIZE, LanternEmblem.LINE)
+	_lantern_box.add_child(caption)
+	_lantern_box.visible = false
 	_root = PanelContainer.new()
+	_root.add_theme_stylebox_override(&"panel", UiStyle.panel_style(16.0))
 	_root.custom_minimum_size = PANEL_SIZE
 	_root.set_anchors_preset(Control.PRESET_CENTER)
 	_root.position = -PANEL_SIZE * 0.5
@@ -118,6 +141,18 @@ func _build() -> void:
 	difficulty.item_selected.connect(func(index: int) -> void: GameOptions.difficulty = index)
 	difficulty_row.add_child(difficulty)
 	box.add_child(difficulty_row)
+	var text_row: HBoxContainer = HBoxContainer.new()
+	var text_label: Label = Label.new()
+	text_label.text = "OPTIONS_TEXT_SIZE"
+	text_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text_row.add_child(text_label)
+	var text_size: OptionButton = OptionButton.new()
+	for key: String in ["TEXT_SIZE_NORMAL", "TEXT_SIZE_LARGE", "TEXT_SIZE_LARGEST"]:
+		text_size.add_item(key)
+	text_size.selected = maxi(0, GameOptions.TEXT_SCALES.find(GameOptions.text_scale))
+	text_size.item_selected.connect(func(index: int) -> void: GameOptions.text_scale = GameOptions.TEXT_SCALES[index])
+	text_row.add_child(text_size)
+	box.add_child(text_row)
 
 	box.add_child(HSeparator.new())
 	var controls: Label = Label.new()

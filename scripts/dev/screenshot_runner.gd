@@ -43,6 +43,7 @@ func _process(_delta: float) -> bool:
 		# playing sounds: a stream still playing at exit counts as a leak.
 		if current_scene != null:
 			current_scene.queue_free()
+		GameAudio.stop_all(0.0)
 		return false
 	if _frames_left > -10:
 		return false

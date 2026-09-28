@@ -19,10 +19,7 @@ func _ready() -> void:
 	layer = 8
 	_panel = PanelContainer.new()
 	_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = Color(0.06, 0.05, 0.07, 0.82)
-	style.set_content_margin_all(8.0)
-	_panel.add_theme_stylebox_override(&"panel", style)
+	_panel.add_theme_stylebox_override(&"panel", UiStyle.panel_style(8.0))
 	add_child(_panel)
 	_line = Label.new()
 	_line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -34,6 +31,7 @@ func _ready() -> void:
 func show_over(target: Node3D, line_key: StringName) -> void:
 	_target = target
 	_line.text = line_key
+	UiStyle.style_label(_line, UiStyle.text_size())
 	# Short lines stay on one row; long ones wrap at MAX_WIDTH.
 	var font: Font = _line.get_theme_font(&"font")
 	var width: float = font.get_string_size(tr(line_key), HORIZONTAL_ALIGNMENT_LEFT, -1.0, _line.get_theme_font_size(&"font_size")).x

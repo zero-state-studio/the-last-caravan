@@ -125,6 +125,10 @@ func _ready() -> void:
 	camera_rig.snap_to_target()
 	var hud: CombatHud = CombatHud.new()
 	add_child(hud)
+	# Pause and options (96), with the farewell lantern once revealed (88).
+	var menu: OptionsMenu = OptionsMenu.new()
+	menu.name = "OptionsMenu"
+	add_child(menu)
 	bubble = SpeechBubble.new()
 	add_child(bubble)
 	hud.bind(ottavia)

@@ -127,6 +127,18 @@ func _ready() -> void:
 	var hud: CombatHud = CombatHud.new()
 	add_child(hud)
 	hud.bind(ottavia)
+	# Pause and options (96), with the farewell lantern once revealed (88).
+	var menu: OptionsMenu = OptionsMenu.new()
+	menu.name = "OptionsMenu"
+	add_child(menu)
+	# Dev arguments for captures: pause=1 opens the menu, lantern=<pieces>
+	# shows the farewell lantern with that many pieces.
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("lantern="):
+			LanternProgress.revealed = true
+			LanternProgress.pieces = argument.trim_prefix("lantern=").to_int()
+		elif argument == "pause=1":
+			menu.open.call_deferred()
 	tasks.finished.connect(_leave_for_column)
 	if play_intro or PrologueState.entered_from_door:
 		intro_finished.connect(tasks.begin, CONNECT_ONE_SHOT)

@@ -17,6 +17,7 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12; da 13 i mezzi in movimento.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
+- `asset/ui/`: interfaccia (125): caratteri, elementi dell'HUD, menu.
 - `asset/personaggi/ottavia-v1/14-animazioni-fase4a/tutte_griglia.gif` e `15-fotogrammi-animazioni-fase4a.png`: le animazioni di Ottavia del passo 2.
 - `capitoli/00-prologo/` e i video `docs/video/capitoli/00-prologo/`: il prologo dei passi 3-5 (piano dei Tessibuio, porta e narrazione, accampamento, colonna, verdetto).
 - `asset/personaggi/comparse-prologo/02-personaggi-che-parlano-altezze-corrette.png`: i personaggi del prologo, alle altezze giuste.
@@ -220,3 +221,12 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 - `capitoli/00-prologo/01-porta-e-narrazione.mp4`: **da valutare**. Dalla porta alla carovana intera, con la narrazione in sottotitoli, e il ritorno su Ottavia (50 s)
 - `fasi/fase2-stile-definitivo/01-diorama-dimostrativo.mp4`: la scena dimostrativa della fase 2.
 - `fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4`: lo stesso combattimento al capitolo 1 e al 9 (fatto con il vecchio passo).
+
+### `asset/ui/`: Interfaccia (125)
+
+- `01-caratteri-pixel-tre-finalisti.png`: **da valutare**. Pixelify Sans, Jersey 10 e VT323 (licenza SIL OFL) a 1280×800: dialogo, lettere accentate, suggerimento, titolo
+- `02-caratteri-pixel-sette-provati.png`: tutti i sette caratteri provati, compresi gli scartati (Departure Mono, Tiny5, Press Start 2P, Silkscreen)
+- `03-hud-meridiana-suggerimento-dialogo.png`: **da valutare**. L'interfaccia in gioco: meridiana di vita (arco esterno) e fiato (interno) in basso a sinistra, suggerimento con l'icona del tasto, dialogo con il nome
+- `04-menu-di-pausa-con-la-lanterna.png`: **da valutare**. Il menu di pausa con la lanterna del congedo a 3 pezzi su 10 (per la prova), e la nuova opzione per la dimensione del testo
+- `05-meridiana-ingrandita.png`: la meridiana ingrandita 4 volte, per vedere i pixel
+- `06-corda-ingrandita.png`: la corda dei salvati ingrandita 4 volte

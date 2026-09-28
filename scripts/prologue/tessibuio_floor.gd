@@ -90,6 +90,10 @@ func _ready() -> void:
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade.color = Color(0.0, 0.0, 0.0, 1.0 if intro_seconds > 0.0 else 0.0)
 	layer.add_child(_fade)
+	# Pause and options (96), with the farewell lantern once revealed (88).
+	var menu: OptionsMenu = OptionsMenu.new()
+	menu.name = "OptionsMenu"
+	add_child(menu)
 	_wake.call_deferred()
 
 
