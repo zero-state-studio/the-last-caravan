@@ -25,7 +25,7 @@ const DOOR_EXIT: Vector3 = Vector3(11.2, 0.0, 2.2)
 const TASK_AREA: Rect2 = Rect2(16.0, -15.0, 70.0, 37.0)
 const NARRATION: Array[StringName] = [
 	&"PRO_NARRATION_01", &"PRO_NARRATION_02", &"PRO_NARRATION_03", &"PRO_NARRATION_04",
-	&"PRO_NARRATION_05", &"PRO_NARRATION_06", &"PRO_NARRATION_07",
+	&"PRO_NARRATION_05", &"PRO_NARRATION_06", &"PRO_NARRATION_07", &"PRO_NARRATION_08",
 ]
 ## Where the wide shot looks and from how far (the whole camp in frame).
 const WIDE_CENTER: Vector3 = Vector3(-10.0, 4.0, -8.0)
@@ -33,8 +33,8 @@ const WIDE_DISTANCE: float = 92.0
 const WIDE_PITCH_DEGREES: float = 18.0
 ## The narration opens looking up at the mountains, then tilts down onto
 ## the caravan over this share of it.
-const WIDE_HIGH_PITCH_DEGREES: float = 5.0
-const WIDE_TILT_SHARE: float = 0.4
+const WIDE_HIGH_PITCH_DEGREES: float = 9.0
+const WIDE_TILT_SHARE: float = 0.7
 const RISE_SECONDS: float = 6.0
 ## Height of the first leg of the rise, above the tallest vehicles.
 const RISE_HEIGHT: float = 30.0

@@ -17,6 +17,7 @@ const RUGGERO_ASLEEP: Texture2D = preload("res://assets/sprites/comparse/ruggero
 const RUGGERO_RISING: Texture2D = preload("res://assets/sprites/comparse/ruggero_si_alza.png")
 const RUGGERO_RISE_FPS: float = 8.0
 const RUGGERO_AWAKE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
+const VOLTACAMPI_WOMAN: Texture2D = preload("res://assets/sprites/folla/donna_adulta_south.png")
 const TRASLOCANTE: Texture2D = preload("res://assets/sprites/comparse/traslocante_south.png")
 const GNOMONE: Texture2D = preload("res://assets/sprites/comparse/gnomone_south.png")
 const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn")
@@ -59,6 +60,7 @@ var task: Task = Task.WAIT
 var breakables: Array[Breakable] = []
 ## Where to go next (106): glow, edge arrow and the goal above the hint.
 var marker: ObjectiveMarker
+var _conversation: int = 0
 var _climb_spot: ClimbSpot
 var swarm: Array[CombatEnemy] = []
 
@@ -96,9 +98,20 @@ func begin() -> void:
 			"task=fight":
 				_start_fight()
 				return
-	_say(&"SPEAKER_GNOMONE", &"PRO_GNOMONE_01")
 	_set_task(Task.SPRINT)
 	_hints.show_hint(&"PRO_HINT_SPRINT", &"run")
+	# Why she runs (106): a Fieldturner comes to her about old Ruggero, who
+	# slept through the call. She can already move while they speak.
+	var woman: NpcSprite = NpcSprite.new()
+	woman.sprite_texture = VOLTACAMPI_WOMAN
+	woman.trade = &"voltacampi"
+	woman.position = _ottavia.global_position + Vector3(2.4, 0.0, 1.2)
+	add_child(woman)
+	_converse([
+		[&"SPEAKER_GNOMONE", &"PRO_GNOMONE_01"],
+		[&"SPEAKER_VOLTACAMPI", &"PRO_VOLTACAMPI_01"],
+		[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_02"],
+	])
 
 
 func _physics_process(delta: float) -> void:
@@ -188,7 +201,13 @@ func _on_ruggero_used() -> void:
 	if task != Task.WAKE:
 		return
 	_hints.hide_hint()
-	_say(&"SPEAKER_RUGGERO", &"PRO_RUGGERO_01")
+	# Grumpy at being woken (106), he sends her on to the stuck Tail.
+	_converse([
+		[&"SPEAKER_RUGGERO", &"PRO_RUGGERO_01"],
+		[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_03"],
+		[&"SPEAKER_RUGGERO", &"PRO_RUGGERO_02"],
+		[&"SPEAKER_RUGGERO", &"PRO_RUGGERO_03"],
+	])
 	_set_task(Task.BREAK)
 	# He lifts his head and gets up, slowly.
 	_ruggero.set_strip(RUGGERO_RISING, RUGGERO_RISE_FPS)
@@ -255,7 +274,24 @@ func _on_defeated() -> void:
 	_ottavia.controls_enabled = true
 
 
+## Lines said one after the other, each held as long as its voice; a new
+## conversation cuts the one before.
+func _converse(lines: Array) -> void:
+	_conversation += 1
+	var mine: int = _conversation
+	for line: Array in lines:
+		if mine != _conversation:
+			return
+		if line[0] == &"SPEAKER_GNOMONE":
+			SoundBank.play_sound(get_tree(), &"tromba_gnomone", 0.0)
+		var voice: float = _dialogue.show_line(line[0], line[1])
+		await get_tree().create_timer(DialogueBox.line_wait(LINE_SECONDS, voice, 0.5)).timeout
+	if mine == _conversation:
+		_dialogue.hide_box()
+
+
 func _say(speaker: StringName, line: StringName) -> void:
+	_conversation += 1
 	# The Gnomon speaks through his brass trumpet (127).
 	if speaker == &"SPEAKER_GNOMONE":
 		SoundBank.play_sound(get_tree(), &"tromba_gnomone", 0.0)

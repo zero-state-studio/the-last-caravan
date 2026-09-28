@@ -23,235 +23,235 @@ DEV_FPS,{fps} FPS,{fps} FPS
 DEV_SPRITE_UPRIGHT_DEPTH,Sprite depth from an upright quad,Profondità dello sprite come se fosse verticale
 DEV_PALETTE_STRENGTH,Day/Night color drift,Viraggio dei colori Giorno/Notte
 DEV_ZONE_NIGHT_PROXIMITY,Zone closeness to the Night,Vicinanza della zona alla Notte
-DEV_C_MAX_HEALTH,"Health","Vita"
-DEV_C_MOVE_SPEED,"Walk speed","Velocità di camminata"
-DEV_C_MAX_STAMINA,"Breath","Fiato"
-DEV_C_STAMINA_REGEN_PER_SECOND,"Breath regained per second","Fiato recuperato al secondo"
-DEV_C_STAMINA_REGEN_DELAY,"Pause before breath returns","Pausa prima del recupero"
-DEV_C_BREATHLESS_SECONDS,"Breathless time","Durata senza fiato"
-DEV_C_BREATHLESS_DAMAGE_MULTIPLIER,"Damage taken breathless","Danno subito senza fiato"
-DEV_C_BREATHLESS_SPEED_MULTIPLIER,"Speed breathless","Velocità senza fiato"
-DEV_C_STRIKE_DAMAGE,"Strike damage","Danno del colpo"
-DEV_C_STRIKE_STAMINA_COST,"Strike breath cost","Fiato del colpo"
-DEV_C_STRIKE_STARTUP,"Strike wind-up","Carica del colpo"
-DEV_C_STRIKE_ACTIVE,"Strike active time","Durata attiva del colpo"
-DEV_C_STRIKE_RECOVERY,"Strike recovery","Recupero del colpo"
-DEV_C_STRIKE_REACH,"Strike reach","Portata del colpo"
-DEV_C_STRIKE_ARC_DEGREES,"Strike arc (degrees)","Arco del colpo (gradi)"
-DEV_C_COMBO_LENGTH,"Combo length","Lunghezza della combinazione"
-DEV_C_COMBO_FINISHER_MULTIPLIER,"Last combo hit","Ultimo colpo della combinazione"
-DEV_C_STRIKE_KNOCKBACK,"Strike knockback","Contraccolpo del colpo"
-DEV_C_STRIKE_LUNGE,"Strike lunge","Affondo del colpo"
-DEV_C_COUNTER_MULTIPLIER,"Counter-hit multiplier","Moltiplicatore del contrattempo"
-DEV_C_HOOK_STAMINA_COST,"Hook breath cost","Fiato dell'uncino"
-DEV_C_HOOK_STARTUP,"Hook wind-up","Carica dell'uncino"
-DEV_C_HOOK_ACTIVE,"Hook active time","Durata attiva dell'uncino"
-DEV_C_HOOK_RECOVERY,"Hook recovery","Recupero dell'uncino"
-DEV_C_HOOK_REACH,"Hook reach","Portata dell'uncino"
-DEV_C_HOOK_ARC_DEGREES,"Hook arc (degrees)","Arco dell'uncino (gradi)"
-DEV_C_HOOK_HOLD_SECONDS,"Hold to push","Tenere premuto per spingere"
-DEV_C_HOOK_PULL_DISTANCE,"Pull ends at","Il tiro si ferma a"
-DEV_C_HOOK_PUSH_DISTANCE,"Push distance","Distanza della spinta"
-DEV_C_HOOK_DAMAGE,"Hook damage","Danno dell'uncino"
-DEV_C_PARRY_PRESS_COST,"Parry press breath","Fiato della parata"
-DEV_C_BLOCK_HIT_COST,"Breath per blocked hit","Fiato per colpo parato"
-DEV_C_DEFLECT_WINDOW,"Deflect window","Finestra della deviazione"
-DEV_C_PARRY_SPEED_MULTIPLIER,"Speed while parrying","Velocità in parata"
-DEV_C_DEFLECT_STAGGER_SECONDS,"Stagger after deflect","Sbilanciamento dopo deviazione"
-DEV_C_JUMP_STAMINA_COST,"Jump breath cost","Fiato del salto"
-DEV_C_JUMP_HEIGHT,"Jump height","Altezza del salto"
-DEV_C_JUMP_INVULNERABLE_SECONDS,"Jump invulnerable time","Invulnerabilità del salto"
-DEV_C_RUN_SPEED_MULTIPLIER,"Run speed","Velocità di corsa"
-DEV_C_RUN_STAMINA_PER_SECOND,"Run breath per second","Fiato della corsa al secondo"
-DEV_C_HITSTUN_SECONDS,"Stun when hit","Stordimento da colpo"
-DEV_C_HIT_KNOCKBACK,"Knockback when hit","Contraccolpo subito"
-DEV_C_LANTERN_HOLD_SECONDS,"Hold to raise lantern","Tenere premuto per alzare"
-DEV_C_LANTERN_RAISED_RANGE_MULTIPLIER,"Raised lantern range","Portata della lanterna alzata"
-DEV_C_HITSTOP_SECONDS,"Freeze on hit","Fermo immagine al colpo"
-DEV_C_HITSTOP_CRITICAL_SECONDS,"Freeze on critical","Fermo immagine al critico"
-DEV_C_SHAKE_METERS,"Shake on hit","Tremolio al colpo"
-DEV_C_SHAKE_CRITICAL_METERS,"Shake on critical","Tremolio al critico"
-DEV_C_INPUT_BUFFER_SECONDS,"Input buffer","Memoria dei tasti"
-DEV_C_DUMMY_ATTACK_INTERVAL,"Dummy: time between swings","Fantoccio: pausa tra i colpi"
-DEV_C_DUMMY_WINDUP,"Dummy: wind-up","Fantoccio: carica"
-DEV_C_DUMMY_ACTIVE,"Dummy: active time","Fantoccio: durata attiva"
-DEV_C_DUMMY_EXPOSED,"Dummy: open after swing","Fantoccio: scoperto dopo il colpo"
-DEV_C_DUMMY_DAMAGE,"Dummy: damage","Fantoccio: danno"
-DEV_C_DUMMY_REACH,"Dummy: reach","Fantoccio: portata"
-DEV_SECTION_COMBAT,"Combat (phase 3)","Combattimento (fase 3)"
-DEV_SAVE_COMBAT,"Save combat values","Salva i valori del combattimento"
-DEV_SAVED_COMBAT,"Saved: {file}","Salvato: {file}"
-DEV_SHOW_COMBAT_HUD,"On-screen measures","Misure a schermo"
-HUD_HEALTH,"Health","Vita"
-HUD_BREATH,"Breath","Fiato"
-COMBAT_DEFLECT,"Deflected!","Deviato!"
-COMBAT_COUNTER,"Counter-hit!","Contrattempo!"
-COMBAT_BREATHLESS,"Out of breath","Senza fiato"
-COMBAT_NO_COMPANION,"No companion in this chapter","Nessun compagno in questo capitolo"
-OPTIONS_TITLE,"Options","Opzioni"
-OPTIONS_SHAKE,"Screen shake","Tremolio dello schermo"
-OPTIONS_FLASH,"Flashes and glows","Lampi e bagliori"
-OPTIONS_AIM_ASSIST,"Aim assist","Aiuto alla mira"
-OPTIONS_CONTROLS,"Controls","Comandi"
-OPTIONS_KEYBOARD,"Keyboard and mouse","Tastiera e mouse"
-OPTIONS_GAMEPAD,"Gamepad","Gamepad"
-OPTIONS_PRESS,"Press a key… (Esc cancels)","Premi un tasto… (Esc annulla)"
-OPTIONS_RESET,"Reset controls","Ripristina i comandi"
-OPTIONS_CLOSE,"Close","Chiudi"
-INPUT_MOVE_UP,"Move up","Muovi in alto"
-INPUT_MOVE_DOWN,"Move down","Muovi in basso"
-INPUT_MOVE_LEFT,"Move left","Muovi a sinistra"
-INPUT_MOVE_RIGHT,"Move right","Muovi a destra"
-INPUT_ATTACK,"Strike","Colpo"
-INPUT_HOOK,"Hook","Uncino"
-INPUT_PARRY,"Parry","Parata"
-INPUT_JUMP,"Jump","Salto"
-INPUT_RUN,"Run","Corsa"
-INPUT_LANTERN,"Lantern","Lanterna"
-INPUT_CALL,"Call","Richiamo"
-INPUT_INTERACT,"Interact","Interagire"
-INPUT_MOUSE_LEFT,"Left mouse button","Tasto sinistro del mouse"
-INPUT_MOUSE_RIGHT,"Right mouse button","Tasto destro del mouse"
-INPUT_MOUSE_MIDDLE,"Middle mouse button","Tasto centrale del mouse"
-INPUT_MOUSE_BUTTON,"Mouse button {n}","Tasto {n} del mouse"
-DEV_C_WALKING_REGEN_MULTIPLIER,"Breath regained while walking","Recupero del fiato camminando"
-DEV_K_LEASH_DISTANCE,"Creatures give up beyond","Le creature rinunciano oltre"
-DEV_K_VOLTAFACCIA_HEALTH,"Voltafaccia: health","Voltafaccia: vita"
-DEV_K_VOLTAFACCIA_SPEED,"Voltafaccia: speed","Voltafaccia: velocità"
-DEV_K_VOLTAFACCIA_AGGRO,"Voltafaccia: notices at","Voltafaccia: si accorge a"
-DEV_K_VOLTAFACCIA_ATTACK_RANGE,"Voltafaccia: attack range","Voltafaccia: portata"
-DEV_K_VOLTAFACCIA_WINDUP,"Voltafaccia: wind-up","Voltafaccia: carica"
-DEV_K_VOLTAFACCIA_EXPOSED,"Voltafaccia: open after attack","Voltafaccia: scoperto dopo"
-DEV_K_VOLTAFACCIA_COOLDOWN,"Voltafaccia: pause between attacks","Voltafaccia: pausa tra attacchi"
-DEV_K_VOLTAFACCIA_DAMAGE,"Voltafaccia: damage","Voltafaccia: danno"
-DEV_K_VOLTAFACCIA_LUNGE,"Voltafaccia: lunge","Voltafaccia: affondo"
-DEV_K_VOLTAFACCIA_SHADE_MULTIPLIER,"Voltafaccia: shaded side damage","Voltafaccia: danno sul lato in ombra"
-DEV_K_VOLTAFACCIA_SHADE_DEGREES,"Voltafaccia: shaded side angle","Voltafaccia: ampiezza del lato in ombra"
-DEV_K_RASPAGELO_HEALTH,"Raspagelo: health","Raspagelo: vita"
-DEV_K_RASPAGELO_BURROW_SPEED,"Raspagelo: speed underground","Raspagelo: velocità sotto terra"
-DEV_K_RASPAGELO_AGGRO,"Raspagelo: notices at","Raspagelo: si accorge a"
-DEV_K_RASPAGELO_TELEGRAPH,"Raspagelo: ground shaking","Raspagelo: preavviso del terreno"
-DEV_K_RASPAGELO_DAMAGE,"Raspagelo: damage","Raspagelo: danno"
-DEV_K_RASPAGELO_BURST_RADIUS,"Raspagelo: burst radius","Raspagelo: raggio del morso"
-DEV_K_RASPAGELO_EXPOSED,"Raspagelo: open after burst","Raspagelo: scoperto dopo"
-DEV_K_RASPAGELO_SURFACED,"Raspagelo: surfaced time","Raspagelo: tempo in superficie"
-DEV_K_RASPAGELO_UNDERGROUND_MIN,"Raspagelo: minimum underground","Raspagelo: minimo sotto terra"
-DEV_K_RASPAGELO_ARMOR_MULTIPLIER,"Raspagelo: head plate","Raspagelo: placca frontale"
-DEV_K_BRINACCHIO_HEALTH,"Brinacchio: health","Brinacchio: vita"
-DEV_K_BRINACCHIO_SPEED,"Brinacchio: speed","Brinacchio: velocità"
-DEV_K_BRINACCHIO_AGGRO,"Brinacchio: notices at","Brinacchio: si accorge a"
-DEV_K_BRINACCHIO_LANTERN_AGGRO,"Brinacchio: notices the lantern at","Brinacchio: sente la lanterna a"
-DEV_K_BRINACCHIO_LOSE_TRACK,"Brinacchio: loses track beyond","Brinacchio: perde le tracce oltre"
-DEV_K_BRINACCHIO_LATCH_DAMAGE_PER_SECOND,"Brinacchio: damage per second","Brinacchio: danno al secondo"
-DEV_K_BRINACCHIO_SLOW,"Brinacchio: slowdown each","Brinacchio: rallentamento ciascuno"
-DEV_K_BRINACCHIO_MAX_SLOW,"Brinacchio: maximum slowdown","Brinacchio: rallentamento massimo"
-DEV_K_BRINACCHIO_CRUST_SECONDS,"Brinacchio: frost crust","Brinacchio: crosta di brina"
-DEV_K_GRAPPOLO_MEMBERS,"Grappolo: members","Grappolo: membri"
-DEV_K_GRAPPOLO_MEMBER_HEALTH,"Grappolo: health per member","Grappolo: vita per membro"
-DEV_K_GRAPPOLO_AGGRO,"Grappolo: notices at","Grappolo: si accorge a"
-DEV_K_GRAPPOLO_ROLL_WINDUP,"Grappolo: wind-up","Grappolo: carica"
-DEV_K_GRAPPOLO_ROLL_SPEED,"Grappolo: roll speed","Grappolo: velocità del rotolamento"
-DEV_K_GRAPPOLO_ROLL_SECONDS,"Grappolo: roll time","Grappolo: durata del rotolamento"
-DEV_K_GRAPPOLO_ROLL_COOLDOWN,"Grappolo: pause between rolls","Grappolo: pausa tra i rotolamenti"
-DEV_K_GRAPPOLO_DAMAGE,"Grappolo: damage","Grappolo: danno"
-DEV_K_GRAPPOLO_SHELL_MULTIPLIER,"Grappolo: through the shells","Grappolo: attraverso i gusci"
-DEV_K_GRAPPOLO_REFORM_SECONDS,"Grappolo: reforms after","Grappolo: si ricompone dopo"
-DEV_K_GRAPPOLO_BIT_SPEED,"Grappolo: piece speed","Grappolo: velocità dei pezzi"
-DEV_SECTION_CREATURES,"Creatures (phase 3)","Creature (fase 3)"
-DEV_SAVE_CREATURES,"Save creature values","Salva i valori delle creature"
-BOSS_FOGLIONE,"The Rooted Leafback","Il Foglione Radicato"
-BOSS_SPARTIGHIACCIO,"The Old Icebreaker","Il Vecchio Spartighiaccio"
-BOSS_DEFEATED,"Defeated!","Sconfitto!"
-FIELD_TILTS,"The field tilts toward the east","Il campo si inclina verso est"
-FIELD_TILTS_BACK,"The field tilts back","Il campo torna com'era"
-DEV_K_FOGLIONE_HEALTH,"Rooted Leafback: health","Foglione Radicato: vita"
-DEV_K_FOGLIONE_TURN_DEGREES_PER_SECOND,"Rooted Leafback: turn speed","Foglione Radicato: velocità di rotazione"
-DEV_K_FOGLIONE_LEAF_MULTIPLIER,"Rooted Leafback: through the leaves","Foglione Radicato: attraverso le foglie"
-DEV_K_FOGLIONE_LEAF_DEGREES,"Rooted Leafback: leaf side angle","Foglione Radicato: ampiezza delle foglie"
-DEV_K_FOGLIONE_ROOT_INTERVAL,"Rooted Leafback: roots every","Foglione Radicato: radici ogni"
-DEV_K_FOGLIONE_ROOT_TELEGRAPH,"Rooted Leafback: roots warning","Foglione Radicato: preavviso delle radici"
-DEV_K_FOGLIONE_ROOT_DAMAGE,"Rooted Leafback: root damage","Foglione Radicato: danno delle radici"
-DEV_K_FOGLIONE_ROOT_RADIUS,"Rooted Leafback: root radius","Foglione Radicato: raggio delle radici"
-DEV_K_FOGLIONE_SWEEP_RANGE,"Rooted Leafback: sweep reach","Foglione Radicato: portata della spazzata"
-DEV_K_FOGLIONE_SWEEP_WINDUP,"Rooted Leafback: sweep wind-up","Foglione Radicato: carica della spazzata"
-DEV_K_FOGLIONE_SWEEP_DAMAGE,"Rooted Leafback: sweep damage","Foglione Radicato: danno della spazzata"
-DEV_K_FOGLIONE_CLOSE_AFTER_DAMAGE,"Rooted Leafback: closes leaves after","Foglione Radicato: chiude le foglie dopo"
-DEV_K_FOGLIONE_CLOSE_SECONDS,"Rooted Leafback: leaves closed","Foglione Radicato: foglie chiuse per"
-DEV_K_FIELD_TILT_SECONDS,"Field: tilted for","Campo: inclinato per"
-DEV_K_FIELD_LEVER_COOLDOWN,"Field: lever again after","Campo: leva di nuovo dopo"
-DEV_K_SPARTI_HEALTH,"Old Icebreaker: health","Vecchio Spartighiaccio: vita"
-DEV_K_SPARTI_AIM_SECONDS,"Old Icebreaker: aim time","Vecchio Spartighiaccio: mira"
-DEV_K_SPARTI_CHARGE_SPEED,"Old Icebreaker: charge speed","Vecchio Spartighiaccio: velocità della carica"
-DEV_K_SPARTI_CHARGE_DAMAGE,"Old Icebreaker: charge damage","Vecchio Spartighiaccio: danno della carica"
-DEV_K_SPARTI_RECOVER_SECONDS,"Old Icebreaker: open after charge","Vecchio Spartighiaccio: scoperto dopo la carica"
-DEV_K_SPARTI_STUCK_SECONDS,"Old Icebreaker: stuck at the edge","Vecchio Spartighiaccio: fermo sul bordo"
-DEV_K_SPARTI_SHIELD_MULTIPLIER,"Old Icebreaker: through the shield","Vecchio Spartighiaccio: attraverso lo scudo"
-DEV_K_SPARTI_SHIELD_DEGREES,"Old Icebreaker: shield angle","Vecchio Spartighiaccio: ampiezza dello scudo"
-DEV_K_SPARTI_STOMP_RANGE,"Old Icebreaker: stomp radius","Vecchio Spartighiaccio: raggio del pestone"
-DEV_K_SPARTI_STOMP_DAMAGE,"Old Icebreaker: stomp damage","Vecchio Spartighiaccio: danno del pestone"
-DEV_K_ICE_FALL_DAMAGE,"Ice: fall damage","Ghiaccio: danno della caduta"
-NAME_OTTAVIA,"Ottavia","Ottavia"
-NAME_ENEA,"Enea","Enea"
+DEV_C_MAX_HEALTH,Health,Vita
+DEV_C_MOVE_SPEED,Walk speed,Velocità di camminata
+DEV_C_MAX_STAMINA,Breath,Fiato
+DEV_C_STAMINA_REGEN_PER_SECOND,Breath regained per second,Fiato recuperato al secondo
+DEV_C_STAMINA_REGEN_DELAY,Pause before breath returns,Pausa prima del recupero
+DEV_C_BREATHLESS_SECONDS,Breathless time,Durata senza fiato
+DEV_C_BREATHLESS_DAMAGE_MULTIPLIER,Damage taken breathless,Danno subito senza fiato
+DEV_C_BREATHLESS_SPEED_MULTIPLIER,Speed breathless,Velocità senza fiato
+DEV_C_STRIKE_DAMAGE,Strike damage,Danno del colpo
+DEV_C_STRIKE_STAMINA_COST,Strike breath cost,Fiato del colpo
+DEV_C_STRIKE_STARTUP,Strike wind-up,Carica del colpo
+DEV_C_STRIKE_ACTIVE,Strike active time,Durata attiva del colpo
+DEV_C_STRIKE_RECOVERY,Strike recovery,Recupero del colpo
+DEV_C_STRIKE_REACH,Strike reach,Portata del colpo
+DEV_C_STRIKE_ARC_DEGREES,Strike arc (degrees),Arco del colpo (gradi)
+DEV_C_COMBO_LENGTH,Combo length,Lunghezza della combinazione
+DEV_C_COMBO_FINISHER_MULTIPLIER,Last combo hit,Ultimo colpo della combinazione
+DEV_C_STRIKE_KNOCKBACK,Strike knockback,Contraccolpo del colpo
+DEV_C_STRIKE_LUNGE,Strike lunge,Affondo del colpo
+DEV_C_COUNTER_MULTIPLIER,Counter-hit multiplier,Moltiplicatore del contrattempo
+DEV_C_HOOK_STAMINA_COST,Hook breath cost,Fiato dell'uncino
+DEV_C_HOOK_STARTUP,Hook wind-up,Carica dell'uncino
+DEV_C_HOOK_ACTIVE,Hook active time,Durata attiva dell'uncino
+DEV_C_HOOK_RECOVERY,Hook recovery,Recupero dell'uncino
+DEV_C_HOOK_REACH,Hook reach,Portata dell'uncino
+DEV_C_HOOK_ARC_DEGREES,Hook arc (degrees),Arco dell'uncino (gradi)
+DEV_C_HOOK_HOLD_SECONDS,Hold to push,Tenere premuto per spingere
+DEV_C_HOOK_PULL_DISTANCE,Pull ends at,Il tiro si ferma a
+DEV_C_HOOK_PUSH_DISTANCE,Push distance,Distanza della spinta
+DEV_C_HOOK_DAMAGE,Hook damage,Danno dell'uncino
+DEV_C_PARRY_PRESS_COST,Parry press breath,Fiato della parata
+DEV_C_BLOCK_HIT_COST,Breath per blocked hit,Fiato per colpo parato
+DEV_C_DEFLECT_WINDOW,Deflect window,Finestra della deviazione
+DEV_C_PARRY_SPEED_MULTIPLIER,Speed while parrying,Velocità in parata
+DEV_C_DEFLECT_STAGGER_SECONDS,Stagger after deflect,Sbilanciamento dopo deviazione
+DEV_C_JUMP_STAMINA_COST,Jump breath cost,Fiato del salto
+DEV_C_JUMP_HEIGHT,Jump height,Altezza del salto
+DEV_C_JUMP_INVULNERABLE_SECONDS,Jump invulnerable time,Invulnerabilità del salto
+DEV_C_RUN_SPEED_MULTIPLIER,Run speed,Velocità di corsa
+DEV_C_RUN_STAMINA_PER_SECOND,Run breath per second,Fiato della corsa al secondo
+DEV_C_HITSTUN_SECONDS,Stun when hit,Stordimento da colpo
+DEV_C_HIT_KNOCKBACK,Knockback when hit,Contraccolpo subito
+DEV_C_LANTERN_HOLD_SECONDS,Hold to raise lantern,Tenere premuto per alzare
+DEV_C_LANTERN_RAISED_RANGE_MULTIPLIER,Raised lantern range,Portata della lanterna alzata
+DEV_C_HITSTOP_SECONDS,Freeze on hit,Fermo immagine al colpo
+DEV_C_HITSTOP_CRITICAL_SECONDS,Freeze on critical,Fermo immagine al critico
+DEV_C_SHAKE_METERS,Shake on hit,Tremolio al colpo
+DEV_C_SHAKE_CRITICAL_METERS,Shake on critical,Tremolio al critico
+DEV_C_INPUT_BUFFER_SECONDS,Input buffer,Memoria dei tasti
+DEV_C_DUMMY_ATTACK_INTERVAL,Dummy: time between swings,Fantoccio: pausa tra i colpi
+DEV_C_DUMMY_WINDUP,Dummy: wind-up,Fantoccio: carica
+DEV_C_DUMMY_ACTIVE,Dummy: active time,Fantoccio: durata attiva
+DEV_C_DUMMY_EXPOSED,Dummy: open after swing,Fantoccio: scoperto dopo il colpo
+DEV_C_DUMMY_DAMAGE,Dummy: damage,Fantoccio: danno
+DEV_C_DUMMY_REACH,Dummy: reach,Fantoccio: portata
+DEV_SECTION_COMBAT,Combat (phase 3),Combattimento (fase 3)
+DEV_SAVE_COMBAT,Save combat values,Salva i valori del combattimento
+DEV_SAVED_COMBAT,Saved: {file},Salvato: {file}
+DEV_SHOW_COMBAT_HUD,On-screen measures,Misure a schermo
+HUD_HEALTH,Health,Vita
+HUD_BREATH,Breath,Fiato
+COMBAT_DEFLECT,Deflected!,Deviato!
+COMBAT_COUNTER,Counter-hit!,Contrattempo!
+COMBAT_BREATHLESS,Out of breath,Senza fiato
+COMBAT_NO_COMPANION,No companion in this chapter,Nessun compagno in questo capitolo
+OPTIONS_TITLE,Options,Opzioni
+OPTIONS_SHAKE,Screen shake,Tremolio dello schermo
+OPTIONS_FLASH,Flashes and glows,Lampi e bagliori
+OPTIONS_AIM_ASSIST,Aim assist,Aiuto alla mira
+OPTIONS_CONTROLS,Controls,Comandi
+OPTIONS_KEYBOARD,Keyboard and mouse,Tastiera e mouse
+OPTIONS_GAMEPAD,Gamepad,Gamepad
+OPTIONS_PRESS,Press a key… (Esc cancels),Premi un tasto… (Esc annulla)
+OPTIONS_RESET,Reset controls,Ripristina i comandi
+OPTIONS_CLOSE,Close,Chiudi
+INPUT_MOVE_UP,Move up,Muovi in alto
+INPUT_MOVE_DOWN,Move down,Muovi in basso
+INPUT_MOVE_LEFT,Move left,Muovi a sinistra
+INPUT_MOVE_RIGHT,Move right,Muovi a destra
+INPUT_ATTACK,Strike,Colpo
+INPUT_HOOK,Hook,Uncino
+INPUT_PARRY,Parry,Parata
+INPUT_JUMP,Jump,Salto
+INPUT_RUN,Run,Corsa
+INPUT_LANTERN,Lantern,Lanterna
+INPUT_CALL,Call,Richiamo
+INPUT_INTERACT,Interact,Interagire
+INPUT_MOUSE_LEFT,Left mouse button,Tasto sinistro del mouse
+INPUT_MOUSE_RIGHT,Right mouse button,Tasto destro del mouse
+INPUT_MOUSE_MIDDLE,Middle mouse button,Tasto centrale del mouse
+INPUT_MOUSE_BUTTON,Mouse button {n},Tasto {n} del mouse
+DEV_C_WALKING_REGEN_MULTIPLIER,Breath regained while walking,Recupero del fiato camminando
+DEV_K_LEASH_DISTANCE,Creatures give up beyond,Le creature rinunciano oltre
+DEV_K_VOLTAFACCIA_HEALTH,Voltafaccia: health,Voltafaccia: vita
+DEV_K_VOLTAFACCIA_SPEED,Voltafaccia: speed,Voltafaccia: velocità
+DEV_K_VOLTAFACCIA_AGGRO,Voltafaccia: notices at,Voltafaccia: si accorge a
+DEV_K_VOLTAFACCIA_ATTACK_RANGE,Voltafaccia: attack range,Voltafaccia: portata
+DEV_K_VOLTAFACCIA_WINDUP,Voltafaccia: wind-up,Voltafaccia: carica
+DEV_K_VOLTAFACCIA_EXPOSED,Voltafaccia: open after attack,Voltafaccia: scoperto dopo
+DEV_K_VOLTAFACCIA_COOLDOWN,Voltafaccia: pause between attacks,Voltafaccia: pausa tra attacchi
+DEV_K_VOLTAFACCIA_DAMAGE,Voltafaccia: damage,Voltafaccia: danno
+DEV_K_VOLTAFACCIA_LUNGE,Voltafaccia: lunge,Voltafaccia: affondo
+DEV_K_VOLTAFACCIA_SHADE_MULTIPLIER,Voltafaccia: shaded side damage,Voltafaccia: danno sul lato in ombra
+DEV_K_VOLTAFACCIA_SHADE_DEGREES,Voltafaccia: shaded side angle,Voltafaccia: ampiezza del lato in ombra
+DEV_K_RASPAGELO_HEALTH,Raspagelo: health,Raspagelo: vita
+DEV_K_RASPAGELO_BURROW_SPEED,Raspagelo: speed underground,Raspagelo: velocità sotto terra
+DEV_K_RASPAGELO_AGGRO,Raspagelo: notices at,Raspagelo: si accorge a
+DEV_K_RASPAGELO_TELEGRAPH,Raspagelo: ground shaking,Raspagelo: preavviso del terreno
+DEV_K_RASPAGELO_DAMAGE,Raspagelo: damage,Raspagelo: danno
+DEV_K_RASPAGELO_BURST_RADIUS,Raspagelo: burst radius,Raspagelo: raggio del morso
+DEV_K_RASPAGELO_EXPOSED,Raspagelo: open after burst,Raspagelo: scoperto dopo
+DEV_K_RASPAGELO_SURFACED,Raspagelo: surfaced time,Raspagelo: tempo in superficie
+DEV_K_RASPAGELO_UNDERGROUND_MIN,Raspagelo: minimum underground,Raspagelo: minimo sotto terra
+DEV_K_RASPAGELO_ARMOR_MULTIPLIER,Raspagelo: head plate,Raspagelo: placca frontale
+DEV_K_BRINACCHIO_HEALTH,Brinacchio: health,Brinacchio: vita
+DEV_K_BRINACCHIO_SPEED,Brinacchio: speed,Brinacchio: velocità
+DEV_K_BRINACCHIO_AGGRO,Brinacchio: notices at,Brinacchio: si accorge a
+DEV_K_BRINACCHIO_LANTERN_AGGRO,Brinacchio: notices the lantern at,Brinacchio: sente la lanterna a
+DEV_K_BRINACCHIO_LOSE_TRACK,Brinacchio: loses track beyond,Brinacchio: perde le tracce oltre
+DEV_K_BRINACCHIO_LATCH_DAMAGE_PER_SECOND,Brinacchio: damage per second,Brinacchio: danno al secondo
+DEV_K_BRINACCHIO_SLOW,Brinacchio: slowdown each,Brinacchio: rallentamento ciascuno
+DEV_K_BRINACCHIO_MAX_SLOW,Brinacchio: maximum slowdown,Brinacchio: rallentamento massimo
+DEV_K_BRINACCHIO_CRUST_SECONDS,Brinacchio: frost crust,Brinacchio: crosta di brina
+DEV_K_GRAPPOLO_MEMBERS,Grappolo: members,Grappolo: membri
+DEV_K_GRAPPOLO_MEMBER_HEALTH,Grappolo: health per member,Grappolo: vita per membro
+DEV_K_GRAPPOLO_AGGRO,Grappolo: notices at,Grappolo: si accorge a
+DEV_K_GRAPPOLO_ROLL_WINDUP,Grappolo: wind-up,Grappolo: carica
+DEV_K_GRAPPOLO_ROLL_SPEED,Grappolo: roll speed,Grappolo: velocità del rotolamento
+DEV_K_GRAPPOLO_ROLL_SECONDS,Grappolo: roll time,Grappolo: durata del rotolamento
+DEV_K_GRAPPOLO_ROLL_COOLDOWN,Grappolo: pause between rolls,Grappolo: pausa tra i rotolamenti
+DEV_K_GRAPPOLO_DAMAGE,Grappolo: damage,Grappolo: danno
+DEV_K_GRAPPOLO_SHELL_MULTIPLIER,Grappolo: through the shells,Grappolo: attraverso i gusci
+DEV_K_GRAPPOLO_REFORM_SECONDS,Grappolo: reforms after,Grappolo: si ricompone dopo
+DEV_K_GRAPPOLO_BIT_SPEED,Grappolo: piece speed,Grappolo: velocità dei pezzi
+DEV_SECTION_CREATURES,Creatures (phase 3),Creature (fase 3)
+DEV_SAVE_CREATURES,Save creature values,Salva i valori delle creature
+BOSS_FOGLIONE,The Rooted Leafback,Il Foglione Radicato
+BOSS_SPARTIGHIACCIO,The Old Icebreaker,Il Vecchio Spartighiaccio
+BOSS_DEFEATED,Defeated!,Sconfitto!
+FIELD_TILTS,The field tilts toward the east,Il campo si inclina verso est
+FIELD_TILTS_BACK,The field tilts back,Il campo torna com'era
+DEV_K_FOGLIONE_HEALTH,Rooted Leafback: health,Foglione Radicato: vita
+DEV_K_FOGLIONE_TURN_DEGREES_PER_SECOND,Rooted Leafback: turn speed,Foglione Radicato: velocità di rotazione
+DEV_K_FOGLIONE_LEAF_MULTIPLIER,Rooted Leafback: through the leaves,Foglione Radicato: attraverso le foglie
+DEV_K_FOGLIONE_LEAF_DEGREES,Rooted Leafback: leaf side angle,Foglione Radicato: ampiezza delle foglie
+DEV_K_FOGLIONE_ROOT_INTERVAL,Rooted Leafback: roots every,Foglione Radicato: radici ogni
+DEV_K_FOGLIONE_ROOT_TELEGRAPH,Rooted Leafback: roots warning,Foglione Radicato: preavviso delle radici
+DEV_K_FOGLIONE_ROOT_DAMAGE,Rooted Leafback: root damage,Foglione Radicato: danno delle radici
+DEV_K_FOGLIONE_ROOT_RADIUS,Rooted Leafback: root radius,Foglione Radicato: raggio delle radici
+DEV_K_FOGLIONE_SWEEP_RANGE,Rooted Leafback: sweep reach,Foglione Radicato: portata della spazzata
+DEV_K_FOGLIONE_SWEEP_WINDUP,Rooted Leafback: sweep wind-up,Foglione Radicato: carica della spazzata
+DEV_K_FOGLIONE_SWEEP_DAMAGE,Rooted Leafback: sweep damage,Foglione Radicato: danno della spazzata
+DEV_K_FOGLIONE_CLOSE_AFTER_DAMAGE,Rooted Leafback: closes leaves after,Foglione Radicato: chiude le foglie dopo
+DEV_K_FOGLIONE_CLOSE_SECONDS,Rooted Leafback: leaves closed,Foglione Radicato: foglie chiuse per
+DEV_K_FIELD_TILT_SECONDS,Field: tilted for,Campo: inclinato per
+DEV_K_FIELD_LEVER_COOLDOWN,Field: lever again after,Campo: leva di nuovo dopo
+DEV_K_SPARTI_HEALTH,Old Icebreaker: health,Vecchio Spartighiaccio: vita
+DEV_K_SPARTI_AIM_SECONDS,Old Icebreaker: aim time,Vecchio Spartighiaccio: mira
+DEV_K_SPARTI_CHARGE_SPEED,Old Icebreaker: charge speed,Vecchio Spartighiaccio: velocità della carica
+DEV_K_SPARTI_CHARGE_DAMAGE,Old Icebreaker: charge damage,Vecchio Spartighiaccio: danno della carica
+DEV_K_SPARTI_RECOVER_SECONDS,Old Icebreaker: open after charge,Vecchio Spartighiaccio: scoperto dopo la carica
+DEV_K_SPARTI_STUCK_SECONDS,Old Icebreaker: stuck at the edge,Vecchio Spartighiaccio: fermo sul bordo
+DEV_K_SPARTI_SHIELD_MULTIPLIER,Old Icebreaker: through the shield,Vecchio Spartighiaccio: attraverso lo scudo
+DEV_K_SPARTI_SHIELD_DEGREES,Old Icebreaker: shield angle,Vecchio Spartighiaccio: ampiezza dello scudo
+DEV_K_SPARTI_STOMP_RANGE,Old Icebreaker: stomp radius,Vecchio Spartighiaccio: raggio del pestone
+DEV_K_SPARTI_STOMP_DAMAGE,Old Icebreaker: stomp damage,Vecchio Spartighiaccio: danno del pestone
+DEV_K_ICE_FALL_DAMAGE,Ice: fall damage,Ghiaccio: danno della caduta
+NAME_OTTAVIA,Ottavia,Ottavia
+NAME_ENEA,Enea,Enea
 DLG_LESSON_PARRY_001,"Enea, come here. Today you learn to parry.","Enea, vieni qui. Oggi impari a parare."
-DLG_LESSON_PARRY_002,"The dummy always strikes with the same rhythm. Watch it.","Il fantoccio colpisce sempre con lo stesso ritmo. Guardalo."
+DLG_LESSON_PARRY_002,The dummy always strikes with the same rhythm. Watch it.,Il fantoccio colpisce sempre con lo stesso ritmo. Guardalo.
 DLG_LESSON_PARRY_003,"When it glows orange it is about to strike. Parry right then, not before.","Quando si accende d'arancio sta per colpire. Para proprio in quel momento, non prima."
-DLG_LESSON_PARRY_004,"Your turn. Try it.","Tocca a te. Prova."
-DLG_LESSON_PARRY_005,"Too late. Wait for the glow and parry at once.","Troppo tardi. Aspetta il bagliore e para subito."
-DLG_LESSON_PARRY_006,"Too early: you just take the blow and tire yourself.","Troppo presto: così incassi e ti stanchi."
-DLG_LESSON_PARRY_007,"Good. Once more.","Bene. Ancora una volta."
-DLG_LESSON_PARRY_008,"That is how you parry. Parry at the right moment and you never tire.","Così si para. Chi para al momento giusto non si stanca."
-ENEA_LEARNED_PARRY,"Enea learned the parry","Enea ha imparato la parata"
-ENEA_LEARNED_COUNTER,"Enea learned the counter-hit","Enea ha imparato il contrattempo"
-ENEA_LEARNED_COMBO,"Enea learned the combo","Enea ha imparato la combinazione"
-ENEA_LEARNED_JUMP,"Enea learned the jump","Enea ha imparato il salto"
-ENEA_LEARNED_HOOK,"Enea learned the hook","Enea ha imparato l'uncino"
-COMPANION_NOT_READY,"Tosca is not ready yet","Tosca non è ancora pronta"
-COMPANION_NO_TARGET,"No creature within reach","Nessuna creatura a portata"
-HUD_TOSCA,"Tosca","Tosca"
-DEV_TOSCA_PRESENT,"Tosca in this chapter","Tosca presente nel capitolo"
-DEV_C_ENEA_SPEED,"Enea: speed","Enea: velocità"
-DEV_C_ENEA_FOLLOW_DISTANCE,"Enea: distance behind","Enea: distanza dietro"
-DEV_C_ENEA_KEEP_BACK,"Enea: keeps back from creatures","Enea: sta lontano dalle creature"
-DEV_C_ENEA_LEARN_COUNT,"Enea: moves to learn","Enea: mosse per imparare"
-DEV_C_ENEA_DOWN_SECONDS,"Enea: time on the ground","Enea: tempo a terra"
-DEV_C_ENEA_PARRY_CHANCE,"Enea: parry chance","Enea: probabilità di parata"
-DEV_C_ENEA_ATTACK_DAMAGE,"Enea: damage","Enea: danno"
-DEV_C_ENEA_ATTACK_INTERVAL,"Enea: time between strikes","Enea: pausa tra i colpi"
-DEV_C_TOSCA_COOLDOWN,"Tosca: cooldown","Tosca: ricarica"
-DEV_C_TOSCA_RANGE,"Tosca: reach","Tosca: portata"
-DEV_C_TOSCA_PULL_DISTANCE,"Tosca: drags to","Tosca: trascina fino a"
-DEV_C_TOSCA_DAMAGE,"Tosca: damage","Tosca: danno"
-DEV_C_TOSCA_HEAVY_STAGGER,"Tosca: stagger on heavy","Tosca: sbilanciamento sui pesanti"
-COMBAT_CLINGING,"Parasites clinging! Jump to shake them off","Parassiti addosso! Un salto per scrollarli"
-DEV_C_AIM_CONE_DEGREES,"Aim cone (degrees)","Cono di mira (gradi)"
+DLG_LESSON_PARRY_004,Your turn. Try it.,Tocca a te. Prova.
+DLG_LESSON_PARRY_005,Too late. Wait for the glow and parry at once.,Troppo tardi. Aspetta il bagliore e para subito.
+DLG_LESSON_PARRY_006,Too early: you just take the blow and tire yourself.,Troppo presto: così incassi e ti stanchi.
+DLG_LESSON_PARRY_007,Good. Once more.,Bene. Ancora una volta.
+DLG_LESSON_PARRY_008,That is how you parry. Parry at the right moment and you never tire.,Così si para. Chi para al momento giusto non si stanca.
+ENEA_LEARNED_PARRY,Enea learned the parry,Enea ha imparato la parata
+ENEA_LEARNED_COUNTER,Enea learned the counter-hit,Enea ha imparato il contrattempo
+ENEA_LEARNED_COMBO,Enea learned the combo,Enea ha imparato la combinazione
+ENEA_LEARNED_JUMP,Enea learned the jump,Enea ha imparato il salto
+ENEA_LEARNED_HOOK,Enea learned the hook,Enea ha imparato l'uncino
+COMPANION_NOT_READY,Tosca is not ready yet,Tosca non è ancora pronta
+COMPANION_NO_TARGET,No creature within reach,Nessuna creatura a portata
+HUD_TOSCA,Tosca,Tosca
+DEV_TOSCA_PRESENT,Tosca in this chapter,Tosca presente nel capitolo
+DEV_C_ENEA_SPEED,Enea: speed,Enea: velocità
+DEV_C_ENEA_FOLLOW_DISTANCE,Enea: distance behind,Enea: distanza dietro
+DEV_C_ENEA_KEEP_BACK,Enea: keeps back from creatures,Enea: sta lontano dalle creature
+DEV_C_ENEA_LEARN_COUNT,Enea: moves to learn,Enea: mosse per imparare
+DEV_C_ENEA_DOWN_SECONDS,Enea: time on the ground,Enea: tempo a terra
+DEV_C_ENEA_PARRY_CHANCE,Enea: parry chance,Enea: probabilità di parata
+DEV_C_ENEA_ATTACK_DAMAGE,Enea: damage,Enea: danno
+DEV_C_ENEA_ATTACK_INTERVAL,Enea: time between strikes,Enea: pausa tra i colpi
+DEV_C_TOSCA_COOLDOWN,Tosca: cooldown,Tosca: ricarica
+DEV_C_TOSCA_RANGE,Tosca: reach,Tosca: portata
+DEV_C_TOSCA_PULL_DISTANCE,Tosca: drags to,Tosca: trascina fino a
+DEV_C_TOSCA_DAMAGE,Tosca: damage,Tosca: danno
+DEV_C_TOSCA_HEAVY_STAGGER,Tosca: stagger on heavy,Tosca: sbilanciamento sui pesanti
+COMBAT_CLINGING,Parasites clinging! Jump to shake them off,Parassiti addosso! Un salto per scrollarli
+DEV_C_AIM_CONE_DEGREES,Aim cone (degrees),Cono di mira (gradi)
 DEV_C_AIM_CONE_EASY_DEGREES,"Aim cone, easy (degrees)","Cono di mira, facile (gradi)"
-DEV_CHAPTER,"Ottavia's age: chapter","Età di Ottavia: capitolo"
-DEV_END_CHAPTER,"End of chapter","Fine del capitolo"
-DEV_SECTION_COAT,"Coat patches (104)","Toppe del cappotto (104)"
-PATCH_NONE,"— empty slot —","— spazio vuoto —"
-PATCH_COLD,"Cold patch","Toppa del freddo"
-PATCH_HEAT,"Heat patch","Toppa del caldo"
-PATCH_BREATH,"Breath patch","Toppa del fiato"
-PATCH_LANTERN,"Lantern patch","Toppa della lanterna"
-CHAPTER_END_TITLE,"End of chapter {n}","Fine del capitolo {n}"
-CHAPTER_LOSES,"Loses: {text}","Perde: {text}"
-CHAPTER_LEARNS,"Learns: {text}","Impara: {text}"
-PROG_LOSE_STAMINA,"breath drops from {from} to {to}","il fiato cala da {from} a {to}"
-PROG_LOSE_SPEED,"her pace slows from {from}% to {to}%","il passo rallenta dal {from}% al {to}%"
-PROG_LOSE_COMBO,"the combo shortens from {from} to {to} strikes","la combinazione di colpi si accorcia da {from} a {to}"
-PROG_LEARN_RETURN_STRIKE,"the return strike: after a deflection the next strike is critical","il colpo di ritorno: dopo una deviazione il colpo successivo è critico"
-PROG_LEARN_KEEN_EYE,"the keen eye: a wider deflection window","l'occhio esperto: la finestra di deviazione si allarga"
-PROG_LEARN_HEAVY_FINISHER,"the heavy strike: the last strike of the combo staggers","il colpo pesante: l'ultimo colpo della combinazione sbilancia"
-PROG_LEARN_SURE_JUMP,"the sure jump: the jump dodges longer","il salto sicuro: il salto schiva più a lungo"
-PROG_LEARN_DAZZLING_LANTERN,"the dazzling lantern: raising it staggers nearby creatures","la lanterna che abbaglia: alzarla sbilancia le creature vicine"
-PROG_LEARN_DEEP_COUNTER,"the deep counter-hit: a stronger critical","il contrattempo profondo: il critico è più forte"
-PROG_LEARN_LONG_HOOK,"the long hook: the hook reaches farther","l'uncino lungo: l'uncino arriva più lontano"
-PROG_LEARN_VETERAN_BREATH,"the veteran's breath: breath returns sooner","il respiro della veterana: il fiato torna prima"
-OPTIONS_DIFFICULTY,"Difficulty","Difficoltà"
-DIFFICULTY_EASY,"Easy","Facile"
-DIFFICULTY_MEDIUM,"Medium","Medio"
-DIFFICULTY_HARD,"Hard","Difficile"
-DEV_VIDEO_CHAPTER,"Chapter {n}","Capitolo {n}"
+DEV_CHAPTER,Ottavia's age: chapter,Età di Ottavia: capitolo
+DEV_END_CHAPTER,End of chapter,Fine del capitolo
+DEV_SECTION_COAT,Coat patches (104),Toppe del cappotto (104)
+PATCH_NONE,— empty slot —,— spazio vuoto —
+PATCH_COLD,Cold patch,Toppa del freddo
+PATCH_HEAT,Heat patch,Toppa del caldo
+PATCH_BREATH,Breath patch,Toppa del fiato
+PATCH_LANTERN,Lantern patch,Toppa della lanterna
+CHAPTER_END_TITLE,End of chapter {n},Fine del capitolo {n}
+CHAPTER_LOSES,Loses: {text},Perde: {text}
+CHAPTER_LEARNS,Learns: {text},Impara: {text}
+PROG_LOSE_STAMINA,breath drops from {from} to {to},il fiato cala da {from} a {to}
+PROG_LOSE_SPEED,her pace slows from {from}% to {to}%,il passo rallenta dal {from}% al {to}%
+PROG_LOSE_COMBO,the combo shortens from {from} to {to} strikes,la combinazione di colpi si accorcia da {from} a {to}
+PROG_LEARN_RETURN_STRIKE,the return strike: after a deflection the next strike is critical,il colpo di ritorno: dopo una deviazione il colpo successivo è critico
+PROG_LEARN_KEEN_EYE,the keen eye: a wider deflection window,l'occhio esperto: la finestra di deviazione si allarga
+PROG_LEARN_HEAVY_FINISHER,the heavy strike: the last strike of the combo staggers,il colpo pesante: l'ultimo colpo della combinazione sbilancia
+PROG_LEARN_SURE_JUMP,the sure jump: the jump dodges longer,il salto sicuro: il salto schiva più a lungo
+PROG_LEARN_DAZZLING_LANTERN,the dazzling lantern: raising it staggers nearby creatures,la lanterna che abbaglia: alzarla sbilancia le creature vicine
+PROG_LEARN_DEEP_COUNTER,the deep counter-hit: a stronger critical,il contrattempo profondo: il critico è più forte
+PROG_LEARN_LONG_HOOK,the long hook: the hook reaches farther,l'uncino lungo: l'uncino arriva più lontano
+PROG_LEARN_VETERAN_BREATH,the veteran's breath: breath returns sooner,il respiro della veterana: il fiato torna prima
+OPTIONS_DIFFICULTY,Difficulty,Difficoltà
+DIFFICULTY_EASY,Easy,Facile
+DIFFICULTY_MEDIUM,Medium,Medio
+DIFFICULTY_HARD,Hard,Difficile
+DEV_VIDEO_CHAPTER,Chapter {n},Capitolo {n}
 HINT_LEFT_STICK,left stick,levetta sinistra
 PRO_HINT_MOVE,Move,Muoviti
 PRO_HINT_OPEN_LANTERN,Open the lantern,Apri la lanterna
@@ -305,10 +305,10 @@ PRO_CROWD_06,TODO-DESIGN #121 crowd line 6,TODO-DESIGN #121 frase della folla 6
 PRO_CROWD_07,TODO-DESIGN #121 crowd line 7,TODO-DESIGN #121 frase della folla 7
 PRO_CROWD_08,TODO-DESIGN #121 crowd line 8,TODO-DESIGN #121 frase della folla 8
 PRO_GOAL_DOOR,Reach the back door,Raggiungi la porta sul retro
-PRO_GOAL_TENTS,Reach the Frostcutters' tents,Raggiungi le tende dei Brinaioli
+PRO_GOAL_TENTS,"Reach Ruggero's wagon, past the Frostcutters' tents","Raggiungi il carro di Ruggero, oltre le tende dei Brinaioli"
 PRO_GOAL_CLIMB,"Climb onto the field-wagon, up to Ruggero","Sali sul carro-campo, da Ruggero"
 PRO_GOAL_WAKE,Wake Ruggero,Sveglia Ruggero
-PRO_GOAL_BREAK,Free the Tail stuck in the ice,Libera la Coda bloccata nel ghiaccio
+PRO_GOAL_BREAK,Help the Homehauler: free the Tail from the ice,Aiuta il Traslocante: libera la Coda dal ghiaccio
 PRO_GOAL_SWARM,Drive off the Brinacchi,Scaccia i Brinacchi
 PRO_GOAL_MIRCO,Go back for Mirco,Torna indietro a prendere Mirco
 PRO_GOAL_TIE,Tie Mirco to your rope,Lega Mirco alla corda
@@ -320,4 +320,30 @@ PRO_VERDICT_02,...the Filecloser came in past the limit.,...la Serrafila è arri
 PRO_VERDICT_03,...a Filecloser who can't keep pace is one more person to go back for.,...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.
 PRO_VERDICT_04,"...for her forty years, ten Truces.","...per i suoi quarant'anni, dieci Tregue."
 PRO_VERDICT_05,...then the lantern.,...poi la lanterna.
-PRO_GOAL_ROCKS,Run to the rocks beyond the vehicles,"Corri verso le rocce, oltre i mezzi"
+PRO_GOAL_ROCKS,"Run to Ruggero, past the rocks","Corri da Ruggero, oltre le rocce"
+SPEAKER_VOLTACAMPI,A Fieldturner,Una Voltacampi
+SPEAKER_MIRCO_MOTHER,Mirco's mother,La mamma di Mirco
+PRO_NARRATION_08,But my time has passed. The Night draws ever closer... I only hope to find a worthy heir.,Ma ormai il mio tempo è passato. La Notte è sempre più vicina... spero solo di trovare un degno erede.
+PRO_VOLTACAMPI_01,"Filecloser! Old Ruggero didn't hear the call: he's still asleep on his wagon, past the Frostcutters' tents. If he doesn't wake up, he'll be left behind!","Serrafila! Il vecchio Ruggero non ha sentito il richiamo: dorme ancora sul suo carro, oltre le tende dei Brinaioli. Se non si sveglia, resta indietro!"
+PRO_OTTAVIA_02,I'll see to it.,Ci penso io.
+PRO_OTTAVIA_03,"We're moving on, Ruggero. On your feet.","Si riparte, Ruggero. In piedi."
+PRO_RUGGERO_02,"Sixty years I've been getting up at the call, and today of all days the Filecloser comes to shake me. I can hear the Gnomon on my own!","Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, lo Gnomone!"
+PRO_RUGGERO_03,"Instead of waking old men, go down to the Homehauler: one of his Tails is stuck in the ice, and without it his Generator won't start.","Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte."
+PRO_MOTHER_01,"Filecloser! Filecloser! I can't find my Mirco, please help me!","Serrafila! Serrafila! Non trovo il mio Mirco, aiutami ti prego!"
+PRO_OTTAVIA_04,Where did you last see him?,Dove l'hai visto l'ultima volta?
+PRO_MOTHER_02,"He was staring at the dark, back there... toward the Night.","Guardava il buio, laggiù... verso la Notte."
+PRO_OTTAVIA_05,Stay with the column. I'll bring him back.,Resta con la colonna. Te lo riporto io.
+PRO_OTTAVIA_RUN_01,"Quick, there's no time to lose, Mirco!","Presto, non c'è tempo da perdere, Mirco!"
+PRO_OTTAVIA_RUN_02,"You'll see, everything will be all right.","Vedrai, andrà tutto bene."
+PRO_OTTAVIA_RUN_03,We're almost there.,Ci siamo quasi.
+PRO_ANSELMO_LATE2,Ottavia... you're late.,Ottavia... sei in ritardo.
+PRO_OTTAVIA_LATE2,"Yes, I know...","Sì, lo so..."
+PRO_VERDICT2_01,"The Mayor saw you come in past the limit. He counted the steps, as always.","Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre."
+PRO_VERDICT2_02,He says a Filecloser who can't keep pace becomes one more person to go back for.,Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.
+PRO_VERDICT2_03,But he hasn't forgotten forty years. That's why he grants you ten Truces.,Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.
+PRO_VERDICT2_04,"Ten stops, then you'll be left behind... and I'll have to make your lantern.","Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io."
+PRO_ANSELMO_HAND,Give me your hand. I need to take your measurements.,Dammi la mano. Devo prenderti le misure.
+PRO_OUTRO_01,"A Truce is the long stop between one Chase and the next. When the Gnomon's sundial marks its end, we move on.","Una Tregua è la lunga sosta tra una Rincorsa e l'altra. Quando la meridiana dello Gnomone ne segna la fine, si riparte."
+PRO_OUTRO_02,"Ten Truces: ten stops in which I can still walk with them, and bring back whoever falls behind.","Dieci Tregue: dieci soste in cui posso ancora camminare con loro, e riportare indietro chi resta."
+PRO_OUTRO_03,Then it will be my turn to stay behind. Whoever stays is left a lantern and a blanket.,"Poi toccherà a me restare indietro. A chi resta, si lasciano una lanterna e una coperta."
+PRO_OUTRO_04,The farewell lantern. Anselmo will build it piece by piece... and I will carry it into the Night.,La lanterna del congedo. Anselmo la costruirà pezzo per pezzo... e io la porterò nella Notte.

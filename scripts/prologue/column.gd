@@ -16,7 +16,7 @@ enum Step { INTRO, GO_BACK, MEET, FIGHT, TIE, RETURN, VERDICT, DONE }
 const COLUMN_SPEED: float = 1.2
 ## While Ottavia is away for Mirco the column walks on, but slower, so the
 ## way back is a chase and not minutes of empty plain.
-const COLUMN_SPEED_AWAY: float = 0.5
+const COLUMN_SPEED_AWAY: float = 0.3
 const COLUMN_Z: float = -3.0
 const COLUMN_START_X: Array[float] = [-7.0, -31.0, -55.0, -79.0]
 const COLUMN_RECIPES: Array[String] = ["casa_due_piani", "tenda_e_carico", "orto_e_serbatoio", "casa_torre"]
@@ -43,6 +43,7 @@ const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/a
 ## falls silent for the verdict, only the voices remain, each one closer;
 ## the first phrase of the theme on the title.
 const RETURN_MUSIC: AudioStream = preload("res://assets/audio/music/m3_ritorno_mirco.ogg")
+const THEME_OUTRO_MUSIC: AudioStream = preload("res://assets/audio/music/m1_porta_narrazione.ogg")
 const TITLE_MUSIC: AudioStream = preload("res://assets/audio/music/m4_titolo.ogg")
 const RETURN_MUSIC_DB: float = -3.0
 const GENERATOR_DB: float = -14.0
@@ -51,13 +52,37 @@ const CROWD_DB: float = -18.0
 ## The verdict (106): who says each line, in order. Anselmo carries the
 ## Mayor's words; he and Ottavia both know what is coming.
 const VERDICT: Array[Array] = [
-	[&"SPEAKER_ANSELMO", &"PRO_ANSELMO_LATE"],
-	[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_LATE"],
-	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_01"],
-	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_02"],
-	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_03"],
-	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_04"],
-	[&"SPEAKER_ANSELMO", &"PRO_VERDICT_05"],
+	[&"SPEAKER_ANSELMO", &"PRO_ANSELMO_LATE2"],
+	[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_LATE2"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT2_01"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT2_02"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT2_03"],
+	[&"SPEAKER_ANSELMO", &"PRO_VERDICT2_04"],
+]
+## Mirco's mother comes running from the column (106): why Ottavia goes back.
+const MOTHER_TALK: Array[Array] = [
+	[&"SPEAKER_MIRCO_MOTHER", &"PRO_MOTHER_01"],
+	[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_04"],
+	[&"SPEAKER_MIRCO_MOTHER", &"PRO_MOTHER_02"],
+	[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_05"],
+]
+const MOTHER_KIND: String = "donna_giovane"
+const MOTHER_RUN_SPEED: float = 4.5
+## What Ottavia says to Mirco on the way back, at these shares of the way.
+const RUN_LINES: Array[StringName] = [&"PRO_OTTAVIA_RUN_01", &"PRO_OTTAVIA_RUN_02", &"PRO_OTTAVIA_RUN_03"]
+const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
+## The outro (106): what the ten Truces and the lantern mean, over the
+## column walking into the dusk; the lantern outline shows with the last.
+const OUTRO: Array[StringName] = [&"PRO_OUTRO_01", &"PRO_OUTRO_02", &"PRO_OUTRO_03", &"PRO_OUTRO_04"]
+## The way back (106): boulders and fallen trunks scattered south of the
+## barriers, where the column is seen ahead; (x, z) of each cluster.
+const RETURN_OBSTACLES: Array[Vector2] = [
+	Vector2(104.0, -7.0), Vector2(92.0, -11.0), Vector2(80.0, -6.0), Vector2(68.0, -10.0),
+	Vector2(56.0, -5.5), Vector2(44.0, -9.5), Vector2(32.0, -6.0), Vector2(18.0, -10.0),
+]
+const RETURN_ROUTE: Array[Vector3] = [
+	Vector3(114.0, 0.0, -3.0), Vector3(98.0, 0.0, -9.0), Vector3(86.0, 0.0, -7.5), Vector3(74.0, 0.0, -8.0),
+	Vector3(62.0, 0.0, -7.5), Vector3(50.0, 0.0, -7.5), Vector3(38.0, 0.0, -8.0), Vector3(25.0, 0.0, -7.5),
 ]
 ## The way to Mirco (106): barriers of fallen rock and walls across the
 ## way, each with a gap on one side, to be walked round. (x, z_from, z_to).
@@ -75,7 +100,7 @@ const ROUTE: Array[Vector3] = [
 ## Brinacchi on the way (B1): where each group waits; the first on the way
 ## out, the others cut across the way back.
 const WAY_OUT_SWARM: Vector3 = Vector3(72.0, 0.0, 7.0)
-const WAY_BACK_SWARMS: Array[Vector3] = [Vector3(90.0, 0.0, 12.0), Vector3(40.0, 0.0, 2.0)]
+const WAY_BACK_SWARMS: Array[Vector3] = [Vector3(88.0, 0.0, -8.0), Vector3(46.0, 0.0, -8.0)]
 const SWARM_COUNT: int = 3
 ## The frost field around Mirco (x, z, width, depth), dressed with frozen
 ## things; the barriers' gaps and Mirco's spot stay clear.
@@ -130,6 +155,9 @@ var _ambient_energy: float = 1.0
 var _fog_color: Color = Color.WHITE
 ## Brinacchi groups not yet woken.
 var _waiting_swarms: Array[Vector3] = []
+var _mother: NpcSprite
+var _run_lines_said: int = 0
+var _bubble: SpeechBubble
 
 
 func _ready() -> void:
@@ -181,6 +209,9 @@ func _ready() -> void:
 	PrologueAutoplay.attach_if_requested(get_tree())
 	marker = ObjectiveMarker.new()
 	level.add_child(marker)
+	_bubble = SpeechBubble.new()
+	add_child(_bubble)
+	_build_return_obstacles()
 	hud.bind(ottavia)
 	if "verdict=1" in OS.get_cmdline_user_args():
 		_verdict.call_deferred()
@@ -188,17 +219,38 @@ func _ready() -> void:
 		_intro.call_deferred()
 
 
-## A short look at Mirco, left behind, then back to Ottavia.
+## Mirco's mother runs up from the column: she cannot find him (106).
+## Ottavia answers, a look toward the dark where he stays, and back.
 func _intro() -> void:
 	ottavia.controls_enabled = false
+	_mother = NpcSprite.new()
+	_mother.sprite_texture = load("res://assets/sprites/folla/%s_walk_east.png" % MOTHER_KIND)
+	_mother.frame_count = 8
+	_mother.frames_per_second = 11.0
+	_mother.trade = &"tessibuio"
+	_mother.position = OTTAVIA_START + Vector3(-12.0, 0.0, 0.5)
+	level.add_child(_mother)
+	ottavia.face_toward(Vector3.LEFT)
+	var run: Tween = create_tween()
+	run.tween_property(_mother, "position", OTTAVIA_START + Vector3(-1.6, 0.0, 0.3), 10.4 / MOTHER_RUN_SPEED)
+	await run.finished
+	_mother.set_strip(load("res://assets/sprites/folla/%s_south.png" % MOTHER_KIND))
+	for line: Array in MOTHER_TALK:
+		var voice: float = dialogue.show_line(line[0], line[1])
+		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, 0.4)).timeout
+	dialogue.hide_box()
+	# She goes back to the column; the camera looks toward the dark.
+	_mother.set_strip(load("res://assets/sprites/folla/%s_walk_west.png" % MOTHER_KIND), 8.0)
+	var back: Tween = create_tween()
+	back.tween_property(_mother, "position", _mother.position + Vector3(-30.0, 0.0, -3.0), 30.0 / 1.4)
 	var start: Transform3D = camera_rig.camera.global_transform
-	var toward: Transform3D = start.translated(Vector3(MIRCO_START.x - OTTAVIA_START.x - 4.0, 0.0, 0.0))
+	var toward: Transform3D = start.translated(Vector3(40.0, 0.0, 0.0))
 	cinema_camera.global_transform = start
 	cinema_camera.current = true
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 2.2)
-	tween.tween_interval(1.4)
-	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = toward.interpolate_with(start, t), 0.0, 1.0, 1.6)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 2.4 if line_seconds >= 1.0 else 0.05)
+	tween.tween_interval(1.0 if line_seconds >= 1.0 else 0.05)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = toward.interpolate_with(start, t), 0.0, 1.0, 1.8 if line_seconds >= 1.0 else 0.05)
 	await tween.finished
 	camera_rig.camera.current = true
 	ottavia.controls_enabled = true
@@ -238,6 +290,13 @@ func _physics_process(delta: float) -> void:
 			var way: float = _return_start_x - _last_vehicle_back()
 			var done: float = _return_start_x - here.x
 			ottavia.combat.run_drain_multiplier = TIRED_DRAIN if way > 0.0 and done / way > HALFWAY_SHARE else 1.0
+			# Words for Mirco along the way (106), without stopping.
+			if _run_lines_said < RUN_LINES.size() and way > 0.0 and done / way >= RUN_LINE_SHARES[_run_lines_said]:
+				_bubble.show_over(ottavia, RUN_LINES[_run_lines_said])
+				var said: StringName = RUN_LINES[_run_lines_said]
+				var voice: float = GameAudio.play_voice(said)
+				_run_lines_said += 1
+				_hide_bubble_later(said, maxf(voice + 0.4, 2.2))
 			if here.x - _last_vehicle_back() < CATCH_DISTANCE:
 				_verdict()
 
@@ -278,6 +337,7 @@ func _on_mirco_used() -> void:
 	ottavia.controls_enabled = true
 	_return_start_x = ottavia.global_position.x
 	_waiting_swarms = WAY_BACK_SWARMS.duplicate()
+	_show_column_ahead()
 	# Back to the tail of the column, which keeps walking away.
 	var last: Node3D = column[0]
 	var box: AABB = VehicleKit.bounds(last)
@@ -335,13 +395,13 @@ func _verdict() -> void:
 	_anselmo.set_strip(ANSELMO_FACING_NORTH)
 	_anselmo.global_position = ottavia.global_position + Vector3(0.0, 0.0, 1.3)
 	ottavia.face_toward(Vector3.BACK)
-	var hand_voice: float = dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_02")
+	var hand_voice: float = dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_HAND")
 	var hand_started: float = Time.get_ticks_msec() / 1000.0
 	await ottavia.play_scripted("give_hand")
 	var hand_left: float = hand_voice - (Time.get_ticks_msec() / 1000.0 - hand_started)
 	await get_tree().create_timer(maxf(line_seconds * 0.6, hand_left + 0.4) if line_seconds >= 1.0 else line_seconds * 0.6).timeout
 	dialogue.hide_box()
-	await title.show_lantern_silhouette(line_seconds)
+	await _outro()
 	GameAudio.stop_loop(&"generator", 1.2)
 	GameAudio.stop_loop(&"crowd", 1.2)
 	await title.fade_to_black(1.2)
@@ -354,6 +414,75 @@ func _verdict() -> void:
 		await title.show_title(&"PRO_TITLE_CH1")
 	step = Step.DONE
 	prologue_finished.emit()
+
+
+## After the hand: the camera rises slowly over the column walking on while
+## Ottavia tells what the ten Truces are and what the lantern is (106).
+func _outro() -> void:
+	var start: Transform3D = camera_rig.camera.global_transform
+	var high: Transform3D = Transform3D.IDENTITY.translated(ottavia.global_position + Vector3(-18.0, 26.0, 34.0)).looking_at(ottavia.global_position + Vector3(-30.0, 0.0, -6.0), Vector3.UP)
+	cinema_camera.global_transform = start
+	cinema_camera.current = true
+	var seconds: float = 0.0
+	for line: StringName in OUTRO:
+		var stream: AudioStream = GameAudio.voice_stream(line)
+		seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0, 0.8)
+	var rise: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	rise.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(high, t), 0.0, 1.0, maxf(seconds, 0.05))
+	GameAudio.play_music(THEME_OUTRO_MUSIC, 2.0, -6.0)
+	for index: int in OUTRO.size():
+		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", OUTRO[index])
+		if index == OUTRO.size() - 1:
+			title.show_lantern_silhouette(DialogueBox.line_wait(line_seconds, voice, 0.8))
+		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, 0.8)).timeout
+	dialogue.hide_box()
+	GameAudio.stop_music(1.5)
+
+
+## A look ahead when Mirco is tied: the column, far off, still walking.
+func _show_column_ahead() -> void:
+	await get_tree().create_timer(0.4).timeout
+	var start: Transform3D = camera_rig.camera.global_transform
+	var tail_x: float = _last_vehicle_back()
+	var toward: Transform3D = start.translated(Vector3(tail_x - ottavia.global_position.x + 10.0, 0.0, 0.0))
+	var was_enabled: bool = ottavia.controls_enabled
+	ottavia.controls_enabled = false
+	cinema_camera.global_transform = start
+	cinema_camera.current = true
+	var quick: bool = line_seconds < 1.0
+	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 0.05 if quick else 2.6)
+	tween.tween_interval(0.05 if quick else 1.4)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = toward.interpolate_with(camera_rig.camera.global_transform, t), 0.0, 1.0, 0.05 if quick else 2.0)
+	await tween.finished
+	camera_rig.camera.current = true
+	ottavia.controls_enabled = was_enabled or step == Step.RETURN
+
+
+func _hide_bubble_later(line: StringName, seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
+	if _bubble.current_line() == String(line):
+		_bubble.hide_bubble()
+
+
+## Boulders and a fallen trunk in clusters on the way back (106), all solid.
+func _build_return_obstacles() -> void:
+	var rock: ShaderMaterial = LevelBlocks.material(CampScenery.TEX_ROCK, CampScenery.TEX_ROCK, Color(0.5, 0.46, 0.44))
+	var trunk: PackedScene = (load("res://assets/vegetation_kit/tronco_caduto_01.tres") as VegetationEntry).model
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = 1061
+	for index: int in RETURN_OBSTACLES.size():
+		var centre: Vector2 = RETURN_OBSTACLES[index]
+		for piece: int in random.randi_range(2, 4):
+			var height: float = random.randf_range(0.9, 1.9)
+			var block: Node3D = LevelBlocks.box(level, Vector3(centre.x + random.randf_range(-2.0, 2.0), height * 0.38, centre.y + random.randf_range(-1.6, 1.6)), Vector3(random.randf_range(1.2, 2.2), height, random.randf_range(1.2, 2.2)), rock)
+			block.rotation = Vector3(random.randf_range(-0.3, 0.3), random.randf_range(-PI, PI), random.randf_range(-0.3, 0.3))
+		if index % 2 == 1:
+			var log: Node3D = trunk.instantiate()
+			log.position = Vector3(centre.x + 3.0, 0.0, centre.y + random.randf_range(-2.0, 2.0))
+			log.rotation.y = random.randf_range(-PI, PI)
+			level.add_child(log)
+			LevelBlocks.make_solid(log)
 
 
 ## The light dims toward Mirco, as if night were coming (106), and comes
@@ -421,6 +550,7 @@ func _build_barriers() -> void:
 		wall.position = at
 		wall.rotation.y = PI * 0.5
 		level.add_child(wall)
+		LevelBlocks.make_solid(wall, 0.95)
 
 
 func _say(speaker: StringName, line: StringName) -> void:

@@ -241,6 +241,7 @@ func _test_column() -> void:
 	await create_timer(5.6).timeout
 	var ottavia: OttaviaProto = column.ottavia
 	_check(column.step == column.Step.GO_BACK and column.column.size() >= 3, "column: the caravan marches with three or four vehicles in view (103)")
+	_check(column._mother != null and is_instance_valid(column._mother), "column: Mirco's mother came running to ask for help (106)")
 	_check(GameAudio.music_stream() == column.RETURN_MUSIC, "audio: going back for Mirco, the tense music (126)")
 	var start_x: float = column.column[0].position.x
 	await create_timer(0.5).timeout
@@ -265,11 +266,12 @@ func _test_column() -> void:
 	ottavia.global_position.x = back + (column._return_start_x - back) * 0.3
 	await _frames(3)
 	_check(ottavia.combat.run_drain_multiplier > 1.0, "column: past halfway, the breath runs out faster")
+	_check(column._run_lines_said >= 1, "column: on the way back Ottavia speaks to Mirco (106)")
 	ottavia.global_position.x = column._last_vehicle_back() + 1.0
 	await _frames(3)
 	_check(column.step == column.Step.VERDICT, "column: reaching the column past the limit starts the verdict")
 	var opening: Array = column.VERDICT[0]
-	_check(opening[0] == &"SPEAKER_ANSELMO" and opening[1] == &"PRO_ANSELMO_LATE" and column.dialogue.current_line() in ["PRO_ANSELMO_LATE", "PRO_OTTAVIA_LATE"], "column: Anselmo opens the verdict: «Sei in ritardo, Ottavia.» (106)")
+	_check(opening[0] == &"SPEAKER_ANSELMO" and opening[1] == &"PRO_ANSELMO_LATE2" and column.dialogue.current_line() in ["PRO_ANSELMO_LATE2", "PRO_OTTAVIA_LATE2"], "column: Anselmo opens the verdict: «Ottavia... sei in ritardo.» (106)")
 	var marching_x: float = column.column[0].position.x
 	await create_timer(0.1).timeout
 	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")
@@ -279,9 +281,11 @@ func _test_column() -> void:
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
 	_check(title_music.size() == 1 and title_music[0] == column.TITLE_MUSIC and GameAudio.music_stream() == null, "audio: on the title the first phrase of the theme, broken off as the title fades (126)")
-	var voiced: bool = column.VERDICT.size() == 7
-	for line: Array in column.VERDICT:
+	var voiced: bool = column.VERDICT.size() == 6
+	for line: Array in column.VERDICT + column.MOTHER_TALK:
 		voiced = voiced and GameAudio.voice_stream(line[1]) != null
+	for line: StringName in column.OUTRO + column.RUN_LINES:
+		voiced = voiced and GameAudio.voice_stream(line) != null
 	_check(voiced, "column: every line of the verdict has its voice (59, 106)")
 	column.queue_free()
 	await _frames(2)

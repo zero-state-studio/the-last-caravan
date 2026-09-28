@@ -25,6 +25,30 @@ static func material(top: Texture2D, side: Texture2D = null, tint: Color = Color
 	return result
 
 
+## Makes a model (rock, trunk, ruin) block movement: a box the size of its
+## meshes, a little narrower (`shrink`) so the edges do not catch from afar.
+static func make_solid(model: Node3D, shrink: float = 0.8) -> void:
+	var box: AABB = AABB()
+	var first: bool = true
+	var to_local: Transform3D = model.transform.affine_inverse()
+	for node: Node in model.find_children("*", "MeshInstance3D", true, false):
+		var mesh_instance: MeshInstance3D = node
+		var local: AABB = (to_local * VegetationScatter.transform_in(model, mesh_instance)) * mesh_instance.get_aabb()
+		box = local if first else box.merge(local)
+		first = false
+	if first or box.size.y < 0.2:
+		return
+	var shape: BoxShape3D = BoxShape3D.new()
+	shape.size = Vector3(box.size.x * shrink, box.size.y, box.size.z * shrink)
+	var collision: CollisionShape3D = CollisionShape3D.new()
+	collision.shape = shape
+	collision.position = box.get_center()
+	var body: StaticBody3D = StaticBody3D.new()
+	body.name = "Solid"
+	body.add_child(collision)
+	model.add_child(body)
+
+
 ## A box centred on `center`; with `solid` it also blocks movement.
 static func box(parent: Node3D, center: Vector3, size: Vector3, mat: Material, solid: bool = true) -> Node3D:
 	var mesh: BoxMesh = BoxMesh.new()

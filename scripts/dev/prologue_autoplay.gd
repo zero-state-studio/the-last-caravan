@@ -133,9 +133,8 @@ func _play_column(scene: Node) -> void:
 	await _tap(scene, &"interact")
 	await _until(scene, func() -> bool: return scene.step == scene.Step.RETURN and ottavia.controls_enabled, 6.0)
 	# Back the same way, then after the column, running while the breath lasts.
-	var back: Array = scene.ROUTE.duplicate()
-	back.reverse()
-	for point: Vector3 in back:
+	await _until(scene, func() -> bool: return ottavia.controls_enabled, 10.0)
+	for point: Vector3 in scene.RETURN_ROUTE:
 		if scene.step != scene.Step.RETURN:
 			break
 		await _walk_fighting(scene, ottavia, point, ottavia.combat.stamina > ottavia.combat.max_stamina() * 0.2)

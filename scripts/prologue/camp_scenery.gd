@@ -23,6 +23,8 @@ const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
 const HOLLOW_FADE: float = 14.0
 const HOLLOW_METERS: float = 1.1
 const HOLLOW_SEED: int = 7331
+## Props one cannot walk through (bushes and stones stay passable).
+const SOLID_PROPS: Array[String] = ["roccia_grande", "tronco_caduto", "albero", "alberello", "ceppo"]
 const FROST_FIELD_SEED: int = 1250
 const GROUND_CELL: float = 4.0
 const COLLISION_CELL: float = 2.0
@@ -252,6 +254,7 @@ static func place_nature(parent: Node3D, random: RandomNumberGenerator, is_free:
 			prop.rotation.y = random.randf_range(-0.35, 0.35)
 			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
 			parent.add_child(prop)
+			_solid_if_needed(prop, path)
 			placed += 1
 
 
@@ -293,6 +296,7 @@ static func dress_frost_field(parent: Node3D, area: Rect2, is_free: Callable) ->
 			prop.rotation.y = random.randf_range(-PI, PI)
 			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
 			parent.add_child(prop)
+			_solid_if_needed(prop, path)
 			placed += 1
 	var frost_material: StandardMaterial3D = StandardMaterial3D.new()
 	frost_material.albedo_texture = TEX_FROST
@@ -342,12 +346,20 @@ static func place_ruins(parent: Node3D) -> void:
 		model.position = Vector3(at.x, _ruin_base(at), at.z)
 		model.rotation.y = ruin["yaw"]
 		parent.add_child(model)
+		LevelBlocks.make_solid(model, 0.9)
 	_place_dead_city(parent)
 
 
 ## The dead city behind the camp: a band of ruined blocks to the north,
 ## between the plain and the hills, so the skyline is a city, not a few
 ## lone buildings. Fixed seed: the same city every time.
+static func _solid_if_needed(prop: Node3D, path: String) -> void:
+	for name: String in SOLID_PROPS:
+		if path.get_file().begins_with(name):
+			LevelBlocks.make_solid(prop)
+			return
+
+
 static func _ruin_base(at: Vector3) -> float:
 	var lowest: float = INF
 	for offset: Vector2 in [Vector2.ZERO, Vector2(4.0, 0.0), Vector2(-4.0, 0.0), Vector2(0.0, 4.0), Vector2(0.0, -4.0)]:
@@ -384,6 +396,7 @@ static func _place_dead_city(parent: Node3D) -> void:
 		model.position = Vector3(at.x, _ruin_base(at), at.z)
 		model.rotation.y = random.randf_range(-PI, PI)
 		parent.add_child(model)
+		LevelBlocks.make_solid(model, 0.9)
 		placed.append(at)
 
 

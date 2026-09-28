@@ -52,18 +52,23 @@ Accompagna l'inquadratura che mostra la carovana.
 > Chi si ferma, la Notte lo raggiunge.
 > Chi resta indietro, lo va a prendere la Serrafila.
 > Da quarant'anni, la Serrafila sono io.
+> Ma ormai il mio tempo è passato. La Notte è sempre più vicina... spero solo di trovare un degno erede.
 
 ### Battute
 - **Lo Gnomone, lontano, primo richiamo:** «L'ombra si allunga! Si riparte!»
+- **Una Voltacampi, a Ottavia:** «Serrafila! Il vecchio Ruggero non ha sentito il richiamo: dorme ancora sul suo carro, oltre le tende dei Brinaioli. Se non si sveglia, resta indietro!» **Ottavia:** «Ci penso io.»
 - **Zelinda, al buio:** «Chiudila, quella lanterna. Qui dentro la luce non la vuole nessuno.»
-- **Ruggero, svegliato sulla terrazza:** «Ancora un momento... Le piante sono ancora storte.»
+- **Ruggero, svegliato sul ballatoio, scorbutico:** «Ancora un momento... Le piante sono ancora storte.» **Ottavia:** «Si riparte, Ruggero. In piedi.» **Ruggero:** «Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, lo Gnomone!» «Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte.»
 - **Un Traslocante, vicino alla Coda piantata:** «La Coda s'è piantata nella brina. Senza, il Generatore non parte.»
 - **Lo Gnomone, secondo richiamo:** «Ultimo richiamo! In marcia!»
+- **La mamma di Mirco, correndo dalla colonna:** «Serrafila! Serrafila! Non trovo il mio Mirco, aiutami ti prego!» **Ottavia:** «Dove l'hai visto l'ultima volta?» **La mamma:** «Guardava il buio, laggiù... verso la Notte.» **Ottavia:** «Resta con la colonna. Te lo riporto io.»
 - **Mirco, in fondo, verso il buio:** «Guarda, Serrafila. Là è tutto nero. Com'è, dentro?»
 - **Ottavia:** «Freddo. Andiamo.»
-- **Anselmo, in coda alla colonna:** «Sei in ritardo, Ottavia.»
-- **Ottavia:** «Sì... Lo so!»
-- **Anselmo, il verdetto, lento:** «Il Sindaco dice...» «...la Serrafila è arrivata oltre il limite.» «...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.» «...per i suoi quarant'anni, dieci Tregue.» «...poi la lanterna.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
+- **Ottavia a Mirco, correndo verso la colonna:** «Presto, non c'è tempo da perdere, Mirco!» «Vedrai, andrà tutto bene.» «Ci siamo quasi.»
+- **Anselmo, in coda alla colonna, affranto:** «Ottavia... sei in ritardo.»
+- **Ottavia:** «Sì, lo so...»
+- **Anselmo, il verdetto:** «Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre.» «Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.» «Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.» «Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
+- **Chiusura, Ottavia, sulla colonna che cammina nella sera:** «Una Tregua è la lunga sosta tra una Rincorsa e l'altra. Quando la meridiana dello Gnomone ne segna la fine, si riparte.» «Dieci Tregue: dieci soste in cui posso ancora camminare con loro, e riportare indietro chi resta.» «Poi toccherà a me restare indietro. A chi resta, si lasciano una lanterna e una coperta.» «La lanterna del congedo. Anselmo la costruirà pezzo per pezzo... e io la porterò nella Notte.»
 - **Titolo del capitolo:** «Ne restano dieci.»
 
 ### Suggerimenti a schermo
