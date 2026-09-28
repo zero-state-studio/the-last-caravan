@@ -30,6 +30,8 @@ const CHAIN_SECONDS: float = 2.3
 const CROWD_TYPES: Array[String] = ["uomo_giovane", "uomo_adulto", "uomo_anziano", "donna_giovane", "donna_adulta", "donna_anziana", "bambino", "bambina"]
 const ROADS: Array[Dictionary] = [{"points": [Vector2(-450.0, 0.0), Vector2(200.0, -1.0)], "half_width": 4.0}]
 const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn")
+const ANSELMO_WALK: String = "res://assets/sprites/comparse/anselmo_walk_west.png"
+const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/anselmo_north.png")
 const SUN_ELEVATION_DEGREES: float = 14.0
 const SUN_AZIMUTH_DEGREES: float = 300.0
 
@@ -61,6 +63,8 @@ var _mirco_walk: Dictionary = {}
 var _return_start_x: float = 0.0
 var _anselmo: NpcSprite
 var _head: Node3D
+var _anselmo_walking: bool = false
+var _head_shot: bool = false
 
 
 func _ready() -> void:
@@ -132,6 +136,13 @@ func _physics_process(delta: float) -> void:
 			if brinacchi.all(func(enemy: CombatEnemy) -> bool: return not enemy.is_alive()):
 				step = Step.TIE
 				hints.show_hint(&"INPUT_INTERACT", &"interact")
+		Step.VERDICT:
+			_follow(delta)
+			if _anselmo_walking:
+				_anselmo.global_position.x -= COLUMN_SPEED * delta
+			if _head_shot:
+				var head_point: Vector3 = _head.global_position + Vector3(4.0, 1.2, 0.0)
+				cinema_camera.global_transform = Transform3D.IDENTITY.translated(head_point + Vector3(-2.0, 7.0, 14.0)).looking_at(head_point, Vector3.UP)
 		Step.RETURN:
 			_follow(delta)
 			var way: float = _return_start_x - _last_vehicle_back()
@@ -199,12 +210,13 @@ func _last_vehicle_back() -> float:
 	return last.position.x + box.end.x
 
 
-## Space 5: the verdict, from voice to voice, the head of the column, Anselmo.
+## Space 5: the verdict, from voice to voice, the head of the column,
+## Anselmo. The column never stops: Ottavia, Mirco and Anselmo walk with it.
 func _verdict() -> void:
 	step = Step.VERDICT
-	column_moving = false
 	ottavia.controls_enabled = false
 	ottavia.combat.run_drain_multiplier = 1.0
+	ottavia.auto_move = Vector3(-COLUMN_SPEED, 0.0, 0.0)
 	hints.hide_hint()
 	_place_anselmo()
 	for line: StringName in [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_03", &"PRO_CHAIN_04"]:
@@ -212,15 +224,20 @@ func _verdict() -> void:
 		await get_tree().create_timer(chain_seconds).timeout
 	dialogue.hide_box()
 	# Cut to the head of the column: Arold walks on without turning, Enea turns.
-	var head_point: Vector3 = _head.global_position + Vector3(4.0, 1.2, 0.0)
-	cinema_camera.global_transform = Transform3D.IDENTITY.translated(head_point + Vector3(-2.0, 7.0, 14.0)).looking_at(head_point, Vector3.UP)
+	_head_shot = true
 	cinema_camera.current = true
 	await get_tree().create_timer(line_seconds * 1.5).timeout
+	_head_shot = false
 	camera_rig.snap_to_target()
 	camera_rig.camera.current = true
-	ottavia.face_toward(_anselmo.global_position - ottavia.global_position)
 	await _say(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_01")
 	await get_tree().create_timer(0.8).timeout
+	# For the hand they stop, face to face; the column walks on.
+	ottavia.auto_move = Vector3.ZERO
+	_anselmo_walking = false
+	_anselmo.set_strip(ANSELMO_FACING_NORTH)
+	_anselmo.global_position = ottavia.global_position + Vector3(0.0, 0.0, 1.3)
+	ottavia.face_toward(Vector3.BACK)
 	dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_02")
 	await ottavia.play_scripted("give_hand")
 	await get_tree().create_timer(line_seconds * 0.6).timeout
@@ -232,9 +249,13 @@ func _verdict() -> void:
 	prologue_finished.emit()
 
 
+## Anselmo walks at Ottavia's side, toward the Day, as the last voice.
 func _place_anselmo() -> void:
-	_anselmo.global_position = Vector3(ottavia.global_position.x - 1.6, 0.0, ottavia.global_position.z + 0.2)
+	_anselmo.global_position = Vector3(ottavia.global_position.x - 0.4, 0.0, ottavia.global_position.z + 1.3)
+	if ResourceLoader.exists(ANSELMO_WALK):
+		_anselmo.set_strip(load(ANSELMO_WALK), 7.0)
 	_anselmo.visible = true
+	_anselmo_walking = true
 
 
 func _say(speaker: StringName, line: StringName) -> void:

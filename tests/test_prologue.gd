@@ -196,6 +196,9 @@ func _test_column() -> void:
 	ottavia.global_position.x = column._last_vehicle_back() + 1.0
 	await _frames(3)
 	_check(column.step == column.Step.VERDICT, "column: reaching the column past the limit starts the verdict")
+	var marching_x: float = column.column[0].position.x
+	await create_timer(0.1).timeout
+	_check(column.column[0].position.x < marching_x and not ottavia.auto_move.is_zero_approx(), "column: during the verdict the column keeps walking, and Ottavia with it")
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
 	column.queue_free()

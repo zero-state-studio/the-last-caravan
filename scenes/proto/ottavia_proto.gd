@@ -57,6 +57,9 @@ var _landing_left: float = 0.0
 var _ground_y: float = 0.0
 ## False during room transitions and cutscenes: input is ignored.
 var controls_enabled: bool = true
+## During cutscenes: Ottavia walks at this velocity (for example with the
+## column on the march), animated as walking.
+var auto_move: Vector3 = Vector3.ZERO
 var health: float = 0.0
 var _lantern_points: PackedVector2Array = []
 var _dark_areas: int = 0
@@ -99,6 +102,11 @@ func _physics_process(delta: float) -> void:
 	var forced: Vector3 = combat.forced_velocity()
 	velocity.x = direction.x * speed + forced.x
 	velocity.z = direction.z * speed + forced.z
+	var walking_by_script: bool = not controls_enabled and not auto_move.is_zero_approx()
+	if walking_by_script:
+		velocity.x = auto_move.x
+		velocity.z = auto_move.z
+		input = Vector2(auto_move.x, auto_move.z).normalized()
 	var jump: float = combat.take_jump_impulse()
 	if jump > 0.0:
 		velocity.y = jump
