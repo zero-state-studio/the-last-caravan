@@ -23,8 +23,9 @@ const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
 const HOLLOW_FADE: float = 14.0
 const HOLLOW_METERS: float = 1.1
 const HOLLOW_SEED: int = 7331
-## Props one cannot walk through (bushes and stones stay passable).
-const SOLID_PROPS: Array[String] = ["roccia_grande", "tronco_caduto", "albero", "alberello", "ceppo"]
+## Props one cannot walk through, with the share of their width that
+## blocks (trees only by the trunk; bushes and stones stay passable).
+const SOLID_PROPS: Dictionary = {"roccia_grande": 0.8, "tronco_caduto": 0.8, "ceppo": 0.6, "albero": 0.15, "alberello": 0.15}
 const FROST_FIELD_SEED: int = 1250
 const GROUND_CELL: float = 4.0
 const COLLISION_CELL: float = 2.0
@@ -356,7 +357,7 @@ static func place_ruins(parent: Node3D) -> void:
 static func _solid_if_needed(prop: Node3D, path: String) -> void:
 	for name: String in SOLID_PROPS:
 		if path.get_file().begins_with(name):
-			LevelBlocks.make_solid(prop)
+			LevelBlocks.make_solid(prop, SOLID_PROPS[name])
 			return
 
 

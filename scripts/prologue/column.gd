@@ -76,14 +76,18 @@ const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
 const OUTRO: Array[StringName] = [&"PRO_OUTRO_01", &"PRO_OUTRO_02", &"PRO_OUTRO_03", &"PRO_OUTRO_04"]
 ## The way back (106): boulders and fallen trunks scattered south of the
 ## barriers, where the column is seen ahead; (x, z) of each cluster.
+## Clusters alternate north (z -5) and south (z -11); the way weaves
+## between them, passing each on the other side.
 const RETURN_OBSTACLES: Array[Vector2] = [
-	Vector2(104.0, -7.0), Vector2(92.0, -11.0), Vector2(80.0, -6.0), Vector2(68.0, -10.0),
-	Vector2(56.0, -5.5), Vector2(44.0, -9.5), Vector2(32.0, -6.0), Vector2(18.0, -10.0),
+	Vector2(100.0, -5.0), Vector2(88.0, -11.0), Vector2(76.0, -5.0), Vector2(64.0, -11.0),
+	Vector2(52.0, -5.0), Vector2(40.0, -11.0), Vector2(28.0, -5.0), Vector2(16.0, -11.0),
 ]
 const RETURN_ROUTE: Array[Vector3] = [
-	Vector3(114.0, 0.0, -3.0), Vector3(98.0, 0.0, -9.0), Vector3(86.0, 0.0, -7.5), Vector3(74.0, 0.0, -8.0),
-	Vector3(62.0, 0.0, -7.5), Vector3(50.0, 0.0, -7.5), Vector3(38.0, 0.0, -8.0), Vector3(25.0, 0.0, -7.5),
+	Vector3(112.0, 0.0, -8.0), Vector3(100.0, 0.0, -11.5), Vector3(88.0, 0.0, -4.5), Vector3(76.0, 0.0, -11.5),
+	Vector3(64.0, 0.0, -4.5), Vector3(52.0, 0.0, -11.5), Vector3(40.0, 0.0, -4.5), Vector3(28.0, 0.0, -11.5),
+	Vector3(16.0, 0.0, -4.5),
 ]
+const NORTH_WALL: Vector3 = Vector3(62.0, 0.0, 24.0)
 ## The way to Mirco (106): barriers of fallen rock and walls across the
 ## way, each with a gap on one side, to be walked round. (x, z_from, z_to).
 const BARRIERS: Array[Vector3] = [
@@ -475,12 +479,12 @@ func _build_return_obstacles() -> void:
 		var centre: Vector2 = RETURN_OBSTACLES[index]
 		for piece: int in random.randi_range(2, 4):
 			var height: float = random.randf_range(0.9, 1.9)
-			var block: Node3D = LevelBlocks.box(level, Vector3(centre.x + random.randf_range(-2.0, 2.0), height * 0.38, centre.y + random.randf_range(-1.6, 1.6)), Vector3(random.randf_range(1.2, 2.2), height, random.randf_range(1.2, 2.2)), rock)
+			var block: Node3D = LevelBlocks.box(level, Vector3(centre.x + random.randf_range(-1.6, 1.6), height * 0.38, centre.y + random.randf_range(-1.2, 1.2)), Vector3(random.randf_range(1.2, 2.0), height, random.randf_range(1.2, 2.0)), rock)
 			block.rotation = Vector3(random.randf_range(-0.3, 0.3), random.randf_range(-PI, PI), random.randf_range(-0.3, 0.3))
 		if index % 2 == 1:
 			var log: Node3D = trunk.instantiate()
-			log.position = Vector3(centre.x + 3.0, 0.0, centre.y + random.randf_range(-2.0, 2.0))
-			log.rotation.y = random.randf_range(-PI, PI)
+			log.position = Vector3(centre.x, 0.0, centre.y + (-1.5 if centre.y < -8.0 else 1.5))
+			log.rotation.y = random.randf_range(-0.3, 0.3)
 			level.add_child(log)
 			LevelBlocks.make_solid(log)
 
@@ -521,8 +525,21 @@ func _frost_free(point: Vector3) -> bool:
 		return false
 	if Vector2(point.x - MIRCO_START.x, point.z - MIRCO_START.z).length() < 6.0:
 		return false
-	for waypoint: Vector3 in ROUTE:
-		if Vector2(point.x - waypoint.x, point.z - waypoint.z).length() < 3.0:
+	if absf(point.x - NORTH_WALL.x) < 19.0 and absf(point.z - NORTH_WALL.z) < 5.0:
+		return false
+	# Clear of the ways out and back: the legs between their waypoints.
+	var out: Array = [OTTAVIA_START] + ROUTE + [MIRCO_START]
+	var back: Array = [MIRCO_START] + RETURN_ROUTE
+	for way: Array in [out, back]:
+		for index: int in range(1, way.size()):
+			var a: Vector2 = Vector2(way[index - 1].x, way[index - 1].z)
+			var b: Vector2 = Vector2(way[index].x, way[index].z)
+			var p: Vector2 = Vector2(point.x, point.z)
+			var t: float = clampf((p - a).dot(b - a) / maxf((b - a).length_squared(), 0.001), 0.0, 1.0)
+			if p.distance_to(a + (b - a) * t) < 4.5:
+				return false
+	for cluster: Vector2 in RETURN_OBSTACLES:
+		if Vector2(point.x, point.z).distance_to(cluster) < 4.0:
 			return false
 	for barrier: Vector3 in BARRIERS:
 		if absf(point.x - barrier.x) < 2.5 and point.z > barrier.y - 1.0 and point.z < barrier.z + 1.0:
@@ -545,12 +562,11 @@ func _build_barriers() -> void:
 			var block: Node3D = LevelBlocks.box(level, Vector3(barrier.x + random.randf_range(-0.6, 0.6), height * 0.38, z + width * 0.5), Vector3(random.randf_range(1.4, 2.4), height, width), rock)
 			block.rotation = Vector3(random.randf_range(-0.3, 0.3), random.randf_range(-PI, PI), random.randf_range(-0.3, 0.3))
 			z += width * 0.8
-	for at: Vector3 in [Vector3(46.0, 0.0, 10.5), Vector3(82.0, 0.0, 4.0)]:
-		var wall: Node3D = (load("res://assets/models/ruins/muro_arco.glb") as PackedScene).instantiate()
-		wall.position = at
-		wall.rotation.y = PI * 0.5
-		level.add_child(wall)
-		LevelBlocks.make_solid(wall, 0.95)
+	# A long ruined wall along the north edge of the way (34 m), solid.
+	var wall: Node3D = (load("res://assets/models/ruins/muro_arco.glb") as PackedScene).instantiate()
+	wall.position = NORTH_WALL
+	level.add_child(wall)
+	LevelBlocks.make_solid(wall, 0.95)
 
 
 func _say(speaker: StringName, line: StringName) -> void:

@@ -225,7 +225,8 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
-- `capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`: **da valutare**. Il prologo intero dopo la seconda revisione: sfondo, rocce, scala e Ruggero, Brinacchi battibili, strada lunga verso Mirco con la notte che cala, verdetto di Anselmo (5 min 21 s)
+- `capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`: **da valutare (con le cuffie)**. Terza revisione: motivi dei compiti a voce, Ruggero scorbutico, la mamma di Mirco, le frasi al ritorno, il verdetto nuovo di Anselmo e la chiusura sulle Tregue e la lanterna (6 min 51 s)
+- `capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`: superato da 14. Il prologo intero dopo la seconda revisione: sfondo, rocce, scala e Ruggero, Brinacchi battibili, strada lunga verso Mirco con la notte che cala, verdetto di Anselmo (5 min 21 s)
 - `capitoli/00-prologo/11-prologo-intero-folla-guida-citta-morta.mp4`: superato da 13. Il prologo intero con la folla che gira, il segnale di dove andare e la città morta
 - `capitoli/00-prologo/10-prologo-intero-dall-inizio-al-titolo.mp4`: **da valutare**. Tutto il prologo giocato dal pilota automatico, a 1280×800 con audio, dal risveglio al titolo (4 min 2 s)
 - `capitoli/00-prologo/09-verdetto-cinque-voci-ed-enea.mp4`: **da valutare (con le cuffie)**. Il verdetto con la catena di cinque voci; Enea cammina accanto ad Arold, poi si ferma e si volta (60 s)

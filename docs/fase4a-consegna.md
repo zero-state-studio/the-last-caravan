@@ -34,7 +34,7 @@ Dal piano buio dei Tessibuio, alla porta, all'accampamento, alla coda della colo
 | PixelLab | 289 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla e 1 per Ruggero che si addormenta); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
 | Scenario | 30 CU | 1.000 | confermato dall'account (3 texture) |
 | Meshy | 459 crediti | circa 500 | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
-| ElevenLabs | 1.218 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
+| ElevenLabs | 2.075 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
 
 ## Asset
 
@@ -86,3 +86,13 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 - **Accampamento:** file di rocce basse da saltare al posto delle Code; ballatoio con scala sulla testata del carro-campo; Ruggero dorme seduto e si alza quando lo svegli (1 generazione PixelLab); croste di ghiaccio bianco-azzurre; fotogrammi del colpo di bastone sincronizzati con urto e suono, scia più visibile.
 - **Colonna:** strada lunga fino a Mirco tra massi e muri da aggirare, notte che cala verso di lui, campo di brina vestito; Brinacchi all'andata e al ritorno, visibili (contorno, bagliore, ombra, scia) e battibili (il colpo spacca la crosta), che tolgono un po' di vita quando sono attaccati; raggi delle ruote che girano; Anselmo in coda dall'inizio; il verdetto è un dialogo tra lui e Ottavia (7 battute nuove, 106 crediti ElevenLabs); la colonna rallenta mentre Ottavia è via.
 - **Video:** `docs/video/capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`, 5 minuti e 21 secondi.
+
+## Dopo la terza revisione
+
+- Veduta iniziale meno alta (9°) e discesa verso la carovana più lenta; la narrazione finisce con «Ma ormai il mio tempo è passato...».
+- Ogni compito ha un motivo detto a voce: una Voltacampi manda Ottavia da Ruggero, che dorme; Ruggero, svegliato e scorbutico, la manda dal Traslocante con la Coda bloccata.
+- La mamma di Mirco corre da Ottavia a chiedere aiuto; al ritorno Ottavia parla a Mirco; la colonna si vede in lontananza quando Mirco è legato e la strada del ritorno passa a sud, tra massi e tronchi.
+- Massi, tronchi, alberi (dal tronco) e rovine sono solidi; il muro ad arco sta lungo il bordo nord.
+- Verdetto di Anselmo riscritto e affranto, poi una breve chiusura in cui Ottavia spiega le dieci Tregue e la lanterna del congedo.
+- 25 battute nuove (834 crediti ElevenLabs, modello v3 per le voci più espressive).
+- Video: `docs/video/capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`, 6 minuti e 51 secondi.
