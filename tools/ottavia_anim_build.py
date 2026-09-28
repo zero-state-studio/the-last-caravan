@@ -54,18 +54,19 @@ def main() -> int:
                 clipped += stats["clipped"]
                 frames.append(im)
             per_dir.append(frames)
-        report[anim] = {"directions": dirs, "frames": len(per_dir[0]) if per_dir else 0, "clipped_pixels": clipped}
+        report[anim] = {"directions": dirs, "frames": [len(f) for f in per_dir], "clipped_pixels": clipped}
         rows.append((anim, ms, per_dir))
-        n = min(len(f) for f in per_dir)
+        # Directions may differ in length (a redone direction): each loops on its own.
+        n = max(len(f) for f in per_dir)
         grid = []
         for i in range(n):
             g = Image.new("RGBA", (64 * 4, 64 * ((len(per_dir) + 3) // 4)), (0, 0, 0, 0))
             for k, frames in enumerate(per_dir):
-                g.alpha_composite(frames[i], ((k % 4) * 64, (k // 4) * 64))
+                g.alpha_composite(frames[i % len(frames)], ((k % 4) * 64, (k // 4) * 64))
             grid.append(g)
         v1.save_gif(grid, ms, gif_dir / f"{anim}_griglia.gif")
     # Every animation in one GIF: one row per animation, eight directions per row.
-    longest = max(len(r[2][0]) for r in rows)
+    longest = max(len(f) for r in rows for f in r[2])
     sheet = []
     for i in range(longest):
         g = Image.new("RGBA", (64 * 8, 64 * len(rows)), (0, 0, 0, 0))

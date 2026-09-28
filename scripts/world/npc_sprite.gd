@@ -16,11 +16,17 @@ const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
 static var sun_azimuth_degrees: float = NAN
 
 @export var sprite_texture: Texture2D
+## Frames laid side by side in the texture (a looping idle, 64 px each).
+@export var frame_count: int = 1
+@export var frames_per_second: float = 6.0
+
+var _time: float = 0.0
 
 
 func _ready() -> void:
 	if sprite_texture != null:
 		texture = sprite_texture
+	hframes = maxi(1, frame_count)
 	pixel_size = WorldScale.METERS_PER_PIXEL
 	texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	billboard = BaseMaterial3D.BILLBOARD_DISABLED
@@ -28,6 +34,7 @@ func _ready() -> void:
 	# 64x64 cells keep the feet at row 60, like Ottavia.
 	if texture != null:
 		offset = Vector2(0.0, texture.get_height() * 0.5 - 3.0)
+	set_process(frame_count > 1)
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = LIT_SHADER
 	material.set_shader_parameter(&"sprite_texture", texture)
@@ -43,6 +50,7 @@ func _ready() -> void:
 	material.set_shader_parameter(&"light_sample_offset", Vector3.UP * LIGHT_SAMPLE_HEIGHT + toward_sun * LIGHT_SAMPLE_TOWARD_SUN)
 	var shadow: Sprite3D = Sprite3D.new()
 	shadow.texture = texture
+	shadow.hframes = hframes
 	shadow.pixel_size = pixel_size
 	shadow.offset = offset
 	shadow.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
@@ -50,3 +58,11 @@ func _ready() -> void:
 	shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 	add_child(shadow)
 	shadow.global_rotation = Vector3(0.0, azimuth, 0.0)
+
+
+func _process(delta: float) -> void:
+	_time += delta
+	frame = int(_time * frames_per_second) % frame_count
+	for child: Node in get_children():
+		if child is Sprite3D:
+			(child as Sprite3D).frame = frame

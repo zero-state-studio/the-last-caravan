@@ -26,7 +26,7 @@ const ZELINDA_RADIUS: float = 3.2
 ## Distance Ottavia must walk before the "Move" hint goes away.
 const MOVE_HINT_DISTANCE: float = 1.5
 const DOOR_POSITION: Vector3 = Vector3(LENGTH - 0.1, LANDING_Y, -2.3)
-const ZELINDA_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/zelinda_south.png")
+const ZELINDA_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/zelinda_tesse.png")
 
 const TEX_DECK: Texture2D = preload("res://assets/textures/terrain/wood_deck_01.png")
 const TEX_PLANKS: Texture2D = preload("res://assets/textures/terrain/wood_planks_01.png")
@@ -217,6 +217,9 @@ func _build() -> void:
 	var zelinda: NpcSprite = NpcSprite.new()
 	zelinda.name = "Zelinda"
 	zelinda.sprite_texture = ZELINDA_TEXTURE
+	# Weaving idle, one view only (118): hands and shuttle move slowly.
+	zelinda.frame_count = 8
+	zelinda.frames_per_second = 5.0
 	zelinda.position = ZELINDA_POSITION
 	level.add_child(zelinda)
 	var zelinda_body: Node3D = LevelBlocks.box(level, ZELINDA_POSITION + Vector3(0.0, 0.5, 0.0), Vector3(0.9, 1.0, 0.6), planks)

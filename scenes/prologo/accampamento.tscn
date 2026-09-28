@@ -8,12 +8,13 @@
 [ext_resource type="Script" path="res://scripts/world/zone_palette.gd" id="6_zone"]
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
-sky_top_color = Color(0.3, 0.26, 0.56, 1)
+sky_top_color = Color(0.22, 0.2, 0.48, 1)
 sky_horizon_color = Color(1, 0.68, 0.42, 1)
 sky_curve = 0.12
 ground_bottom_color = Color(0.22, 0.17, 0.2, 1)
 ground_horizon_color = Color(1, 0.68, 0.42, 1)
-sun_angle_max = 20.0
+sun_angle_max = 30.0
+sun_curve = 0.08
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("Sky_mat")
@@ -37,8 +38,9 @@ glow_hdr_threshold = 0.85
 fog_enabled = true
 fog_light_color = Color(0.95, 0.66, 0.46, 1)
 fog_sun_scatter = 0.35
-fog_density = 0.003
-fog_aerial_perspective = 0.6
+fog_density = 0.0016
+fog_aerial_perspective = 0.35
+fog_sky_affect = 0.6
 adjustment_enabled = true
 adjustment_saturation = 1.1
 
@@ -70,11 +72,11 @@ distance = 20.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 current = true
-far = 400.0
+far = 700.0
 
 [node name="CinemaCamera" type="Camera3D" parent="."]
 fov = 35.0
-far = 400.0
+far = 700.0
 
 [node name="DialogueBox" type="CanvasLayer" parent="."]
 script = ExtResource("4_dialogue")

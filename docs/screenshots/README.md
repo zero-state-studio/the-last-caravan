@@ -103,6 +103,12 @@ Stato: approvato in fase 2.
 - `09-primo-giro.png`: primo giro
 - `10-primo-giro-zoom.png`: primo giro, ingrandito
 
+### `asset/rovine/`: Rovine dello sfondo del prologo
+
+Stato: **da valutare** (fase 4a, passo 3).
+
+- `01-concetti-delle-rovine.png`: casa diroccata, torre spezzata, muro con arco (in scena: `capitoli/00-prologo/07`)
+
 ### `asset/texture/`: Texture degli ambienti (54)
 
 Stato: scelte in fase 2.
@@ -113,6 +119,7 @@ Stato: scelte in fase 2.
 - `04-candidate-d-vedute.png`: candidate D: vedute
 - `05-roccia-e-terra-in-scena.png`: roccia e terra nella scena
 - `06-roccia-e-terra-in-scena-b.png`: roccia e terra nella scena, variante b
+- `07-strada-ghiaia-terra-crepata.png`: fase 4a, texture nuove del terreno ripetute 2×2 (strada sterrata e ghiaia usate; terra crepata scartata)
 
 ### `asset/modello-stile/`: Modello personalizzato di Scenario
 

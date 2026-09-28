@@ -8,9 +8,6 @@ extends Node3D
 ## tells the world (narration), then comes back to her.
 ## The tasks of the camp (step 4) are not here yet.
 
-const TEX_MEADOW: Texture2D = preload("res://assets/textures/terrain/ground_dry_meadow.png")
-const TEX_FROST: Texture2D = preload("res://assets/textures/terrain/frost_ground.png")
-const TEX_EARTH: Texture2D = preload("res://assets/textures/terrain/earth_bank_01.png")
 const MAIN_VEHICLES: Dictionary = {
 	&"camion_condominio": "res://assets/models/vehicles/camion_condominio_prova.glb",
 	&"carro_campo": "res://assets/models/vehicles/carro_campo_prova.glb",
@@ -29,9 +26,9 @@ const NARRATION: Array[StringName] = [
 	&"PRO_NARRATION_05", &"PRO_NARRATION_06", &"PRO_NARRATION_07",
 ]
 ## Where the wide shot looks and from how far (the whole camp in frame).
-const WIDE_CENTER: Vector3 = Vector3(-14.0, 4.0, -6.0)
-const WIDE_DISTANCE: float = 92.0
-const WIDE_PITCH_DEGREES: float = 22.0
+const WIDE_CENTER: Vector3 = Vector3(-14.0, 9.0, -18.0)
+const WIDE_DISTANCE: float = 100.0
+const WIDE_PITCH_DEGREES: float = 13.0
 const RISE_SECONDS: float = 6.0
 ## Height of the first leg of the rise, above the tallest vehicles.
 const RISE_HEIGHT: float = 30.0
@@ -159,17 +156,12 @@ func _show_wide_still() -> void:
 
 
 func _build() -> void:
-	var meadow: ShaderMaterial = LevelBlocks.material(TEX_MEADOW, TEX_EARTH)
-	var frost: ShaderMaterial = LevelBlocks.material(TEX_FROST, TEX_EARTH)
-	LevelBlocks.box(level, Vector3(-20.0, -0.5, 0.0), Vector3(240.0, 1.0, 160.0), meadow)
-	# The frost creeps in from the east: patches thicken toward the Night.
-	for index: int in 26:
-		var x: float = _random.randf_range(18.0, 95.0)
-		var size: float = lerpf(4.0, 16.0, inverse_lerp(18.0, 95.0, x)) * _random.randf_range(0.7, 1.3)
-		LevelBlocks.box(level, Vector3(x, 0.005 + index * 0.0004, _random.randf_range(-55.0, 40.0)), Vector3(size, 0.02, size * _random.randf_range(0.6, 1.2)), frost, false)
-	LevelBlocks.box(level, Vector3(75.0, 0.012, -5.0), Vector3(50.0, 0.02, 140.0), frost, false)
+	CampScenery.build_ground(level, _random)
+	CampScenery.build_mountains(level, _random)
 	_place_vehicles()
 	_place_tents()
+	CampScenery.place_ruins(level)
+	CampScenery.place_nature(level, _random, func(point: Vector3) -> bool: return not _near_vehicle(point))
 	_place_crowd()
 
 

@@ -23,6 +23,10 @@ func _test_floor() -> void:
 	var hints: HintBanner = floor.hints
 	var dialogue: DialogueBox = floor.dialogue
 	_check(not ottavia.lantern_open, "floor: Ottavia wakes with the lantern closed")
+	var zelinda: NpcSprite = floor.level.get_node("Zelinda")
+	var first_frame: int = zelinda.frame
+	await create_timer(0.5).timeout
+	_check(zelinda.hframes == 8 and zelinda.frame != first_frame, "floor: Zelinda weaves (8-frame idle, one view)")
 	_check(hints.current_hint() == &"PRO_HINT_OPEN_LANTERN", "floor: the first hint is to open the lantern")
 	ottavia.set_lantern_open(true)
 	await _frames(2)

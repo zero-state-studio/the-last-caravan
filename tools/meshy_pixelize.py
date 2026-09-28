@@ -92,8 +92,10 @@ def surface_and_uv_area(gltf, binary):
     return surface, uv_area
 
 
-def pixelize(image, size, colors, palette_path=None):
+def pixelize(image, size, colors, palette_path=None, brightness=1.0):
     small = image.convert("RGB").resize((size, size), Image.BOX)
+    if brightness != 1.0:
+        small = small.point(lambda value: min(255, int(value * brightness)))
     if palette_path:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         from palette_remap import load_palette, remap
@@ -127,6 +129,7 @@ def main():
     parser.add_argument("--height", type=float, required=True, help="target height in meters")
     parser.add_argument("--preview", help="also save the reduced texture here")
     parser.add_argument("--turn-180", action="store_true", help="turn the model half around the vertical axis")
+    parser.add_argument("--brightness", type=float, default=1.0, help="scale the texture brightness before the palette (e.g. 0.7 for pale stone)")
     parser.add_argument("--palette", help="map colors onto this palette strip (e.g. assets/palette/palette_v1.png)")
     args = parser.parse_args()
 
@@ -150,7 +153,7 @@ def main():
         view = gltf["bufferViews"][view_index]
         start = view.get("byteOffset", 0)
         source = Image.open(io.BytesIO(binary[start : start + view["byteLength"]]))
-        reduced = pixelize(source, texture_size, args.colors, args.palette)
+        reduced = pixelize(source, texture_size, args.colors, args.palette, args.brightness)
         if args.preview:
             reduced.save(args.preview)
         buffer = io.BytesIO()
