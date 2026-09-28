@@ -38,6 +38,8 @@ func _test_vehicle_wheels() -> void:
 	var turned: float = start.get_rotation_quaternion().angle_to(wheel.basis.get_rotation_quaternion())
 	_check(absf(turned - 1.8 / radius) < 0.05, "vehicle: moving 1.8 m west turns a wheel of radius %.2f by distance / radius (%.2f rad)" % [radius, turned])
 	_check(biggest_beat > 0.005, "vehicle: while moving, the Generator beats")
+	var tail: MeshInstance3D = vehicle.get_node(String(VehicleWheels.TAILS_NAME)).find_children("*", "MeshInstance3D", true, false)[0]
+	_check(float(tail.get_instance_shader_parameter(&"sway_amount")) > 0.0, "vehicle: while moving, the Tails snake")
 	vehicle.free()
 
 

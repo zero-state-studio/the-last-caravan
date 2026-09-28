@@ -1,8 +1,8 @@
 class_name VehicleWheels
 extends Node3D
 ## Makes a caravan vehicle (16) look driven: its wheels roll with the ground
-## it covers, the body rocks a little on them, and the Generator beats like
-## a heart (77) while the vehicle moves.
+## it covers, the body rocks a little on them, the Generator beats like a
+## heart and the Tails snake behind (77) while the vehicle moves.
 ## The Meshy models come as one mesh, but every wheel is a separate island
 ## of geometry: `attach` cuts the low, round, thin islands out into their
 ## own nodes, pivoted on their centre. The cut is cached per mesh.
@@ -11,6 +11,10 @@ extends Node3D
 const ENGINE_NAME: StringName = &"Generatore"
 const BEAT_HZ: float = 1.4
 const BEAT_AMOUNT: float = 0.03
+## Node name of the Tails module (VehicleKit), which snakes.
+const TAILS_NAME: StringName = &"Code"
+## Sideways swing of a Tail's free end, in metres.
+const SWAY_METERS: float = 0.22
 ## The body rises and falls this much, in metres, once per wheel turn half.
 const BOB_METERS: float = 0.05
 ## Below this many metres per second the vehicle counts as still.
@@ -25,6 +29,7 @@ var _body_rest: Array[Vector3] = []
 var _body_up: Array[Vector3] = []
 var _engines: Array[Node3D] = []
 var _engine_rest: Array[Vector3] = []
+var _tails: Array[MeshInstance3D] = []
 var _root: Node3D
 var _last_position: Vector3
 var _time: float = 0.0
@@ -46,6 +51,9 @@ static func attach(root: Node3D) -> VehicleWheels:
 		animator._bodies.append(node as Node3D)
 	for node: Node in root.find_children(ENGINE_NAME, "Node3D", true, false):
 		animator._engines.append(node as Node3D)
+	for tails: Node in root.find_children(TAILS_NAME, "Node3D", true, false):
+		for node: Node in tails.find_children("*", "MeshInstance3D", true, false):
+			animator._tails.append(node as MeshInstance3D)
 	root.add_child(animator)
 	return animator
 
@@ -64,6 +72,11 @@ func _ready() -> void:
 		_body_up.append(parent_basis.inverse() * Vector3.UP)
 	for engine: Node3D in _engines:
 		_engine_rest.append(engine.scale)
+	for tail: MeshInstance3D in _tails:
+		var hang: Dictionary = hanging_point(tail.mesh)
+		tail.set_instance_shader_parameter(&"sway_root", hang["root"])
+		tail.set_instance_shader_parameter(&"sway_length", hang["length"])
+		tail.set_instance_shader_parameter(&"sway_phase", fposmod(_root.global_position.x * 0.7, TAU))
 
 
 func _physics_process(delta: float) -> void:
@@ -92,6 +105,8 @@ func _physics_process(delta: float) -> void:
 	var beat: float = pow(maxf(0.0, sin(_time * TAU * BEAT_HZ)), 6.0) * BEAT_AMOUNT * _motion
 	for index: int in _engines.size():
 		_engines[index].scale = _engine_rest[index] * (1.0 + beat)
+	for tail: MeshInstance3D in _tails:
+		tail.set_instance_shader_parameter(&"sway_amount", SWAY_METERS * _motion / tail.global_basis.get_scale().x)
 	if _motion <= 0.0:
 		_time = 0.0
 
@@ -198,6 +213,27 @@ static func split_wheels(mesh: Mesh) -> Dictionary:
 		list.append({"mesh": _build(arrays, indices, wheel["faces"], wheel["center"], material), "center": wheel["center"], "axis": wheel["axis"], "radius": wheel["radius"]})
 	result["wheels"] = list
 	return result
+
+
+## Where a Tail hangs from its bracket, in mesh space: the middle of its top
+## vertices; `length` is the farthest vertex from there.
+static func hanging_point(mesh: Mesh) -> Dictionary:
+	var vertices: PackedVector3Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var top: float = -INF
+	for vertex: Vector3 in vertices:
+		top = maxf(top, vertex.y)
+	var height: float = mesh.get_aabb().size.y
+	var sum: Vector3 = Vector3.ZERO
+	var count: int = 0
+	for vertex: Vector3 in vertices:
+		if vertex.y > top - height * 0.1:
+			sum += vertex
+			count += 1
+	var root: Vector3 = sum / maxf(1.0, count)
+	var length: float = 0.01
+	for vertex: Vector3 in vertices:
+		length = maxf(length, vertex.distance_to(root))
+	return {"root": root, "length": length}
 
 
 static func _find(parent: PackedInt32Array, index: int) -> int:

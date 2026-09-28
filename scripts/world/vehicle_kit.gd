@@ -8,9 +8,10 @@ extends RefCounted
 
 const MODULE_DIR: String = "res://assets/models/vehicles/moduli/"
 const RECIPES_PATH: String = "res://assets/models/vehicles/mezzi_generici.json"
-## Modules that face a side: Wings turn their panels west, Tails trail east.
+## Modules that face a side: Wings turn their panels west, Tails trail east
+## (the Tails model hangs from its bracket at -z and trails toward +z).
 const WINGS_ROTATION: float = -PI * 0.5
-const TAILS_ROTATION: float = PI
+const TAILS_ROTATION: float = PI * 0.5
 const ENGINE_CLEARANCE: float = 0.15
 const STACK_GAP: float = 0.2
 
@@ -72,6 +73,7 @@ static func build(recipe: Dictionary) -> Node3D:
 		_place_on(wings, Vector3(box.position.x - wings_box.size.x * 0.5, 0.0, 0.0))
 	if bool(recipe.get("tails", true)):
 		var tails: Node3D = _module("code")
+		tails.name = VehicleWheels.TAILS_NAME
 		tails.rotation.y = TAILS_ROTATION
 		root.add_child(tails)
 		var tails_box: AABB = bounds(tails)

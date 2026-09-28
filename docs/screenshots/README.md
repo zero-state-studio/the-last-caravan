@@ -65,6 +65,7 @@ Stato: approvato (fase 4a, passo 1).
 - `11-kit-concetti-dei-12-moduli.png`: i concetti dei 12 moduli (pianali, Generatore, Ali, Code, piani, terrazza, serbatoio, tenda, carico, casetta)
 - `12-kit-moduli-quattro-lati.png`: i 12 moduli in 3D, da quattro lati
 - `13-ruote-che-girano-a-un-secondo.png`: **da valutare**. Le ruote di un mezzo in marcia, a un secondo di distanza: i raggi hanno girato
+- `14-code-che-serpeggiano.png`: **da valutare**. Le Code di un mezzo in marcia a mezzo secondo l'una dall'altra: pendono dal retro, strisciano verso est e serpeggiano
 
 ### `asset/personaggi/comparse-prologo/`: Comparse e personaggi del prologo (117-121, 21, 78, 81)
 
@@ -204,6 +205,7 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/04-colonna-code-che-serpeggiano.mp4`: **da valutare**. Le Code da vicino, mentre il mezzo avanza (4 s)
 - `capitoli/00-prologo/03-colonna-ruote-in-movimento.mp4`: **da valutare**. La colonna in marcia: ruote che girano, mezzi che ondeggiano, Generatori che battono (8 s)
 - `capitoli/00-prologo/02-verdetto.mp4`: **da valutare**. Il verdetto, dalla catena delle voci al titolo (38 s)
 - `capitoli/00-prologo/01-porta-e-narrazione.mp4`: **da valutare**. Dalla porta alla carovana intera, con la narrazione in sottotitoli, e il ritorno su Ottavia (50 s)
