@@ -147,7 +147,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(delta: float) -> void:
-	RenderingServer.global_shader_parameter_set(&"player_position", ottavia.global_position + Vector3.UP * 0.8)
+	# The see-through point (53) is kept by Ottavia herself.
 	if _perf_seconds > 0.0:
 		_measure_performance(delta)
 

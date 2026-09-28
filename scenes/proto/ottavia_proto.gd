@@ -16,6 +16,11 @@ const LANDING_SECONDS: float = 0.18
 ## strides).
 const STEP_METERS: float = 0.8
 const FLAME_HUM_DB: float = -22.0
+## Foreground see-through (53) follows her chest; from a camera this far
+## (a wide establishing shot) it is off, or it would punch holes far away.
+const SEE_THROUGH_HEIGHT: float = 0.8
+const SEE_THROUGH_MAX_CAMERA_DISTANCE: float = 35.0
+const SEE_THROUGH_OFF: Vector3 = Vector3(0.0, -10000.0, 0.0)
 ## Where the lit sprite samples light and shadow: chest height, a bit toward the sun.
 const LIGHT_SAMPLE_HEIGHT: float = 0.9
 const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
@@ -435,3 +440,12 @@ func _update_flash(delta: float) -> void:
 
 func _exit_tree() -> void:
 	GameAudio.stop_loop(&"lantern_flame", 0.1)
+	RenderingServer.global_shader_parameter_set(&"player_position", SEE_THROUGH_OFF)
+
+
+func _process(_delta: float) -> void:
+	var point: Vector3 = global_position + Vector3.UP * SEE_THROUGH_HEIGHT
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	if camera != null and camera.global_position.distance_to(point) > SEE_THROUGH_MAX_CAMERA_DISTANCE:
+		point = SEE_THROUGH_OFF
+	RenderingServer.global_shader_parameter_set(&"player_position", point)

@@ -62,7 +62,7 @@ Accompagna l'inquadratura che mostra la carovana.
 - **Lo Gnomone, secondo richiamo:** «Ultimo richiamo! In marcia!»
 - **Mirco, in fondo, verso il buio:** «Guarda, Serrafila. Là è tutto nero. Com'è, dentro?»
 - **Ottavia:** «Freddo. Andiamo.»
-- **La catena delle voci**, sempre più vicina: «Il Sindaco dice...» «...la Serrafila è arrivata oltre il limite.» «...dieci Tregue.» «...poi la lanterna.»
+- **La catena delle voci**, sempre più vicina: «Il Sindaco dice...» «...la Serrafila è arrivata oltre il limite.» «...una Serrafila che non tiene il passo è una persona in più da andare a riprendere.» «...per i suoi quarant'anni, dieci Tregue.» «...poi la lanterna.»
 - **Anselmo, l'ultima voce:** «Dieci Tregue, Ottavia. Poi la lanterna.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
 - **Titolo del capitolo:** «Ne restano dieci.»
 

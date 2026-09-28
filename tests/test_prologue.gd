@@ -239,6 +239,11 @@ func _test_column() -> void:
 	await column.prologue_finished
 	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
 	_check(GameAudio.music_stream() == column.TITLE_MUSIC, "audio: on the title, the first phrase of the theme (126)")
+	_check(column._enea.get_parent() == column.level and column._enea.texture == column.ENEA_LOOKING_BACK, "column: in the head shot Enea stops and turns to look back (106)")
+	var chain_voiced: bool = column.CHAIN.size() == 5
+	for line: StringName in column.CHAIN:
+		chain_voiced = chain_voiced and GameAudio.voice_stream(line) != null and not tr(line).is_empty()
+	_check(chain_voiced, "column: the verdict chain has five voiced lines (106)")
 	column.queue_free()
 	await _frames(2)
 

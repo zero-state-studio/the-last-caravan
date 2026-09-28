@@ -46,6 +46,7 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `17-anselmo-la-mano.png`: Anselmo, l'ultima voce, chiede la mano per prenderle le misure
 - `18-sagoma-della-lanterna.png`: la sagoma vuota della lanterna del congedo (88), disegno provvisorio
 - `19-titolo-ne-restano-dieci.png`: il titolo su nero
+- `20-buco-nel-telo-prima-e-dopo.png`: **da valutare**. Il telo della casa nella veduta d'insieme: prima (a sinistra) un buco retinato, la trasparenza di primo piano (53) ferma nell'origine del mondo; dopo (a destra) pieno
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -205,8 +206,10 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
-- `capitoli/00-prologo/07-verdetto-con-audio.mp4`: **da valutare (con le cuffie)**. Il verdetto: la musica tace, la catena di voci sempre più vicine, Anselmo, il titolo sulla prima frase del tema (50 s)
-- `capitoli/00-prologo/06-porta-e-narrazione-con-audio.mp4`: **da valutare (con le cuffie)**. Porta, tema di Ottavia, narrazione con la voce, poi la versione leggera dell'accampamento, folla e Generatori (58 s)
+- `capitoli/00-prologo/09-verdetto-cinque-voci-ed-enea.mp4`: **da valutare (con le cuffie)**. Il verdetto con la catena di cinque voci; Enea cammina accanto ad Arold, poi si ferma e si volta (60 s)
+- `capitoli/00-prologo/08-porta-e-narrazione-senza-buco.mp4`: **da valutare**. Come 06, senza il buco nel telo della casa
+- `capitoli/00-prologo/07-verdetto-con-audio.mp4`: superato da 09 (catena di quattro voci, Enea che scivola). Il verdetto: la musica tace, la catena di voci sempre più vicine, Anselmo, il titolo sulla prima frase del tema (50 s)
+- `capitoli/00-prologo/06-porta-e-narrazione-con-audio.mp4`: superato da 08 (buco nel telo). Porta, tema di Ottavia, narrazione con la voce, poi la versione leggera dell'accampamento, folla e Generatori (58 s)
 - `capitoli/00-prologo/05-risveglio-al-buio-con-audio.mp4`: **da valutare (con le cuffie)**. Il risveglio nel buio: cigolio della branda, respiro, battito attutito dei Generatori (11 s)
 - `capitoli/00-prologo/04-colonna-code-che-serpeggiano.mp4`: **da valutare**. Le Code da vicino, mentre il mezzo avanza (4 s)
 - `capitoli/00-prologo/03-colonna-ruote-in-movimento.mp4`: **da valutare**. La colonna in marcia: ruote che girano, mezzi che ondeggiano, Generatori che battono (8 s)

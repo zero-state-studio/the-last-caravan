@@ -31,6 +31,10 @@ const CROWD_TYPES: Array[String] = ["uomo_giovane", "uomo_adulto", "uomo_anziano
 const ROADS: Array[Dictionary] = [{"points": [Vector2(-450.0, 0.0), Vector2(200.0, -1.0)], "half_width": 4.0}]
 const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn")
 const ANSELMO_WALK: String = "res://assets/sprites/comparse/anselmo_walk_west.png"
+const ENEA_WALK: String = "res://assets/sprites/comparse/enea_walk_west.png"
+const ENEA_LOOKING_BACK: Texture2D = preload("res://assets/sprites/comparse/enea_east.png")
+## Seconds into the head shot when Enea stops and turns.
+const ENEA_TURN_SECONDS: float = 1.2
 const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/anselmo_north.png")
 ## Sound (126, 127): tension and a faster beat on the way back; the music
 ## falls silent for the verdict, only the voices remain, each one closer;
@@ -41,7 +45,10 @@ const RETURN_MUSIC_DB: float = -3.0
 const GENERATOR_DB: float = -14.0
 const GENERATOR_PITCH: float = 1.25
 const CROWD_DB: float = -18.0
-const CHAIN_VOICE_DB: Array[float] = [-12.0, -8.0, -4.0, 0.0]
+## The verdict from voice to voice (106): line IDs in the order they are
+## heard, each voice closer than the one before.
+const CHAIN: Array[StringName] = [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_05", &"PRO_CHAIN_06", &"PRO_CHAIN_04"]
+const CHAIN_VOICE_DB: Array[float] = [-14.0, -10.0, -7.0, -4.0, 0.0]
 ## East of this the ground is frosted: steps crunch.
 const FROST_X: float = 25.0
 const SUN_ELEVATION_DEGREES: float = 14.0
@@ -75,6 +82,7 @@ var _mirco_walk: Dictionary = {}
 var _return_start_x: float = 0.0
 var _anselmo: NpcSprite
 var _head: Node3D
+var _enea: NpcSprite
 var _anselmo_walking: bool = false
 var _head_shot: bool = false
 
@@ -240,14 +248,14 @@ func _verdict() -> void:
 	hints.hide_hint()
 	_place_anselmo()
 	GameAudio.stop_music(1.5)
-	var chain: Array[StringName] = [&"PRO_CHAIN_01", &"PRO_CHAIN_02", &"PRO_CHAIN_03", &"PRO_CHAIN_04"]
-	for index: int in chain.size():
-		var voice: float = dialogue.show_line(&"", chain[index], CHAIN_VOICE_DB[index])
+	for index: int in CHAIN.size():
+		var voice: float = dialogue.show_line(&"", CHAIN[index], CHAIN_VOICE_DB[index])
 		await get_tree().create_timer(DialogueBox.line_wait(chain_seconds, voice)).timeout
 	dialogue.hide_box()
 	# Cut to the head of the column: Arold walks on without turning, Enea turns.
 	_head_shot = true
 	cinema_camera.current = true
+	_enea_turns()
 	await get_tree().create_timer(line_seconds * 1.5).timeout
 	_head_shot = false
 	camera_rig.snap_to_target()
@@ -274,6 +282,16 @@ func _verdict() -> void:
 	await title.show_title(&"PRO_TITLE_CH1", line_seconds if line_seconds < 1.0 else maxf(line_seconds, TITLE_MUSIC.get_length()))
 	step = Step.DONE
 	prologue_finished.emit()
+
+
+## Enea stops where he is and looks back; the head walks on without him.
+func _enea_turns() -> void:
+	await get_tree().create_timer(minf(ENEA_TURN_SECONDS, line_seconds * 0.5)).timeout
+	var at: Vector3 = _enea.global_position
+	_head.remove_child(_enea)
+	level.add_child(_enea)
+	_enea.global_position = at
+	_enea.set_strip(ENEA_LOOKING_BACK)
 
 
 ## Anselmo walks at Ottavia's side, toward the Day, as the last voice.
@@ -360,10 +378,17 @@ func _build_head() -> void:
 		arold.sprite_texture = load("res://assets/sprites/comparse/arold_south.png")
 	arold.position = Vector3(0.0, 0.0, 2.2)
 	_head.add_child(arold)
-	var enea: NpcSprite = NpcSprite.new()
-	enea.sprite_texture = load("res://assets/sprites/comparse/enea_east.png")
-	enea.position = Vector3(1.4, 0.0, 3.4)
-	_head.add_child(enea)
+	# Enea walks beside his father toward the Day; in the head shot he stops
+	# and turns to look back (106).
+	_enea = NpcSprite.new()
+	if ResourceLoader.exists(ENEA_WALK):
+		_enea.sprite_texture = load(ENEA_WALK)
+		_enea.frame_count = 8
+		_enea.frames_per_second = 8.0
+	else:
+		_enea.sprite_texture = ENEA_LOOKING_BACK
+	_enea.position = Vector3(1.4, 0.0, 3.4)
+	_head.add_child(_enea)
 	_anselmo = NpcSprite.new()
 	_anselmo.sprite_texture = load("res://assets/sprites/comparse/anselmo_east.png")
 	_anselmo.visible = false
