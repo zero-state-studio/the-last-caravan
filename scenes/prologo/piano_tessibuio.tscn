@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/prologue/tessibuio_floor.gd" id="1_floor"]
+[ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
+[ext_resource type="Script" path="res://scripts/camera/follow_camera_rig.gd" id="3_rig"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="4_dialogue"]
+[ext_resource type="Script" path="res://scripts/ui/hint_banner.gd" id="5_hints"]
+
+[sub_resource type="Environment" id="Environment_dark"]
+background_mode = 1
+background_color = Color(0.01, 0.01, 0.02, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.1, 0.1, 0.2, 1)
+ambient_light_energy = 0.12
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_enabled = true
+ssao_radius = 1.0
+ssao_intensity = 1.4
+glow_enabled = true
+glow_intensity = 0.8
+glow_bloom = 0.1
+glow_hdr_threshold = 0.85
+fog_enabled = true
+fog_light_color = Color(0.05, 0.04, 0.08, 1)
+fog_density = 0.02
+
+[node name="PianoTessibuio" type="Node3D"]
+script = ExtResource("1_floor")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dark")
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("3_rig")
+pitch_degrees = 52.0
+distance = 16.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+current = true
+far = 200.0
+
+[node name="DialogueBox" type="CanvasLayer" parent="."]
+script = ExtResource("4_dialogue")
+
+[node name="HintBanner" type="CanvasLayer" parent="."]
+script = ExtResource("5_hints")

@@ -18,9 +18,24 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
 - `asset/personaggi/ottavia-v1/14-animazioni-fase4a/tutte_griglia.gif` e `15-fotogrammi-animazioni-fase4a.png`: le animazioni di Ottavia del passo 2.
+- `capitoli/00-prologo/` e il video `docs/video/capitoli/00-prologo/01-porta-e-narrazione.mp4`: il passo 3 (piano dei Tessibuio, porta, narrazione).
 - `asset/personaggi/comparse-prologo/02-personaggi-che-parlano-altezze-corrette.png`: i personaggi del prologo, alle altezze giuste.
 
 ## Indice
+
+### `capitoli/00-prologo/`: Prologo, spazi 1 e 2 (106)
+
+Stato: **da valutare** (fase 4a, passo 3).
+
+- `01-piano-buio-risveglio.png`: il risveglio al buio, con il primo suggerimento («Apri la lanterna»)
+- `02-piano-lanterna-aperta.png`: la lanterna aperta sul piano dei Tessibuio, con il suggerimento «Muoviti»
+- `03-zelinda-chiudi-la-lanterna.png`: Zelinda tesse al buio e chiede di chiudere la lanterna
+- `04-porta-sul-retro.png`: in fondo al piano, la scala e la luce che filtra dalla porta sul retro
+- `05-uscita-bagliore.png`: fuori dalla porta, il bagliore del tramonto (attenuato dall'opzione dei lampi, 96)
+- `06-salita-sulla-carovana.png`: la camera sale sopra Ottavia
+- `07-carovana-intera-narrazione.png`: la carovana intera mentre Ottavia racconta il mondo
+- `08-ritorno-su-ottavia.png`: la camera torna su Ottavia e i comandi tornano al giocatore
+
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
 
@@ -170,5 +185,6 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/01-porta-e-narrazione.mp4`: **da valutare**. Dalla porta alla carovana intera, con la narrazione in sottotitoli, e il ritorno su Ottavia (50 s)
 - `fasi/fase2-stile-definitivo/01-diorama-dimostrativo.mp4`: la scena dimostrativa della fase 2.
 - `fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4`: lo stesso combattimento al capitolo 1 e al 9 (fatto con il vecchio passo).

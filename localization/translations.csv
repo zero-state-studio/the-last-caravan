@@ -252,3 +252,23 @@ DIFFICULTY_EASY,"Easy","Facile"
 DIFFICULTY_MEDIUM,"Medium","Medio"
 DIFFICULTY_HARD,"Hard","Difficile"
 DEV_VIDEO_CHAPTER,"Chapter {n}","Capitolo {n}"
+HINT_LEFT_STICK,left stick,levetta sinistra
+PRO_HINT_MOVE,Move,Muoviti
+PRO_HINT_OPEN_LANTERN,Open the lantern,Apri la lanterna
+PRO_HINT_CLOSE_LANTERN,Close the lantern,Chiudi la lanterna
+PRO_HINT_SPRINT,Hold to sprint,Tieni premuto per scattare
+PRO_HINT_JUMP,Jump,Salta
+PRO_HINT_CLIMB,Climb,Arrampicati
+PRO_HINT_BREAK,Strike to break,Colpisci per rompere
+PRO_HINT_STRIKE,Strike,Colpisci
+PRO_HINT_PARRY,Parry at the right moment,Para al momento giusto
+SPEAKER_ZELINDA,Zelinda,Zelinda
+SPEAKER_OTTAVIA,Ottavia,Ottavia
+PRO_ZELINDA_01,Close that lantern. Nobody in here wants the light.,"Chiudila, quella lanterna. Qui dentro la luce non la vuole nessuno."
+PRO_NARRATION_01,Our world turns so slowly that the sunset walks.,Il nostro mondo gira così piano che il tramonto cammina.
+PRO_NARRATION_02,"Ahead of us lies the Day, which burns. Behind us, the Night, which freezes.","Davanti a noi c'è il Giorno, che brucia. Dietro, la Notte, che gela."
+PRO_NARRATION_03,"We can only live in between, for as long as we have the strength to walk.","Si vive solo nel mezzo, finché si ha la forza di camminare."
+PRO_NARRATION_04,That is why we are a caravan. We have followed the evening since before anyone can remember.,Per questo siamo una carovana. Seguiamo la sera da prima che qualcuno se ne ricordi.
+PRO_NARRATION_05,"Whoever stops, the Night catches.","Chi si ferma, la Notte lo raggiunge."
+PRO_NARRATION_06,Whoever falls behind is brought back by the Filecloser.,"Chi resta indietro, lo va a prendere la Serrafila."
+PRO_NARRATION_07,"For forty years, I have been the Filecloser.","Da quarant'anni, la Serrafila sono io."

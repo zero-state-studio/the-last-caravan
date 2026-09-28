@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/prologue/camp.gd" id="1_camp"]
+[ext_resource type="PackedScene" path="res://scenes/proto/ottavia_proto.tscn" id="2_ottavia"]
+[ext_resource type="Script" path="res://scripts/camera/follow_camera_rig.gd" id="3_rig"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="4_dialogue"]
+[ext_resource type="Script" path="res://scripts/ui/hint_banner.gd" id="5_hints"]
+[ext_resource type="Script" path="res://scripts/world/zone_palette.gd" id="6_zone"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
+sky_top_color = Color(0.3, 0.26, 0.56, 1)
+sky_horizon_color = Color(1, 0.68, 0.42, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.22, 0.17, 0.2, 1)
+ground_horizon_color = Color(1, 0.68, 0.42, 1)
+sun_angle_max = 20.0
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("Sky_mat")
+
+[sub_resource type="Environment" id="Environment_camp"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_color = Color(0.5, 0.45, 0.85, 1)
+ambient_light_sky_contribution = 0.5
+ambient_light_energy = 0.8
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_enabled = true
+ssao_radius = 1.2
+ssao_intensity = 1.6
+glow_enabled = true
+glow_intensity = 0.7
+glow_bloom = 0.08
+glow_hdr_threshold = 0.85
+fog_enabled = true
+fog_light_color = Color(0.95, 0.66, 0.46, 1)
+fog_sun_scatter = 0.35
+fog_density = 0.003
+fog_aerial_perspective = 0.6
+adjustment_enabled = true
+adjustment_saturation = 1.1
+
+[node name="Accampamento" type="Node3D"]
+script = ExtResource("1_camp")
+
+[node name="ZonePalette" type="Node" parent="."]
+script = ExtResource("6_zone")
+center_x = 10.0
+gradient_width = 60.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_camp")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.9397, -0.0827, 0.3319, 0, 0.9703, 0.2419, -0.342, 0.2273, -0.9118, 0, 10, 0)
+light_color = Color(1, 0.72, 0.45, 1)
+light_energy = 1.6
+shadow_enabled = true
+directional_shadow_max_distance = 180.0
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="Ottavia" parent="." instance=ExtResource("2_ottavia")]
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("3_rig")
+distance = 20.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+current = true
+far = 400.0
+
+[node name="CinemaCamera" type="Camera3D" parent="."]
+fov = 35.0
+far = 400.0
+
+[node name="DialogueBox" type="CanvasLayer" parent="."]
+script = ExtResource("4_dialogue")
+
+[node name="HintBanner" type="CanvasLayer" parent="."]
+script = ExtResource("5_hints")

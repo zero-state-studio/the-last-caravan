@@ -199,3 +199,12 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - PixelLab con tela personalizzata (60, 56, 52, 44): la figura occupa il 92-100 % dell'altezza della tela. Il riferimento di stile deve stare dentro la tela: ritagliarlo e ridurlo a 16 colori, così la base64 è corta (circa 1 KB) e non si tronca. I generici si riportano sulla tela 64×64 con i piedi alla riga 60, come Ottavia.
 - `meshy_pixelize.py --turn-180`: gira il modello di mezzo giro attorno all'asse verticale (rotazione del nodo radice), per mettere il davanti di un mezzo a ovest. Per rispettare lunghezza e altezza della bibbia si sceglie `--height` in modo che la lunghezza torni (camion-condominio: 12,35 m → 20,0 m).
 - Animazioni di Ottavia (fase 4a, passo 2): PixelLab consente 10 lavori insieme; lo zip del personaggio (`/mcp/characters/<id>/download`) risponde 423 finché ci sono lavori in corso, poi contiene `Idle/animations/<nome>/<direzione>/frame_NNN.png`. `tools/ottavia_anim_build.py <cartella zip> <cartella gif> anim:ms ...` pulisce con la pipeline v1 e fa le GIF in griglia. Il ritaglio a 64×64 taglia la punta del bastone in parte della combinazione e della parata.
+
+## Prologo (fase 4a, passo 3)
+
+- Avvio: `"$GODOT_PATH" --path . res://scenes/prologo/piano_tessibuio.tscn`. Dalla porta sul retro si passa a `scenes/prologo/accampamento.tscn` (`PrologueState.entered_from_door`).
+- `scripts/prologue/tessibuio_floor.gd`: il piano dei Tessibuio costruito dal codice con `LevelBlocks` (scatole e cilindri col materiale triplanare, 30 px/m), flusso a passi (risveglio, apri la lanterna, muoviti, Zelinda, chiudi la lanterna, porta). Argomenti di sviluppo: `intro=0`, `lantern=1`, `start_x=<m>`, `step=walk`.
+- `scripts/prologue/camp.gd`: l'accampamento (25 mezzi dal kit, tende, 46 persone della folla, brina verso est) e la sequenza della porta: bagliore (attenuato da `GameOptions.flash_strength`, 96), salita in verticale sopra Ottavia e poi in largo, sette righe di narrazione con la finestra dei dialoghi, ritorno. Argomenti: `intro=1`, `wide=1`, `line_seconds=<s>`.
+- `HintBanner` (`scripts/ui/hint_banner.gd`): suggerimenti in basso al centro con il tasto del dispositivo usato per ultimo (`InputRemap.main_event` e `event_label`).
+- `NpcSprite` (`scripts/world/npc_sprite.gd`): persone come sprite illuminati dalla scena (al buio si vedono solo con la lanterna), piedi sul nodo.
+- Test: `tests/test_prologue.gd`.
