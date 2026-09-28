@@ -2,6 +2,8 @@
 
 *Modelli 3D semplificati con texture pixel art a 30 pixel per metro (54). Ogni mezzo ha davanti le Ali rivolte al sole, cioè verso sinistra, e dietro le Code che strisciano nella brina verso destra; in mezzo batte il Generatore (77).*
 
+La carovana è un piccolo paese in cammino verso ovest: conta 20-25 mezzi. I tre tipi qui sotto sono quelli in cui Ottavia può entrare; gli altri sono mezzi generici, montati da un kit di moduli (pianali con ruote, Generatori, Ali, Code, piani-casa, piani fasciati di teli, terrazze, serbatoi, tende, carichi), così che ogni mezzo sia diverso ma tutti restino coerenti.
+
 ## 122. Il camion-condominio  [In discussione]
 
 **Fuori.** Un palazzo su ruote: tre o quattro piani di legno e lamiera impilati in modo irregolare, su sei o otto ruote enormi. Balconi con panni stesi, scalette esterne, finestre di misure diverse. I piani dei Tessibuio non hanno finestre, e sono fasciati all'esterno da pesanti teli scuri: si riconoscono da lontano. In basso, al centro, il Generatore: un grande tamburo di ferro con i pistoni in vista, che batte. Davanti le Ali, pannelli di metallo scuro inclinati verso il sole; dietro le Code, e tra le Code la porta sul retro con una scaletta. Circa 12 metri di altezza e 20 di lunghezza: accanto a Ottavia deve sembrare enorme.

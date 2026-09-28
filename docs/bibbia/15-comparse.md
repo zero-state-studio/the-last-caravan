@@ -38,7 +38,7 @@
 
 **Traslocanti.** Tute da lavoro pesanti, unte di grasso dei Generatori, occhiali da officina sulla fronte, guanti enormi. Davanti sbiadito.
 
-**Folla,** in quattro varianti: una Voltacampi con un attrezzo da campo; un Brinaiolo con la giacca rossa del suo mestiere (79); un Tessibuio con una tenda arrotolata sulla schiena; un anziano con un sacco.
+**Folla.** Hanno un aspetto proprio solo i personaggi che parlano o contano nella storia. Tutti gli altri sono otto tipi generici: uomo giovane, adulto e anziano; donna giovane, adulta e anziana; bambino e bambina. Il mestiere si riconosce dal colore e dai segni dei vestiti, come varianti dei tipi generici: per esempio la giacca rossa dei Brinaioli (79), la stoffa scura dei Tessibuio, le tute unte dei Traslocanti, i colori di terra dei Voltacampi. Il davanti dei vestiti è leggermente sbiadito (98).
 
 > **Descrizione per PixelLab, in inglese (Traslocante):** Adult worker, about 52 px tall on a 64x64 canvas. Heavy greasy work overalls, workshop goggles pushed up on the forehead, huge gloves. Clothes sun-faded on the front.
 
