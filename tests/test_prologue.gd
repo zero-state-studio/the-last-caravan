@@ -10,6 +10,8 @@ func _initialize() -> void:
 	await _test_animations()
 	await _test_floor()
 	await _test_camp_intro()
+	await _test_camp_tasks()
+	await _test_column()
 	print("TESTS: prologue %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -121,6 +123,83 @@ func _row_of(ottavia: OttaviaProto) -> int:
 
 func _row(ottavia: OttaviaProto, name: String) -> int:
 	return int(ottavia.animation_entry(name, ottavia._facing)["row"])
+
+
+func _test_camp_tasks() -> void:
+	PrologueState.reset()
+	var camp: Node3D = (load(PrologueState.CAMP_SCENE) as PackedScene).instantiate()
+	camp.leave_scene = false
+	root.add_child(camp)
+	current_scene = camp
+	await _frames(4)
+	var tasks: CampTasks = camp.tasks
+	var ottavia: OttaviaProto = camp.ottavia
+	var hints: HintBanner = camp.hints
+	_check(tasks.task == CampTasks.Task.SPRINT and hints.current_hint() == &"PRO_HINT_SPRINT", "camp 1: after the first call, the hint is to hold to sprint")
+	ottavia.global_position = Vector3(CampTasks.TAIL_ROWS[0] - 3.0, 0.05, 0.0)
+	await _frames(2)
+	_check(tasks.task == CampTasks.Task.JUMP and hints.current_hint() == &"PRO_HINT_JUMP", "camp 2: at the Tails, the hint is to jump")
+	ottavia.global_position = CampTasks.TENTS + Vector3(0.0, 0.05, 3.0)
+	await _frames(2)
+	_check(tasks.task == CampTasks.Task.CLIMB and hints.current_hint() == &"PRO_HINT_CLIMB", "camp 3: at the tents, the hint is to climb")
+	ottavia.global_position = CampTasks.RUGGERO_SPOT + Vector3(1.0, 0.1, 0.0)
+	await _frames(3)
+	_check(tasks.task == CampTasks.Task.WAKE, "camp 3: on the terrace, Ruggero can be woken")
+	ottavia.interact()
+	await _frames(2)
+	_check(tasks.task == CampTasks.Task.BREAK and camp.dialogue.current_line() == "PRO_RUGGERO_01", "camp 3: Ruggero wakes and speaks")
+	ottavia.global_position = CampTasks.TRASLOCANTE_SPOT + Vector3(-2.0, 0.05, 0.0)
+	await _frames(3)
+	_check(hints.current_hint() == &"PRO_HINT_BREAK" and camp.dialogue.current_line() == "PRO_TRASLOCANTE_01", "camp 4: the Homehauler asks, the hint is to strike to break")
+	for item: Breakable in tasks.breakables:
+		var hit: CombatHit = CombatHit.new()
+		hit.damage = 100.0
+		hit.direction = Vector3.RIGHT
+		item.receive_hit(hit)
+	await _frames(3)
+	_check(tasks.task == CampTasks.Task.FIGHT and tasks.swarm.size() == CampTasks.SWARM_SIZE and hints.current_hint() == &"PRO_HINT_STRIKE", "camp 5: the Tail is free, a swarm of Brinacchi comes, the hint is to strike")
+	for enemy: CombatEnemy in tasks.swarm:
+		enemy.health = 0.0
+	await _frames(3)
+	_check(tasks.task == CampTasks.Task.LAST_CALL and camp.dialogue.current_line() == "PRO_GNOMONE_02", "camp: after the swarm, the Gnomon's last call")
+	camp.queue_free()
+	await _frames(2)
+
+
+func _test_column() -> void:
+	PrologueState.reset()
+	var column: Node3D = (load(PrologueState.COLUMN_SCENE) as PackedScene).instantiate()
+	column.line_seconds = 0.05
+	column.chain_seconds = 0.05
+	root.add_child(column)
+	current_scene = column
+	await create_timer(5.6).timeout
+	var ottavia: OttaviaProto = column.ottavia
+	_check(column.step == column.Step.GO_BACK and column.column.size() >= 3, "column: the caravan marches with three or four vehicles in view (103)")
+	var start_x: float = column.column[0].position.x
+	await create_timer(0.5).timeout
+	_check(column.column[0].position.x < start_x, "column: the vehicles move west")
+	ottavia.global_position = column.mirco.global_position + Vector3(-1.5, 0.05, 0.0)
+	await create_timer(0.4).timeout
+	_check(column.step == column.Step.FIGHT and column.brinacchi.size() == 2, "column: Mirco speaks, Ottavia answers, a couple of Brinacchi come")
+	for enemy: CombatEnemy in column.brinacchi:
+		enemy.health = 0.0
+	await _frames(3)
+	_check(column.step == column.Step.TIE, "column: then Mirco can be tied to the rope")
+	ottavia.interact()
+	await create_timer(1.8).timeout
+	_check(column.step == column.Step.RETURN and PrologueState.knots == 1 and column.rope.knots == 1, "column: tied to the rope, a knot is added (125)")
+	var back: float = column._last_vehicle_back()
+	ottavia.global_position.x = back + (column._return_start_x - back) * 0.3
+	await _frames(3)
+	_check(ottavia.combat.run_drain_multiplier > 1.0, "column: past halfway, the breath runs out faster")
+	ottavia.global_position.x = column._last_vehicle_back() + 1.0
+	await _frames(3)
+	_check(column.step == column.Step.VERDICT, "column: reaching the column past the limit starts the verdict")
+	await column.prologue_finished
+	_check(column.step == column.Step.DONE, "column: the verdict ends on the chapter title")
+	column.queue_free()
+	await _frames(2)
 
 
 func _frames(count: int) -> void:

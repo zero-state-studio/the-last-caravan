@@ -52,6 +52,9 @@ var _hook_push: bool = false
 var _hook_charge: float = -1.0
 ## True while Ottavia runs (run held, moving, free, with breath).
 var running: bool = false
+## Scenes raise it when the body does not keep the pace (106: the way back
+## with Mirco, the breath runs out faster than usual).
+var run_drain_multiplier: float = 1.0
 var _run_held: bool = false
 var _jump_from_run: bool = false
 ## Upward speed of a jump just started, taken once by OttaviaProto.
@@ -309,7 +312,7 @@ func _update_run(delta: float, controls_enabled: bool) -> void:
 	running = controls_enabled and _run_held and _moving and state == State.FREE and stamina > 0.0
 	if not running:
 		return
-	stamina = maxf(0.0, stamina - tuning.run_stamina_per_second * delta)
+	stamina = maxf(0.0, stamina - tuning.run_stamina_per_second * run_drain_multiplier * delta)
 	_since_action = 0.0
 
 

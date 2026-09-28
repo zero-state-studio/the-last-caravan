@@ -53,7 +53,7 @@ const ROADS: Array[Dictionary] = [
 
 
 ## The ground plane with its blended material and a collision slab.
-static func build_ground(parent: Node3D, random: RandomNumberGenerator) -> void:
+static func build_ground(parent: Node3D, random: RandomNumberGenerator, roads: Array = ROADS) -> void:
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = GROUND_SHADER
 	material.set_shader_parameter(&"base_texture", TEX_MEADOW)
@@ -61,7 +61,7 @@ static func build_ground(parent: Node3D, random: RandomNumberGenerator) -> void:
 	material.set_shader_parameter(&"road_texture", TEX_ROAD)
 	material.set_shader_parameter(&"gravel_texture", TEX_GRAVEL)
 	material.set_shader_parameter(&"frost_texture", TEX_FROST)
-	material.set_shader_parameter(&"layer_mask", ImageTexture.create_from_image(paint_mask(random)))
+	material.set_shader_parameter(&"layer_mask", ImageTexture.create_from_image(paint_mask(random, roads)))
 	material.set_shader_parameter(&"alt_amount", 0.3)
 	material.set_shader_parameter(&"alt_patch_meters", 9.0)
 	material.set_shader_parameter(&"mask_rect", Vector4(MASK_RECT.position.x, MASK_RECT.position.y, MASK_RECT.size.x, MASK_RECT.size.y))
@@ -77,7 +77,7 @@ static func build_ground(parent: Node3D, random: RandomNumberGenerator) -> void:
 
 
 ## R road, G gravel, B frost: 1 px per metre over MASK_RECT.
-static func paint_mask(random: RandomNumberGenerator) -> Image:
+static func paint_mask(random: RandomNumberGenerator, roads: Array = ROADS) -> Image:
 	var width: int = int(MASK_RECT.size.x)
 	var depth: int = int(MASK_RECT.size.y)
 	var image: Image = Image.create(width, depth, false, Image.FORMAT_RGBA8)
@@ -91,7 +91,7 @@ static func paint_mask(random: RandomNumberGenerator) -> Image:
 		for x: int in width:
 			var point: Vector2 = MASK_RECT.position + Vector2(x + 0.5, z + 0.5)
 			var road: float = 0.0
-			for entry: Dictionary in ROADS:
+			for entry: Dictionary in roads:
 				var distance: float = _polyline_distance(point, entry["points"])
 				road = maxf(road, clampf(1.0 - (distance - float(entry["half_width"])) / 1.5, 0.0, 1.0))
 			var gravel: float = 0.0

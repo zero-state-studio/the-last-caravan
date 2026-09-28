@@ -21,6 +21,8 @@ const CROWD_VIEWS: Array[String] = ["south", "west", "south-west", "north-west"]
 ## The camion-condominio stands at the origin, 20 m long, front to the west:
 ## its back door is at the east end.
 const DOOR_EXIT: Vector3 = Vector3(11.2, 0.0, 2.2)
+## x, z rectangle of the tasks (sprint, jump, climb, break, fight).
+const TASK_AREA: Rect2 = Rect2(16.0, -15.0, 70.0, 37.0)
 const NARRATION: Array[StringName] = [
 	&"PRO_NARRATION_01", &"PRO_NARRATION_02", &"PRO_NARRATION_03", &"PRO_NARRATION_04",
 	&"PRO_NARRATION_05", &"PRO_NARRATION_06", &"PRO_NARRATION_07",
@@ -42,10 +44,13 @@ const SUN_AZIMUTH_DEGREES: float = 300.0
 @export var line_seconds: float = 4.4
 ## Plays the door glare and the narration (also when started with intro=1).
 @export var play_intro: bool = false
+## False in tests: the last call does everything but load the column.
+@export var leave_scene: bool = true
 
 signal intro_finished
 
 var intro_running: bool = false
+var tasks: CampTasks
 var vehicles: Array[Node3D] = []
 
 @onready var ottavia: OttaviaProto = $Ottavia
@@ -81,10 +86,16 @@ func _ready() -> void:
 	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
 	ottavia.global_position = DOOR_EXIT
+	# Dev arguments for captures: start_x=<m>, start_z=<m>.
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("start_x="):
+			ottavia.global_position.x = argument.trim_prefix("start_x=").to_float()
+		elif argument.begins_with("start_z="):
+			ottavia.global_position.z = argument.trim_prefix("start_z=").to_float()
 	ottavia.face_toward(Vector3.BACK)
 	ottavia.set_lantern_open(PrologueState.lantern_open)
 	camera_rig.target = ottavia
-	camera_rig.limits = Rect2(Vector2(-80.0, -40.0), Vector2(120.0, 60.0))
+	camera_rig.limits = Rect2(Vector2(-90.0, -40.0), Vector2(180.0, 70.0))
 	camera_rig.snap_to_target()
 	var layer: CanvasLayer = CanvasLayer.new()
 	layer.layer = 40
@@ -94,8 +105,20 @@ func _ready() -> void:
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade.color = Color(0.0, 0.0, 0.0, 0.0)
 	layer.add_child(_fade)
+	tasks = CampTasks.new()
+	tasks.name = "Tasks"
+	level.add_child(tasks)
+	tasks.setup(ottavia, dialogue, hints)
+	ZonePalette.retint_models(tasks)
+	var hud: CombatHud = CombatHud.new()
+	add_child(hud)
+	hud.bind(ottavia)
+	tasks.finished.connect(_leave_for_column)
 	if play_intro or PrologueState.entered_from_door:
+		intro_finished.connect(tasks.begin, CONNECT_ONE_SHOT)
 		_intro.call_deferred()
+	elif not "tasks=0" in OS.get_cmdline_user_args():
+		tasks.begin.call_deferred()
 
 
 ## The glare of the sunset, the rise over the caravan with the narration,
@@ -143,6 +166,18 @@ func _intro() -> void:
 	intro_finished.emit()
 
 
+## After the last call the caravan sets off: space 4, the tail of the column.
+func _leave_for_column() -> void:
+	ottavia.controls_enabled = false
+	PrologueState.lantern_open = ottavia.lantern_open
+	_fade.color = Color(0.0, 0.0, 0.0, 0.0)
+	var tween: Tween = create_tween()
+	tween.tween_property(_fade, "color:a", 1.0, 1.2)
+	await tween.finished
+	if leave_scene:
+		get_tree().change_scene_to_file(PrologueState.COLUMN_SCENE)
+
+
 func wide_shot_transform() -> Transform3D:
 	var pitch: float = deg_to_rad(WIDE_PITCH_DEGREES)
 	var eye: Vector3 = WIDE_CENTER + Vector3(0.0, sin(pitch), cos(pitch)) * WIDE_DISTANCE
@@ -161,7 +196,7 @@ func _build() -> void:
 	_place_vehicles()
 	_place_tents()
 	CampScenery.place_ruins(level)
-	CampScenery.place_nature(level, _random, func(point: Vector3) -> bool: return not _near_vehicle(point))
+	CampScenery.place_nature(level, _random, func(point: Vector3) -> bool: return not _near_vehicle(point) and not in_task_area(point))
 	_place_crowd()
 
 
@@ -170,14 +205,14 @@ func _build() -> void:
 func _place_vehicles() -> void:
 	var slots: Array[Vector3] = [
 		Vector3(-34.0, 0.0, -16.0), Vector3(-14.0, 0.0, -18.0), Vector3(8.0, 0.0, -20.0), Vector3(28.0, 0.0, -17.0),
-		Vector3(-52.0, 0.0, -6.0), Vector3(-30.0, 0.0, 2.0), Vector3(30.0, 0.0, 0.0),
-		Vector3(-46.0, 0.0, 16.0), Vector3(-24.0, 0.0, 18.0), Vector3(-2.0, 0.0, 17.0), Vector3(20.0, 0.0, 19.0), Vector3(40.0, 0.0, 15.0),
+		Vector3(-52.0, 0.0, -6.0), Vector3(-30.0, 0.0, 2.0), Vector3(-84.0, 0.0, 14.0),
+		Vector3(-46.0, 0.0, 16.0), Vector3(-24.0, 0.0, 18.0), Vector3(-2.0, 0.0, 17.0), Vector3(20.0, 0.0, 22.0), Vector3(-70.0, 0.0, -30.0),
 		Vector3(-40.0, 0.0, -32.0), Vector3(-18.0, 0.0, -34.0), Vector3(4.0, 0.0, -35.0), Vector3(24.0, 0.0, -33.0),
 		Vector3(-60.0, 0.0, 6.0), Vector3(-58.0, 0.0, -20.0), Vector3(46.0, 0.0, -10.0), Vector3(-64.0, 0.0, 26.0),
 		Vector3(-8.0, 0.0, 31.0), Vector3(14.0, 0.0, 33.0),
 	]
 	_add_vehicle(_load(MAIN_VEHICLES[&"camion_condominio"]), Vector3.ZERO)
-	_add_vehicle(_load(MAIN_VEHICLES[&"carro_campo"]), Vector3(-8.0, 0.0, -6.0))
+	# The field-wagon of the prologue stands in the task area (CampTasks).
 	_add_vehicle(_load(MAIN_VEHICLES[&"mezzo_di_testa"]), Vector3(-80.0, 0.0, -2.0))
 	var recipes: Array = VehicleKit.load_recipes()
 	for index: int in mini(recipes.size(), slots.size()):
@@ -223,7 +258,7 @@ func _place_crowd() -> void:
 	while placed < 46 and tries < 600:
 		tries += 1
 		var point: Vector3 = Vector3(_random.randf_range(-70.0, 50.0), 0.0, _random.randf_range(-30.0, 30.0))
-		if _near_vehicle(point):
+		if _near_vehicle(point) or in_task_area(point):
 			continue
 		var person: NpcSprite = NpcSprite.new()
 		var kind: String = CROWD_TYPES[_random.randi() % CROWD_TYPES.size()]
@@ -232,6 +267,11 @@ func _place_crowd() -> void:
 		person.position = point
 		level.add_child(person)
 		placed += 1
+
+
+## The east end of the camp, kept clear for the tasks of step 4.
+static func in_task_area(point: Vector3) -> bool:
+	return point.x > TASK_AREA.position.x and point.x < TASK_AREA.end.x and point.z > TASK_AREA.position.y and point.z < TASK_AREA.end.y
 
 
 func _near_vehicle(point: Vector3) -> bool:

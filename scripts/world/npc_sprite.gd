@@ -16,8 +16,9 @@ const LIGHT_SAMPLE_TOWARD_SUN: float = 0.4
 static var sun_azimuth_degrees: float = NAN
 
 @export var sprite_texture: Texture2D
-## Frames laid side by side in the texture (a looping idle, 64 px each).
-@export var frame_count: int = 1
+## Frames laid side by side in the texture (a looping idle, 64 px each);
+## 0 counts them from the texture width.
+@export var frame_count: int = 0
 @export var frames_per_second: float = 6.0
 
 var _time: float = 0.0
@@ -26,6 +27,8 @@ var _time: float = 0.0
 func _ready() -> void:
 	if sprite_texture != null:
 		texture = sprite_texture
+	if frame_count <= 0:
+		frame_count = maxi(1, texture.get_width() / WorldScale.CHARACTER_CANVAS_PIXELS) if texture != null else 1
 	hframes = maxi(1, frame_count)
 	pixel_size = WorldScale.METERS_PER_PIXEL
 	texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
@@ -34,7 +37,7 @@ func _ready() -> void:
 	# 64x64 cells keep the feet at row 60, like Ottavia.
 	if texture != null:
 		offset = Vector2(0.0, texture.get_height() * 0.5 - 3.0)
-	set_process(frame_count > 1)
+	set_process(true)
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = LIT_SHADER
 	material.set_shader_parameter(&"sprite_texture", texture)
@@ -60,7 +63,26 @@ func _ready() -> void:
 	shadow.global_rotation = Vector3(0.0, azimuth, 0.0)
 
 
+## Switches to another strip (another animation or direction), keeping the
+## material and the shadow copy in step.
+func set_strip(strip: Texture2D, fps: float = frames_per_second) -> void:
+	if strip == texture:
+		return
+	texture = strip
+	frame_count = maxi(1, strip.get_width() / WorldScale.CHARACTER_CANVAS_PIXELS)
+	frames_per_second = fps
+	hframes = frame_count
+	frame = 0
+	(material_override as ShaderMaterial).set_shader_parameter(&"sprite_texture", strip)
+	for child: Node in get_children():
+		if child is Sprite3D:
+			(child as Sprite3D).texture = strip
+			(child as Sprite3D).hframes = frame_count
+
+
 func _process(delta: float) -> void:
+	if frame_count <= 1:
+		return
 	_time += delta
 	frame = int(_time * frames_per_second) % frame_count
 	for child: Node in get_children():

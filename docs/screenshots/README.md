@@ -18,14 +18,14 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
 - `asset/personaggi/ottavia-v1/14-animazioni-fase4a/tutte_griglia.gif` e `15-fotogrammi-animazioni-fase4a.png`: le animazioni di Ottavia del passo 2.
-- `capitoli/00-prologo/` e il video `docs/video/capitoli/00-prologo/01-porta-e-narrazione.mp4`: il passo 3 (piano dei Tessibuio, porta, narrazione).
+- `capitoli/00-prologo/` e i video `docs/video/capitoli/00-prologo/`: il prologo dei passi 3-5 (piano dei Tessibuio, porta e narrazione, accampamento, colonna, verdetto).
 - `asset/personaggi/comparse-prologo/02-personaggi-che-parlano-altezze-corrette.png`: i personaggi del prologo, alle altezze giuste.
 
 ## Indice
 
 ### `capitoli/00-prologo/`: Prologo, spazi 1 e 2 (106)
 
-Stato: **da valutare** (fase 4a, passo 3).
+Stato: **da valutare** (fase 4a, passi 3-5).
 
 - `01-piano-buio-risveglio.png`: il risveglio al buio, con il primo suggerimento («Apri la lanterna»)
 - `02-piano-lanterna-aperta.png`: la lanterna aperta sul piano dei Tessibuio, con il suggerimento «Muoviti»
@@ -35,6 +35,17 @@ Stato: **da valutare** (fase 4a, passo 3).
 - `06-salita-sulla-carovana.png`: la camera sale sopra Ottavia
 - `07-carovana-intera-narrazione.png`: la carovana intera mentre Ottavia racconta il mondo
 - `08-ritorno-su-ottavia.png`: la camera torna su Ottavia e i comandi tornano al giocatore
+- `09-code-da-saltare.png`: passo 4. Dopo il primo richiamo dello Gnomone, le file di Code nella brina da saltare («Salta»)
+- `10-carro-campo-ruggero.png`: il carro-campo con la parete da scalare («Arrampicati») e Ruggero che dorme sulla terrazza
+- `11-coda-piantata-traslocante.png`: la Coda piantata nel ghiaccio, le croste e i cespugli da rompere, il Traslocante
+- `12-sciame-di-brinacchi.png`: lo sciame di Brinacchi (B1) dopo la Coda liberata («Colpisci», poi «Para al momento giusto»)
+- `13-colonna-in-marcia.png`: passo 5. La carovana in marcia verso ovest, Ottavia in coda
+- `14-mirco-nella-brina.png`: Mirco rimasto indietro nella brina, a guardare il buio
+- `15-catena-delle-voci.png`: il verdetto arriva di voce in voce
+- `16-testa-della-colonna.png`: la testa della colonna: Arold non si volta, Enea sì, lo Gnomone sulla meridiana
+- `17-anselmo-la-mano.png`: Anselmo, l'ultima voce, chiede la mano per prenderle le misure
+- `18-sagoma-della-lanterna.png`: la sagoma vuota della lanterna del congedo (88), disegno provvisorio
+- `19-titolo-ne-restano-dieci.png`: il titolo su nero
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -192,6 +203,7 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
+- `capitoli/00-prologo/02-verdetto.mp4`: **da valutare**. Il verdetto, dalla catena delle voci al titolo (38 s)
 - `capitoli/00-prologo/01-porta-e-narrazione.mp4`: **da valutare**. Dalla porta alla carovana intera, con la narrazione in sottotitoli, e il ritorno su Ottavia (50 s)
 - `fasi/fase2-stile-definitivo/01-diorama-dimostrativo.mp4`: la scena dimostrativa della fase 2.
 - `fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4`: lo stesso combattimento al capitolo 1 e al 9 (fatto con il vecchio passo).
