@@ -59,6 +59,7 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `29-rocce-da-saltare.png`: **da valutare**. Le file di rocce basse da saltare, al posto delle Code
 - `30-apertura-su-montagne-e-citta.png`: **da valutare**. L'apertura della narrazione: la camera guarda in alto, montagne vicine e ben visibili, città morta, carovana in basso; poi scende sulla carovana
 - `31-veduta-citta-vicina.png`: **da valutare**. La veduta sulla carovana con la città morta vicina, senza la fascia vuota
+- `32-campo-di-brina-vicino-a-mirco.png`: **da valutare**. La zona di Mirco non più piatta e uniforme: brina a chiazze con terra e ghiaia, massi, arbusti gelati, tronchi, cumuli di brina e schegge di ghiaccio
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)

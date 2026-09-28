@@ -5,12 +5,15 @@ extends CombatEnemy
 ## lantern: with the shutter open it senses Ottavia from far away, and
 ## closing it makes the swarm lose her track (36). Clinging, it slows her and
 ## drains a little health. A sidestep shakes them all off, a strike knocks
-## one off. Coming off, it crusts over with frost: the crust blocks strikes
-## until the hook tears it or it melts.
+## one off. Coming off, it crusts over with frost and lies on the ground: a
+## strike of the staff cracks the crust (the hook tears it too) and leaves it
+## stunned, so the next strike defeats it; left alone, the crust melts.
 
-enum Phase { WANDER, CHASE, LATCHED, CRUSTED }
+enum Phase { WANDER, CHASE, LATCHED, CRUSTED, STUNNED }
 
 const CRUST_COLOR: Color = Color(0.85, 0.92, 1.0)
+## Cracked out of its crust, it lies stunned this long before chasing again.
+const STUN_SECONDS: float = 1.6
 const WANDER_RADIUS: float = 1.2
 ## Fist-sized, so it needs help to be seen (B1): a pale outline, a frost
 ## glint, a shadow on the ground and a trail of frost where it runs.
@@ -143,10 +146,26 @@ func _behave(delta: float) -> void:
 			flash(0.45, CRUST_COLOR)
 			if not has_shield or _time >= creature.brinacchio_crust_seconds:
 				has_shield = false
+				_set_phase(Phase.STUNNED)
+		Phase.STUNNED:
+			if _time >= STUN_SECONDS:
 				_set_phase(Phase.CHASE)
 	if not is_being_moved():
 		velocity = move
 	sprite.flip_h = velocity.x > 0.1
+
+
+## A strike on the crust cracks it: ice chips, and the parasite lies there
+## stunned for the next strike.
+func receive_hit(hit: CombatHit) -> void:
+	if phase == Phase.CRUSTED and has_shield and hit.kind == CombatHit.Kind.STRIKE:
+		has_shield = false
+		SoundBank.play_sound(get_tree(), &"crosta_spezza")
+		CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 0.2, CRUST_COLOR, 12.0)
+		flash(1.0, CRUST_COLOR)
+		_set_phase(Phase.STUNNED)
+		return
+	super.receive_hit(hit)
 
 
 func _latch(player: OttaviaProto) -> void:

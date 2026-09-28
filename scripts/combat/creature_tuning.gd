@@ -48,13 +48,14 @@ extends Resource
 ## Shutter closed and farther than this: they lose her track.
 @export var brinacchio_lose_track: float = 3.0
 @export var brinacchio_latch_range: float = 0.6
-## The bible (B1) says they slow down whoever they cling to: no damage by
-## default, the value is here only to try it.
-@export var brinacchio_latch_damage_per_second: float = 0.0
+## Besides slowing down whoever they cling to (B1), they drain a little
+## health, so a swarm on her back is a real danger (decided 2026-09-28).
+@export var brinacchio_latch_damage_per_second: float = 2.0
 ## Speed lost per parasite attached (sum capped by brinacchio_max_slow).
 @export var brinacchio_slow: float = 0.15
 @export var brinacchio_max_slow: float = 0.6
-## Frost crust after coming off: blocks strikes until torn by the hook.
+## Frost crust after coming off: a strike cracks it, the hook tears it,
+## otherwise it melts after this long.
 @export var brinacchio_crust_seconds: float = 4.0
 
 @export_group("Grappolo (B7)")

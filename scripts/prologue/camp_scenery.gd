@@ -23,6 +23,7 @@ const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
 const HOLLOW_FADE: float = 14.0
 const HOLLOW_METERS: float = 1.1
 const HOLLOW_SEED: int = 7331
+const FROST_FIELD_SEED: int = 1250
 const GROUND_CELL: float = 4.0
 const COLLISION_CELL: float = 2.0
 const GRASS_ENTRIES: Array[String] = [
@@ -179,6 +180,10 @@ static func paint_mask(random: RandomNumberGenerator, roads: Array = ROADS) -> I
 	var noise: FastNoiseLite = FastNoiseLite.new()
 	noise.seed = random.randi()
 	noise.frequency = 0.04
+	var patches: FastNoiseLite = FastNoiseLite.new()
+	patches.seed = random.randi()
+	patches.frequency = 0.07
+	patches.fractal_octaves = 2
 	for z: int in depth:
 		for x: int in width:
 			var point: Vector2 = MASK_RECT.position + Vector2(x + 0.5, z + 0.5)
@@ -190,8 +195,15 @@ static func paint_mask(random: RandomNumberGenerator, roads: Array = ROADS) -> I
 			for spot: Vector3 in gravel_spots:
 				var d: float = point.distance_to(Vector2(spot.x, spot.y)) / spot.z
 				gravel = maxf(gravel, clampf(1.4 - d, 0.0, 1.0))
-			# Frost thickens toward the Night (east), with ragged tongues.
+			# Frost thickens toward the Night (east), with ragged tongues; deep
+			# in it, bare patches of earth and gravel break the white.
 			var frost: float = clampf((point.x - 22.0) / 45.0 + noise.get_noise_2dv(point) * 0.6, 0.0, 1.0)
+			if frost > 0.4:
+				# Soft values across 0.5, so the ground shader's jitter frays
+				# the edges instead of drawing squares.
+				var bare: float = patches.get_noise_2dv(point)
+				frost = minf(frost, clampf(0.5 - (bare - 0.16) * 1.1, 0.0, 1.0))
+				gravel = maxf(gravel, clampf(0.5 + (bare - 0.36) * 1.1, 0.0, 1.0))
 			image.set_pixel(x, z, Color(road, gravel, frost, 1.0))
 	return image
 
@@ -241,6 +253,83 @@ static func place_nature(parent: Node3D, random: RandomNumberGenerator, is_free:
 			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
 			parent.add_child(prop)
 			placed += 1
+
+
+## The frost field toward the Night (the column's east end, where Mirco
+## stays behind): frozen bushes, rocks, fallen trunks and dead trees, low
+## drifts of frost and shards of ice standing up, so the white ground is
+## never an empty pattern. `is_free` keeps the way clear where needed.
+static func dress_frost_field(parent: Node3D, area: Rect2, is_free: Callable) -> void:
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = FROST_FIELD_SEED
+	var scatter: VegetationScatter = VegetationScatter.new()
+	var entries: Array[VegetationEntry] = []
+	for path: String in ["res://assets/vegetation_kit/ciuffo_erba_02.tres", "res://assets/vegetation_kit/sassi_01.tres", "res://assets/vegetation_kit/cespuglio_secco_01.tres"]:
+		entries.append(load(path) as VegetationEntry)
+	scatter.entries = entries
+	scatter.extents = area.size * 0.5
+	scatter.density = 0.12
+	scatter.random_seed = FROST_FIELD_SEED
+	scatter.position = Vector3(area.get_center().x, 0.0, area.get_center().y)
+	parent.add_child(scatter)
+	var props: Dictionary = {
+		"res://assets/vegetation_kit/roccia_grande_01.tres": 22,
+		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 26,
+		"res://assets/vegetation_kit/tronco_caduto_01.tres": 7,
+		"res://assets/vegetation_kit/albero_storto_01.tres": 6,
+		"res://assets/vegetation_kit/ceppo_01.tres": 6,
+	}
+	for path: String in props:
+		var entry: VegetationEntry = load(path)
+		var placed: int = 0
+		var tries: int = 0
+		while placed < int(props[path]) and tries < 400:
+			tries += 1
+			var point: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+			if not is_free.call(point):
+				continue
+			var prop: Node3D = entry.model.instantiate()
+			prop.position = point
+			prop.rotation.y = random.randf_range(-PI, PI)
+			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
+			parent.add_child(prop)
+			placed += 1
+	var frost_material: StandardMaterial3D = StandardMaterial3D.new()
+	frost_material.albedo_texture = TEX_FROST
+	frost_material.albedo_color = Color(0.92, 0.96, 1.0)
+	frost_material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	frost_material.uv1_triplanar = true
+	frost_material.uv1_scale = Vector3.ONE * 0.4
+	var ice: StandardMaterial3D = frost_material.duplicate()
+	ice.albedo_color = Color(0.8, 0.9, 1.0)
+	ice.roughness = 0.3
+	ice.emission_enabled = true
+	ice.emission = Color(0.55, 0.72, 0.95)
+	ice.emission_energy_multiplier = 0.3
+	# Low drifts of frost: relief on the flat white, not in the way.
+	for index: int in 26:
+		var at: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+		if not is_free.call(at):
+			continue
+		var drift: MeshInstance3D = MeshInstance3D.new()
+		var sphere: SphereMesh = SphereMesh.new()
+		sphere.radial_segments = 10
+		sphere.rings = 5
+		drift.mesh = sphere
+		drift.material_override = frost_material
+		drift.scale = Vector3(random.randf_range(2.0, 5.0), random.randf_range(0.25, 0.55), random.randf_range(1.5, 3.5))
+		drift.position = at
+		drift.rotation.y = random.randf_range(-PI, PI)
+		parent.add_child(drift)
+	# Shards of ice pushed up by the cold, in small clusters.
+	for cluster: int in 14:
+		var centre: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+		if not is_free.call(centre):
+			continue
+		for shard: int in random.randi_range(2, 5):
+			var height: float = random.randf_range(0.4, 1.3)
+			var piece: Node3D = LevelBlocks.box(parent, centre + Vector3(random.randf_range(-0.8, 0.8), height * 0.4, random.randf_range(-0.8, 0.8)), Vector3(random.randf_range(0.2, 0.45), height, random.randf_range(0.2, 0.4)), ice, false)
+			piece.rotation = Vector3(random.randf_range(-0.4, 0.4), random.randf_range(-PI, PI), random.randf_range(-0.4, 0.4))
 
 
 ## Ruins of old stone buildings between the camp and the mountains.

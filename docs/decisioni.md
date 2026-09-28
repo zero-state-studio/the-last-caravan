@@ -116,3 +116,5 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Prologo, spazio 3: il salto si impara su sassi e scalini di roccia (non più sulle Code); Ruggero dorme seduto sulla testata del carro-campo, accanto ai serbatoi, e si sale con una scala; da sveglio cambia posa.
 - Brinacchi (B1): restano grandi come un pugno, resi leggibili con bagliore di brina, contorno chiaro, ombra e scia di brina. Le croste da rompere diventano di ghiaccio bianco-azzurro.
 - Sfondo dell'accampamento: la città morta più vicina, senza la fascia vuota; le montagne di nuovo visibili; il terreno con piccoli avvallamenti.
+- Brinacchi (B1), combattimento: un colpo di bastone spacca la crosta e lo lascia stordito a terra, il colpo dopo lo sconfigge (l'uncino la strappa ancora); attaccati a Ottavia, oltre a rallentarla, tolgono un po' di vita (2 al secondo). Prima la crosta li rendeva di fatto invincibili nel prologo, dove l'uncino non si insegna.
+- Prologo, spazio 4: la zona di Mirco e la strada verso di lui sono vestite come un campo di brina (chiazze di terra, massi, arbusti gelati, tronchi, cumuli di brina, schegge di ghiaccio), non più un piano uniforme.

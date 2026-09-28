@@ -109,11 +109,19 @@ func _test_brinacchio() -> void:
 	await _wait(0.3)
 	_check(clinging.phase == Brinacchio.Phase.LATCHED, "brinacchio: clings to Ottavia")
 	_check(_ottavia.combat.slowdown > 0.0, "brinacchio: clinging slows her down")
+	_check(_ottavia.health < _ottavia.max_health, "brinacchio: clinging drains a little health")
 	_ottavia.combat.press(&"jump")
 	await physics_frame
 	await physics_frame
 	_check(clinging.phase == Brinacchio.Phase.CRUSTED and clinging.has_shield, "brinacchio: a jump shakes it off, crusted with frost")
 	_check(is_zero_approx(_ottavia.combat.slowdown), "brinacchio: no slowdown once shaken off")
+	var strike: CombatHit = CombatHit.new()
+	strike.kind = CombatHit.Kind.STRIKE
+	strike.damage = 20.0
+	clinging.receive_hit(strike)
+	_check(clinging.phase == Brinacchio.Phase.STUNNED and not clinging.has_shield and clinging.is_alive(), "brinacchio: a strike cracks the crust and leaves it stunned")
+	clinging.receive_hit(strike)
+	_check(not clinging.is_alive(), "brinacchio: the next strike defeats it")
 	clinging.free()
 	_ottavia.restore_health()
 	await _wait(0.5)

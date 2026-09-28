@@ -74,6 +74,10 @@ const ROUTE: Array[Vector3] = [
 const WAY_OUT_SWARM: Vector3 = Vector3(72.0, 0.0, 7.0)
 const WAY_BACK_SWARMS: Array[Vector3] = [Vector3(90.0, 0.0, 12.0), Vector3(40.0, 0.0, 2.0)]
 const SWARM_COUNT: int = 3
+## The frost field around Mirco (x, z, width, depth), dressed with frozen
+## things; the barriers' gaps and Mirco's spot stay clear.
+const FROST_FIELD: Rect2 = Rect2(20.0, -14.0, 140.0, 40.0)
+
 ## Nightfall toward Mirco (106): how much the light dims at his place.
 const DUSK_START_X: float = 20.0
 const DUSK_SUN_SCALE: float = 0.62
@@ -146,6 +150,8 @@ func _ready() -> void:
 	_ambient_energy = _environment.ambient_light_energy
 	_fog_color = _environment.fog_light_color
 	_build_barriers()
+	# Where Mirco stays behind, and on the way there: the frost field.
+	CampScenery.dress_frost_field(level, FROST_FIELD, _frost_free)
 	_waiting_swarms = [WAY_OUT_SWARM]
 	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
@@ -375,6 +381,20 @@ func _spawn_brinacchio(at: Vector3) -> CombatEnemy:
 	level.add_child(creature)
 	brinacchi.append(creature)
 	return creature
+
+
+func _frost_free(point: Vector3) -> bool:
+	if absf(point.z - COLUMN_Z) < 5.0 and point.x < 60.0:
+		return false
+	if Vector2(point.x - MIRCO_START.x, point.z - MIRCO_START.z).length() < 6.0:
+		return false
+	for waypoint: Vector3 in ROUTE:
+		if Vector2(point.x - waypoint.x, point.z - waypoint.z).length() < 3.0:
+			return false
+	for barrier: Vector3 in BARRIERS:
+		if absf(point.x - barrier.x) < 2.5 and point.z > barrier.y - 1.0 and point.z < barrier.z + 1.0:
+			return false
+	return true
 
 
 ## Fallen rock and broken walls across the way to Mirco, to walk round
