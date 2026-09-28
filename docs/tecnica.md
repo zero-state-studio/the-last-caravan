@@ -189,3 +189,9 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - Corsa: `run` tenuto, velocità × `run_speed_multiplier`, `run_stamina_per_second` di fiato; niente ricarica mentre si corre; a fiato vuoto si cammina. Un salto preso correndo conserva la velocità di corsa.
 - Camera: segue `OttaviaProto.camera_anchor()`, che durante il salto resta all'altezza del terreno (niente sobbalzi; una caduta la porta giù).
 - Animazione provvisoria: in aria resta la posa del cammino; la corsa accelera i fotogrammi. Argomento del diorama `autojump=1` per le catture. Screenshot: `docs/screenshots/2026-09-28-fase3-salto.png`.
+
+## Mezzi e comparse (fase 4a, passo 1)
+
+- `scripts/dev/scale_preview.gd`: mette in fila modelli GLB e sprite PNG (viste sud) su un terreno piatto, alla scala del mondo (30 px/m), e salva un'immagine. `"$GODOT_PATH" --path . --resolution 1280x800 --script res://scripts/dev/scale_preview.gd -- <out.png> <distanza_camera> <x_centro> models=<a.glb,...> sprites=<a.png,...>`. I modelli stanno in fila lungo x, con il davanti (le Ali) verso ovest.
+- Meshy, mezzi complessi: text-to-3d meshy-5 non regge edifici a più piani (esce una scatola su ruote). Funziona la strada concetto → 3D: text-to-image nano-banana (3 crediti) e image-to-3d meshy-t2 smart-topology con texture (15 crediti), poi `mesh_simplify.py` e `meshy_pixelize.py`.
+- PixelLab, personaggi da testo: `create_character_pro_flash` costa 6 generazioni (5 per la prima immagine, 1 per le 8 rotazioni); solo 1 se si parte da un'immagine già fatta. L'altezza scritta nella descrizione non viene rispettata: la figura riempie la tela (bambini a 46-58 px invece di 34-40). Il riferimento di stile può passare oggetti: con Ottavia come riferimento, Anselmo ha preso bastone e lanterna.
