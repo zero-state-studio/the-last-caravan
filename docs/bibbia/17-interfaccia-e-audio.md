@@ -9,7 +9,7 @@ Poca, leggibile sullo schermo di Steam Deck (1280×800), e mai soggetta al virag
 - **Dialoghi:** riquadro scuro in basso, con il nome di chi parla; per ora senza ritratti.
 - **La lanterna del congedo (88):** nel menu di pausa, la sagoma della lanterna che si riempie un pezzo alla volta.
 - **Titoli dei capitoli:** testo grande su nero, che appare e sfuma, per esempio «Ne restano dieci». Circa 8 secondi in tutto: 1,5 per comparire, 4 fermo, 1,5 per sparire. Si può saltare con un tasto.
-- **Carattere:** un carattere pixel leggibile, con dimensione regolabile per sottotitoli e dialoghi (96).
+- **Carattere:** un carattere pixel leggibile, con dimensione regolabile per sottotitoli e dialoghi (96): Jersey 10, gratuito con licenza SIL Open Font License.
 
 ## 126. Musica  [In discussione]
 

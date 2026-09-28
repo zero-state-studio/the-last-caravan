@@ -230,3 +230,6 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 - `04-menu-di-pausa-con-la-lanterna.png`: **da valutare**. Il menu di pausa con la lanterna del congedo a 3 pezzi su 10 (per la prova), e la nuova opzione per la dimensione del testo
 - `05-meridiana-ingrandita.png`: la meridiana ingrandita 4 volte, per vedere i pixel
 - `06-corda-ingrandita.png`: la corda dei salvati ingrandita 4 volte
+- `07-hud-con-jersey-10.png`: **da valutare**. L'interfaccia in gioco con il carattere scelto, Jersey 10 (28 px)
+- `08-menu-di-pausa-con-jersey-10.png`: **da valutare**. Il menu di pausa con Jersey 10, allargato per il testo più grande
+- `09-jersey-10-ingrandito.png`: il dialogo ingrandito 3 volte: pixel pieni e regolari

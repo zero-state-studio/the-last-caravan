@@ -31,7 +31,7 @@ func _ready() -> void:
 	_label = Label.new()
 	_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_label.position = Vector2(-44.0, 30.0)
-	UiStyle.style_label(_label, 22, KNOT_COLOR)
+	UiStyle.style_label(_label, UiStyle.BODY_SIZE, KNOT_COLOR)
 	_label.add_theme_color_override(&"font_outline_color", OUTLINE)
 	_label.add_theme_constant_override(&"outline_size", 5)
 	add_child(_label)

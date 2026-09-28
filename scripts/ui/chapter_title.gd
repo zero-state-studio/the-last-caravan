@@ -36,7 +36,7 @@ func _ready() -> void:
 	_title.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override(&"font_size", 52)
+	_title.add_theme_font_size_override(&"font_size", UiStyle.TITLE_SIZE)
 	_title.modulate.a = 0.0
 	add_child(_title)
 	_lantern = LanternEmblem.new()

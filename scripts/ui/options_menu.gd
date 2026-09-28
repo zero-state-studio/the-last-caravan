@@ -7,7 +7,7 @@ extends CanvasLayer
 ## (Esc, Menu/Start) and pauses the game. Every visible text is a
 ## translation key.
 
-const PANEL_SIZE: Vector2 = Vector2(620.0, 640.0)
+const PANEL_SIZE: Vector2 = Vector2(860.0, 700.0)
 
 var _root: PanelContainer
 var _lantern_box: VBoxContainer
@@ -116,7 +116,7 @@ func _build() -> void:
 
 	var title: Label = Label.new()
 	title.text = "OPTIONS_TITLE"
-	title.add_theme_font_size_override(&"font_size", 24)
+	UiStyle.style_label(title, UiStyle.BODY_SIZE, UiStyle.SPEAKER)
 	box.add_child(title)
 	_add_slider(box, "OPTIONS_SHAKE", GameOptions.shake_strength, func(value: float) -> void:
 		GameOptions.shake_strength = value
@@ -172,7 +172,7 @@ func _build() -> void:
 		grid.add_child(name_label)
 		for device: InputRemap.Device in [InputRemap.Device.KEYBOARD, InputRemap.Device.GAMEPAD]:
 			var button: Button = Button.new()
-			button.custom_minimum_size = Vector2(170.0, 0.0)
+			button.custom_minimum_size = Vector2(260.0, 0.0)
 			button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 			var action: StringName = entry["action"]
 			button.pressed.connect(func() -> void: _start_wait(action, device, button))

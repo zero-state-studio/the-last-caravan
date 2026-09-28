@@ -29,9 +29,9 @@ func _ready() -> void:
 	box.custom_minimum_size = Vector2(640.0, 180.0)
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	_root.add_child(box)
-	_title = _label(box, 30, Color(1.0, 0.77, 0.42))
-	_lose = _label(box, 22, Color(0.75, 0.75, 0.9))
-	_learn = _label(box, 22, Color(0.97, 0.9, 0.7))
+	_title = _label(box, UiStyle.BODY_SIZE, UiStyle.SPEAKER)
+	_lose = _label(box, UiStyle.BODY_SIZE, Color(0.75, 0.75, 0.9))
+	_learn = _label(box, UiStyle.BODY_SIZE, Color(0.97, 0.9, 0.7))
 	_root.visible = false
 
 

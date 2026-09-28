@@ -12,11 +12,15 @@ const LIGHT: Color = Color(0.78, 0.82, 0.95)
 const LIGHT_DARK: Color = Color(0.25, 0.27, 0.38)
 const SPEAKER: Color = Color(1.0, 0.77, 0.42)
 const TEXT: Color = Color(0.96, 0.94, 0.9)
-## The pixel font, once chosen (125); empty uses the engine font.
-const FONT_PATH: String = ""
-## Text sizes at scale 1 (1280x800).
-const BODY_SIZE: int = 22
-const SMALL_SIZE: int = 18
+## The pixel font (125): Jersey 10, SIL Open Font License (license next
+## to the file). Imported without antialiasing, hinting or subpixels; it is
+## also the default font of the project theme (assets/ui/ui_theme.tres).
+const FONT_PATH: String = "res://assets/ui/fonts/jersey10.ttf"
+## Text sizes at scale 1 (1280x800). Jersey 10 draws whole, even pixels at
+## multiples of 28/3 px: 28 (3 font pixels per pixel row) and 56.
+const BODY_SIZE: int = 28
+const SMALL_SIZE: int = 28
+const TITLE_SIZE: int = 56
 
 static var _font: Font
 
@@ -24,11 +28,7 @@ static var _font: Font
 static func font() -> Font:
 	if _font == null:
 		if not FONT_PATH.is_empty() and ResourceLoader.exists(FONT_PATH):
-			var file: FontFile = load(FONT_PATH)
-			file.antialiasing = TextServer.FONT_ANTIALIASING_NONE
-			file.hinting = TextServer.HINTING_NONE
-			file.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
-			_font = file
+			_font = load(FONT_PATH)
 		else:
 			_font = ThemeDB.fallback_font
 	return _font

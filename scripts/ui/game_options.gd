@@ -15,7 +15,8 @@ static var aim_assist: bool = true
 ## Difficulty level (40): 0 easy, 1 medium, 2 hard.
 static var difficulty: int = 1
 ## Size of dialogues, subtitles and hints (96, 125).
-const TEXT_SCALES: Array[float] = [1.0, 1.25, 1.5]
+## 28, 37 and 47 px with the pixel font: 3, 4 and 5 of its pixels per row.
+const TEXT_SCALES: Array[float] = [1.0, 4.0 / 3.0, 5.0 / 3.0]
 static var text_scale: float = 1.0
 
 
