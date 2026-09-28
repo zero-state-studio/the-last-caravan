@@ -31,10 +31,10 @@ Dal piano buio dei Tessibuio, alla porta, all'accampamento, alla coda della colo
 
 | Servizio | Speso | Tetto della fase | Come è misurato |
 |---|---|---|---|
-| PixelLab | 288 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
+| PixelLab | 289 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla e 1 per Ruggero che si addormenta); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
 | Scenario | 30 CU | 1.000 | confermato dall'account (3 texture) |
 | Meshy | 459 crediti | circa 500 | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
-| ElevenLabs | 1.043 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
+| ElevenLabs | 1.218 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
 
 ## Asset
 
@@ -79,3 +79,10 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 - **Comparse vive:** la folla dell'accampamento gira tra tende e mezzi, con camminate in ogni direzione (24 generazioni PixelLab), e chi è vicino a Ottavia dice una frase. Le frasi sono segnaposti `TODO-DESIGN #121` (PRO_CROWD_01-08) in attesa dei testi dell'autore.
 - **Dove andare:** bagliore caldo sul punto da raggiungere, freccia sul bordo dello schermo quando è fuori quadro, obiettivo scritto sopra il suggerimento, in ogni compito del piano buio, dell'accampamento e della colonna.
 - **Veduta d'insieme:** camera a 18°, la carovana riempie la parte bassa e centrale; sullo sfondo una città morta di circa 35 rovine con 4 modelli nuovi (72 crediti Meshy).
+
+## Dopo la seconda revisione
+
+- **Sfondo:** città morta vicina, senza la fascia vuota; montagne più vicine e alte, foschia più leggera, e la narrazione si apre guardandole; avvallamenti nel terreno fuori dalla fascia di gioco.
+- **Accampamento:** file di rocce basse da saltare al posto delle Code; ballatoio con scala sulla testata del carro-campo; Ruggero dorme seduto e si alza quando lo svegli (1 generazione PixelLab); croste di ghiaccio bianco-azzurre; fotogrammi del colpo di bastone sincronizzati con urto e suono, scia più visibile.
+- **Colonna:** strada lunga fino a Mirco tra massi e muri da aggirare, notte che cala verso di lui, campo di brina vestito; Brinacchi all'andata e al ritorno, visibili (contorno, bagliore, ombra, scia) e battibili (il colpo spacca la crosta), che tolgono un po' di vita quando sono attaccati; raggi delle ruote che girano; Anselmo in coda dall'inizio; il verdetto è un dialogo tra lui e Ottavia (7 battute nuove, 106 crediti ElevenLabs); la colonna rallenta mentre Ottavia è via.
+- **Video:** `docs/video/capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`, 5 minuti e 21 secondi.

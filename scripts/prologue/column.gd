@@ -14,6 +14,9 @@ extends Node3D
 enum Step { INTRO, GO_BACK, MEET, FIGHT, TIE, RETURN, VERDICT, DONE }
 
 const COLUMN_SPEED: float = 1.2
+## While Ottavia is away for Mirco the column walks on, but slower, so the
+## way back is a chase and not minutes of empty plain.
+const COLUMN_SPEED_AWAY: float = 0.5
 const COLUMN_Z: float = -3.0
 const COLUMN_START_X: Array[float] = [-7.0, -31.0, -55.0, -79.0]
 const COLUMN_RECIPES: Array[String] = ["casa_due_piani", "tenda_e_carico", "orto_e_serbatoio", "casa_torre"]
@@ -206,13 +209,14 @@ func _intro() -> void:
 
 func _physics_process(delta: float) -> void:
 	if column_moving:
+		var speed: float = column_speed()
 		for node: Node3D in column:
-			node.position.x -= COLUMN_SPEED * delta
+			node.position.x -= speed * delta
 		for walker: NpcSprite in walkers:
-			walker.position.x -= COLUMN_SPEED * delta
-		_head.position.x -= COLUMN_SPEED * delta
+			walker.position.x -= speed * delta
+		_head.position.x -= speed * delta
 		if _anselmo_walking:
-			_anselmo.global_position.x -= COLUMN_SPEED * delta
+			_anselmo.global_position.x -= speed * delta
 	var here: Vector3 = ottavia.global_position
 	_update_dusk(here.x, delta)
 	_wake_swarms(here)
@@ -438,6 +442,10 @@ func _on_defeated() -> void:
 	for enemy: CombatEnemy in brinacchi:
 		enemy.reset_enemy()
 	ottavia.controls_enabled = true
+
+
+func column_speed() -> float:
+	return COLUMN_SPEED_AWAY if step >= Step.GO_BACK and step <= Step.RETURN else COLUMN_SPEED
 
 
 static func _flat(a: Vector3, b: Vector3) -> float:
