@@ -31,6 +31,10 @@ const NARRATION: Array[StringName] = [
 const WIDE_CENTER: Vector3 = Vector3(-10.0, 4.0, -8.0)
 const WIDE_DISTANCE: float = 92.0
 const WIDE_PITCH_DEGREES: float = 18.0
+## The narration opens looking up at the mountains, then tilts down onto
+## the caravan over this share of it.
+const WIDE_HIGH_PITCH_DEGREES: float = 5.0
+const WIDE_TILT_SHARE: float = 0.4
 const RISE_SECONDS: float = 6.0
 ## Height of the first leg of the rise, above the tallest vehicles.
 const RISE_HEIGHT: float = 30.0
@@ -86,7 +90,7 @@ func _ready() -> void:
 			play_intro = true
 		elif argument.begins_with("line_seconds="):
 			line_seconds = argument.trim_prefix("line_seconds=").to_float()
-		elif argument == "wide=1":
+		elif argument == "wide=1" or argument == "wide=high":
 			_show_wide_still.call_deferred()
 	NpcSprite.sun_azimuth_degrees = SUN_AZIMUTH_DEGREES
 	_build()
@@ -180,16 +184,19 @@ func _intro() -> void:
 	up.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(above, t), 0.0, 1.0, RISE_SECONDS * 0.4)
 	await up.finished
 	var out: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	out.tween_method(func(t: float) -> void: cinema_camera.global_transform = above.interpolate_with(wide, t), 0.0, 1.0, RISE_SECONDS * 0.6)
+	# Out to the same place, but looking up at the mountains behind the dead
+	# city; while Ottavia speaks the view comes slowly down onto the caravan.
+	var high: Transform3D = wide_shot_transform(WIDE_HIGH_PITCH_DEGREES)
+	out.tween_method(func(t: float) -> void: cinema_camera.global_transform = above.interpolate_with(high, t), 0.0, 1.0, RISE_SECONDS * 0.6)
 	await out.finished
-	# A slow drift toward the Night while Ottavia speaks.
 	var drift_end: Transform3D = wide.translated(Vector3(6.0, 0.0, 0.0))
 	var narration_seconds: float = 0.0
 	for line: StringName in NARRATION:
 		var stream: AudioStream = GameAudio.voice_stream(line)
 		narration_seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0, NARRATION_PAUSE)
-	var drift: Tween = create_tween()
-	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = wide.interpolate_with(drift_end, t), 0.0, 1.0, narration_seconds)
+	var drift: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = high.interpolate_with(wide, t), 0.0, 1.0, narration_seconds * WIDE_TILT_SHARE)
+	drift.tween_method(func(t: float) -> void: cinema_camera.global_transform = wide.interpolate_with(drift_end, t), 0.0, 1.0, narration_seconds * (1.0 - WIDE_TILT_SHARE))
 	for line: StringName in NARRATION:
 		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", line)
 		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, NARRATION_PAUSE)).timeout
@@ -222,15 +229,20 @@ func _leave_for_column() -> void:
 		get_tree().change_scene_to_file(PrologueState.COLUMN_SCENE)
 
 
-func wide_shot_transform() -> Transform3D:
+## The wide shot of the caravan; with `look_pitch` the same eye looks at
+## that angle below the horizon instead (higher: the mountains).
+func wide_shot_transform(look_pitch: float = NAN) -> Transform3D:
 	var pitch: float = deg_to_rad(WIDE_PITCH_DEGREES)
 	var eye: Vector3 = WIDE_CENTER + Vector3(0.0, sin(pitch), cos(pitch)) * WIDE_DISTANCE
-	return Transform3D.IDENTITY.translated(eye).looking_at(WIDE_CENTER, Vector3.UP)
+	var target: Vector3 = WIDE_CENTER
+	if not is_nan(look_pitch):
+		target = eye + Vector3(0.0, -tan(deg_to_rad(look_pitch)), -1.0) * 100.0
+	return Transform3D.IDENTITY.translated(eye).looking_at(target, Vector3.UP)
 
 
 ## Dev capture: the wide shot without the intro.
 func _show_wide_still() -> void:
-	cinema_camera.global_transform = wide_shot_transform()
+	cinema_camera.global_transform = wide_shot_transform(WIDE_HIGH_PITCH_DEGREES if "wide=high" in OS.get_cmdline_user_args() else NAN)
 	cinema_camera.current = true
 
 

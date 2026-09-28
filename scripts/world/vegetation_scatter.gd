@@ -35,6 +35,9 @@ const TRIES_PER_INSTANCE: int = 20
 		random_seed = value
 		_rebuild()
 
+## Ground height at a world (x, z), for uneven ground; none keeps y = 0.
+var height_at: Callable
+
 ## Placed instances as [entry index, Transform3D], for tests and tools.
 var placements: Array[Array] = []
 
@@ -79,7 +82,10 @@ func compute_placements() -> Array[Array]:
 		var yaw: float = deg_to_rad(random.randf_range(-max_yaw_degrees, max_yaw_degrees))
 		var range_: Vector2 = entries[index].scale_range
 		var basis: Basis = Basis(Vector3.UP, yaw).scaled(Vector3.ONE * random.randf_range(range_.x, range_.y))
-		result.append([index, Transform3D(basis, Vector3(spot.x, 0.0, spot.y))])
+		var ground: float = 0.0
+		if height_at.is_valid():
+			ground = height_at.call(position.x + spot.x, position.z + spot.y)
+		result.append([index, Transform3D(basis, Vector3(spot.x, ground, spot.y))])
 	return result
 
 

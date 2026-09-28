@@ -16,6 +16,15 @@ const TEX_EARTH: Texture2D = preload("res://assets/textures/terrain/earth_bank_0
 ## The mask covers this rectangle (x, z, width, depth), 1 px per metre.
 const MASK_RECT: Rect2 = Rect2(-160.0, -110.0, 320.0, 200.0)
 const GROUND_SIZE: Vector2 = Vector2(1000.0, 1000.0)
+## Gentle hollows in the ground outside the band where one plays (the camp,
+## the roads, the way of the column): flat inside FLAT_BAND, rising to
+## HOLLOW_METERS within HOLLOW_FADE metres of its edge.
+const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
+const HOLLOW_FADE: float = 14.0
+const HOLLOW_METERS: float = 1.1
+const HOLLOW_SEED: int = 7331
+const GROUND_CELL: float = 4.0
+const COLLISION_CELL: float = 2.0
 const GRASS_ENTRIES: Array[String] = [
 	"res://assets/vegetation_kit/ciuffo_erba_01.tres",
 	"res://assets/vegetation_kit/ciuffo_erba_02.tres",
@@ -42,6 +51,7 @@ const RUINS: Array[Dictionary] = [
 ]
 
 ## The dead city (_place_dead_city): models and how often each appears.
+## Ruins stand a little into the ground, on its lowest point around them.
 const CITY_RUINS: Array[Dictionary] = [
 	{"path": "res://assets/models/ruins/facciata.glb", "weight": 3.0},
 	{"path": "res://assets/models/ruins/palazzo_sventrato.glb", "weight": 3.0},
@@ -54,10 +64,10 @@ const CITY_RUINS: Array[Dictionary] = [
 const CITY_SEED: int = 4242
 const CITY_SIZE: int = 32
 const CITY_SPACING: float = 13.0
-const CITY_NEAR_Z: float = -82.0
-const CITY_FAR_Z: float = -165.0
+const CITY_NEAR_Z: float = -46.0
+const CITY_FAR_Z: float = -118.0
 ## Centres of the old city blocks (x, z).
-const CITY_BLOCKS: Array[Vector2] = [Vector2(-170.0, -115.0), Vector2(-105.0, -130.0), Vector2(-40.0, -110.0), Vector2(20.0, -135.0), Vector2(85.0, -115.0), Vector2(140.0, -140.0)]
+const CITY_BLOCKS: Array[Vector2] = [Vector2(-170.0, -80.0), Vector2(-105.0, -90.0), Vector2(-40.0, -72.0), Vector2(20.0, -95.0), Vector2(85.0, -78.0), Vector2(140.0, -100.0)]
 
 ## Roads as polylines (points in metres) with a half width.
 const ROADS: Array[Dictionary] = [
@@ -83,15 +93,79 @@ static func build_ground(parent: Node3D, random: RandomNumberGenerator, roads: A
 	material.set_shader_parameter(&"alt_amount", 0.3)
 	material.set_shader_parameter(&"alt_patch_meters", 9.0)
 	material.set_shader_parameter(&"mask_rect", Vector4(MASK_RECT.position.x, MASK_RECT.position.y, MASK_RECT.size.x, MASK_RECT.size.y))
-	var plane: PlaneMesh = PlaneMesh.new()
-	plane.size = GROUND_SIZE
 	var ground: MeshInstance3D = MeshInstance3D.new()
 	ground.name = "Ground"
-	ground.mesh = plane
+	ground.mesh = _ground_mesh()
 	ground.material_override = material
 	parent.add_child(ground)
-	var slab: Node3D = LevelBlocks.box(parent, Vector3(0.0, -0.5, 0.0), Vector3(GROUND_SIZE.x, 1.0, GROUND_SIZE.y), material)
-	slab.visible = false
+	parent.add_child(_ground_body())
+
+
+static var _hollows: FastNoiseLite
+
+
+## Height of the ground at (x, z): 0 in the band where one plays, gentle
+## hollows and swells outside it.
+static func ground_height(x: float, z: float) -> float:
+	var outside: float = maxf(maxf(FLAT_BAND.position.x - x, x - FLAT_BAND.end.x), maxf(FLAT_BAND.position.y - z, z - FLAT_BAND.end.y))
+	if outside <= 0.0:
+		return 0.0
+	if _hollows == null:
+		_hollows = FastNoiseLite.new()
+		_hollows.seed = HOLLOW_SEED
+		_hollows.frequency = 0.03
+		_hollows.fractal_octaves = 2
+	var weight: float = smoothstep(0.0, HOLLOW_FADE, outside)
+	return _hollows.get_noise_2d(x, z) * HOLLOW_METERS * weight
+
+
+static func _ground_mesh() -> ArrayMesh:
+	var tool: SurfaceTool = SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var cells: Vector2i = Vector2i(int(GROUND_SIZE.x / GROUND_CELL), int(GROUND_SIZE.y / GROUND_CELL))
+	var origin: Vector2 = -GROUND_SIZE * 0.5
+	for row: int in cells.y + 1:
+		for column: int in cells.x + 1:
+			var x: float = origin.x + column * GROUND_CELL
+			var z: float = origin.y + row * GROUND_CELL
+			tool.set_uv(Vector2(float(column) / cells.x, float(row) / cells.y))
+			tool.add_vertex(Vector3(x, ground_height(x, z), z))
+	for row: int in cells.y:
+		for column: int in cells.x:
+			var a: int = row * (cells.x + 1) + column
+			var b: int = a + 1
+			var c: int = a + cells.x + 1
+			var d: int = c + 1
+			tool.add_index(a)
+			tool.add_index(b)
+			tool.add_index(c)
+			tool.add_index(b)
+			tool.add_index(d)
+			tool.add_index(c)
+	tool.generate_normals()
+	return tool.commit()
+
+
+## The ground as a height map, so hollows can be walked into.
+static func _ground_body() -> StaticBody3D:
+	var samples: Vector2i = Vector2i(int(GROUND_SIZE.x / COLLISION_CELL) + 1, int(GROUND_SIZE.y / COLLISION_CELL) + 1)
+	var heights: PackedFloat32Array = []
+	heights.resize(samples.x * samples.y)
+	var origin: Vector2 = -GROUND_SIZE * 0.5
+	for row: int in samples.y:
+		for column: int in samples.x:
+			heights[row * samples.x + column] = ground_height(origin.x + column * COLLISION_CELL, origin.y + row * COLLISION_CELL)
+	var shape: HeightMapShape3D = HeightMapShape3D.new()
+	shape.map_width = samples.x
+	shape.map_depth = samples.y
+	shape.map_data = heights
+	var collision: CollisionShape3D = CollisionShape3D.new()
+	collision.shape = shape
+	collision.scale = Vector3(COLLISION_CELL, 1.0, COLLISION_CELL)
+	var body: StaticBody3D = StaticBody3D.new()
+	body.name = "GroundBody"
+	body.add_child(collision)
+	return body
 
 
 ## R road, G gravel, B frost: 1 px per metre over MASK_RECT.
@@ -149,6 +223,7 @@ static func place_nature(parent: Node3D, random: RandomNumberGenerator, is_free:
 	scatter.density = 0.28
 	scatter.random_seed = 106
 	scatter.position = Vector3(-15.0, 0.0, -5.0)
+	scatter.height_at = ground_height
 	parent.add_child(scatter)
 	for path: String in PROPS:
 		var entry: VegetationEntry = load(path)
@@ -161,7 +236,7 @@ static func place_nature(parent: Node3D, random: RandomNumberGenerator, is_free:
 			if on_road(point) or not is_free.call(point):
 				continue
 			var prop: Node3D = entry.model.instantiate()
-			prop.position = point
+			prop.position = Vector3(point.x, ground_height(point.x, point.z), point.z)
 			prop.rotation.y = random.randf_range(-0.35, 0.35)
 			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
 			parent.add_child(prop)
@@ -174,7 +249,8 @@ static func place_ruins(parent: Node3D) -> void:
 		if not ResourceLoader.exists(ruin["path"]):
 			continue
 		var model: Node3D = (load(ruin["path"]) as PackedScene).instantiate()
-		model.position = ruin["at"]
+		var at: Vector3 = ruin["at"]
+		model.position = Vector3(at.x, _ruin_base(at), at.z)
 		model.rotation.y = ruin["yaw"]
 		parent.add_child(model)
 	_place_dead_city(parent)
@@ -183,6 +259,13 @@ static func place_ruins(parent: Node3D) -> void:
 ## The dead city behind the camp: a band of ruined blocks to the north,
 ## between the plain and the hills, so the skyline is a city, not a few
 ## lone buildings. Fixed seed: the same city every time.
+static func _ruin_base(at: Vector3) -> float:
+	var lowest: float = INF
+	for offset: Vector2 in [Vector2.ZERO, Vector2(4.0, 0.0), Vector2(-4.0, 0.0), Vector2(0.0, 4.0), Vector2(0.0, -4.0)]:
+		lowest = minf(lowest, ground_height(at.x + offset.x, at.z + offset.y))
+	return lowest - 0.3
+
+
 static func _place_dead_city(parent: Node3D) -> void:
 	var random: RandomNumberGenerator = RandomNumberGenerator.new()
 	random.seed = CITY_SEED
@@ -209,7 +292,7 @@ static func _place_dead_city(parent: Node3D) -> void:
 		if placed.any(func(other: Vector3) -> bool: return Vector2(other.x - at.x, other.z - at.z).length() < CITY_SPACING):
 			continue
 		var model: Node3D = scenes[random.rand_weighted(weights)].instantiate()
-		model.position = at
+		model.position = Vector3(at.x, _ruin_base(at), at.z)
 		model.rotation.y = random.randf_range(-PI, PI)
 		parent.add_child(model)
 		placed.append(at)
@@ -221,9 +304,9 @@ static func build_mountains(parent: Node3D, random: RandomNumberGenerator) -> vo
 	var near_rock: ShaderMaterial = LevelBlocks.material(TEX_ROCK, TEX_ROCK, Color(0.72, 0.66, 0.62))
 	var far_rock: ShaderMaterial = LevelBlocks.material(TEX_ROCK, TEX_ROCK, Color(0.5, 0.5, 0.62))
 	var hills: ShaderMaterial = LevelBlocks.material(TEX_EARTH, TEX_EARTH, Color(0.8, 0.72, 0.62))
-	_ridge(parent, random, hills, -120.0, -205.0, 5.0, 16.0)
-	_ridge(parent, random, near_rock, -200.0, -290.0, 28.0, 70.0)
-	_ridge(parent, random, far_rock, -330.0, -470.0, 70.0, 150.0)
+	_ridge(parent, random, hills, -120.0, -190.0, 6.0, 20.0)
+	_ridge(parent, random, near_rock, -170.0, -250.0, 40.0, 90.0)
+	_ridge(parent, random, far_rock, -260.0, -400.0, 90.0, 170.0)
 
 
 static func _ridge(parent: Node3D, random: RandomNumberGenerator, material: Material, z_near: float, z_far: float, low: float, high: float) -> void:
