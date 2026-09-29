@@ -256,6 +256,8 @@ Passo 4 della fase 4b, grafica definitiva: stato **da valutare**.
 - `17-stanza-6-tuberi-di-brina.png`: **da valutare**. Stanza 6, la più fredda: tuberi di brina, crosta di ghiaccio sulla leva
 - `18-stanza-7-cima-e-foglione-radicato.png`: **da valutare**. Stanza 7: la cima con le assi del carro, il Foglione Radicato
 - `19-fine-ruggero-intreccia.png`: **da valutare**. La fine: Ruggero che intreccia lo stoppino, Iole, Pia col vaso, la strada
+- `20-bordi-chiusi-stanze-1-4.png`: **da valutare**. Stanze 1-4 con i bordi chiusi: il terreno prosegue, tende, carichi, rocce
+- `21-bordi-chiusi-stanze-5-7.png`: **da valutare**. Stanze 5-7 con i bordi chiusi
 
 ### `fasi/fase4b-sistemi/`: Fase 4b, passo 1 (125, 128-131, 105)
 

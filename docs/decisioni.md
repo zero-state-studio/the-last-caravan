@@ -161,3 +161,4 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
     - ruote con mozzo di legno pieno, assi del Foglione tolte, texture ridotte alle parti usate.
   - Modelli vecchi archiviati in `source-assets/archivio/capitolo01/`.
 - Passo 4 (budget): tetto PixelLab della fase alzato da 200 a 280 generazioni per le animazioni delle creature in 5 direzioni + 3 specchiate, con il colpo subito; Meshy approvato il gruppo cavolo, gabbia, foglia e radice del boss (circa 72 crediti).
+- Bordi dei diorami (102): ogni stanza del dungeon si chiude con barriere del luogo, non con il piano tagliato di netto. Il terreno prosegue oltre il diorama; a nord, verso il fondo dell'inquadratura, la fila dei mezzi della colonna parcheggiata; a est e a ovest tende, carichi, rocce e alberi secchi; a sud, verso la camera, solo cose basse. Solo scenografia, non solide (`C01Kit.enclose`).

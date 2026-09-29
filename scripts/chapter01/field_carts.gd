@@ -162,6 +162,7 @@ func _build_cart_1() -> void:
 	var cart: Node3D = _group(&"Cart1")
 	# Ground of the diorama: the foot of the cart (room 1) and a strip east.
 	C01Kit.ground(cart, A + Vector3(-7.0, -0.5, 0.0), Vector3(46.0, 1.0, 22.0), 1071)
+	C01Kit.enclose(cart, A + Vector3(-7.0, 0.0, 0.0), Vector2(46.0, 22.0), 1171)
 	# The chassis, under the turning terrace, and the big wheels.
 	C01Kit.chassis(cart, A)
 	# Room 1 (14 x 10): gear housings, a broken ladder, patched sacks, a tank.
@@ -218,6 +219,7 @@ func _build_cart_1() -> void:
 func _build_grass() -> void:
 	var grass: Node3D = _group(&"Grass")
 	C01Kit.ground(grass, B + Vector3(0.0, -0.5, 0.0), Vector3(30.0, 1.0, 24.0), 1073)
+	C01Kit.enclose(grass, B + Vector3(0.0, 0.0, 0.0), Vector2(30.0, 24.0), 1173)
 	# The ends of the first and second carts, as scenery on both sides.
 	C01Kit.box(grass, B + Vector3(-12.0, 1.6, 0.0), Vector3(8.0, 3.2, 12.0), C01Kit.WOOD_DARK)
 	C01Kit.box(grass, B + Vector3(12.0, 2.25, 0.0), Vector3(8.0, 4.5, 12.0), C01Kit.WOOD_DARK)
@@ -249,6 +251,7 @@ func _build_grass() -> void:
 func _build_high_terrace() -> void:
 	var cart: Node3D = _group(&"Cart2High")
 	C01Kit.ground(cart, C + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1074)
+	C01Kit.enclose(cart, C + Vector3(0.0, 0.0, 0.0), Vector2(40.0, 30.0), 1174)
 	# The second cart below: chassis and the low terrace, as scenery.
 	C01Kit.chassis(cart, C)
 	C01Kit.visual(cart, C + Vector3(0.0, LOW - SLAB * 0.5, 0.0), Vector3(20.0, SLAB, 9.0), C01Kit.SOIL)
@@ -321,6 +324,7 @@ func _build_bonus(cart: Node3D) -> void:
 func _build_low_terrace_2() -> void:
 	var cart: Node3D = _group(&"Cart2Low")
 	C01Kit.ground(cart, D + Vector3(4.0, -0.5, 0.0), Vector3(48.0, 1.0, 30.0), 1075)
+	C01Kit.enclose(cart, D + Vector3(4.0, 0.0, 0.0), Vector2(48.0, 30.0), 1175)
 	C01Kit.chassis(cart, D)
 	# The column of the high terrace (the terrace itself is left out: it
 	# would hide the room from the camera), and the first cart to the west
@@ -366,6 +370,7 @@ func _build_low_terrace_2() -> void:
 func _build_frozen_terrace() -> void:
 	var cart: Node3D = _group(&"Cart3Low")
 	C01Kit.ground(cart, E + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1076)
+	C01Kit.enclose(cart, E + Vector3(0.0, 0.0, 0.0), Vector2(40.0, 30.0), 1176)
 	C01Kit.chassis(cart, E)
 	# The second cart to the west throws its shadow over the whole room.
 	C01Kit.visual(cart, E + Vector3(-20.0, 4.0, 0.0), Vector3(10.0, 8.0, 14.0), C01Kit.WOOD_DARK)
@@ -447,6 +452,7 @@ func _build_frozen_terrace() -> void:
 func _build_top() -> void:
 	var top: Node3D = _group(&"Top")
 	C01Kit.ground(top, F + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 40.0), 1077)
+	C01Kit.enclose(top, F + Vector3(0.0, 0.0, 0.0), Vector2(40.0, 40.0), 1177)
 	C01Kit.box(top, F + Vector3(0.0, TOP * 0.5 - 0.3, 0.0), Vector3(3.0, TOP - 0.6, 3.0), C01Kit.WOOD_DARK)
 	# The fixed rim round the turning top, with four levers, one per side.
 	for index: int in 16:

@@ -51,6 +51,23 @@ const CARD_SHADER: Shader = preload("res://scenes/proto/materials/foreground_fad
 const GROUND_SHADER: Shader = preload("res://scenes/proto/materials/ground_blend.gdshader")
 ## Kit tufts on the open ground round the carts, per square metre.
 const GROUND_TUFTS: float = 0.22
+## How far the ground goes on past a diorama's own, and its tufts.
+const ENCLOSE_SKIRT: float = 26.0
+const ENCLOSE_TUFTS: float = 0.12
+## What closes the sides of a diorama (tall) and the side toward the camera (low).
+const ENCLOSE_TALL: Array[String] = [
+	"res://assets/models/vehicles/moduli/carico.glb",
+	"res://assets/vegetation_kit/roccia_grande_01.tres",
+	"res://assets/vegetation_kit/albero_storto_01.tres",
+	"res://assets/vegetation_kit/cespuglio_secco_01.tres",
+	"res://assets/vegetation_kit/alberello_01.tres",
+]
+const ENCLOSE_LOW: Array[String] = [
+	"res://assets/vegetation_kit/sassi_01.tres",
+	"res://assets/vegetation_kit/cespuglio_secco_01.tres",
+	"res://assets/vegetation_kit/ceppo_01.tres",
+	"res://assets/models/vehicles/moduli/carico.glb",
+]
 
 static var _materials: Dictionary = {}
 
@@ -94,7 +111,7 @@ static func _variant_scale(color: Color, base: Color) -> Variant:
 ## `at.y + size.y / 2`, drawn like the prologue plain (two dry meadows in
 ## large patches, no repeated grid) with the kit's tufts spread thin on it
 ## (101). The light of each room gives its temperature.
-static func ground(parent: Node3D, at: Vector3, size: Vector3, seed_value: int = 1) -> StaticBody3D:
+static func ground(parent: Node3D, at: Vector3, size: Vector3, seed_value: int = 1, tuft_density: float = GROUND_TUFTS) -> StaticBody3D:
 	var body: StaticBody3D = box(parent, at, size, DRY_GRASS)
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = GROUND_SHADER
@@ -114,11 +131,77 @@ static func ground(parent: Node3D, at: Vector3, size: Vector3, seed_value: int =
 		entries.append(load(path) as VegetationEntry)
 	tufts.entries = entries
 	tufts.extents = Vector2(size.x, size.z) * 0.5
-	tufts.density = GROUND_TUFTS
+	tufts.density = tuft_density
 	tufts.random_seed = seed_value
 	tufts.position = at + Vector3.UP * size.y * 0.5
 	parent.add_child(tufts)
 	return body
+
+
+## Closes a diorama with what stands there for real (102): its ground
+## goes on well past the edges, the other vehicles of the parked column
+## line the far side (north), tents, loads, rocks and dry trees the east
+## and west, and only low things the side toward the camera (south), so
+## the end of the plane is never seen. `ground_size` is the (x, z) of the
+## diorama's own ground, centred on `center`. Seen only, never solid: the
+## room's own walls keep Ottavia inside.
+static func enclose(parent: Node3D, center: Vector3, ground_size: Vector2, seed_value: int, with_vehicles: bool = true) -> Node3D:
+	var ring: Node3D = Node3D.new()
+	ring.name = "Enclosure"
+	parent.add_child(ring)
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = seed_value
+	var half: Vector2 = ground_size * 0.5
+	# The ground beyond the diorama's, a little lower so they never fight.
+	ground(ring, Vector3(center.x, -0.53, center.z), Vector3(ground_size.x + ENCLOSE_SKIRT * 2.0, 1.0, ground_size.y + ENCLOSE_SKIRT * 2.0), seed_value, ENCLOSE_TUFTS)
+	# North: the column parked in a row, pointing west like every vehicle.
+	var north: float = center.z - half.y - 3.5
+	var recipes: Array = VehicleKit.load_recipes() if with_vehicles else []
+	var x: float = center.x - half.x - 8.0
+	while x < center.x + half.x + 8.0:
+		if not recipes.is_empty() and random.randf() < 0.8:
+			var vehicle: Node3D = VehicleKit.build(recipes[random.randi_range(0, recipes.size() - 1)])
+			ring.add_child(vehicle)
+			VehicleKit.place_on(vehicle, Vector3(x, 0.0, north - random.randf_range(0.0, 2.5)))
+			x += VehicleKit.bounds(vehicle).size.x + random.randf_range(1.5, 3.5)
+		else:
+			_enclosure_prop(ring, random, ENCLOSE_TALL, Vector3(x + 2.0, 0.0, north))
+			x += 5.0
+	# East and west: tents, loads, rocks, dry trees.
+	for side: float in [-1.0, 1.0]:
+		var along: float = center.z - half.y - 1.0
+		while along < center.z + half.y + 2.0:
+			var at: Vector3 = Vector3(center.x + side * (half.x + random.randf_range(1.5, 3.5)), 0.0, along)
+			if random.randf() < 0.35:
+				var tent: Node3D = VehicleKit.module("tenda")
+				ring.add_child(tent)
+				tent.rotation.y = PI * 0.5
+				VehicleKit.place_on(tent, at)
+				along += 6.5
+			else:
+				_enclosure_prop(ring, random, ENCLOSE_TALL, at)
+				along += random.randf_range(3.0, 4.5)
+	# South, toward the camera: low things only.
+	var south: float = center.z + half.y + 2.0
+	x = center.x - half.x
+	while x < center.x + half.x:
+		_enclosure_prop(ring, random, ENCLOSE_LOW, Vector3(x, 0.0, south + random.randf_range(0.0, 2.0)))
+		x += random.randf_range(3.0, 5.0)
+	return ring
+
+
+static func _enclosure_prop(parent: Node3D, random: RandomNumberGenerator, paths: Array[String], at: Vector3) -> void:
+	var path: String = paths[random.randi_range(0, paths.size() - 1)]
+	var prop: Node3D
+	if path.ends_with(".glb"):
+		prop = (load(path) as PackedScene).instantiate()
+	else:
+		var entry: VegetationEntry = load(path)
+		prop = entry.model.instantiate()
+		prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
+	parent.add_child(prop)
+	prop.position = at
+	prop.rotation.y = random.randf_range(-PI, PI)
 
 
 ## A solid box under `parent`, at `at` in the parent's space.
