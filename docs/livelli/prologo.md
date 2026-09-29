@@ -35,7 +35,7 @@ Il prologo è il tutorial dei comandi. Ogni comando si impara facendo un pezzo d
 
 ### 5. Il verdetto (scena)
 - Ottavia raggiunge la colonna oltre il limite. In coda, già visibile mentre lei si avvicina, cammina Anselmo. Il Sindaco non si vede: le sue parole le porta Anselmo, lento, solenne e dispiaciuto. È un dialogo tra due persone che sanno cosa stanno per dirsi, non vogliono, ma devono dirselo comunque.
-- Anselmo le dice il verdetto, poi le chiede la mano per prenderle le misure. Nel menu compare per la prima volta la sagoma vuota della lanterna (88).
+- Anselmo le dice il verdetto; i due non si fermano, continuano a camminare con la colonna mentre l'inquadratura si allarga e si allontana, e Ottavia, spiccia e un po' ironica, chiude il prologo. Nel menu compare per la prima volta la sagoma vuota della lanterna (88).
 - Nero. Titolo: **Ne restano dieci.**
 
 ## La sceneggiatura
@@ -61,14 +61,14 @@ Accompagna l'inquadratura che mostra la carovana.
 - **Ruggero, svegliato sul ballatoio, scorbutico:** «Ancora un momento... Le piante sono ancora storte.» **Ottavia:** «Si riparte, Ruggero. In piedi.» **Ruggero:** «Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, lo Gnomone!» «Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte.»
 - **Un Traslocante, vicino alla Coda piantata:** «La Coda s'è piantata nella brina. Senza, il Generatore non parte.»
 - **Lo Gnomone, secondo richiamo:** «Ultimo richiamo! In marcia!»
-- **La mamma di Mirco, correndo dalla colonna:** «Serrafila! Serrafila! Non trovo il mio Mirco, aiutami ti prego!» **Ottavia:** «Dove l'hai visto l'ultima volta?» **La mamma:** «Guardava il buio, laggiù... verso la Notte.» **Ottavia:** «Resta con la colonna. Te lo riporto io.»
+- **La mamma di Mirco, correndo dalla colonna:** «Ottavia! Ottavia! Non trovo il mio Mirco, aiutami ti prego!» **Ottavia:** «Dove l'hai visto l'ultima volta?» **La mamma:** «Guardava il buio, laggiù... verso la Notte.» **Ottavia:** «Resta con la colonna. Te lo riporto io.»
 - **Mirco, in fondo, verso il buio:** «Guarda, Serrafila. Là è tutto nero. Com'è, dentro?»
 - **Ottavia:** «Freddo. Andiamo.»
 - **Ottavia a Mirco, correndo verso la colonna:** «Presto, non c'è tempo da perdere, Mirco!» «Vedrai, andrà tutto bene.» «Ci siamo quasi.»
 - **Anselmo, in coda alla colonna, affranto:** «Ottavia... sei in ritardo.»
 - **Ottavia:** «Sì, lo so...»
-- **Anselmo, il verdetto:** «Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre.» «Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.» «Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.» «Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io.» E dopo un momento: «Dammi la mano. Devo prenderti le misure.»
-- **Chiusura, Ottavia, sulla colonna che cammina nella sera:** «Una Tregua è la lunga sosta tra una Rincorsa e l'altra. Quando la meridiana dello Gnomone ne segna la fine, si riparte.» «Dieci Tregue: dieci soste in cui posso ancora camminare con loro, e riportare indietro chi resta.» «Poi toccherà a me restare indietro. A chi resta, si lasciano una lanterna e una coperta.» «La lanterna del congedo. Anselmo la costruirà pezzo per pezzo... e io la porterò nella Notte.»
+- **Anselmo, il verdetto:** «Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre.» «Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.» «Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.» «Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io.»
+- **Chiusura, Ottavia, mentre cammina con la colonna nella sera, veloce e senza solennità:** «E quindi finisce così... va beh, fa niente!» «Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito.» «Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!» «Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!»
 - **Titolo del capitolo:** «Ne restano dieci.»
 
 ### Suggerimenti a schermo

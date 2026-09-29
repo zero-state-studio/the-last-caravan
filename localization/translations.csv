@@ -315,7 +315,7 @@ PRO_OTTAVIA_02,I'll see to it.,Ci penso io.
 PRO_OTTAVIA_03,"We're moving on, Ruggero. On your feet.","Si riparte, Ruggero. In piedi."
 PRO_RUGGERO_02,"Sixty years I've been getting up at the call, and today of all days the Filecloser comes to shake me. I can hear the Gnomon on my own!","Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, lo Gnomone!"
 PRO_RUGGERO_03,"Instead of waking old men, go down to the Homehauler: one of his Tails is stuck in the ice, and without it his Generator won't start.","Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte."
-PRO_MOTHER_01,"Filecloser! Filecloser! I can't find my Mirco, please help me!","Serrafila! Serrafila! Non trovo il mio Mirco, aiutami ti prego!"
+PRO_MOTHER_01,"Ottavia! Ottavia! I can't find my Mirco, please help me!","Ottavia! Ottavia! Non trovo il mio Mirco, aiutami ti prego!"
 PRO_OTTAVIA_04,Where did you last see him?,Dove l'hai visto l'ultima volta?
 PRO_MOTHER_02,"He was staring at the dark, back there... toward the Night.","Guardava il buio, laggiù... verso la Notte."
 PRO_OTTAVIA_05,Stay with the column. I'll bring him back.,Resta con la colonna. Te lo riporto io.
@@ -328,8 +328,7 @@ PRO_VERDICT2_01,"The Mayor saw you come in past the limit. He counted the steps,
 PRO_VERDICT2_02,He says a Filecloser who can't keep pace becomes one more person to go back for.,Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.
 PRO_VERDICT2_03,But he hasn't forgotten forty years. That's why he grants you ten Truces.,Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.
 PRO_VERDICT2_04,"Ten stops, then you'll be left behind... and I'll have to make your lantern.","Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io."
-PRO_ANSELMO_HAND,Give me your hand. I need to take your measurements.,Dammi la mano. Devo prenderti le misure.
-PRO_OUTRO_01,"A Truce is the long stop between one Chase and the next. When the Gnomon's sundial marks its end, we move on.","Una Tregua è la lunga sosta tra una Rincorsa e l'altra. Quando la meridiana dello Gnomone ne segna la fine, si riparte."
-PRO_OUTRO_02,"Ten Truces: ten stops in which I can still walk with them, and bring back whoever falls behind.","Dieci Tregue: dieci soste in cui posso ancora camminare con loro, e riportare indietro chi resta."
-PRO_OUTRO_03,Then it will be my turn to stay behind. Whoever stays is left a lantern and a blanket.,"Poi toccherà a me restare indietro. A chi resta, si lasciano una lanterna e una coperta."
-PRO_OUTRO_04,The farewell lantern. Anselmo will build it piece by piece... and I will carry it into the Night.,La lanterna del congedo. Anselmo la costruirà pezzo per pezzo... e io la porterò nella Notte.
+PRO_OUTRO2_01,"So that's how it ends... oh well, never mind!","E quindi finisce così... va beh, fa niente!"
+PRO_OUTRO2_02,"Ten Truces are ten stops of the caravan: at the tenth it moves on, and I stay behind with the lantern Anselmo will have made me.","Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito."
+PRO_OUTRO2_03,"Anyway, too many times I've come close to the Night without ever touching it!","Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!"
+PRO_OUTRO2_04,"From the very start we knew She would win this battle... Ten stops, and at last I'll see her!","Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!"

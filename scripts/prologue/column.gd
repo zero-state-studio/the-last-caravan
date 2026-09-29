@@ -8,7 +8,7 @@ extends Node3D
 ## Brinacchi, ties him to her rope (a knot is added) and runs back through
 ## more of them: halfway, her breath runs out faster than usual. Past the
 ## limit she reaches the tail, where Anselmo walks: he tells her the verdict,
-## slowly, and takes her measure; the empty lantern appears in the menu (88);
+## and they walk on together; the empty lantern appears in the menu (88);
 ## black, «Ne restano dieci».
 
 enum Step { INTRO, GO_BACK, MEET, FIGHT, TIE, RETURN, VERDICT, DONE }
@@ -41,7 +41,6 @@ const BRINACCHIO: PackedScene = preload("res://scenes/creatures/brinacchio.tscn"
 const ANSELMO_WALK: String = "res://assets/sprites/comparse/anselmo_walk_west.png"
 ## Anselmo walks at the tail, behind the last vehicle, seen from afar.
 const ANSELMO_BEHIND: Vector3 = Vector3(2.5, 0.0, 3.2)
-const ANSELMO_FACING_NORTH: Texture2D = preload("res://assets/sprites/comparse/anselmo_north.png")
 ## Sound (126, 127): tension and a faster beat on the way back; the music
 ## falls silent for the verdict, only the voices remain, each one closer;
 ## the first phrase of the theme on the title.
@@ -74,9 +73,11 @@ const MOTHER_RUN_SPEED: float = 4.5
 ## What Ottavia says to Mirco on the way back, at these shares of the way.
 const RUN_LINES: Array[StringName] = [&"PRO_OTTAVIA_RUN_01", &"PRO_OTTAVIA_RUN_02", &"PRO_OTTAVIA_RUN_03"]
 const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
-## The outro (106): what the ten Truces and the lantern mean, over the
-## column walking into the dusk; the lantern outline shows with the last.
-const OUTRO: Array[StringName] = [&"PRO_OUTRO_01", &"PRO_OUTRO_02", &"PRO_OUTRO_03", &"PRO_OUTRO_04"]
+## The outro (106): quick and wry, what the ten Truces mean, over the
+## column walking into the dusk; the lantern outline shows with the second.
+const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
+const OUTRO_LANTERN_LINE: int = 1
+const OUTRO_PAUSE: float = 0.3
 ## The way back (106): boulders and fallen trunks scattered south of the
 ## barriers, where the column is seen ahead; (x, z) of each cluster.
 ## Clusters alternate north (z -5) and south (z -11); the way weaves
@@ -386,7 +387,7 @@ func _last_vehicle_back() -> float:
 
 
 ## Space 5: the verdict. Anselmo walks at the tail; he tells Ottavia the
-## Mayor's words, slowly, and asks for her hand. The column never stops.
+## Mayor's words; they walk on, and the column never stops.
 func _verdict() -> void:
 	step = Step.VERDICT
 	ottavia.controls_enabled = false
@@ -402,19 +403,8 @@ func _verdict() -> void:
 		var voice: float = dialogue.show_line(line[0], line[1])
 		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, VERDICT_PAUSE)).timeout
 	dialogue.hide_box()
-	await get_tree().create_timer(0.8 if line_seconds >= 1.0 else line_seconds).timeout
-	# For the hand they stop, face to face; the column walks on.
-	ottavia.auto_move = Vector3.ZERO
-	_anselmo_walking = false
-	_anselmo.set_strip(ANSELMO_FACING_NORTH)
-	_anselmo.global_position = ottavia.global_position + Vector3(0.0, 0.0, 1.3)
-	ottavia.face_toward(Vector3.BACK)
-	var hand_voice: float = dialogue.show_line(&"SPEAKER_ANSELMO", &"PRO_ANSELMO_HAND")
-	var hand_started: float = Time.get_ticks_msec() / 1000.0
-	await ottavia.play_scripted("give_hand")
-	var hand_left: float = hand_voice - (Time.get_ticks_msec() / 1000.0 - hand_started)
-	await get_tree().create_timer(maxf(line_seconds * 0.6, hand_left + 0.4) if line_seconds >= 1.0 else line_seconds * 0.6).timeout
-	dialogue.hide_box()
+	# They do not stop: Ottavia and Anselmo walk on with the column while the
+	# view widens and draws away (106).
 	await _outro()
 	GameAudio.stop_loop(&"generator", 1.2)
 	GameAudio.stop_loop(&"crowd", 1.2)
@@ -430,25 +420,34 @@ func _verdict() -> void:
 	prologue_finished.emit()
 
 
-## After the hand: the camera rises slowly over the column walking on while
-## Ottavia tells what the ten Truces are and what the lantern is (106).
+## The two walk on with the column; the camera draws up and away over
+## them while Ottavia, wry and brisk, says what the ten Truces mean (106).
 func _outro() -> void:
 	var start: Transform3D = camera_rig.camera.global_transform
-	var high: Transform3D = Transform3D.IDENTITY.translated(ottavia.global_position + Vector3(-18.0, 26.0, 34.0)).looking_at(ottavia.global_position + Vector3(-30.0, 0.0, -6.0), Vector3.UP)
+	# Camera placement relative to Ottavia, from where it is to high and far.
+	var near_eye: Vector3 = start.origin - ottavia.global_position
+	var far_eye: Vector3 = Vector3(10.0, 24.0, 36.0)
+	var near_look: Vector3 = Vector3.ZERO
+	var far_look: Vector3 = Vector3(-22.0, 0.0, -6.0)
 	cinema_camera.global_transform = start
 	cinema_camera.current = true
 	var seconds: float = 0.0
 	for line: StringName in OUTRO:
 		var stream: AudioStream = GameAudio.voice_stream(line)
-		seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0, 0.8)
-	var rise: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	rise.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(high, t), 0.0, 1.0, maxf(seconds, 0.05))
+		seconds += DialogueBox.line_wait(line_seconds, stream.get_length() if stream != null else 0.0, OUTRO_PAUSE)
+	var away: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	away.tween_method(func(t: float) -> void:
+		var here: Vector3 = ottavia.global_position
+		var eye: Vector3 = here + near_eye.lerp(far_eye, t)
+		cinema_camera.global_transform = Transform3D.IDENTITY.translated(eye).looking_at(here + near_look.lerp(far_look, t), Vector3.UP), 0.0, 1.0, maxf(seconds, 0.05))
 	GameAudio.play_music(THEME_OUTRO_MUSIC, 2.0, -6.0)
 	for index: int in OUTRO.size():
 		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", OUTRO[index])
-		if index == OUTRO.size() - 1:
-			title.show_lantern_silhouette(DialogueBox.line_wait(line_seconds, voice, 0.8))
-		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice, 0.8)).timeout
+		var wait: float = DialogueBox.line_wait(line_seconds, voice, OUTRO_PAUSE)
+		# The lantern outline shows while she speaks of it.
+		if index == OUTRO_LANTERN_LINE:
+			title.show_lantern_silhouette(wait)
+		await get_tree().create_timer(wait).timeout
 	dialogue.hide_box()
 	GameAudio.stop_music(1.5)
 
