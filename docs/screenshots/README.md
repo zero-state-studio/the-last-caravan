@@ -225,7 +225,8 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
-- `capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`: **da valutare (con le cuffie)**. Terza revisione: motivi dei compiti a voce, Ruggero scorbutico, la mamma di Mirco, le frasi al ritorno, il verdetto nuovo di Anselmo e la chiusura sulle Tregue e la lanterna (6 min 51 s)
+- `capitoli/00-prologo/15-prologo-intero-voci-nuove.mp4`: **da valutare (con le cuffie)**. Come il 14, con le voci rifatte: «Serra fila» staccato, Anselmo con la voce nuova, la mamma di Mirco più agitata; la mamma che si unisce alla colonna e la folla che cammina al passo giusto (6 min 52 s)
+- `capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`: superato da 15. Terza revisione: motivi dei compiti a voce, Ruggero scorbutico, la mamma di Mirco, le frasi al ritorno, il verdetto nuovo di Anselmo e la chiusura sulle Tregue e la lanterna (6 min 51 s)
 - `capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`: superato da 14. Il prologo intero dopo la seconda revisione: sfondo, rocce, scala e Ruggero, Brinacchi battibili, strada lunga verso Mirco con la notte che cala, verdetto di Anselmo (5 min 21 s)
 - `capitoli/00-prologo/11-prologo-intero-folla-guida-citta-morta.mp4`: superato da 13. Il prologo intero con la folla che gira, il segnale di dove andare e la città morta
 - `capitoli/00-prologo/10-prologo-intero-dall-inizio-al-titolo.mp4`: **da valutare**. Tutto il prologo giocato dal pilota automatico, a 1280×800 con audio, dal risveglio al titolo (4 min 2 s)
