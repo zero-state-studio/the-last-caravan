@@ -18,6 +18,8 @@ static var difficulty: int = 1
 ## 28, 37 and 47 px with the pixel font: 3, 4 and 5 of its pixels per row.
 const TEXT_SCALES: Array[float] = [1.0, 4.0 / 3.0, 5.0 / 3.0]
 static var text_scale: float = 1.0
+## The objective line above the hints (125): one at a time, can be hidden.
+static var show_goals: bool = true
 ## True once read from disk: later scenes keep what is in memory (tests and
 ## dev arguments may have changed it on purpose).
 static var loaded: bool = false
@@ -35,6 +37,7 @@ static func load_options() -> void:
 		aim_assist = bool(config.get_value(SECTION, "aim_assist", true))
 		difficulty = clampi(int(config.get_value(SECTION, "difficulty", 1)), 0, 2)
 		text_scale = clampf(float(config.get_value(SECTION, "text_scale", 1.0)), TEXT_SCALES[0], TEXT_SCALES[-1])
+		show_goals = bool(config.get_value(SECTION, "show_goals", true))
 	apply()
 
 
@@ -45,6 +48,7 @@ static func save_options() -> void:
 	config.set_value(SECTION, "aim_assist", aim_assist)
 	config.set_value(SECTION, "difficulty", difficulty)
 	config.set_value(SECTION, "text_scale", text_scale)
+	config.set_value(SECTION, "show_goals", show_goals)
 	config.save(PATH)
 	apply()
 

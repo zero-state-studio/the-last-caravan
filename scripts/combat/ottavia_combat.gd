@@ -529,8 +529,8 @@ func receive_attack(attack: CombatAttack) -> CombatAttack.Result:
 			HitFeedback.shake(get_tree(), tuning.shake_meters)
 			message.emit(&"COMBAT_DEFLECT")
 			technique_done.emit(&"parry")
-			if knows(&"return_strike"):
-				_return_strike_left = Progression.RETURN_STRIKE_SECONDS
+			# After a deflection the next strike is always a counter-hit (33).
+			_return_strike_left = Progression.RETURN_STRIKE_SECONDS
 			return CombatAttack.Result.DEFLECTED
 		SoundBank.play_sound(get_tree(), &"parata")
 		_spend(tuning.block_hit_cost)

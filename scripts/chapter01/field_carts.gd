@@ -369,9 +369,9 @@ func _build_frozen_terrace() -> void:
 	var r6: Room = _room(&"s6", E + Vector3(0.0, LOW + 1.3, 0.0), Vector3(24.0, 3.6, 22.0), &"da_ponte")
 	C01Kit.entry(r6, &"da_ponte", E + Vector3(-11.0, LOW + 0.05, 0.0))
 	# The terrace (16 x 9) left turned and tilted for so long that the plants
-	# grew into a cage. Its opening toward the ladder faces away (south);
-	# two pulls of the lever, locked by ice, turn it round and bring it back
-	# level: then the opening meets the ladder to the top.
+	# grew into a cage. Its opening toward the ladder faces away (south).
+	# The lever is locked by ice; its first pull turns the terrace crosswise
+	# and brings it back level, the second turns its opening to the ladder.
 	terrace_4 = _terrace(&"Terrace4", E + Vector3(0.0, LOW - SLAB, 0.0), Vector2(16.0, 9.0), 0)
 	terrace_4.rotation.x = deg_to_rad(6.0)
 	C01Kit.rails_around(terrace_4, Vector3(0.0, SLAB, 0.0), Vector2(16.0, 9.0), [["w", -2.0, 2.0], ["e", -2.0, 2.0], ["s", -1.5, 1.5]])
@@ -404,9 +404,10 @@ func _build_frozen_terrace() -> void:
 	lever_s6 = _lever(level, E + Vector3(-10.4, LOW, -1.6), terrace_4)
 	lever_s6.locked = true
 	ice_crust.broken.connect(lever_s6.unlock)
-	# The second turn brings it back level.
+	# Every turn changes something one can see: the first brings it back
+	# level (the cage stands upright), the second its opening to the ladder.
 	lever_s6.pulled.connect(func() -> void:
-		if terrace_4.quarter == 1:
+		if terrace_4.quarter == 0:
 			var tween: Tween = create_tween()
 			tween.tween_property(terrace_4, "rotation:x", 0.0, terrace_4.turn_seconds()))
 	# Pia's shortcut: a rope tied to a post, down to the entry of the dungeon.

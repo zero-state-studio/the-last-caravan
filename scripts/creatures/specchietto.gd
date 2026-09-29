@@ -12,8 +12,6 @@ enum Phase { BASK, WINDUP, COOLDOWN, HIDDEN }
 const COLOR: Color = Color(0.7, 0.85, 0.9)
 const GLINT_COLOR: Color = Color(1.0, 1.0, 0.9)
 const HEIGHT_PIXELS: int = 12
-## Distance of the sun test toward the light.
-const SUN_RAY_METERS: float = 40.0
 
 @export var creature: CreatureTuning
 
@@ -39,17 +37,11 @@ func can_be_targeted() -> bool:
 
 ## True when nothing stands between it and the sun (shadows, 51).
 func in_sunlight() -> bool:
-	var sun: DirectionalLight3D = _find_sun()
-	if sun == null:
-		return true
-	var toward_sun: Vector3 = sun.global_basis.z.normalized()
-	var from: Vector3 = global_position + Vector3.UP * 0.2
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, from + toward_sun * SUN_RAY_METERS)
-	query.exclude = [get_rid()]
+	var exclude: Array[RID] = [get_rid()]
 	var player: OttaviaProto = find_player()
 	if player != null:
-		query.exclude.append(player.get_rid())
-	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+		exclude.append(player.get_rid())
+	return SunLight.is_lit(self, global_position + Vector3.UP * 0.2, exclude)
 
 
 func attack_in() -> float:
@@ -106,13 +98,6 @@ func _flash_at(player: OttaviaProto) -> void:
 	var tween: Tween = screen.create_tween()
 	tween.tween_property(glare, "color:a", 0.0, creature.specchietto_dazzle_seconds)
 	tween.tween_callback(screen.queue_free)
-
-
-func _find_sun() -> DirectionalLight3D:
-	var sun: DirectionalLight3D = get_tree().get_first_node_in_group(&"sun") as DirectionalLight3D
-	if sun == null:
-		sun = get_tree().current_scene.get_node_or_null(^"Sun") as DirectionalLight3D
-	return sun
 
 
 func _on_defeated() -> void:

@@ -3,9 +3,11 @@ extends BossEnemy
 ## The boss of chapter 1 (107, docs/livelli/capitolo-01.md, room 7): a huge,
 ## very old Foglione (B33) rooted at the centre of the round top of the
 ## third field-cart, the only place of that cart in full sun. Its closed
-## leaves shield it all round and strikes bounce off; after every turn of
-## the arena it turns back toward the sun, and while it does its flank is
-## open (double damage). Three phases by health; beaten, it does not die: it
+## leaves shield it all round and strikes bounce off, with their own sound
+## and spark so it reads at once; after every turn of the arena it turns
+## back toward the sun, and while it does its flank is open (double
+## damage). In phase 3, when it opens its leaves to bask, it can be struck
+## from any side at normal damage, and any strike stops the healing. Three phases by health; beaten, it does not die: it
 ## uproots, rolls off the cart and goes away into the plain (35).
 ## Placeholder look (phase 4b step 2): a trunk and leaves made of boxes,
 ## animated in Godot as the final model will be (section 10).
@@ -20,6 +22,8 @@ const TELEGRAPH_COLOR: Color = Color(1.0, 0.6, 0.3)
 const ROOT_COLOR: Color = Color(0.95, 0.8, 0.55, 0.9)
 const SEED_COLOR: Color = Color(0.95, 0.9, 0.6, 0.9)
 const LEAF_COLOR: Color = Color(0.36, 0.56, 0.3)
+const BOUNCE_COLOR: Color = Color(0.75, 1.0, 0.55)
+const BOUNCE_SOUND: StringName = &"bastone_legno"
 const TRUNK_COLOR: Color = Color(0.42, 0.32, 0.22)
 const HEIGHT: float = 4.0
 const LEAVES: int = 8
@@ -91,7 +95,12 @@ func window_seconds() -> float:
 
 
 func damage_multiplier(hit: CombatHit) -> float:
-	if not flank_open() or act == Act.UPROOTED:
+	if act == Act.UPROOTED:
+		return 0.0
+	# Basking with the leaves open: any side, normal damage.
+	if act == Act.BASK:
+		return 1.0
+	if not flank_open():
 		return 0.0
 	var from: Vector3 = -hit.direction
 	if rad_to_deg(from.angle_to(facing)) <= creature.rooted_front_degrees:
@@ -133,10 +142,16 @@ func carried_turned(angle: float) -> void:
 		_set_act(Act.IDLE)
 
 
-func _on_hit(hit: CombatHit) -> void:
-	if damage_multiplier(hit) == 0.0:
-		_bounce()
+## A strike on the closed leaves bounces off: no damage, its own sound
+## and spark, not the sound of a hit (it must not look like a mistake).
+func receive_hit(hit: CombatHit) -> void:
+	if is_alive() and damage_multiplier(hit) == 0.0:
+		_bounce(hit)
 		return
+	super.receive_hit(hit)
+
+
+func _on_hit(hit: CombatHit) -> void:
 	if act == Act.BASK:
 		_bask_interrupted = true
 		_close_leaves()
@@ -171,7 +186,8 @@ func _behave(delta: float) -> void:
 			if _window_left > 0.0:
 				return
 			_attack_timer += delta
-			if _attack_timer >= creature.rooted_attack_interval:
+			var interval: float = creature.rooted_attack_interval_3 if phase == Phase.THREE else creature.rooted_attack_interval
+			if _attack_timer >= interval:
 				_attack_timer = 0.0
 				_choose_attack(player)
 		Act.LASH_WINDUP:
@@ -302,9 +318,14 @@ func _telegraph(windup: float) -> void:
 	_leaf_material.emission = TELEGRAPH_COLOR
 
 
-func _bounce() -> void:
-	CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 1.4 + facing * 1.2, Color(0.8, 1.0, 0.7), 12.0)
-	SoundBank.play_sound(get_tree(), &"parata")
+func _bounce(hit: CombatHit) -> void:
+	var toward: Vector3 = -hit.direction if not hit.direction.is_zero_approx() else facing
+	CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 1.6 + toward * 1.4, BOUNCE_COLOR, 22.0)
+	_leaf_material.emission = BOUNCE_COLOR
+	_leaf_material.emission_energy_multiplier = 1.4
+	create_tween().tween_property(_leaf_material, "emission_energy_multiplier", 0.0, 0.25)
+	# Provisional: a dull wooden knock, unlike a hit; its own sound in step 5.
+	SoundBank.play_sound(get_tree(), BOUNCE_SOUND, 0.1)
 
 
 # --- The end ---------------------------------------------------------------

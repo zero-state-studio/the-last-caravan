@@ -68,13 +68,16 @@ const COMBAT_TUNING_PATH: String = "res://assets/combat/combat_tuning.tres"
 @export_group("Frinitore (B38)")
 ## A floating cloud 1.5 m across; 3 damage a second to whoever is inside;
 ## thinner at every strike. Its song grows toward the warm side (west).
+## It follows the warmth, not the prey (B38): slowly toward the sunlit
+## spots of the room; toward Ottavia only while she is in the sun within
+## `frinitore_aggro`; in the shade it loses her.
 @export var frinitore_hits: float = 4.0
 @export var frinitore_diameter: float = 1.5
 @export var frinitore_damage_per_second: float = 3.0
-## Not in the document: it drifts slowly toward Ottavia within this range,
-## otherwise hovers around its place (TODO-DESIGN #107, to confirm).
 @export var frinitore_speed: float = 0.8
 @export var frinitore_aggro: float = 6.0
+## How far it looks around for sunlit spots when it is in the shade.
+@export var frinitore_search_meters: float = 3.0
 
 @export_group("Specchietto (B32)")
 ## Basks in the sun; lit and within 8 m it flashes (0.5 s of warning):
@@ -177,8 +180,9 @@ const COMBAT_TUNING_PATH: String = "res://assets/combat/combat_tuning.tres"
 ## Phases: from full to this share, then to the next.
 @export var rooted_phase_2_share: float = 0.66
 @export var rooted_phase_3_share: float = 0.33
-## Seconds between one attack and the next.
+## Seconds between one attack and the next, in phases 1 and 2, and in 3.
 @export var rooted_attack_interval: float = 2.6
+@export var rooted_attack_interval_3: float = 2.0
 ## Leaf lash: a 120 degree arc in front.
 @export var rooted_lash_windup: float = 0.7
 @export var rooted_lash_damage: float = 15.0

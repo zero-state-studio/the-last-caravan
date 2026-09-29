@@ -6,6 +6,7 @@ Poca, leggibile sullo schermo di Steam Deck (1280×800), e mai soggetta al virag
 - **Vita e fiato:** in basso a sinistra, un piccolo semicerchio che richiama la meridiana. L'arco esterno, caldo, è la vita; quello interno, chiaro, è il fiato.
 - **La corda dei salvati:** in alto a destra, un tratto di corda con il numero dei nodi. Quando Ottavia salva qualcuno, un nodo nuovo si stringe con un'animazione breve.
 - **Suggerimenti:** in basso al centro, testo breve con l'icona del tasto, che compare e sfuma.
+- **Obiettivi:** sopra i suggerimenti, una riga breve che dice dove andare e perché (per esempio «Parla con Iole, vicino ai carri-campo»). Uno alla volta; sparisce quando l'obiettivo è fatto; si può nascondere dalle opzioni.
 - **Dialoghi:** riquadro scuro in basso, con il nome di chi parla; per ora senza ritratti.
 - **La lanterna del congedo (88):** nel menu di pausa, la sagoma della lanterna che si riempie un pezzo alla volta.
 - **Titoli dei capitoli:** testo grande su nero, che appare e sfuma, per esempio «Ne restano dieci». Circa 8 secondi in tutto: 1,5 per comparire, 4 fermo, 1,5 per sparire. Si può saltare con un tasto.

@@ -29,6 +29,7 @@ func _initialize() -> void:
 	await _test_brinacchio()
 	await _test_grappolo()
 	await _test_room_restart()
+	await _test_frinitore()
 
 	# Free the level (its creatures keep fighting and playing sounds) and let
 	# the audio server drop them: a stream playing at exit counts as a leak.
@@ -93,6 +94,33 @@ func _test_raspagelo() -> void:
 	_check(is_equal_approx(_ottavia.health, health_before) and rodent.collision_layer == 0, "raspagelo: once defeated it neither attacks nor blocks the way")
 	rodent.free()
 	_ottavia.restore_health()
+
+
+## B38 follows the warmth: toward Ottavia only while she is in the sun.
+func _test_frinitore() -> void:
+	var spot: Vector3 = Vector3(9.0, 0.05, 68.0)
+	var swarm: Frinitore = Frinitore.new()
+	swarm.position = spot
+	current_scene.add_child(swarm)
+	_ottavia.global_position = spot + Vector3(3.0, 0.0, 0.0)
+	await _wait(0.2)
+	var lit: bool = SunLight.is_lit(swarm, _ottavia.global_position + Vector3.UP * 0.9, [swarm.get_rid(), _ottavia.get_rid()])
+	_check(lit and swarm._choose_goal(_ottavia, 3.0).distance_to(_ottavia.global_position) < 0.01, "frinitore: Ottavia in the sun within 6 m, it goes for her")
+	# A wall between her and the sun: in the shade it loses her.
+	var sun: DirectionalLight3D = SunLight.find_sun(self)
+	var wall: StaticBody3D = StaticBody3D.new()
+	var shape: CollisionShape3D = CollisionShape3D.new()
+	var box: BoxShape3D = BoxShape3D.new()
+	box.size = Vector3(3.0, 6.0, 3.0)
+	shape.shape = box
+	wall.add_child(shape)
+	current_scene.add_child(wall)
+	wall.global_position = _ottavia.global_position + sun.global_basis.z.normalized() * 4.0 + Vector3.UP * 1.0
+	await _wait(0.1)
+	_check(swarm._choose_goal(_ottavia, 3.0).distance_to(_ottavia.global_position) > 0.5, "frinitore: Ottavia in the shade, it loses her")
+	wall.queue_free()
+	swarm.queue_free()
+	await _wait(0.05)
 
 
 func _test_brinacchio() -> void:

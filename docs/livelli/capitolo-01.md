@@ -94,6 +94,13 @@ Tre carri-campo parcheggiati in fila, da sinistra a destra, a circa 8 metri l'un
   2. **Le ombre.** Il sole non si muove, quindi le ombre cadono sempre verso destra. Ma i cavoli a ventaglio e i recinti girano con la terrazza, e le loro ombre coprono punti diversi.
   3. **Le bestie del Giorno.** Girano con la terrazza, poi si rigirano lentamente verso il sole. Mentre si rigirano mostrano il fianco in ombra, e lì subiscono danni doppi (36). La finestra dura circa 2 secondi.
 - Suggerimento alla prima leva: «Usa la leva».
+- **Regola:** ogni rotazione deve cambiare qualcosa che si vede: un passaggio, un'ombra o una creatura. Nessuna rotazione solo per fare numero.
+- **Tirate per stanza** (approvate il 29 settembre 2026):
+  - stanza 1: una, e la rampa della terrazza bassa scende nella stanza 1;
+  - stanza 2: due. La prima porta la rampa di traverso e il branco gira e si rigira verso il sole; la seconda porta la rampa verso la stanza 3 (a facile, nello stesso verso, il ponte verso la stanza 4);
+  - stanza 4: due. La prima fa cadere l'ombra dei cavoli sulle pietre degli Specchietti; la seconda porta la rampa verso la stanza 5;
+  - stanza 5: due. La prima porta i Foglioni di traverso, così mostrano il fianco; la seconda abbassa il ponte verso la stanza 6;
+  - stanza 6: due. La terrazza parte allineata al ponte e inclinata; la prima tirata la rimette in piano, la seconda gira la sua apertura verso la scala della cima.
 
 ### Chi salvi apre la strada del ritorno
 Quando Ottavia raggiunge un Salvato, lo lega alla corda, e alla corda si aggiunge un nodo con la sua animazione (125). Poi insieme aprono una scorciatoia verso l'ingresso, e il Salvato torna da lì da solo, senza bisogno di scorta. La scorciatoia resta aperta per il resto del dungeon. Suggerimento, la prima volta: «Chi salvi apre la strada del ritorno».

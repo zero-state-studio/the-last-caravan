@@ -40,10 +40,19 @@ func damage_multiplier(hit: CombatHit) -> float:
 	return 1.0
 
 
-func _on_hit(hit: CombatHit) -> void:
-	if damage_multiplier(hit) == 0.0:
-		flash(0.6, Color(0.7, 0.95, 0.6))
-		SoundBank.play_sound(get_tree(), &"parata")
+## A strike on the closed leaves in front bounces off, with its own sound
+## and spark (as the boss's), not the sound of a hit.
+func receive_hit(hit: CombatHit) -> void:
+	if is_alive() and damage_multiplier(hit) == 0.0:
+		flash(0.6, RootedFoglione.BOUNCE_COLOR)
+		CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 0.8 + facing * 0.7, RootedFoglione.BOUNCE_COLOR, 16.0)
+		SoundBank.play_sound(get_tree(), RootedFoglione.BOUNCE_SOUND, 0.1)
+		_disturb()
+		return
+	super.receive_hit(hit)
+
+
+func _on_hit(_hit: CombatHit) -> void:
 	_disturb()
 
 

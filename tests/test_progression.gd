@@ -55,7 +55,27 @@ func _test_chapters() -> void:
 	_combat.set_chapter(2)
 	var lines: PackedStringArray = Progression.chapter_lines(2)
 	_check(lines[0] == TranslationServer.translate(&"PROG_LOSE_LONG_SPRINT") and lines[1] == TranslationServer.translate(&"PROG_LEARN_TIMED_STEP"), "chapter 1 ends: loses the long sprint, learns the timed step (107)")
-	_check(Progression.run_share(2) < Progression.run_share(1), "chapter 2: the run lasts less")
+	_check(is_equal_approx(Progression.run_share(2), 0.75), "chapter 2: the run lasts 75%")
+	# Chapter 1: after a deflection the next strike is a counter-hit (33).
+	_combat.set_chapter(1)
+	_combat.reset()
+	dummy.health = 1000.0
+	_combat.press(&"parry")
+	await physics_frame
+	await physics_frame
+	var attack: CombatAttack = CombatAttack.new()
+	attack.damage = 5.0
+	attack.source = dummy
+	_combat.receive_attack(attack)
+	_combat.release(&"parry")
+	dummy._set_phase(TrainingDummy.Phase.WAIT)
+	dummy._stagger_left = 0.0
+	await physics_frame
+	_combat.press(&"attack")
+	await _wait(0.4)
+	var expected: float = _combat.tuning.strike_damage * _combat.counter_multiplier()
+	_check(absf((1000.0 - dummy.health) - expected) < 0.5, "chapter 1: after a deflection the next strike is a counter-hit (%.1f)" % (1000.0 - dummy.health))
+	await _wait(0.6)
 	_combat.set_chapter(6)
 	_combat.reset()
 	dummy.health = dummy.max_health

@@ -78,14 +78,26 @@ func hide_hint() -> void:
 	_fade_to(0.0)
 
 
-## The current goal, shown above the hint until changed or hidden.
+## The current goal, shown above the hint until changed or hidden: one at
+## a time (125); the option to hide objectives keeps it out of sight.
 func show_goal(goal_key: StringName) -> void:
 	if goal_key == _goal_key:
 		return
 	_goal_key = goal_key
 	UiStyle.style_label(_goal, UiStyle.text_size(), UiStyle.SPEAKER)
 	_goal.text = goal_key
-	_fade_goal(1.0)
+	_fade_goal(1.0 if GameOptions.show_goals else 0.0)
+
+
+## True when the goal line can be read (set and not hidden by the option).
+func goal_visible() -> bool:
+	return _goal_key != &"" and GameOptions.show_goals
+
+
+## The option changed: show or hide the current goal.
+func apply_goal_option() -> void:
+	if _goal_key != &"":
+		_fade_goal(1.0 if GameOptions.show_goals else 0.0)
 
 
 func hide_goal() -> void:

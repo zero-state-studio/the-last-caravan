@@ -233,7 +233,6 @@ CHAPTER_LEARNS,Learns: {text},Impara: {text}
 PROG_LOSE_STAMINA,breath drops from {from} to {to},il fiato cala da {from} a {to}
 PROG_LOSE_SPEED,her pace slows from {from}% to {to}%,il passo rallenta dal {from}% al {to}%
 PROG_LOSE_COMBO,the combo shortens from {from} to {to} strikes,la combinazione di colpi si accorcia da {from} a {to}
-PROG_LEARN_RETURN_STRIKE,the return strike: after a deflection the next strike is critical,il colpo di ritorno: dopo una deviazione il colpo successivo è critico
 PROG_LEARN_KEEN_EYE,the keen eye: a wider deflection window,l'occhio esperto: la finestra di deviazione si allarga
 PROG_LEARN_HEAVY_FINISHER,the heavy strike: the last strike of the combo staggers,il colpo pesante: l'ultimo colpo della combinazione sbilancia
 PROG_LEARN_SURE_JUMP,the sure jump: the jump dodges longer,il salto sicuro: il salto schiva più a lungo
@@ -395,7 +394,7 @@ DEV_K_FRINITORE_HITS,Frinitore: base strikes,Frinitore: colpi base
 DEV_K_FRINITORE_DIAMETER,Frinitore: cloud across,Frinitore: diametro della nuvola
 DEV_K_FRINITORE_DAMAGE_PER_SECOND,Frinitore: damage a second inside,Frinitore: danno al secondo dentro
 DEV_K_FRINITORE_SPEED,Frinitore: drift speed,Frinitore: velocità di deriva
-DEV_K_FRINITORE_AGGRO,Frinitore: drifts toward Ottavia within,Frinitore: va verso Ottavia entro
+DEV_K_FRINITORE_AGGRO,Frinitore: follows Ottavia in the sun within,Frinitore: segue Ottavia al sole entro
 DEV_K_SPECCHIETTO_HITS,Specchietto: base strikes,Specchietto: colpi base
 DEV_K_SPECCHIETTO_RANGE,Specchietto: flash range,Specchietto: portata del lampo
 DEV_K_SPECCHIETTO_WINDUP,Specchietto: flash warning,Specchietto: preavviso del lampo
@@ -443,8 +442,8 @@ C01_ANSELMO_02,It'll burn a long time.,Brucerà a lungo.
 C01_TITLE,Nine Remain.,Ne restano nove.
 HINT_C01_DAY_BEASTS,Day beasts face the sun: strike them from the shaded side,Le bestie del Giorno guardano il sole: colpiscile dal lato in ombra
 HINT_C01_TALL_GRASS,Tall grass hides something,L'erba alta nasconde qualcosa
-C01_GOAL_IOLE,"Talk to Iole, by the field-carts","Parla con Iole, vicino ai carri-campo"
-C01_GOAL_ANSELMO,"Take the wick to Anselmo, at the back of his truck","Porta lo stoppino ad Anselmo, sul retro del suo camion"
+C01_GOAL_IOLE,Talk to Iole by the field carts,"Parla con Iole, vicino ai carri-campo"
+C01_GOAL_ANSELMO,Bring the wick to Anselmo at the back of the column,"Porta lo stoppino ad Anselmo, in fondo alla colonna"
 DEV_K_ROOTED_HITS,Rooted Leafback (ch. 1): base strikes,Foglione Radicato (cap. 1): colpi base
 DEV_K_ROOTED_FLANK_MULTIPLIER,Rooted Leafback: flank damage,Foglione Radicato: danno sul fianco
 DEV_K_ROOTED_FRONT_DEGREES,Rooted Leafback: leaf front half-angle,Foglione Radicato: semiangolo delle foglie davanti
@@ -464,3 +463,6 @@ DEV_K_ROOTED_DOUBLE_TURN_BONUS,Rooted Leafback: window added by two turns,Foglio
 DEV_K_ROOTED_BASK_INTERVAL,Rooted Leafback: basks every,Foglione Radicato: prende il sole ogni
 DEV_K_ROOTED_BASK_SECONDS,Rooted Leafback: basks for,Foglione Radicato: prende il sole per
 DEV_K_ROOTED_BASK_REGAIN_HITS,Rooted Leafback: base strikes regained,Foglione Radicato: colpi base recuperati
+OPTIONS_SHOW_GOALS,Show objectives,Mostra gli obiettivi
+DEV_K_ROOTED_ATTACK_INTERVAL_3,"Rooted Leafback: seconds between attacks, phase 3","Foglione Radicato: secondi tra gli attacchi, fase 3"
+DEV_K_FRINITORE_SEARCH_METERS,Frinitore: looks for sun within,Frinitore: cerca il sole entro

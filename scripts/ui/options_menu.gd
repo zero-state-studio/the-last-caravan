@@ -171,6 +171,14 @@ func _build() -> void:
 	aim.button_pressed = GameOptions.aim_assist
 	aim.toggled.connect(func(pressed: bool) -> void: GameOptions.aim_assist = pressed)
 	box.add_child(aim)
+	var goals: CheckBox = CheckBox.new()
+	goals.text = "OPTIONS_SHOW_GOALS"
+	goals.button_pressed = GameOptions.show_goals
+	goals.toggled.connect(func(pressed: bool) -> void:
+		GameOptions.show_goals = pressed
+		for node: Node in get_tree().get_nodes_in_group(&"hint_banner"):
+			(node as HintBanner).apply_goal_option())
+	box.add_child(goals)
 	var difficulty_row: HBoxContainer = HBoxContainer.new()
 	var difficulty_label: Label = Label.new()
 	difficulty_label.text = "OPTIONS_DIFFICULTY"

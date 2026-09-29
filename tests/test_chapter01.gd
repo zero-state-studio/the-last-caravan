@@ -216,6 +216,17 @@ func _test_boss() -> void:
 	boss.health = boss.max_health * 0.5
 	boss.receive_hit(flank)
 	_check(boss.phase == RootedFoglione.Phase.TWO, "room 7: below two thirds, phase 2")
+	# Phase 3: basking with the leaves open, struck from any side.
+	boss.health = boss.max_health * 0.3
+	boss.receive_hit(flank)
+	_check(boss.phase == RootedFoglione.Phase.THREE, "room 7: below a third, phase 3")
+	boss._set_act(RootedFoglione.Act.BASK)
+	var front: CombatHit = CombatHit.new()
+	front.damage = 14.0
+	front.direction = -boss.facing
+	before = boss.health
+	boss.receive_hit(front)
+	_check(is_equal_approx(before - boss.health, 14.0) and boss.act == RootedFoglione.Act.RECOVER, "room 7: basking, a strike from the front does normal damage and stops the healing")
 	var won: Array[bool] = [false]
 	_scene.connect(&"chapter_won", func() -> void: won[0] = true)
 	boss.health = 1.0

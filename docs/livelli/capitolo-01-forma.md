@@ -47,7 +47,7 @@ Ogni stanza è un diorama chiuso, alle misure del documento, in un suo punto del
 | 4. La terrazza degli Specchietti (18 × 9, a 4,5 m) | Pietre piatte con 4 Specchietti al sole; una fila di cavoli a ventaglio sul lato sud. Ruggero sul bordo est. | **Prima tirata**: i cavoli si mettono a ovest delle pietre e le ombreggiano, così gli Specchietti si nascondono. **Seconda tirata**: la rampa (sul lato lungo) punta a sud e scende sulla stanza 5. |
 | 4b. Ramo bonus (6 × 5), a medio e difficile | Dietro una siepe di tre steli da spezzare (3 colpi ciascuno): toppa di cuoio unto, pietra calda, paletto intagliato. A facile al posto della siepe c'è una parete. | Si torna dal pianerottolo. |
 | 5. La terrazza bassa del secondo carro (20 × 9, a 2 m) | Cavoli, spighe, casse di raccolto; l'ombra del primo carro. 3 Foglioni, 3 Voltafaccia. | **Due tirate**: la terrazza torna allineata e il ponte basso si abbassa per sempre verso la stanza 6. |
-| 6. La terrazza capovolta (16 × 9, a 2 m) | Inclinata, tuberi di brina, luce fredda. La leva è sotto una crosta di ghiaccio; Pia dorme nella gabbia di sei steli (3 colpi ciascuno). 2 Raspageli, 2 Cocci. | Rotta la crosta, **due tirate** girano la terrazza e la rimettono in piano: la sua apertura incontra la scala. Salvata Pia, la scala sale alla cima. |
+| 6. La terrazza capovolta (16 × 9, a 2 m) | Inclinata, tuberi di brina, luce fredda. La leva è sotto una crosta di ghiaccio; Pia dorme nella gabbia di sei steli (3 colpi ciascuno). 2 Raspageli, 2 Cocci. | Rotta la crosta: la **prima tirata** rimette la terrazza in piano, la **seconda** gira la sua apertura verso la scala. Salvata Pia, la scala sale alla cima. |
 | 7. La cima (16 m di diametro, a 5 m) | Il Foglione Radicato al centro; quattro leve sul bordo fisso; camera a 24 m. | Vinto il boss, la scena della fine. |
 
 **Salvati e scorciatoie.** Legato alla corda (tasto interagire), ognuno aggiunge un nodo e poi torna da solo.
@@ -59,7 +59,7 @@ Ogni stanza è un diorama chiuso, alle misure del documento, in un suo punto del
 
 ## Il boss (valori nel pannello F1, gruppo «Foglione Radicato, capitolo 1»)
 
-- Circa 30 colpi base; tutti i danni passano dal fianco (×2), quindi circa 15 colpi sul fianco.
+- Circa 30 colpi base. tutti i danni passano dal fianco (×2), quindi circa 15 colpi sul fianco.
 - **Le foglie.** Fuori dalle finestre le foglie chiuse lo coprono tutto intorno e i colpi rimbalzano. Dopo ogni rotazione si rigira verso il sole in 3 s (fase 1), 2 s (fase 2) o 1,2 s a scatti (fase 3). Mentre si rigira, le foglie sui fianchi si sollevano e lì si colpisce.
 - **Fase 1:**
   - frustata di foglie a 120° davanti, 0,7 s di preavviso, 15 danni;
@@ -68,7 +68,8 @@ Ogni stanza è un diorama chiuso, alle misure del documento, in un suo punto del
   - un attacco su due sono le radici: tre linee a 120° dal centro al bordo, una verso Ottavia, crepe per 0,8 s, 20 danni; si saltano;
   - all'inizio della fase arrivano dal bordo 2 Voltafaccia, una volta sola.
 - **Fase 3:**
-  - ogni 20 s apre le foglie al sole per 3 s e, se nessun colpo sul fianco lo interrompe, recupera 5 colpi di resistenza;
+  - attacca ogni 2 s;
+  - ogni 20 s apre le foglie al sole per 3 s: si colpisce da ogni lato a danno normale, e qualunque colpo interrompe il recupero di 5 colpi di resistenza;
   - due rotazioni a meno di 2 s l'una dall'altra allungano la finestra di 1,5 s.
 - **La fine.** Sconfitto, si piega, rotola giù dal carro e sparisce (circa 5 s).
 
@@ -80,19 +81,21 @@ Ogni stanza è un diorama chiuso, alle misure del documento, in un suo punto del
 4. La schermata di fine capitolo: «Perde: lo scatto lungo.» «Impara: il passo a tempo.» Dal capitolo 2 la corsa dura meno (per ora il 75%, valore da provare).
 5. Il titolo «Ne restano nove.»
 
-## Scelte fatte qui, da confermare
+## Scelte confermate il 29 settembre 2026
 
-1. **Numero di tirate:**
-   - stanza 1: una;
-   - stanza 2: due, poi a facile il ponte;
-   - stanza 4: due;
-   - stanza 5: due;
-   - stanza 6: due.
-   Il documento dice «alla seconda rotazione» solo per le stanze 2, 4 e 5.
-2. **Stanza 6:** la terrazza parte allineata e inclinata, così dal ponte ci si arriva. Il documento la dice «girata e inclinata»: se fosse girata di traverso, dal ponte non ci si arriverebbe.
-3. **Frinitori:** vanno piano verso Ottavia entro 6 m; altrimenti restano intorno al loro posto, spostati verso ovest. Il documento non dice come si muovono (`TODO-DESIGN #107`).
-4. **Pellegrino di feltro:** una volta provocato insegue Ottavia fino a 14 m; poi si riaddormenta.
-5. **Siepe del ramo bonus e gabbia di Pia:** steli da 3 colpi base, come quelli della stanza 6.
-6. **Obiettivi a schermo:** i testi «Parla con Iole, vicino ai carri-campo» e «Porta lo stoppino ad Anselmo, sul retro del suo camion» li ho scritti io, sul modello del prologo.
-7. **Boss:** sono miei l'intervallo tra gli attacchi (2,6 s), la direzione delle radici, il momento in cui arrivano i Voltafaccia, la durata del bagno di sole (3 s) e la regola per cui fuori dalle finestre i colpi rimbalzano da ogni lato.
-8. **Musica:** nella Tregua per ora c'è la musica dell'accampamento del prologo; nel dungeon non c'è musica. I suoni nuovi arrivano al passo 5.
+1. **Tirate** come nella tabella sopra (una, due, due, due, due), scritte anche in `capitolo-01.md`. Regola: ogni rotazione cambia qualcosa che si vede. Nella stanza 6 la prima tirata rimette in piano la terrazza, la seconda porta l'apertura alla scala.
+2. **Boss:**
+   - I valori sono di partenza.
+   - I colpi sulle foglie chiuse rimbalzano con un suono e una scintilla propri.
+   - Quando prende il sole (3 s) si colpisce da ogni lato a danno normale, e qualunque colpo interrompe la guarigione.
+   - Attacca ogni 2,6 s nelle fasi 1 e 2, ogni 2 s nella fase 3.
+3. **Frinitori (B38):** seguono il caldo, lenti verso i punti al sole della stanza; si avvicinano a Ottavia solo se lei è al sole entro 6 m, all'ombra la perdono.
+4. **Obiettivi (125):**
+   - brevi e uno alla volta;
+   - spariscono a obiettivo fatto;
+   - si nascondono dalle opzioni (Mostra gli obiettivi).
+5. **Progressione:** al capitolo 2 la corsa dura il 75%. Il colpo di ritorno fa parte del contrattempo (33): dopo una deviazione riuscita il colpo successivo è sempre un contrattempo.
+6. **Da provare giocando:**
+   - Pellegrino: una volta provocato insegue fino a 14 m, poi si riaddormenta.
+   - Steli da 3 colpi base per la siepe del ramo bonus e la gabbia di Pia.
+   - Musica provvisoria: quella dell'accampamento nella Tregua, niente nel dungeon.

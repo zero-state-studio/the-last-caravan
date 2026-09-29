@@ -57,6 +57,14 @@ func _test_hints() -> void:
 	hints.show_hint(&"PRO_HINT_JUMP", &"jump")
 	await process_frame
 	_check(hints.current_hint() == &"PRO_HINT_JUMP", "hints: the hint text is shown with its key")
+	hints.show_goal(&"C01_GOAL_IOLE")
+	_check(hints.goal_visible(), "goals: one objective line at a time (125)")
+	GameOptions.show_goals = false
+	hints.apply_goal_option()
+	_check(not hints.goal_visible(), "goals: hidden by the option (125)")
+	GameOptions.show_goals = true
+	hints.hide_goal()
+	_check(not hints.goal_visible(), "goals: gone once the objective is done")
 	hints.queue_free()
 	await process_frame
 

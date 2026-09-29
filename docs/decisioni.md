@@ -134,3 +134,15 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
 - Fase 4b, passo 2 (129, 40, B2): nel capitolo 1 Ottavia parte senza pietre calde; le tre della Tregua (e quella del ramo bonus) sono le prime, e la ricarica a tre all'inizio della Tregua vale dal capitolo 2. Difficoltà come nel documento del capitolo: a facile solo preavvisi più lunghi del 30% (più il ponte abbassato, la stanza 3 saltabile e il cono di mira largo del 33); a difficile solo +30% di danni e +25% di resistenza delle creature; tolte le altre scale della proposta della fase 3. Pellegrino di feltro: la spinta ha 0,8 s di preavviso.
 - Capitolo 1, forma (107, 102): il dungeon è fatto di stanze-diorama, ciascuna chiusa e alle misure del documento, collegate da passaggi con dissolvenza; una rampa o un ponte porta alla stanza vicina solo se la terrazza è girata nel verso giusto. Le stanze 1 e 2 stanno nello stesso diorama. Pianta, sequenza e scelte da confermare in `docs/livelli/capitolo-01-forma.md`.
 - Progressione (34): al capitolo 2 Ottavia perde lo scatto lungo (la corsa dura il 75%, valore da provare) e impara il passo a tempo. Il colpo di ritorno della proposta della fase 3 resta senza capitolo finché la tabella non si rivede. Fiato dei capitoli 2-4 a 100%, così ogni capitolo perde una cosa sola.
+- Capitolo 1, dopo la prova della forma (107, 33, 34, 125, B38), 29 settembre 2026:
+  - **Tirate delle leve:** una nella stanza 1, due nelle stanze 2, 4, 5 e 6; la stanza 6 parte allineata al ponte e inclinata. Regola: ogni rotazione deve cambiare qualcosa che si vede (un passaggio, un'ombra, una creatura). Scritte in `docs/livelli/capitolo-01.md`.
+  - **Boss:**
+    - valori di partenza approvati;
+    - il rimbalzo sulle foglie chiuse ha un suono e una scintilla propri;
+    - quando prende il sole (3 s) si colpisce da ogni lato a danno normale, e qualunque colpo interrompe la guarigione;
+    - attacca ogni 2,6 s nelle fasi 1 e 2, ogni 2 s nella fase 3;
+    - radici in tre linee, una verso Ottavia; due Voltafaccia all'inizio della fase 2.
+  - **Frinitori (B38):** seguono il caldo verso i punti al sole; si avvicinano a Ottavia solo se lei è al sole entro 6 m (aggiornato il bestiario, tolto il TODO-DESIGN).
+  - **Obiettivi a schermo (125):** brevi, uno alla volta, spariscono a obiettivo fatto e si nascondono dalle opzioni; testi «Parla con Iole, vicino ai carri-campo» e «Porta lo stoppino ad Anselmo, in fondo alla colonna».
+  - **Progressione (34, 33):** la corsa del capitolo 2 dura il 75%. Il colpo di ritorno si unisce al contrattempo: dopo una deviazione riuscita il colpo successivo è sempre un contrattempo, fin dal prologo; tolto dalla tabella della progressione.
+  - **File di prova:** `/tmp/null`, creato per sbaglio, è cancellato. Il salvataggio scritto da una prova è rinominato `save_1.json.bak`: lo controlla l'autore.

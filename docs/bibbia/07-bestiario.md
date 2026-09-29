@@ -64,7 +64,7 @@ Le bestie più deboli sul lato del sole, a ridosso della carovana.
 - **B35 Salinaro** (Saltcrust) [In gruppo]: Suda sale, che si cristallizza sulla pelle in una crosta bianca che riflette il sole. Colpirlo solleva schegge di sale che bruciano gli occhi.
 - **B36 Ombrellaio** (Parasol) [Solitaria]: Alto e sottile, porta sulla testa una membrana larga come un ombrello che fa ombra al corpo. Sotto di lui si riparano altre creature, e anche Ottavia può usarne l'ombra.
 - **B37 Ampolla** (Vial) [In gruppo]: Quasi trasparente: la luce la attraversa senza scaldarla, e se ne vedono gli organi. Sul terreno abbagliante è difficile da distinguere.
-- **B38 Frinitore** (Shrill) [In gruppo]: Sciami di insetti che cantano più forte man mano che fa più caldo. Il loro canto è un termometro: più è assordante, più il Giorno è vicino.
+- **B38 Frinitore** (Shrill) [In gruppo]: Sciami di insetti che cantano più forte man mano che fa più caldo. Il loro canto è un termometro: più è assordante, più il Giorno è vicino. Seguono il caldo, non la preda: si spostano lenti verso i punti più illuminati; se Ottavia è al sole entro 6 metri le si avvicinano, se è all'ombra la perdono. Così anche loro usano la luce e l'ombra delle terrazze girevoli (capitolo 1).
 - **B39 Coccio** (Crock) [In gruppo]: Coleottero con il guscio letteralmente cotto dal sole come terracotta, lucido di smalto. Si crepa a ogni colpo, finché non si spezza.
 - **B40 Riverbero** (Shimmer) [Solitaria]: Vive nei miraggi del calore: il suo corpo rifrange la luce, e lo si vede dove non è. Bisogna colpire dove non sembra.
 

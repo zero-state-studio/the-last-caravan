@@ -11,15 +11,17 @@ Valori di partenza del capitolo 1: fiato 100, passo 3,0 m/s (corsa ×1,6), colpo
 | Cap. | Fiato | Passo | Combinazione | Forza colpo | Perde | Impara |
 |---|---|---|---|---|---|---|
 | 1 | 100% | 100% | 3 | 1,00 | — | — |
-| 2 | 94% | 100% | 3 | 1,15 | fiato | Colpo di ritorno: dopo una deviazione, il colpo successivo (entro 1,2 s) è critico |
-| 3 | 94% | 96% | 3 | 1,30 | passo | Occhio esperto: finestra di deviazione +0,05 s |
-| 4 | 94% | 96% | 2 | 1,45 | combinazione | Colpo pesante: l'ultimo colpo della combinazione sbilancia (0,8 s) |
+| 2 | 100% | 100% | 3 | 1,15 | scatto lungo (la corsa dura il 75%) | Passo a tempo (107) |
+| 3 | 100% | 96% | 3 | 1,30 | passo | Occhio esperto: finestra di deviazione +0,05 s |
+| 4 | 100% | 96% | 2 | 1,45 | combinazione | Colpo pesante: l'ultimo colpo della combinazione sbilancia (0,8 s) |
 | 5 | 88% | 96% | 2 | 1,60 | fiato | Salto sicuro: invulnerabilità del salto 0,2 s |
 | 6 | 88% | 92% | 2 | 1,75 | passo | Lanterna che abbaglia: alzarla sbilancia le creature entro 3 m (1,2 s, ricarica 8 s) |
 | 7 | 82% | 92% | 2 | 1,90 | fiato | Contrattempo profondo: critico ×2,5 |
 | 8 | 82% | 92% | 1 | 2,05 | combinazione | Uncino lungo: +1 m di portata |
 | 9 | 76% | 92% | 1 | 2,20 | fiato | Respiro della veterana: il fiato riparte dopo 0,3 s |
 | 10 | 76% | 88% | 1 | 2,35 | passo | — |
+
+Dopo una deviazione riuscita il colpo successivo è sempre un contrattempo, fin dal prologo (33): il vecchio «colpo di ritorno» non è più una tecnica di capitolo (decisione del 29 settembre 2026).
 
 L'idea: al capitolo 1 Ottavia vince con combinazioni e passi; al 9 vince aspettando il momento giusto (deviazione, colpo di ritorno, contrattempo profondo), con pochi colpi pesanti.
 

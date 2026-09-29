@@ -15,9 +15,9 @@ const POWER_PER_CHAPTER: float = 0.15
 ## value; "run" divides how long a run lasts (1: as in chapter 1); "lose"
 ## and "learn" are translation keys (StringName, empty: none).
 ## Chapter 2 is defined by the bible (107): after chapter 1 Ottavia loses
-## the long sprint and learns the timed step. The run share is a starting
-## value (TODO-DESIGN #34), and the return strike of the phase 3 proposal is
-## left without a chapter until the table is reviewed.
+## the long sprint (the run lasts 75%) and learns the timed step. The
+## return strike of the phase 3 proposal is part of the counter-hit (33):
+## after a deflection the next strike is always one, from the start.
 const CHAPTERS: Array[Dictionary] = [
 	{"stamina": 1.00, "speed": 1.00, "combo": 3, "run": 1.0, "lose": &"", "learn": &""},
 	{"stamina": 1.00, "speed": 1.00, "combo": 3, "run": 0.75, "lose": &"PROG_LOSE_LONG_SPRINT", "learn": &"timed_step"},
@@ -41,6 +41,7 @@ const DAZZLE_COOLDOWN: float = 8.0
 const DEEP_COUNTER_MULTIPLIER: float = 2.5
 const LONG_HOOK_EXTRA_REACH: float = 1.0
 const VETERAN_BREATH_DELAY: float = 0.3
+## After a deflection, the next strike within this time is a counter-hit.
 const RETURN_STRIKE_SECONDS: float = 1.2
 
 
