@@ -33,8 +33,8 @@ Dal piano buio dei Tessibuio, alla porta, all'accampamento, alla coda della colo
 |---|---|---|---|
 | PixelLab | 289 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla e 1 per Ruggero che si addormenta); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
 | Scenario | 30 CU | 1.000 | confermato dall'account (3 texture) |
-| Meshy | 459 crediti | circa 500 | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
-| ElevenLabs | 3.424 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
+| Meshy | 549 crediti | circa 550 (alzato dall'autore) | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
+| ElevenLabs | 3.486 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
 
 ## Asset
 
@@ -104,3 +104,5 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 - Video: `docs/video/capitoli/00-prologo/16-prologo-intero-ultima-revisione.mp4`, 6 minuti e 38 secondi.
 
 - Poi: lo Gnomone diventa il Meridiano (117); Zelinda con voce di vecchia scocciata; lo sguardo della camera arriva fino a Mirco; niente sagoma della lanterna nella chiusura, con la frase sulla crudeltà necessaria; pianura con avvallamenti e vestita ai lati della strada. Video: `docs/video/capitoli/00-prologo/17-prologo-intero-meridiano.mp4`, 6 minuti e 56 secondi.
+
+- Poi: ritorno in coda dopo lo sciame, chiusura senza scatto di camera, «Le regole sono regole.», pianura piena con cinque relitti nuovi (90 crediti Meshy). Video: `docs/video/capitoli/00-prologo/18-prologo-intero-in-coda.mp4`, 7 minuti e 8 secondi.

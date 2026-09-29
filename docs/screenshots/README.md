@@ -229,7 +229,8 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
-- `capitoli/00-prologo/17-prologo-intero-meridiano.mp4`: **da valutare (con le cuffie)**. Il Meridiano al posto dello Gnomone, Zelinda con la voce nuova, lo sguardo che arriva fino a Mirco, la chiusura senza la sagoma della lanterna e con la frase sulla crudeltà, la pianura vestita nel campo lungo (6 min 56 s)
+- `capitoli/00-prologo/18-prologo-intero-in-coda.mp4`: **da valutare (con le cuffie)**. Con il ritorno in coda dopo lo sciame, la chiusura senza scatto, «Le regole sono regole.» e la pianura piena fino all'ultimo fotogramma (7 min 8 s)
+- `capitoli/00-prologo/17-prologo-intero-meridiano.mp4`: superato da 18. Il Meridiano al posto dello Gnomone, Zelinda con la voce nuova, lo sguardo che arriva fino a Mirco, la chiusura senza la sagoma della lanterna e con la frase sulla crudeltà, la pianura vestita nel campo lungo (6 min 56 s)
 - `capitoli/00-prologo/16-prologo-intero-ultima-revisione.mp4`: superato da 17. Zelinda e Mirco con la voce, la mamma che chiama «Ottavia!», i due che continuano a camminare con la camera che si allarga, la chiusura veloce e ironica di Ottavia (6 min 38 s)
 - `capitoli/00-prologo/15-prologo-intero-voci-nuove.mp4`: superato da 16. Come il 14, con le voci rifatte: «Serra fila» staccato, Anselmo con la voce nuova, la mamma di Mirco più agitata; la mamma che si unisce alla colonna e la folla che cammina al passo giusto (6 min 52 s)
 - `capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`: superato da 15. Terza revisione: motivi dei compiti a voce, Ruggero scorbutico, la mamma di Mirco, le frasi al ritorno, il verdetto nuovo di Anselmo e la chiusura sulle Tregue e la lanterna (6 min 51 s)
