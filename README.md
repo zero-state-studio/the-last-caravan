@@ -71,10 +71,7 @@ Scaricalo dall'archivio ufficiale: <https://godotengine.org/download/archive/> (
 1. Avvia Godot e, nella finestra dei progetti, scegli **Importa**.
 2. Seleziona il file `project.godot` nella cartella `the-last-caravan` e conferma.
 3. La prima apertura richiede qualche minuto: Godot importa tutte le risorse. Aspetta che la barra in basso finisca.
-4. Nel pannello **FileSystem** (in basso a sinistra) apri `scenes/prologo/piano_tessibuio.tscn` con un doppio clic.
-5. Premi **F6** (su macOS **Cmd+R**), oppure il pulsante «Esegui la scena corrente» in alto a destra.
-
-Attenzione: il pulsante ▶ «Esegui il progetto» (F5) oggi avvia la scena di prova dello sviluppo, non il prologo.
+4. Premi il pulsante ▶ **Esegui il progetto** in alto a destra (oppure **F5**, su macOS **Cmd+B**). Il gioco parte dall'inizio del prologo.
 
 ### Da riga di comando
 
@@ -82,13 +79,13 @@ Dalla cartella del progetto:
 
 ```sh
 # macOS
-/Applications/Godot.app/Contents/MacOS/Godot --path . res://scenes/prologo/piano_tessibuio.tscn
+/Applications/Godot.app/Contents/MacOS/Godot --path .
 
 # Windows (PowerShell), adatta il percorso di Godot
-& "C:\percorso\Godot_v4.7.2-stable_win64.exe" --path . res://scenes/prologo/piano_tessibuio.tscn
+& "C:\percorso\Godot_v4.7.2-stable_win64.exe" --path .
 
 # Linux
-./Godot_v4.7.2-stable_linux.x86_64 --path . res://scenes/prologo/piano_tessibuio.tscn
+./Godot_v4.7.2-stable_linux.x86_64 --path .
 ```
 
 Se è la prima volta, lancia prima `Godot --headless --path . --import` e aspetta che finisca: importa le risorse, e senza questo passaggio il primo avvio può mostrare errori.

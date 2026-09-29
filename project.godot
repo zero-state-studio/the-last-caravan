@@ -12,7 +12,7 @@ config_version=5
 
 config/name="The Last Caravan"
 config/description="Action RPG in a 3D pixel art diorama world."
-run/main_scene="res://scenes/proto/diorama.tscn"
+run/main_scene="res://scenes/prologo/piano_tessibuio.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]
