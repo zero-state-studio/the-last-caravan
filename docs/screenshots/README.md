@@ -290,6 +290,11 @@ Stato: **da valutare** (fermata del passo 3).
 - `02-modelli-alla-scala.png`: la fila dei modelli 3D con Ottavia
 - `03-personaggi-e-creature-da-sud.png`: la fila degli sprite da sud
 - `04-concetti-meshy.png`: i cinque concetti da cui sono nati i modelli
+- `05-foglio-rifatti.png`: **da valutare**. Il secondo giro, con i soli elementi rifatti accanto a Ottavia (dettagli da 06 a 09)
+- `06-carro-campo-montato-e-cima.png`: il carro-campo montato in Godot a 24 × 10 m e la cima a 16 m
+- `07-carro-campo-da-vicino.png`: la grana di legno e terra a 30 px/m accanto a Ottavia
+- `08-foglione-radicato-gabbia-cavolo-frinitori.png`: Foglione Radicato, gabbia di colture vive, cavolo piantato, sciame dei Frinitori
+- `09-sprite-rifatti.png`: Voltafaccia, Coccio, Specchietto, Pellegrino, stelo, spighe, tuberi rifatti
 
 ### `asset/ui/`: Interfaccia (125)
 

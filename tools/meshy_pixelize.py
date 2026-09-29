@@ -92,7 +92,7 @@ def surface_and_uv_area(gltf, binary):
     return surface, uv_area
 
 
-def pixelize(image, size, colors, palette_path=None, brightness=1.0):
+def pixelize(image, size, colors, palette_path=None, brightness=1.0, clean=0):
     small = image.convert("RGB").resize((size, size), Image.BOX)
     if brightness != 1.0:
         small = small.point(lambda value: min(255, int(value * brightness)))
@@ -100,8 +100,33 @@ def pixelize(image, size, colors, palette_path=None, brightness=1.0):
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         from palette_remap import load_palette, remap
 
-        return remap(small, load_palette(palette_path)).convert("RGB")
-    return small.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert("RGB")
+        result = remap(small, load_palette(palette_path)).convert("RGB")
+    else:
+        result = small.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert("RGB")
+    for _ in range(clean):
+        result = clean_isolated(result)
+    return result
+
+
+def clean_isolated(image):
+    """Replace every texel that matches none of its four neighbours with the most
+    common neighbour colour: no lone specks, so the texture reads in clusters of
+    2-6 pixels like the sprites (docs/stile.md), at the same density."""
+    width, height = image.size
+    source = image.load()
+    result = image.copy()
+    target = result.load()
+    for y in range(height):
+        for x in range(width):
+            here = source[x, y]
+            around = [source[(x + dx) % width, (y + dy) % height] for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+            if here in around:
+                continue
+            counts = {}
+            for colour in around:
+                counts[colour] = counts.get(colour, 0) + 1
+            target[x, y] = max(counts, key=counts.get)
+    return result
 
 
 def rebuild_binary(gltf, binary, replaced):
@@ -131,6 +156,7 @@ def main():
     parser.add_argument("--turn-180", action="store_true", help="turn the model half around the vertical axis")
     parser.add_argument("--brightness", type=float, default=1.0, help="scale the texture brightness before the palette (e.g. 0.7 for pale stone)")
     parser.add_argument("--palette", help="map colors onto this palette strip (e.g. assets/palette/palette_v1.png)")
+    parser.add_argument("--clean", type=int, default=0, help="passes that remove lone texels (clusters like the sprites)")
     args = parser.parse_args()
 
     gltf, binary = read_glb(args.input)
@@ -153,7 +179,7 @@ def main():
         view = gltf["bufferViews"][view_index]
         start = view.get("byteOffset", 0)
         source = Image.open(io.BytesIO(binary[start : start + view["byteLength"]]))
-        reduced = pixelize(source, texture_size, args.colors, args.palette, args.brightness)
+        reduced = pixelize(source, texture_size, args.colors, args.palette, args.brightness, args.clean)
         if args.preview:
             reduced.save(args.preview)
         buffer = io.BytesIO()

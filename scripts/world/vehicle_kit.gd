@@ -103,6 +103,16 @@ static func _place_on(model: Node3D, base: Vector3) -> AABB:
 	return box
 
 
+## One module of the kit by name (ali, code, serbatoio...), for vehicles
+## built elsewhere (the field-carts of chapter 1).
+static func module(module_name: String) -> Node3D:
+	return _module(module_name)
+
+
+static func place_on(model: Node3D, base: Vector3) -> AABB:
+	return _place_on(model, base)
+
+
 static func _module(module_name: String) -> Node3D:
 	var scene: PackedScene = load(MODULE_DIR + module_name + ".glb")
 	return scene.instantiate()

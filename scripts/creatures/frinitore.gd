@@ -19,6 +19,7 @@ const SEARCH_DIRECTIONS: int = 8
 
 @export var creature: CreatureTuning
 
+var swarm: FrinitoreSwarm
 var _tick: float = 0.0
 var _drift_time: float = 0.0
 var _think_left: float = 0.0
@@ -36,7 +37,12 @@ func _ready() -> void:
 	super._ready()
 	# It floats: nothing bumps into it, strikes still reach it.
 	collision_mask = 0
-	sprite.position.y = FLOAT_HEIGHT - 0.6
+	# The look is the cloud of insects; the sprite only carries the flash.
+	sprite.visible = false
+	swarm = FrinitoreSwarm.new()
+	swarm.radius = cloud_radius()
+	swarm.position = Vector3.UP * FLOAT_HEIGHT
+	add_child(swarm)
 
 
 ## Where it wants to be: Ottavia if she is in the sun and near; itself if
@@ -84,9 +90,7 @@ func _behave(delta: float) -> void:
 		move = Vector3(sin(_drift_time * 0.9), 0.0, cos(_drift_time * 0.7)) * creature.frinitore_speed * 0.25
 	if not is_being_moved() and not is_staggered():
 		velocity = move
-	var scale_now: float = cloud_radius() / (creature.frinitore_diameter * 0.5)
-	sprite.scale = Vector3.ONE * scale_now
-	sprite.modulate.a = 0.55 + 0.45 * health / maxf(max_health, 0.01)
+	swarm.radius = cloud_radius()
 	if distance <= cloud_radius() + 0.3 and player.health > 0.0:
 		_tick += delta
 		if _tick >= TICK_SECONDS:
@@ -98,9 +102,10 @@ func _behave(delta: float) -> void:
 
 
 func _on_defeated() -> void:
-	sprite.visible = false
+	swarm.visible = false
 
 
 func _on_reset() -> void:
-	sprite.scale = Vector3.ONE
-	sprite.modulate.a = 1.0
+	if swarm != null:
+		swarm.visible = true
+		swarm.radius = cloud_radius()
