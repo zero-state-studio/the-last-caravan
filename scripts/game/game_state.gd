@@ -9,6 +9,8 @@ extends RefCounted
 const COAT_SLOTS: int = 3
 const EMPTY_SLOT: StringName = &""
 
+## The chapter Ottavia lives in (34): 1 until the end of chapter 1.
+static var chapter: int = 1
 ## Knots on the rope: one per person saved (106, 125).
 static var knots: int = 0
 ## Patches found (104), in the order they were found.
@@ -30,6 +32,7 @@ static var events: GameStateEvents = GameStateEvents.new()
 
 
 static func reset() -> void:
+	chapter = 1
 	knots = 0
 	found_patches = []
 	sewn_patches = [EMPTY_SLOT, EMPTY_SLOT, EMPTY_SLOT]
@@ -134,6 +137,7 @@ static func set_flag(flag: StringName) -> void:
 ## Everything above as plain data, for the save file.
 static func to_data() -> Dictionary:
 	return {
+		"chapter": chapter,
 		"knots": knots,
 		"found_patches": _strings(found_patches),
 		"sewn_patches": _strings(sewn_patches),
@@ -148,6 +152,7 @@ static func to_data() -> Dictionary:
 
 
 static func from_data(data: Dictionary) -> void:
+	chapter = int(data.get("chapter", 1))
 	knots = int(data.get("knots", 0))
 	found_patches = _names(data.get("found_patches", []))
 	sewn_patches = _names(data.get("sewn_patches", []))

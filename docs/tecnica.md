@@ -256,3 +256,22 @@ Stato al 27 settembre 2026: tutte lossless e senza mipmap, comprese le texture e
 - **Menu di pausa:** `OptionsMenu` ha cinque pagine (cappotto, bisaccia, ricordi, lanterna, opzioni); LB e RB le sfogliano. La pagina della lanterna c'è solo dopo il verdetto.
 - **Banco dei sistemi:** `scripts/proto/systems_yard.gd`, a sud del diorama (stanza `banco`, di dungeon). Argomenti del diorama: `truce=1`, `truce_seconds=90`, `yard=1`, `yard_demo=1`, `give_items=1`, `pause=<0-4>`; nel pannello F1 «Inizia una Tregua» e «Vai al banco dei sistemi».
 - **Test:** `tests/test_satchel.gd`, `tests/test_systems.gd`. Nei test uno script `SceneTree` non deve tenere variabili tipizzate con la classe del banco (`SystemsYard`): all'uscita ne resterebbero in uso gli script.
+
+## Capitolo 1 con i segnaposti (fase 4b, passo 2; 107)
+
+- **Scene:** `scenes/capitolo01/tregua.tscn` (`TrucePlain`), `carri_campo.tscn` (`FieldCarts`) e `fine.tscn` (`ChapterOneEnd`). Il prologo, dopo il titolo, carica la Tregua; non lo fa nei test e con `autoplay=1`.
+- **Forme:** `C01Kit` (scatole, pendenze, ringhiere, colture, erba alta, stanze, ingressi e passaggi). `GatedExit` è un `RoomExit` che funziona solo se la sua condizione è vera (per esempio: terrazza girata nel verso giusto, ponte abbassato). Gli ingressi sulle terrazze che girano sono `RoomEntry` con `room_id`: la stanza li trova per gruppo.
+- **Stanze:**
+  - `Room.camera_distance` cambia la distanza della camera nella stanza (il boss a 24 m);
+  - `RoomManager` riporta Ottavia all'ingresso se cade nel vuoto sotto la stanza (segnale `player_fell`, senza danni).
+- **Creature del capitolo:**
+  - la vita si scrive in colpi base (`CreatureTuning.health_for_hits`);
+  - `SunFacingEnemy` è la base delle bestie del Giorno;
+  - Coccio, Frinitore, Specchietto, Foglione e Pellegrino sono costruiti in codice, con sprite provvisori disegnati da `PlaceholderSprite`;
+  - Specchietto guarda il sole con un raggio verso la `DirectionalLight3D` del gruppo `sun`.
+- **Boss:** `RootedFoglione` (tronco e foglie di scatole, animate in Godot) e `SummitArena` (quattro leve sul bordo fisso, rinforzi, ripartenza).
+- **Pannello F1 nelle scene del capitolo:** `TuningPanel.for_chapter` mostra solo i valori (combattimento, creature, boss, capitolo) e li salva nei loro file.
+- **Salvataggi:** non si scrivono quando il gioco gira senza finestra, né con argomenti di sviluppo; i test usano un file a parte.
+- **Opzioni:** `GameOptions.loaded`, una volta letto il file, le scene non lo rileggono (i test impostano la difficoltà).
+- **Test:** `tests/test_chapter01.gd` percorre Tregua, dungeon (stanza per stanza), ponte del facile, boss e fine.
+- **Misure (29 settembre):** 75 fps, il massimo del monitor con vsync, a 1280×800 in Tregua, stanza 2, stanza 3 (erba alta) e cima, su questo Mac. Sul Mac mini va misurato alla consegna.

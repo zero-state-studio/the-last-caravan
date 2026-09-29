@@ -23,18 +23,21 @@ const HINT_SECONDS: float = 5.0
 
 var shortcut: RescueShortcut
 var saved: bool = false
+## Not reachable yet (Pia in the cage of plants, room 6).
+var locked: bool = false
 var _going_home: bool = false
 
 
 func _ready() -> void:
-	shortcut = get_node_or_null(shortcut_path) as RescueShortcut
+	if not shortcut_path.is_empty():
+		shortcut = get_node_or_null(shortcut_path) as RescueShortcut
 	if GameState.has_flag(person_id):
 		saved = true
 		visible = false
 
 
 func can_use() -> bool:
-	return not saved
+	return not saved and not locked
 
 
 func use() -> void:

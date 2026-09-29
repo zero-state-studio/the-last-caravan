@@ -18,9 +18,16 @@ static var difficulty: int = 1
 ## 28, 37 and 47 px with the pixel font: 3, 4 and 5 of its pixels per row.
 const TEXT_SCALES: Array[float] = [1.0, 4.0 / 3.0, 5.0 / 3.0]
 static var text_scale: float = 1.0
+## True once read from disk: later scenes keep what is in memory (tests and
+## dev arguments may have changed it on purpose).
+static var loaded: bool = false
 
 
 static func load_options() -> void:
+	if loaded:
+		apply()
+		return
+	loaded = true
 	var config: ConfigFile = ConfigFile.new()
 	if config.load(PATH) == OK:
 		shake_strength = float(config.get_value(SECTION, "shake_strength", 1.0))

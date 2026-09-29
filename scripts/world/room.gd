@@ -18,6 +18,8 @@ extends Node3D
 ## a dungeon. `save_stage` names the point of the chapter in the save.
 @export var autosave_on_enter: bool = false
 @export var save_stage: StringName = &"dungeon"
+## Camera distance in this room; 0 keeps the level's standard (50).
+@export var camera_distance: float = 0.0
 
 
 func _enter_tree() -> void:
@@ -38,5 +40,11 @@ func find_entry(entry_id: StringName) -> RoomEntry:
 	for node: Node in find_children("*", "RoomEntry", true, false):
 		var entry: RoomEntry = node
 		if entry.entry_id == entry_id:
+			return entry
+	if not is_inside_tree():
+		return null
+	for node: Node in get_tree().get_nodes_in_group(&"room_entries"):
+		var entry: RoomEntry = node as RoomEntry
+		if entry != null and entry.room_id == room_id and entry.entry_id == entry_id:
 			return entry
 	return null

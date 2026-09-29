@@ -228,6 +228,20 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 - `09-fine-capitolo.png`: schermata di fine capitolo
 - `10-salto.png`: salto
 
+### `capitoli/01-carri-campo/`: Capitolo 1, forma con i segnaposti (107, fase 4b passo 2)
+
+Stato: **da valutare** giocando. Forme semplici e sprite provvisori; pianta e sequenza in `docs/livelli/capitolo-01-forma.md`.
+
+- `01-tregua-meridiana-iole.png`: **da valutare**. La Tregua: la meridiana in alto, l'obiettivo «Parla con Iole», il primo suggerimento, i mezzi del prologo
+- `02-stanza-1-piede-del-carro.png`: **da valutare**. Stanza 1, con Iole e la prima leva
+- `03-stanza-2-prima-terrazza.png`: **da valutare**. Stanza 2: la terrazza di traverso con le spighe, i Voltafaccia al pascolo, i Cocci, il suggerimento sulle bestie del Giorno
+- `04-stanza-3-erba-alta.png`: **da valutare**. Stanza 3: l'erba alta, le radure, lo sciame di Frinitori
+- `05-stanza-4-pianerottolo-e-ramo-bonus.png`: **da valutare**. Stanza 4 dal pianerottolo: la siepe del ramo bonus e i tre oggetti dietro
+- `06-stanza-5-foglioni.png`: **da valutare**. Stanza 5: Foglioni, Voltafaccia, cavoli, casse e la leva
+- `07-stanza-6-terrazza-capovolta.png`: **da valutare**. Stanza 6: la leva sotto la crosta di ghiaccio e la terrazza fredda
+- `08-stanza-7-cima-boss.png`: **da valutare**. Stanza 7: la cima rotonda, il bordo con le leve, il Foglione Radicato provvisorio
+- `09-fine-stoppino-di-ruggero.png`: **da valutare**. La fine: Ruggero con lo stoppino, Iole e Pia
+
 ### `fasi/fase4b-sistemi/`: Fase 4b, passo 1 (125, 128-131, 105)
 
 Stato: **da valutare**. I sistemi del capitolo 1 provati nel diorama, con forme semplici (banco dei sistemi, a sud del diorama).

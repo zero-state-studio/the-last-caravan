@@ -10,6 +10,11 @@ signal player_respawned(room: Room)
 ## Emitted during the black screen of a restart, after the creatures of the
 ## room are back at their start (arenas reset their mechanics here).
 signal room_restarted(room: Room)
+## Ottavia fell out of the room into the void and is back at its entry.
+signal player_fell(room: Room)
+
+## Below the bottom of the current room by this much, Ottavia has fallen.
+const FALL_MARGIN: float = 1.0
 
 ## Paths, not typed node exports: hand-written paths in a .tscn do not
 ## resolve into typed node exports (see docs/tecnica.md).
@@ -25,6 +30,7 @@ var respawn_position: Vector3 = Vector3.ZERO
 
 var _busy: bool = false
 var _fade: ColorRect
+var _standard_distance: float = -1.0
 
 
 func _enter_tree() -> void:
@@ -93,6 +99,28 @@ func travel(room_id: StringName, entry_id: StringName) -> void:
 func _physics_process(_delta: float) -> void:
 	if not _busy:
 		_update_room()
+		_check_fall()
+
+
+## A fall off a terrace into the void below every room: back to the entry
+## of the room, with no damage (105 without the defeat).
+func _check_fall() -> void:
+	if current_room == null or current_room.contains(player.global_position) or player.is_on_floor():
+		return
+	var bottom: float = current_room.global_position.y - current_room.size.y * 0.5
+	if player.global_position.y < bottom - FALL_MARGIN:
+		_fall_back()
+
+
+func _fall_back() -> void:
+	_busy = true
+	player.controls_enabled = false
+	await _fade_to(1.0, fade_seconds)
+	_place_player(respawn_position)
+	await _fade_to(0.0, fade_seconds)
+	player.controls_enabled = true
+	_busy = false
+	player_fell.emit(current_room)
 
 
 ## After «Continue» (95): Ottavia at the saved entry, without a fade.
@@ -124,6 +152,12 @@ func _set_room(room: Room, entry_position: Vector3) -> void:
 	current_room = room
 	respawn_position = entry_position
 	camera_rig.limits = room.camera_limits()
+	if _standard_distance < 0.0:
+		_standard_distance = camera_rig.distance
+	var distance: float = room.camera_distance if room.camera_distance > 0.0 else _standard_distance
+	if not is_equal_approx(distance, camera_rig.distance):
+		camera_rig.distance = distance
+		camera_rig.apply()
 	room_changed.emit(room)
 
 

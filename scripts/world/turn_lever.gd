@@ -27,7 +27,8 @@ var _hint_shown: bool = false
 
 
 func _ready() -> void:
-	platform = get_node_or_null(platform_path) as TurningPlatform
+	if not platform_path.is_empty():
+		platform = get_node_or_null(platform_path) as TurningPlatform
 	_build()
 	var crust: Node = get_node_or_null(crust_path)
 	if crust != null and crust.has_signal(&"broken"):

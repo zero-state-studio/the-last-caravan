@@ -168,6 +168,44 @@ const COMBAT_TUNING_PATH: String = "res://assets/combat/combat_tuning.tres"
 @export var field_tilt_seconds: float = 9.0
 @export var field_lever_cooldown: float = 12.0
 
+@export_group("Foglione Radicato, chapter 1 (107)")
+## About 30 base strikes, about 15 on the flank (double damage).
+@export var rooted_hits: float = 30.0
+@export var rooted_flank_multiplier: float = 2.0
+## Front covered by the closed leaves: strikes bounce off.
+@export var rooted_front_degrees: float = 70.0
+## Phases: from full to this share, then to the next.
+@export var rooted_phase_2_share: float = 0.66
+@export var rooted_phase_3_share: float = 0.33
+## Seconds between one attack and the next.
+@export var rooted_attack_interval: float = 2.6
+## Leaf lash: a 120 degree arc in front.
+@export var rooted_lash_windup: float = 0.7
+@export var rooted_lash_damage: float = 15.0
+@export var rooted_lash_range: float = 4.5
+@export var rooted_lash_degrees: float = 120.0
+## Seeds: a burst in a straight line toward Ottavia.
+@export var rooted_seed_windup: float = 0.6
+@export var rooted_seed_damage: float = 10.0
+@export var rooted_seed_width: float = 0.9
+## Roots (phase 2 on): three lines from the centre to the edge, cracks in
+## the planks first.
+@export var rooted_root_windup: float = 0.8
+@export var rooted_root_damage: float = 20.0
+@export var rooted_root_width: float = 1.0
+## Window on the flank after each turn of the arena, per phase.
+@export var rooted_window_1: float = 3.0
+@export var rooted_window_2: float = 2.0
+@export var rooted_window_3: float = 1.2
+## Phase 3: two turns less than this apart lengthen the window.
+@export var rooted_double_turn_seconds: float = 2.0
+@export var rooted_double_turn_bonus: float = 1.5
+## Phase 3: every so often it opens its leaves to the sun and regains
+## resistance (in base strikes), unless a flank strike interrupts it.
+@export var rooted_bask_interval: float = 20.0
+@export var rooted_bask_seconds: float = 3.0
+@export var rooted_bask_regain_hits: float = 5.0
+
 @export_group("Vecchio Spartighiaccio (41)")
 @export var sparti_health: float = 240.0
 @export var sparti_aim_seconds: float = 1.2

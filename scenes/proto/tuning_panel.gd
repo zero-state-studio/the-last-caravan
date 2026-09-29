@@ -218,6 +218,25 @@ const CREATURE_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_K_FOGLIONE_CLOSE_SECONDS", "property": "foglione_close_seconds", "min": 0.0, "max": 6.0, "step": 0.1},
 	{"key": "DEV_K_FIELD_TILT_SECONDS", "property": "field_tilt_seconds", "min": 2.0, "max": 20.0, "step": 0.5},
 	{"key": "DEV_K_FIELD_LEVER_COOLDOWN", "property": "field_lever_cooldown", "min": 2.0, "max": 30.0, "step": 0.5},
+	{"key": "DEV_K_ROOTED_HITS", "property": "rooted_hits", "min": 5.0, "max": 80.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_FLANK_MULTIPLIER", "property": "rooted_flank_multiplier", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_ROOTED_FRONT_DEGREES", "property": "rooted_front_degrees", "min": 20.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_ATTACK_INTERVAL", "property": "rooted_attack_interval", "min": 0.5, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_LASH_WINDUP", "property": "rooted_lash_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_ROOTED_LASH_DAMAGE", "property": "rooted_lash_damage", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_LASH_RANGE", "property": "rooted_lash_range", "min": 1.0, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_SEED_WINDUP", "property": "rooted_seed_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_ROOTED_SEED_DAMAGE", "property": "rooted_seed_damage", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_ROOT_WINDUP", "property": "rooted_root_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_ROOTED_ROOT_DAMAGE", "property": "rooted_root_damage", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_WINDOW_1", "property": "rooted_window_1", "min": 0.2, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_WINDOW_2", "property": "rooted_window_2", "min": 0.2, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_WINDOW_3", "property": "rooted_window_3", "min": 0.2, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_DOUBLE_TURN_SECONDS", "property": "rooted_double_turn_seconds", "min": 0.2, "max": 6.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_DOUBLE_TURN_BONUS", "property": "rooted_double_turn_bonus", "min": 0.0, "max": 5.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_BASK_INTERVAL", "property": "rooted_bask_interval", "min": 3.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_ROOTED_BASK_SECONDS", "property": "rooted_bask_seconds", "min": 0.5, "max": 10.0, "step": 0.1},
+	{"key": "DEV_K_ROOTED_BASK_REGAIN_HITS", "property": "rooted_bask_regain_hits", "min": 0.0, "max": 20.0, "step": 0.5},
 	{"key": "DEV_K_SPARTI_HEALTH", "property": "sparti_health", "min": 50.0, "max": 900.0, "step": 10.0},
 	{"key": "DEV_K_SPARTI_AIM_SECONDS", "property": "sparti_aim_seconds", "min": 0.3, "max": 3.0, "step": 0.05},
 	{"key": "DEV_K_SPARTI_CHARGE_SPEED", "property": "sparti_charge_speed", "min": 2.0, "max": 20.0, "step": 0.5},
@@ -253,6 +272,20 @@ func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null, t
 func _ready() -> void:
 	_build()
 	_root.visible = false
+
+
+## The F1 panel of a chapter scene (phase 4b): only the values, each
+## section saved back into its resource file.
+static func for_chapter(parent: Node, combat: CombatTuning, creatures: CreatureTuning, chapter: ChapterTuning) -> TuningPanel:
+	var panel: TuningPanel = TuningPanel.new(null, combat, creatures, chapter)
+	panel.name = "TuningPanel"
+	parent.add_child(panel)
+	for pair: Array in [[panel.combat_save_requested, combat], [panel.creatures_save_requested, creatures], [panel.chapter_save_requested, chapter]]:
+		var resource: Resource = pair[1]
+		(pair[0] as Signal).connect(func() -> void:
+			var error: Error = ResourceSaver.save(resource, resource.resource_path)
+			panel.show_saved(resource.resource_path if error == OK else "error %d" % error))
+	return panel
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -297,6 +330,17 @@ func _build() -> void:
 	_fps_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	box.add_child(_fps_label)
 
+	_status_label = Label.new()
+	_status_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if settings != null:
+		_build_prototype(box)
+	box.add_child(_status_label)
+	_build_tuning(box)
+
+
+## The diorama part: camera, sprites, light, and the prototype buttons.
+func _build_prototype(box: VBoxContainer) -> void:
 	for definition: Dictionary in SLIDERS:
 		_add_slider(box, definition, settings)
 	for definition: Dictionary in TOGGLES:
@@ -307,10 +351,6 @@ func _build() -> void:
 	save_button.text = "DEV_SAVE"
 	save_button.pressed.connect(func() -> void: save_requested.emit())
 	box.add_child(save_button)
-	_status_label = Label.new()
-	_status_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	box.add_child(_status_label)
 
 	var end_chapter: Button = Button.new()
 	end_chapter.text = "DEV_END_CHAPTER"
@@ -330,6 +370,9 @@ func _build() -> void:
 	for slot: int in CoatPatches.SLOTS:
 		_add_patch_slot(box, "patch_slot_%d" % (slot + 1))
 
+
+## The values of combat, creatures and chapter, with their save buttons.
+func _build_tuning(box: VBoxContainer) -> void:
 	if combat_tuning != null:
 		var section: Label = Label.new()
 		section.text = "DEV_SECTION_COMBAT"

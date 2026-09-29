@@ -40,8 +40,11 @@ static func save(checkpoint: Dictionary) -> Error:
 	return OK
 
 
-## Autosave at a checkpoint of the current scene (95).
+## Autosave at a checkpoint of the current scene (95). Skipped when the
+## game runs without a window (checks, captures): only a player saves.
 static func autosave(tree: SceneTree, room: StringName, entry: StringName, stage: StringName) -> Error:
+	if DisplayServer.get_name() == "headless" and path_override == "":
+		return OK
 	return save({"scene": tree.current_scene.scene_file_path, "room": String(room), "entry": String(entry), "stage": String(stage)})
 
 

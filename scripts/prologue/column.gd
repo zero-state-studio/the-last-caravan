@@ -76,6 +76,7 @@ const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
 ## The outro (106): quick and wry, what the ten Truces mean, over the
 ## column walking into the dusk; the menu gets the empty lantern after it.
 const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_05", &"PRO_OUTRO2_06", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
+const CHAPTER_1_SCENE: String = "res://scenes/capitolo01/tregua.tscn"
 const OUTRO_PAUSE: float = 0.3
 ## The way back (106): boulders and fallen trunks scattered south of the
 ## barriers, where the column is seen ahead; (x, z) of each cluster.
@@ -433,6 +434,10 @@ func _verdict() -> void:
 		await title.show_title(&"PRO_TITLE_CH1")
 	step = Step.DONE
 	prologue_finished.emit()
+	# The first playable slice goes on: chapter 1 begins with its Truce (68).
+	# Not in tests (a SceneTree script) nor in the autoplay videos.
+	if get_tree().get_script() == null and not "autoplay=1" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file(CHAPTER_1_SCENE)
 
 
 ## The two walk on with the column; the camera draws up and away over

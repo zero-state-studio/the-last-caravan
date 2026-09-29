@@ -90,6 +90,7 @@ func _ready() -> void:
 	health = max_health
 	combat.patches = GameState.worn_patches()
 	GameState.events.patches_changed.connect(_on_patches_changed)
+	combat.set_chapter(GameState.chapter)
 	_lantern_base_range = lantern_light.omni_range
 	_lantern_base_energy = lantern_light.light_energy
 	_material.shader = UNSHADED_SHADER
