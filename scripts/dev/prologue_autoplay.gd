@@ -116,6 +116,9 @@ func _play_camp(scene: Node) -> void:
 	# The swarm.
 	await _until(scene, func() -> bool: return tasks.task == CampTasks.Task.FIGHT, 4.0)
 	await _fight(scene, ottavia, func() -> Array: return tasks.swarm, 90.0)
+	await _until(scene, func() -> bool: return tasks.task == CampTasks.Task.BACK_TO_TAIL, 5.0)
+	await _wait(scene, 2.0)
+	await _walk_to(scene, ottavia, CampTasks.TAIL_POINT, true, 40.0)
 
 
 func _play_column(scene: Node) -> void:

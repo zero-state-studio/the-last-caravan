@@ -227,7 +227,10 @@ func _test_camp_tasks() -> void:
 	for enemy: CombatEnemy in tasks.swarm:
 		enemy.health = 0.0
 	await _frames(3)
-	_check(tasks.task == CampTasks.Task.LAST_CALL and camp.dialogue.current_line() == "PRO_GNOMONE_02", "camp: after the swarm, the Gnomon's last call")
+	_check(tasks.task == CampTasks.Task.BACK_TO_TAIL and camp.dialogue.current_line() == "PRO_OTTAVIA_06" and tasks.marker.is_active(), "camp: after the swarm, Ottavia says to go back to the tail, marked (106)")
+	ottavia.global_position = CampTasks.TAIL_POINT + Vector3(0.0, 0.05, 0.0)
+	await _frames(3)
+	_check(tasks.task == CampTasks.Task.LAST_CALL and camp.dialogue.current_line() == "PRO_GNOMONE_02", "camp: at the tail, the Meridian's last call")
 	camp.queue_free()
 	await _frames(2)
 

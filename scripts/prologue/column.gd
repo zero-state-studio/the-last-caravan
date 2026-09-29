@@ -75,7 +75,7 @@ const RUN_LINES: Array[StringName] = [&"PRO_OTTAVIA_RUN_01", &"PRO_OTTAVIA_RUN_0
 const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
 ## The outro (106): quick and wry, what the ten Truces mean, over the
 ## column walking into the dusk; the menu gets the empty lantern after it.
-const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_05", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
+const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_05", &"PRO_OUTRO2_06", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
 const OUTRO_PAUSE: float = 0.3
 ## The way back (106): boulders and fallen trunks scattered south of the
 ## barriers, where the column is seen ahead; (x, z) of each cluster.
@@ -117,7 +117,7 @@ const FROST_FIELD: Rect2 = Rect2(20.0, -14.0, 140.0, 40.0)
 const FLAT_RECTS: Array[Rect2] = [Rect2(-480.0, -13.0, 700.0, 20.0), Rect2(-12.0, -17.0, 192.0, 47.0)]
 const PLAIN_HOLLOW_METERS: float = 1.6
 ## The plain dressed north and south of the road, west of the start.
-const PLAIN_AREAS: Array[Rect2] = [Rect2(-230.0, -60.0, 225.0, 46.0), Rect2(-230.0, 8.0, 225.0, 40.0)]
+const PLAIN_AREAS: Array[Rect2] = [Rect2(-260.0, -90.0, 255.0, 76.0), Rect2(-260.0, 8.0, 255.0, 55.0)]
 const PLAIN_SEED: int = 1070
 
 ## Nightfall toward Mirco (106): how much the light dims at his place.
@@ -190,7 +190,6 @@ func _ready() -> void:
 	_build_column()
 	_build_head()
 	_build_mirco()
-	ZonePalette.retint_models(level)
 	var sun: DirectionalLight3D = $Sun
 	sun.rotation_degrees = Vector3(-SUN_ELEVATION_DEGREES, SUN_AZIMUTH_DEGREES, 0.0)
 	_sun = sun
@@ -204,6 +203,8 @@ func _ready() -> void:
 	# The plain on both sides of the road, seen when the view draws away.
 	for area: Rect2 in PLAIN_AREAS:
 		CampScenery.dress_plain(level, area, _plain_free, PLAIN_SEED + int(area.position.y))
+	# The world palette on every model, the dressing included.
+	ZonePalette.retint_models(level)
 	_waiting_swarms = [WAY_OUT_SWARM]
 	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
@@ -269,8 +270,7 @@ func _intro() -> void:
 	var start: Transform3D = camera_rig.camera.global_transform
 	# All the way to Mirco, far off in the dusk, then back to her.
 	var toward: Transform3D = start.translated(Vector3(MIRCO_START.x - OTTAVIA_START.x, 0.0, MIRCO_START.z - OTTAVIA_START.z))
-	cinema_camera.global_transform = start
-	cinema_camera.current = true
+	_use_cinema(start)
 	var quick: bool = line_seconds < 1.0
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 0.05 if quick else 4.5)
@@ -439,13 +439,15 @@ func _verdict() -> void:
 ## them while Ottavia, wry and brisk, says what the ten Truces mean (106).
 func _outro() -> void:
 	var start: Transform3D = camera_rig.camera.global_transform
-	# Camera placement relative to Ottavia, from where it is to high and far.
+	# Camera placement relative to Ottavia, from exactly where the play
+	# camera is and what it looks at (no jump), to high and far.
 	var near_eye: Vector3 = start.origin - ottavia.global_position
+	var near_look: Vector3 = start.origin - start.basis.z * camera_rig.distance - ottavia.global_position
 	var far_eye: Vector3 = Vector3(10.0, 24.0, 36.0)
-	var near_look: Vector3 = Vector3.ZERO
 	var far_look: Vector3 = Vector3(-22.0, 0.0, -6.0)
-	cinema_camera.global_transform = start
-	cinema_camera.current = true
+	var attributes: CameraAttributesPractical = _use_cinema(start)
+	var near_blur: float = attributes.dof_blur_near_distance
+	var far_blur: float = attributes.dof_blur_far_distance
 	var seconds: float = 0.0
 	for line: StringName in OUTRO:
 		var stream: AudioStream = GameAudio.voice_stream(line)
@@ -454,7 +456,10 @@ func _outro() -> void:
 	away.tween_method(func(t: float) -> void:
 		var here: Vector3 = ottavia.global_position
 		var eye: Vector3 = here + near_eye.lerp(far_eye, t)
-		cinema_camera.global_transform = Transform3D.IDENTITY.translated(eye).looking_at(here + near_look.lerp(far_look, t), Vector3.UP), 0.0, 1.0, maxf(seconds, 0.05))
+		cinema_camera.global_transform = Transform3D.IDENTITY.translated(eye).looking_at(here + near_look.lerp(far_look, t), Vector3.UP)
+		# The depth of field opens as the view draws away.
+		attributes.dof_blur_near_distance = lerpf(near_blur, 0.5, t)
+		attributes.dof_blur_far_distance = lerpf(far_blur, 160.0, t), 0.0, 1.0, maxf(seconds, 0.05))
 	GameAudio.play_music(THEME_OUTRO_MUSIC, 2.0, -6.0)
 	for index: int in OUTRO.size():
 		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", OUTRO[index])
@@ -466,6 +471,17 @@ func _outro() -> void:
 	GameAudio.stop_music(1.5)
 
 
+## Hands the view to the cinema camera without a jump: same place, same
+## depth of field as the play camera. Returns its (own copy of) attributes.
+func _use_cinema(start: Transform3D) -> CameraAttributesPractical:
+	var attributes: CameraAttributesPractical = (camera_rig.camera.attributes as CameraAttributesPractical).duplicate()
+	cinema_camera.attributes = attributes
+	cinema_camera.fov = camera_rig.camera.fov
+	cinema_camera.global_transform = start
+	cinema_camera.current = true
+	return attributes
+
+
 ## A look ahead when Mirco is tied: the column, far off, still walking.
 func _show_column_ahead() -> void:
 	await get_tree().create_timer(0.4).timeout
@@ -474,8 +490,7 @@ func _show_column_ahead() -> void:
 	var toward: Transform3D = start.translated(Vector3(tail_x - ottavia.global_position.x + 10.0, 0.0, 0.0))
 	var was_enabled: bool = ottavia.controls_enabled
 	ottavia.controls_enabled = false
-	cinema_camera.global_transform = start
-	cinema_camera.current = true
+	_use_cinema(start)
 	var quick: bool = line_seconds < 1.0
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 0.05 if quick else 2.6)

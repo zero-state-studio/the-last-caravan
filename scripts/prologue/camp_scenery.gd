@@ -23,6 +23,14 @@ const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
 const HOLLOW_FADE: float = 14.0
 const HOLLOW_METERS: float = 1.1
 const HOLLOW_SEED: int = 7331
+## Wrecks per 1000 square metres of plain.
+const PLAIN_WRECKS: Dictionary = {
+	"res://assets/models/props/carro_abbandonato.glb": 0.5,
+	"res://assets/models/props/ruota_interrata.glb": 0.8,
+	"res://assets/models/props/staccionata.glb": 0.8,
+	"res://assets/models/props/segnavia.glb": 0.5,
+	"res://assets/models/props/generatore_rotto.glb": 0.3,
+}
 const PLAIN_RUINS: Array[String] = ["res://assets/models/ruins/casa_diroccata.glb", "res://assets/models/ruins/palazzo_sventrato.glb", "res://assets/models/ruins/facciata.glb"]
 ## Props one cannot walk through, with the share of their width that
 ## blocks (trees only by the trunk; bushes and stones stay passable).
@@ -356,19 +364,19 @@ static func dress_plain(parent: Node3D, area: Rect2, is_free: Callable, seed_val
 		entries.append(load(path) as VegetationEntry)
 	scatter.entries = entries
 	scatter.extents = area.size * 0.5
-	scatter.density = 0.2
+	scatter.density = 0.32
 	scatter.random_seed = seed_value
 	scatter.position = Vector3(area.get_center().x, 0.0, area.get_center().y)
 	scatter.height_at = ground_height
 	parent.add_child(scatter)
 	var per_1000: Dictionary = {
-		"res://assets/vegetation_kit/roccia_grande_01.tres": 3.0,
-		"res://assets/vegetation_kit/sassi_01.tres": 4.0,
-		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 6.0,
-		"res://assets/vegetation_kit/albero_storto_01.tres": 1.2,
-		"res://assets/vegetation_kit/alberello_01.tres": 1.2,
-		"res://assets/vegetation_kit/tronco_caduto_01.tres": 1.0,
-		"res://assets/vegetation_kit/ceppo_01.tres": 1.0,
+		"res://assets/vegetation_kit/roccia_grande_01.tres": 6.0,
+		"res://assets/vegetation_kit/sassi_01.tres": 8.0,
+		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 12.0,
+		"res://assets/vegetation_kit/albero_storto_01.tres": 2.4,
+		"res://assets/vegetation_kit/alberello_01.tres": 2.4,
+		"res://assets/vegetation_kit/tronco_caduto_01.tres": 2.0,
+		"res://assets/vegetation_kit/ceppo_01.tres": 2.0,
 	}
 	var surface: float = area.size.x * area.size.y / 1000.0
 	for path: String in per_1000:
@@ -388,6 +396,26 @@ static func dress_plain(parent: Node3D, area: Rect2, is_free: Callable, seed_val
 			parent.add_child(prop)
 			_solid_if_needed(prop, path)
 			placed += 1
+	# What the caravans before left on the plain (106): wrecks, a sunk wheel,
+	# broken fences, waymarks, an old Generator; all solid.
+	for path: String in PLAIN_WRECKS:
+		if not ResourceLoader.exists(path):
+			continue
+		var scene: PackedScene = load(path)
+		var wanted_wrecks: int = roundi(float(PLAIN_WRECKS[path]) * surface)
+		var put: int = 0
+		var attempts: int = 0
+		while put < wanted_wrecks and attempts < wanted_wrecks * 20:
+			attempts += 1
+			var at_wreck: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+			if not is_free.call(at_wreck):
+				continue
+			var wreck: Node3D = scene.instantiate()
+			wreck.position = Vector3(at_wreck.x, ground_height(at_wreck.x, at_wreck.z) - 0.1, at_wreck.z)
+			wreck.rotation.y = random.randf_range(-PI, PI)
+			parent.add_child(wreck)
+			LevelBlocks.make_solid(wreck, 0.8)
+			put += 1
 	# A few ruined houses and walls of an older road.
 	for index: int in roundi(surface * 0.12):
 		var at: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))

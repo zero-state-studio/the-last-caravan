@@ -10,7 +10,7 @@ extends Node3D
 
 signal finished
 
-enum Task { WAIT, SPRINT, JUMP, CLIMB, WAKE, BREAK, FIGHT, LAST_CALL, DONE }
+enum Task { WAIT, SPRINT, JUMP, CLIMB, WAKE, BREAK, FIGHT, BACK_TO_TAIL, LAST_CALL, DONE }
 
 ## Asleep sitting on the landing, head on his chest; woken, he gets up.
 const RUGGERO_ASLEEP: Texture2D = preload("res://assets/sprites/comparse/ruggero_dorme_seduto.png")
@@ -51,6 +51,10 @@ const STUCK_TAIL: Vector3 = Vector3(72.0, 0.0, 4.0)
 const TRASLOCANTE_SPOT: Vector3 = Vector3(68.5, 0.0, 7.5)
 const SWARM_START: Vector3 = Vector3(69.0, 0.0, 2.0)
 const SWARM_SIZE: int = 5
+## The last vehicles of the caravan, east in the camp: where Ottavia takes
+## her place to leave (106).
+const TAIL_POINT: Vector3 = Vector3(38.0, 0.0, 4.0)
+const TAIL_RADIUS: float = 4.0
 const GNOMONE_SPOT: Vector3 = Vector3(-80.0, 5.2, -2.0)
 const SPRINT_REMINDER_SECONDS: float = 30.0
 const PARRY_HINT_SECONDS: float = 5.0
@@ -145,6 +149,9 @@ func _physics_process(delta: float) -> void:
 				_parry_hint_shown = true
 				_hints.show_hint(&"PRO_HINT_PARRY", &"parry")
 			if swarm.all(func(enemy: CombatEnemy) -> bool: return not enemy.is_alive()):
+				_back_to_tail()
+		Task.BACK_TO_TAIL:
+			if _flat(here, TAIL_POINT) < TAIL_RADIUS:
 				_last_call()
 
 
@@ -171,6 +178,8 @@ func _show_goal() -> void:
 		Task.FIGHT:
 			_hints.show_goal(&"PRO_GOAL_SWARM")
 			marker.clear()
+		Task.BACK_TO_TAIL:
+			_goal(&"PRO_GOAL_TAIL", TAIL_POINT)
 		_:
 			_hints.hide_goal()
 			marker.clear()
@@ -250,8 +259,16 @@ func _spawn_swarm() -> void:
 		swarm.append(creature)
 
 
-func _last_call() -> void:
+## The swarm is gone: back to the tail of the caravan, to leave with it
+## (106): whoever comes late is left behind.
+func _back_to_tail() -> void:
 	GameAudio.stop_loop(&"swarm", 0.6)
+	_hints.hide_hint()
+	_set_task(Task.BACK_TO_TAIL)
+	_converse([[&"SPEAKER_OTTAVIA", &"PRO_OTTAVIA_06"]])
+
+
+func _last_call() -> void:
 	_set_task(Task.LAST_CALL)
 	_hints.hide_hint()
 	_say(&"SPEAKER_GNOMONE", &"PRO_GNOMONE_02")

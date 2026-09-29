@@ -26,6 +26,7 @@ Il prologo è il tutorial dei comandi. Ogni comando si impara facendo un pezzo d
   3. **Arrampicata.** Sulla testata di un carro-campo, accanto ai serbatoi, dorme seduto un vecchio Voltacampi: è Ruggero, che ritroveremo nel capitolo 1. Ottavia sale a svegliarlo con la scala del carro.
   4. **Colpo e rottura.** Una Coda si è piantata nel ghiaccio, tra arbusti secchi e croste di brina, e senza di lei il Generatore non parte. Ottavia la libera a colpi di bastone.
   5. **Primo combattimento.** Il calore della Coda liberata e la luce della lanterna attirano uno sciame di Brinacchi (B1). Si impara il colpo e la parata.
+  6. **In coda.** Scacciato lo sciame, Ottavia: «Molto bene, torniamo in coda per partire. Chi arriva in ritardo viene lasciato indietro.» Raggiunti gli ultimi carri, il Meridiano dà l'ultimo richiamo; lì arriva la mamma di Mirco.
 - **Dimensioni:** circa 60 × 40 metri, con qualche dislivello per salto e arrampicata.
 
 ### 4. La coda della colonna (carovana in marcia, tratto breve)
@@ -68,7 +69,7 @@ Accompagna l'inquadratura che mostra la carovana.
 - **Anselmo, in coda alla colonna, affranto:** «Ottavia... sei in ritardo.»
 - **Ottavia:** «Sì, lo so...»
 - **Anselmo, il verdetto:** «Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre.» «Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.» «Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.» «Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io.»
-- **Chiusura, Ottavia, mentre cammina con la colonna nella sera, veloce e senza solennità:** «E quindi finisce così... va beh, fa niente!» «Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito.» «È crudele? Forse sì, ma necessario. Purtroppo in questo mondo non ci si può permettere di essere un peso per la comunità.» «Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!» «Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!»
+- **Chiusura, Ottavia, mentre cammina con la colonna nella sera, veloce e senza solennità:** «E quindi finisce così... va beh, fa niente!» «Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito.» «È crudele? Forse sì, ma necessario. Purtroppo in questo mondo non ci si può permettere di essere un peso per la comunità.» «Le regole sono regole.» «Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!» «Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!»
 - **Titolo del capitolo:** «Ne restano dieci.»
 
 ### Suggerimenti a schermo
