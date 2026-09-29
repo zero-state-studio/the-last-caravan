@@ -23,6 +23,7 @@ const FLAT_BAND: Rect2 = Rect2(-480.0, -34.0, 660.0, 58.0)
 const HOLLOW_FADE: float = 14.0
 const HOLLOW_METERS: float = 1.1
 const HOLLOW_SEED: int = 7331
+const PLAIN_RUINS: Array[String] = ["res://assets/models/ruins/casa_diroccata.glb", "res://assets/models/ruins/palazzo_sventrato.glb", "res://assets/models/ruins/facciata.glb"]
 ## Props one cannot walk through, with the share of their width that
 ## blocks (trees only by the trunk; bushes and stones stay passable).
 const SOLID_PROPS: Dictionary = {"roccia_grande": 0.8, "tronco_caduto": 0.8, "ceppo": 0.6, "albero": 0.15, "alberello": 0.15}
@@ -106,12 +107,18 @@ static func build_ground(parent: Node3D, random: RandomNumberGenerator, roads: A
 
 
 static var _hollows: FastNoiseLite
+## Where the ground stays flat (where one plays); each scene sets its own
+## before building the ground.
+static var flat_rects: Array[Rect2] = [FLAT_BAND]
+static var hollow_meters: float = HOLLOW_METERS
 
 
 ## Height of the ground at (x, z): 0 in the band where one plays, gentle
 ## hollows and swells outside it.
 static func ground_height(x: float, z: float) -> float:
-	var outside: float = maxf(maxf(FLAT_BAND.position.x - x, x - FLAT_BAND.end.x), maxf(FLAT_BAND.position.y - z, z - FLAT_BAND.end.y))
+	var outside: float = INF
+	for rect: Rect2 in flat_rects:
+		outside = minf(outside, maxf(maxf(rect.position.x - x, x - rect.end.x), maxf(rect.position.y - z, z - rect.end.y)))
 	if outside <= 0.0:
 		return 0.0
 	if _hollows == null:
@@ -120,7 +127,7 @@ static func ground_height(x: float, z: float) -> float:
 		_hollows.frequency = 0.03
 		_hollows.fractal_octaves = 2
 	var weight: float = smoothstep(0.0, HOLLOW_FADE, outside)
-	return _hollows.get_noise_2d(x, z) * HOLLOW_METERS * weight
+	return _hollows.get_noise_2d(x, z) * hollow_meters * weight
 
 
 static func _ground_mesh() -> ArrayMesh:
@@ -335,6 +342,62 @@ static func dress_frost_field(parent: Node3D, area: Rect2, is_free: Callable) ->
 			var height: float = random.randf_range(0.4, 1.3)
 			var piece: Node3D = LevelBlocks.box(parent, centre + Vector3(random.randf_range(-0.8, 0.8), height * 0.4, random.randf_range(-0.8, 0.8)), Vector3(random.randf_range(0.2, 0.45), height, random.randf_range(0.2, 0.4)), ice, false)
 			piece.rotation = Vector3(random.randf_range(-0.4, 0.4), random.randf_range(-PI, PI), random.randf_range(-0.4, 0.4))
+
+
+## The dry plain beside the column's road: rocks, dead trees, bushes, fallen
+## trunks, stumps and a few ruined walls, standing on the ground's height,
+## the big ones solid. `is_free` keeps the road and the ways clear.
+static func dress_plain(parent: Node3D, area: Rect2, is_free: Callable, seed_value: int) -> void:
+	var random: RandomNumberGenerator = RandomNumberGenerator.new()
+	random.seed = seed_value
+	var scatter: VegetationScatter = VegetationScatter.new()
+	var entries: Array[VegetationEntry] = []
+	for path: String in GRASS_ENTRIES:
+		entries.append(load(path) as VegetationEntry)
+	scatter.entries = entries
+	scatter.extents = area.size * 0.5
+	scatter.density = 0.2
+	scatter.random_seed = seed_value
+	scatter.position = Vector3(area.get_center().x, 0.0, area.get_center().y)
+	scatter.height_at = ground_height
+	parent.add_child(scatter)
+	var per_1000: Dictionary = {
+		"res://assets/vegetation_kit/roccia_grande_01.tres": 3.0,
+		"res://assets/vegetation_kit/sassi_01.tres": 4.0,
+		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 6.0,
+		"res://assets/vegetation_kit/albero_storto_01.tres": 1.2,
+		"res://assets/vegetation_kit/alberello_01.tres": 1.2,
+		"res://assets/vegetation_kit/tronco_caduto_01.tres": 1.0,
+		"res://assets/vegetation_kit/ceppo_01.tres": 1.0,
+	}
+	var surface: float = area.size.x * area.size.y / 1000.0
+	for path: String in per_1000:
+		var entry: VegetationEntry = load(path)
+		var wanted: int = roundi(float(per_1000[path]) * surface)
+		var placed: int = 0
+		var tries: int = 0
+		while placed < wanted and tries < wanted * 20:
+			tries += 1
+			var point: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+			if not is_free.call(point):
+				continue
+			var prop: Node3D = entry.model.instantiate()
+			prop.position = Vector3(point.x, ground_height(point.x, point.z), point.z)
+			prop.rotation.y = random.randf_range(-PI, PI)
+			prop.scale = Vector3.ONE * random.randf_range(entry.scale_range.x, entry.scale_range.y)
+			parent.add_child(prop)
+			_solid_if_needed(prop, path)
+			placed += 1
+	# A few ruined houses and walls of an older road.
+	for index: int in roundi(surface * 0.12):
+		var at: Vector3 = Vector3(random.randf_range(area.position.x, area.end.x), 0.0, random.randf_range(area.position.y, area.end.y))
+		if not is_free.call(at):
+			continue
+		var model: Node3D = (load(PLAIN_RUINS[random.randi() % PLAIN_RUINS.size()]) as PackedScene).instantiate()
+		model.position = Vector3(at.x, _ruin_base(at), at.z)
+		model.rotation.y = random.randf_range(-PI, PI)
+		parent.add_child(model)
+		LevelBlocks.make_solid(model, 0.9)
 
 
 ## Ruins of old stone buildings between the camp and the mountains.

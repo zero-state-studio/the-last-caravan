@@ -68,7 +68,7 @@ Accompagna l'inquadratura che mostra la carovana.
 - **Anselmo, in coda alla colonna, affranto:** «Ottavia... sei in ritardo.»
 - **Ottavia:** «Sì, lo so...»
 - **Anselmo, il verdetto:** «Il Sindaco ti ha vista arrivare oltre il limite. Ha contato i passi, come sempre.» «Dice che una Serrafila che non tiene il passo diventa una persona in più da andare a riprendere.» «Ma quarant'anni non li ha dimenticati. Per questo ti concede dieci Tregue.» «Dieci soste, poi resterai indietro... e la lanterna dovrò fartela io.»
-- **Chiusura, Ottavia, mentre cammina con la colonna nella sera, veloce e senza solennità:** «E quindi finisce così... va beh, fa niente!» «Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito.» «Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!» «Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!»
+- **Chiusura, Ottavia, mentre cammina con la colonna nella sera, veloce e senza solennità:** «E quindi finisce così... va beh, fa niente!» «Dieci Tregue sono dieci soste della carovana: alla decima si riparte, e io resto indietro con la lanterna che Anselmo mi avrà costruito.» «È crudele? Forse sì, ma necessario. Purtroppo in questo mondo non ci si può permettere di essere un peso per la comunità.» «Comunque sia, troppe volte mi sono avvicinata alla Notte senza mai toccarla!» «Fin dall'inizio sapevamo che la vincitrice di questa battaglia sarebbe stata Lei... Dieci soste, e finalmente la vedrò!»
 - **Titolo del capitolo:** «Ne restano dieci.»
 
 ### Suggerimenti a schermo

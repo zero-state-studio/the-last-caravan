@@ -247,6 +247,8 @@ func _show_wide_still() -> void:
 
 
 func _build() -> void:
+	CampScenery.flat_rects = [CampScenery.FLAT_BAND]
+	CampScenery.hollow_meters = CampScenery.HOLLOW_METERS
 	CampScenery.build_ground(level, _random)
 	CampScenery.build_mountains(level, _random)
 	_place_vehicles()

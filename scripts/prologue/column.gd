@@ -74,9 +74,8 @@ const MOTHER_RUN_SPEED: float = 4.5
 const RUN_LINES: Array[StringName] = [&"PRO_OTTAVIA_RUN_01", &"PRO_OTTAVIA_RUN_02", &"PRO_OTTAVIA_RUN_03"]
 const RUN_LINE_SHARES: Array[float] = [0.15, 0.5, 0.85]
 ## The outro (106): quick and wry, what the ten Truces mean, over the
-## column walking into the dusk; the lantern outline shows with the second.
-const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
-const OUTRO_LANTERN_LINE: int = 1
+## column walking into the dusk; the menu gets the empty lantern after it.
+const OUTRO: Array[StringName] = [&"PRO_OUTRO2_01", &"PRO_OUTRO2_02", &"PRO_OUTRO2_05", &"PRO_OUTRO2_03", &"PRO_OUTRO2_04"]
 const OUTRO_PAUSE: float = 0.3
 ## The way back (106): boulders and fallen trunks scattered south of the
 ## barriers, where the column is seen ahead; (x, z) of each cluster.
@@ -113,6 +112,13 @@ const SWARM_COUNT: int = 3
 ## The frost field around Mirco (x, z, width, depth), dressed with frozen
 ## things; the barriers' gaps and Mirco's spot stay clear.
 const FROST_FIELD: Rect2 = Rect2(20.0, -14.0, 140.0, 40.0)
+
+## Ground flat where one plays; the plain beside the road has hollows.
+const FLAT_RECTS: Array[Rect2] = [Rect2(-480.0, -13.0, 700.0, 20.0), Rect2(-12.0, -17.0, 192.0, 47.0)]
+const PLAIN_HOLLOW_METERS: float = 1.6
+## The plain dressed north and south of the road, west of the start.
+const PLAIN_AREAS: Array[Rect2] = [Rect2(-230.0, -60.0, 225.0, 46.0), Rect2(-230.0, 8.0, 225.0, 40.0)]
+const PLAIN_SEED: int = 1070
 
 ## Nightfall toward Mirco (106): how much the light dims at his place.
 const DUSK_START_X: float = 20.0
@@ -173,6 +179,10 @@ func _ready() -> void:
 	InputRemap.load_controls()
 	_random.seed = 103
 	NpcSprite.sun_azimuth_degrees = SUN_AZIMUTH_DEGREES
+	# Flat only along the road and on the way to Mirco; gentle hollows and
+	# swells on the plain beside them (106).
+	CampScenery.flat_rects = FLAT_RECTS
+	CampScenery.hollow_meters = PLAIN_HOLLOW_METERS
 	CampScenery.build_ground(level, _random, ROADS)
 	CampScenery.build_mountains(level, _random)
 	CampScenery.place_ruins(level)
@@ -191,6 +201,9 @@ func _ready() -> void:
 	_build_barriers()
 	# Where Mirco stays behind, and on the way there: the frost field.
 	CampScenery.dress_frost_field(level, FROST_FIELD, _frost_free)
+	# The plain on both sides of the road, seen when the view draws away.
+	for area: Rect2 in PLAIN_AREAS:
+		CampScenery.dress_plain(level, area, _plain_free, PLAIN_SEED + int(area.position.y))
 	_waiting_swarms = [WAY_OUT_SWARM]
 	ottavia.set_shaded(true)
 	ottavia.set_sun_azimuth(SUN_AZIMUTH_DEGREES)
@@ -254,13 +267,15 @@ func _intro() -> void:
 	# Then she walks on with the column, like everyone else.
 	back.tween_callback(func() -> void: walkers.append(_mother))
 	var start: Transform3D = camera_rig.camera.global_transform
-	var toward: Transform3D = start.translated(Vector3(40.0, 0.0, 0.0))
+	# All the way to Mirco, far off in the dusk, then back to her.
+	var toward: Transform3D = start.translated(Vector3(MIRCO_START.x - OTTAVIA_START.x, 0.0, MIRCO_START.z - OTTAVIA_START.z))
 	cinema_camera.global_transform = start
 	cinema_camera.current = true
+	var quick: bool = line_seconds < 1.0
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 2.4 if line_seconds >= 1.0 else 0.05)
-	tween.tween_interval(1.0 if line_seconds >= 1.0 else 0.05)
-	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = toward.interpolate_with(start, t), 0.0, 1.0, 1.8 if line_seconds >= 1.0 else 0.05)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = start.interpolate_with(toward, t), 0.0, 1.0, 0.05 if quick else 4.5)
+	tween.tween_interval(0.05 if quick else 2.0)
+	tween.tween_method(func(t: float) -> void: cinema_camera.global_transform = toward.interpolate_with(start, t), 0.0, 1.0, 0.05 if quick else 3.0)
 	await tween.finished
 	camera_rig.camera.current = true
 	ottavia.controls_enabled = true
@@ -444,10 +459,9 @@ func _outro() -> void:
 	for index: int in OUTRO.size():
 		var voice: float = dialogue.show_line(&"SPEAKER_OTTAVIA", OUTRO[index])
 		var wait: float = DialogueBox.line_wait(line_seconds, voice, OUTRO_PAUSE)
-		# The lantern outline shows while she speaks of it.
-		if index == OUTRO_LANTERN_LINE:
-			title.show_lantern_silhouette(maxf(wait - 1.2, 0.05), true)
 		await get_tree().create_timer(wait).timeout
+	# From now on the empty farewell lantern is in the pause menu (88).
+	LanternProgress.revealed = true
 	dialogue.hide_box()
 	GameAudio.stop_music(1.5)
 
@@ -527,6 +541,10 @@ func _spawn_brinacchio(at: Vector3) -> CombatEnemy:
 	level.add_child(creature)
 	brinacchi.append(creature)
 	return creature
+
+
+func _plain_free(point: Vector3) -> bool:
+	return point.z < COLUMN_Z - 10.0 or point.z > COLUMN_Z + 10.0
 
 
 func _frost_free(point: Vector3) -> bool:
