@@ -146,3 +146,18 @@ Cosa è stato deciso e quando. Le idee scartate restano qui per non riproporle. 
   - **Obiettivi a schermo (125):** brevi, uno alla volta, spariscono a obiettivo fatto e si nascondono dalle opzioni; testi «Parla con Iole, vicino ai carri-campo» e «Porta lo stoppino ad Anselmo, in fondo alla colonna».
   - **Progressione (34, 33):** la corsa del capitolo 2 dura il 75%. Il colpo di ritorno si unisce al contrattempo: dopo una deviazione riuscita il colpo successivo è sempre un contrattempo, fin dal prologo; tolto dalla tabella della progressione.
   - **File di prova:** `/tmp/null`, creato per sbaglio, è cancellato. Il salvataggio scritto da una prova è rinominato `save_1.json.bak`: lo controlla l'autore.
+- Capitolo 1, passo 3 approvato con correzioni (29 settembre 2026):
+  - **Approvati:** Voltafaccia, Coccio, Pellegrino-bisonte, stelo a nodi, Frinitori in particelle, Iole, Pia, legno del carro, Ali, luce.
+  - **Da correggere al passo 4:**
+    - spighe piegate tutte di circa 30° verso sinistra;
+    - tuberi solo nelle zone d'ombra;
+    - cavoli alti 1,5 m, aperti a ventaglio verso il sole;
+    - Code del carro lunghe e striscianti con la brina;
+    - Specchietto visto dall'alto da sud;
+    - gabbia chiusa intorno a Pia, oro e verde;
+    - cima con le assi del carro a 30 px/m;
+    - terreno senza griglia, con il kit di vegetazione;
+    - Foglione Radicato da mostrare intero;
+    - ruote con mozzo di legno pieno, assi del Foglione tolte, texture ridotte alle parti usate.
+  - Modelli vecchi archiviati in `source-assets/archivio/capitolo01/`.
+- Passo 4 (budget): tetto PixelLab della fase alzato da 200 a 280 generazioni per le animazioni delle creature in 5 direzioni + 3 specchiate, con il colpo subito; Meshy approvato il gruppo cavolo, gabbia, foglia e radice del boss (circa 72 crediti).
