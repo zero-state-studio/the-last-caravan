@@ -67,6 +67,9 @@ func _test_voltafaccia() -> void:
 func _test_raspagelo() -> void:
 	var rodent: Raspagelo = _spawn("res://scenes/creatures/raspagelo.tscn", _ottavia.global_position + Vector3(-5.0, -0.05, 0.0))
 	await _wait(0.6)
+	_check(rodent.phase == Raspagelo.Phase.IDLE, "raspagelo: farther than 2 m it stays put (chapter 1)")
+	rodent.global_position = _ottavia.global_position + Vector3(-1.6, -0.05, 0.0)
+	await _wait(0.6)
 	_check(rodent.phase == Raspagelo.Phase.BURROW and not rodent.can_be_targeted(), "raspagelo: dives and cannot be hit underground")
 	var burst: bool = false
 	var exposed_after_burst: bool = false

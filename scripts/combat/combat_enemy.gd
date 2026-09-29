@@ -74,6 +74,12 @@ func can_be_targeted() -> bool:
 	return is_alive()
 
 
+## The hook can also catch some creatures that cannot be struck (a
+## Raspagelo while the ground swells over it, chapter 1).
+func can_be_hooked() -> bool:
+	return can_be_targeted()
+
+
 ## Back to the start, full health (the room restarts after a defeat, 105).
 func reset_enemy() -> void:
 	global_transform = spawn_transform

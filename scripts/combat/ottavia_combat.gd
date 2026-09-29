@@ -80,6 +80,9 @@ var chapter: int = 1
 ## Coat patches sewn in the three slots (104).
 var patches: Array[StringName] = []
 var _return_strike_left: float = 0.0
+## Dazzled by a flash (B32): slower and without aim assist.
+var _dazzled_left: float = 0.0
+var _dazzle_speed: float = 1.0
 var _dazzle_cooldown: float = 0.0
 
 
@@ -95,6 +98,7 @@ func reset() -> void:
 	_buffer.clear()
 	_parry_held = false
 	_stone_held = false
+	_dazzled_left = 0.0
 	_run_held = false
 	running = false
 	_knock_velocity = Vector3.ZERO
@@ -116,6 +120,7 @@ func physics_update(delta: float, input: Vector2, controls_enabled: bool) -> voi
 	_return_strike_left = maxf(0.0, _return_strike_left - delta)
 	_dazzle_cooldown = maxf(0.0, _dazzle_cooldown - delta)
 	_invulnerable_left = maxf(0.0, _invulnerable_left - delta)
+	_dazzled_left = maxf(0.0, _dazzled_left - delta)
 	_knock_velocity = _knock_velocity.move_toward(Vector3.ZERO, 8.0 * delta)
 	_advance_state(input)
 	_update_run(delta, controls_enabled)
@@ -365,7 +370,7 @@ func _update_run(delta: float, controls_enabled: bool) -> void:
 	running = controls_enabled and _run_held and _moving and state == State.FREE and stamina > 0.0
 	if not running:
 		return
-	stamina = maxf(0.0, stamina - tuning.run_stamina_per_second * run_drain_multiplier * delta)
+	stamina = maxf(0.0, stamina - tuning.run_stamina_per_second * run_drain_multiplier / Progression.run_share(chapter) * delta)
 	_since_action = 0.0
 
 
@@ -442,15 +447,16 @@ func _hook_hit() -> void:
 
 ## The creature the hook catches: the same aim rule as the strike (33).
 func hook_target() -> CombatEnemy:
-	return aim_target(hook_reach())
+	return aim_target(hook_reach(), true)
 
 
 ## The creature an action goes for (33). Stick held: the nearest creature
 ## within `reach` inside the aim cone around the stick direction. Stick
 ## still: the nearest creature within reach in any direction (Ottavia turns
 ## to it). Null when there is none, or when aim assist is off (options, 96).
-func aim_target(reach: float) -> CombatEnemy:
-	if not GameOptions.aim_assist:
+func aim_target(reach: float, for_hook: bool = false) -> CombatEnemy:
+	# Dazzled by a Specchietto (B32), Ottavia loses the aim assist too.
+	if not GameOptions.aim_assist or is_dazzled():
 		return null
 	var origin: Vector3 = ottavia.global_position
 	var stick: Vector3 = _stick_direction()
@@ -459,7 +465,7 @@ func aim_target(reach: float) -> CombatEnemy:
 	var best_distance: float = INF
 	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
 		var target: CombatEnemy = node as CombatEnemy
-		if target == null or not target.can_be_targeted():
+		if target == null or not (target.can_be_hooked() if for_hook else target.can_be_targeted()):
 			continue
 		var offset: Vector3 = target.global_position - origin
 		offset.y = 0.0
@@ -644,8 +650,20 @@ func dazzle() -> void:
 			creature.flash(1.0, Color(1.0, 0.95, 0.7))
 
 
+## A Specchietto's flash (B32): for `seconds` Ottavia moves at `speed`
+## and has no aim assist.
+func dazzle_by_flash(seconds: float, speed: float) -> void:
+	_dazzled_left = maxf(_dazzled_left, seconds)
+	_dazzle_speed = speed
+	message.emit(&"COMBAT_DAZZLED")
+
+
+func is_dazzled() -> bool:
+	return _dazzled_left > 0.0
+
+
 func move_speed_multiplier() -> float:
-	var free: float = 1.0 - clampf(slowdown, 0.0, 1.0)
+	var free: float = (1.0 - clampf(slowdown, 0.0, 1.0)) * (_dazzle_speed if is_dazzled() else 1.0)
 	match state:
 		State.FREE:
 			return free * (tuning.run_speed_multiplier if running else 1.0)

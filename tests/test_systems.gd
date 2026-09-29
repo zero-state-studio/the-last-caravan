@@ -58,7 +58,7 @@ func _test_truce() -> void:
 	clock.warning.connect(func() -> void: warned[0] = true)
 	_yard.start_truce(3.0)
 	_check(clock.running and GameState.at_caravan, "Truce: started at the caravan")
-	_check(GameState.warm_stones == (load(CHAPTER_TUNING_PATH) as ChapterTuning).truce_warm_stones, "Truce: warm stones back to three (129)")
+	_check(GameState.warm_stones == (load(CHAPTER_TUNING_PATH) as ChapterTuning).truce_warm_stones, "Truce: warm stones as the chapter says (129; none in chapter 1)")
 	_check(SaveGame.has_save() and str(SaveGame.read()["checkpoint"]["stage"]) == "truce", "Truce: autosave at its start (95)")
 	var banner: HintBanner = get_first_node_in_group(&"hint_banner") as HintBanner
 	_check(banner != null and banner.current_hint() == TruceClock.HINT_SUNDIAL, "Truce: the sundial hint")

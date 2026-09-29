@@ -1,20 +1,22 @@
 class_name Voltafaccia
-extends CombatEnemy
+extends SunFacingEnemy
 ## B31 Voltafaccia: a small grazer of the Day Margin (92) that always keeps
 ## its muzzle toward the sun, the Day in the west (100), and turns its whole
 ## body not to lose it: it sidles toward Ottavia instead of turning. Its
-## shaded side is the right one (north): hit from there, it takes double
-## damage (36). The first beast that teaches the rule of the Day.
+## shaded side is the right one (north when it faces west): hit from there,
+## it takes double damage (36). The first beast that teaches the rule of the
+## Day. In a herd (chapter 1): within 5 m the herd is alarmed, and they
+## attack one at a time; after every attack it turns back to the sun.
 
-enum Phase { GRAZE, APPROACH, WINDUP, ACTIVE, EXPOSED, COOLDOWN }
+enum Phase { GRAZE, ALARMED, APPROACH, WINDUP, ACTIVE, EXPOSED, COOLDOWN }
 
-## Toward the Day (100): the beast always faces this way.
-const SUN_DIRECTION: Vector3 = Vector3.LEFT
 const TELEGRAPH_COLOR: Color = Color(1.0, 0.6, 0.3)
 const GRAZE_RADIUS: float = 1.5
 const SEPARATION_DISTANCE: float = 1.2
-
-@export var creature: CreatureTuning
+## Beasts this close to each other are one herd.
+const HERD_RADIUS: float = 12.0
+## Alarmed ones keep this far while another attacks.
+const WAIT_DISTANCE: float = 3.2
 
 var phase: Phase = Phase.GRAZE
 var _time: float = 0.0
@@ -22,19 +24,13 @@ var _graze_goal: Vector3
 
 
 func _ready() -> void:
-	max_health = creature.voltafaccia_health
+	max_health = CreatureTuning.health_for_hits(creature.voltafaccia_hits)
 	super._ready()
 	_graze_goal = global_position
 
 
-## The beast's right: with the sun in the west, the north side.
-func shaded_side() -> Vector3:
-	return SUN_DIRECTION.cross(Vector3.UP)
-
-
 func damage_multiplier(hit: CombatHit) -> float:
-	var toward_attacker: Vector3 = -hit.direction
-	if rad_to_deg(toward_attacker.angle_to(shaded_side())) <= creature.voltafaccia_shade_degrees:
+	if hit_on_shaded_side(hit, creature.voltafaccia_shade_degrees):
 		return creature.voltafaccia_shade_multiplier
 	return 1.0
 
@@ -43,14 +39,15 @@ func is_exposed() -> bool:
 	return phase == Phase.EXPOSED or super.is_exposed()
 
 
-func weak_side(_from: Vector3) -> Vector3:
-	return shaded_side()
-
-
 func attack_in() -> float:
 	if phase == Phase.WINDUP:
 		return maxf(0.0, creature.voltafaccia_windup * Difficulty.telegraph() - _time)
 	return INF
+
+
+## True while this beast holds the herd's turn to attack.
+func is_attacking() -> bool:
+	return phase == Phase.APPROACH or phase == Phase.WINDUP or phase == Phase.ACTIVE or phase == Phase.EXPOSED
 
 
 func _behave(delta: float) -> void:
@@ -68,8 +65,15 @@ func _behave(delta: float) -> void:
 				var angle: float = randf() * TAU
 				_graze_goal = spawn_transform.origin + Vector3(cos(angle), 0.0, sin(angle)) * randf() * GRAZE_RADIUS
 			move = flat_direction_to(_graze_goal) * creature.voltafaccia_speed * 0.3
-			if distance < creature.voltafaccia_aggro and player.health > 0.0:
+			if player.health > 0.0 and (distance < creature.voltafaccia_aggro or _herd_alarmed()):
+				_set_phase(Phase.ALARMED)
+		Phase.ALARMED:
+			if distance > creature.leash_distance or player.health <= 0.0:
+				_set_phase(Phase.GRAZE)
+			elif not _other_attacking():
 				_set_phase(Phase.APPROACH)
+			elif distance < WAIT_DISTANCE:
+				move = -flat_direction_to(target.global_position) * creature.voltafaccia_speed * 0.4
 		Phase.APPROACH:
 			if distance > creature.leash_distance or player.health <= 0.0:
 				_set_phase(Phase.GRAZE)
@@ -92,22 +96,43 @@ func _behave(delta: float) -> void:
 			if _time >= creature.voltafaccia_exposed and not is_staggered():
 				_set_phase(Phase.COOLDOWN)
 		Phase.COOLDOWN:
-			# Backs off a little, still facing the sun.
+			# Backs off a little, face to the sun again, and gives the turn.
 			if distance < creature.voltafaccia_attack_range * 1.5:
 				move = -flat_direction_to(target.global_position) * creature.voltafaccia_speed * 0.5
 			if _time >= creature.voltafaccia_cooldown:
-				_set_phase(Phase.APPROACH)
+				_set_phase(Phase.ALARMED)
 	if not is_being_moved() and not is_staggered():
 		velocity = move
+
+
+## Another beast of the herd noticed Ottavia: the whole herd is alarmed.
+func _herd_alarmed() -> bool:
+	for other: Voltafaccia in _herd():
+		if other.phase != Phase.GRAZE:
+			return true
+	return false
+
+
+func _other_attacking() -> bool:
+	for other: Voltafaccia in _herd():
+		if other.is_attacking():
+			return true
+	return false
+
+
+func _herd() -> Array[Voltafaccia]:
+	var result: Array[Voltafaccia] = []
+	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
+		var other: Voltafaccia = node as Voltafaccia
+		if other != null and other != self and other.is_alive() and flat_distance_to(other.global_position) <= HERD_RADIUS:
+			result.append(other)
+	return result
 
 
 ## Keeps the herd from piling up on one spot.
 func _separation() -> Vector3:
 	var push: Vector3 = Vector3.ZERO
-	for node: Node in get_tree().get_nodes_in_group(&"combat_targets"):
-		if node == self or not node is Voltafaccia:
-			continue
-		var other: Voltafaccia = node
+	for other: Voltafaccia in _herd():
 		var offset: Vector3 = global_position - other.global_position
 		offset.y = 0.0
 		if offset.length() < SEPARATION_DISTANCE and offset.length() > 0.01:
@@ -124,6 +149,7 @@ func _on_defeated() -> void:
 
 
 func _on_reset() -> void:
+	super._on_reset()
 	_set_phase(Phase.GRAZE)
 
 

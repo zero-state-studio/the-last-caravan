@@ -53,26 +53,9 @@ func _test_chapters() -> void:
 	_ottavia.global_position = dummy.global_position + Vector3(0.0, 0.05, 1.6)
 	_ottavia.face_toward(Vector3.FORWARD)
 	_combat.set_chapter(2)
-	_combat.reset()
-	dummy.health = 1000.0
-	_combat.press(&"parry")
-	await physics_frame
-	await physics_frame
-	var attack: CombatAttack = CombatAttack.new()
-	attack.damage = 5.0
-	attack.source = dummy
-	_combat.receive_attack(attack)
-	_combat.release(&"parry")
-	# Not open any more: a critical can only come from the return strike.
-	dummy._set_phase(TrainingDummy.Phase.WAIT)
-	dummy._stagger_left = 0.0
-	await physics_frame
-	_combat.press(&"attack")
-	await _wait(0.4)
-	var expected: float = _combat.tuning.strike_damage * Progression.power(2) * _combat.counter_multiplier()
-	_check(absf((1000.0 - dummy.health) - expected) < 0.5, "chapter 2, return strike: after a deflection the next strike is critical (%.1f)" % (1000.0 - dummy.health))
-	await _wait(0.6)
-
+	var lines: PackedStringArray = Progression.chapter_lines(2)
+	_check(lines[0] == TranslationServer.translate(&"PROG_LOSE_LONG_SPRINT") and lines[1] == TranslationServer.translate(&"PROG_LEARN_TIMED_STEP"), "chapter 1 ends: loses the long sprint, learns the timed step (107)")
+	_check(Progression.run_share(2) < Progression.run_share(1), "chapter 2: the run lasts less")
 	_combat.set_chapter(6)
 	_combat.reset()
 	dummy.health = dummy.max_health
@@ -140,8 +123,10 @@ func _test_difficulty() -> void:
 	GameOptions.difficulty = Difficulty.Level.HARD
 	beast.reset_enemy()
 	_check(beast.max_health > easy_health, "difficulty: creatures stronger at hard")
-	_check(_combat.deflect_window() < easy_window and is_equal_approx(easy_cone, _combat.tuning.aim_cone_easy_degrees) and _combat.aim_cone_degrees() < easy_cone, "difficulty: easy widens deflection window and aim cone (90 degrees)")
-	_check(Difficulty.enemy_damage() > 1.0 and Difficulty.telegraph() < 1.0, "difficulty: hard hits harder with shorter warnings")
+	_check(is_equal_approx(_combat.deflect_window(), easy_window) and is_equal_approx(easy_cone, _combat.tuning.aim_cone_easy_degrees) and _combat.aim_cone_degrees() < easy_cone, "difficulty: easy widens the aim cone (90 degrees), same deflection window")
+	_check(is_equal_approx(Difficulty.enemy_damage(), 1.3) and is_equal_approx(Difficulty.enemy_health(), 1.25), "difficulty: hard, 30% more damage and 25% more health (chapter 1)")
+	GameOptions.difficulty = Difficulty.Level.EASY
+	_check(is_equal_approx(Difficulty.telegraph(), 1.3) and is_equal_approx(Difficulty.enemy_damage(), 1.0), "difficulty: easy, only 30% longer telegraphs")
 	GameOptions.difficulty = Difficulty.Level.MEDIUM
 	beast.free()
 

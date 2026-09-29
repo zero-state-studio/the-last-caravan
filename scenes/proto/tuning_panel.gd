@@ -7,6 +7,7 @@ signal settings_changed
 signal save_requested
 signal combat_save_requested
 signal creatures_save_requested
+signal chapter_save_requested
 signal end_chapter_requested
 ## Systems yard of phase 4b step 1: start a Truce, go to the yard.
 signal truce_requested
@@ -115,10 +116,17 @@ const COMBAT_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_C_TOSCA_DAMAGE", "property": "tosca_damage", "min": 0.0, "max": 40.0, "step": 1.0},
 	{"key": "DEV_C_TOSCA_HEAVY_STAGGER", "property": "tosca_heavy_stagger", "min": 0.0, "max": 4.0, "step": 0.1},
 ]
+## Chapter values (Truce, turning terraces), bound to ChapterTuning.
+const CHAPTER_SLIDERS: Array[Dictionary] = [
+	{"key": "DEV_H_TRUCE_SECONDS", "property": "truce_seconds", "min": 30.0, "max": 900.0, "step": 10.0},
+	{"key": "DEV_H_TRUCE_WARNING_SECONDS", "property": "truce_warning_seconds", "min": 5.0, "max": 180.0, "step": 5.0},
+	{"key": "DEV_H_TRUCE_WARM_STONES", "property": "truce_warm_stones", "min": 0.0, "max": 6.0, "step": 1.0},
+	{"key": "DEV_H_PLATFORM_TURN_SECONDS", "property": "platform_turn_seconds", "min": 0.3, "max": 4.0, "step": 0.05},
+]
 ## Creature values (36), bound to CreatureTuning.
 const CREATURE_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_K_LEASH_DISTANCE", "property": "leash_distance", "min": 4.0, "max": 30.0, "step": 0.5},
-	{"key": "DEV_K_VOLTAFACCIA_HEALTH", "property": "voltafaccia_health", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_VOLTAFACCIA_HITS", "property": "voltafaccia_hits", "min": 0.5, "max": 20.0, "step": 0.5},
 	{"key": "DEV_K_VOLTAFACCIA_SPEED", "property": "voltafaccia_speed", "min": 0.5, "max": 6.0, "step": 0.1},
 	{"key": "DEV_K_VOLTAFACCIA_AGGRO", "property": "voltafaccia_aggro", "min": 2.0, "max": 15.0, "step": 0.5},
 	{"key": "DEV_K_VOLTAFACCIA_ATTACK_RANGE", "property": "voltafaccia_attack_range", "min": 0.5, "max": 3.0, "step": 0.05},
@@ -129,7 +137,7 @@ const CREATURE_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_K_VOLTAFACCIA_LUNGE", "property": "voltafaccia_lunge", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_K_VOLTAFACCIA_SHADE_MULTIPLIER", "property": "voltafaccia_shade_multiplier", "min": 1.0, "max": 4.0, "step": 0.05},
 	{"key": "DEV_K_VOLTAFACCIA_SHADE_DEGREES", "property": "voltafaccia_shade_degrees", "min": 15.0, "max": 90.0, "step": 1.0},
-	{"key": "DEV_K_RASPAGELO_HEALTH", "property": "raspagelo_health", "min": 5.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_RASPAGELO_HITS", "property": "raspagelo_hits", "min": 0.5, "max": 20.0, "step": 0.5},
 	{"key": "DEV_K_RASPAGELO_BURROW_SPEED", "property": "raspagelo_burrow_speed", "min": 0.5, "max": 8.0, "step": 0.1},
 	{"key": "DEV_K_RASPAGELO_AGGRO", "property": "raspagelo_aggro", "min": 2.0, "max": 15.0, "step": 0.5},
 	{"key": "DEV_K_RASPAGELO_TELEGRAPH", "property": "raspagelo_telegraph", "min": 0.1, "max": 2.0, "step": 0.05},
@@ -139,6 +147,42 @@ const CREATURE_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_K_RASPAGELO_SURFACED", "property": "raspagelo_surfaced", "min": 0.0, "max": 3.0, "step": 0.05},
 	{"key": "DEV_K_RASPAGELO_UNDERGROUND_MIN", "property": "raspagelo_underground_min", "min": 0.0, "max": 4.0, "step": 0.05},
 	{"key": "DEV_K_RASPAGELO_ARMOR_MULTIPLIER", "property": "raspagelo_armor_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
+	{"key": "DEV_K_DAY_BEAST_FLANK_SECONDS", "property": "day_beast_flank_seconds", "min": 0.2, "max": 6.0, "step": 0.1},
+	{"key": "DEV_K_RASPAGELO_HOOKED_STUN", "property": "raspagelo_hooked_stun", "min": 0.0, "max": 4.0, "step": 0.1},
+	{"key": "DEV_K_COCCIO_HITS", "property": "coccio_hits", "min": 0.5, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_COCCIO_SPEED", "property": "coccio_speed", "min": 0.1, "max": 4.0, "step": 0.1},
+	{"key": "DEV_K_COCCIO_AGGRO", "property": "coccio_aggro", "min": 1.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_COCCIO_ATTACK_RANGE", "property": "coccio_attack_range", "min": 0.3, "max": 3.0, "step": 0.05},
+	{"key": "DEV_K_COCCIO_WINDUP", "property": "coccio_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_COCCIO_DAMAGE", "property": "coccio_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_COCCIO_COOLDOWN", "property": "coccio_cooldown", "min": 0.0, "max": 5.0, "step": 0.05},
+	{"key": "DEV_K_FRINITORE_HITS", "property": "frinitore_hits", "min": 0.5, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_FRINITORE_DIAMETER", "property": "frinitore_diameter", "min": 0.5, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_FRINITORE_DAMAGE_PER_SECOND", "property": "frinitore_damage_per_second", "min": 0.0, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_FRINITORE_SPEED", "property": "frinitore_speed", "min": 0.0, "max": 4.0, "step": 0.1},
+	{"key": "DEV_K_FRINITORE_AGGRO", "property": "frinitore_aggro", "min": 1.0, "max": 15.0, "step": 0.5},
+	{"key": "DEV_K_SPECCHIETTO_HITS", "property": "specchietto_hits", "min": 0.5, "max": 10.0, "step": 0.5},
+	{"key": "DEV_K_SPECCHIETTO_RANGE", "property": "specchietto_range", "min": 1.0, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_SPECCHIETTO_WINDUP", "property": "specchietto_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_SPECCHIETTO_DAZZLE_SECONDS", "property": "specchietto_dazzle_seconds", "min": 0.1, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_SPECCHIETTO_DAZZLE_SPEED", "property": "specchietto_dazzle_speed", "min": 0.1, "max": 1.0, "step": 0.05},
+	{"key": "DEV_K_SPECCHIETTO_COOLDOWN", "property": "specchietto_cooldown", "min": 0.0, "max": 8.0, "step": 0.1},
+	{"key": "DEV_K_FOGLIONE_HITS", "property": "foglione_hits", "min": 0.5, "max": 30.0, "step": 0.5},
+	{"key": "DEV_K_FOGLIONE_WINDUP", "property": "foglione_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_FOGLIONE_DAMAGE", "property": "foglione_damage", "min": 0.0, "max": 40.0, "step": 1.0},
+	{"key": "DEV_K_FOGLIONE_RANGE", "property": "foglione_range", "min": 0.5, "max": 5.0, "step": 0.05},
+	{"key": "DEV_K_FOGLIONE_FRONT_DEGREES", "property": "foglione_front_degrees", "min": 10.0, "max": 120.0, "step": 1.0},
+	{"key": "DEV_K_FOGLIONE_FLANK_MULTIPLIER", "property": "foglione_flank_multiplier", "min": 1.0, "max": 4.0, "step": 0.05},
+	{"key": "DEV_K_FOGLIONE_COOLDOWN", "property": "foglione_cooldown", "min": 0.0, "max": 5.0, "step": 0.05},
+	{"key": "DEV_K_FOGLIONE_DISTURB_DISTANCE", "property": "foglione_disturb_distance", "min": 0.3, "max": 5.0, "step": 0.1},
+	{"key": "DEV_K_FOGLIONE_CALM_SECONDS", "property": "foglione_calm_seconds", "min": 1.0, "max": 30.0, "step": 0.5},
+	{"key": "DEV_K_PELLEGRINO_FELT_HITS", "property": "pellegrino_felt_hits", "min": 0.5, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_PELLEGRINO_BODY_HITS", "property": "pellegrino_body_hits", "min": 0.5, "max": 20.0, "step": 0.5},
+	{"key": "DEV_K_PELLEGRINO_WINDUP", "property": "pellegrino_windup", "min": 0.1, "max": 2.0, "step": 0.05},
+	{"key": "DEV_K_PELLEGRINO_DAMAGE", "property": "pellegrino_damage", "min": 0.0, "max": 60.0, "step": 1.0},
+	{"key": "DEV_K_PELLEGRINO_RANGE", "property": "pellegrino_range", "min": 0.5, "max": 5.0, "step": 0.05},
+	{"key": "DEV_K_PELLEGRINO_SPEED", "property": "pellegrino_speed", "min": 0.1, "max": 4.0, "step": 0.1},
+	{"key": "DEV_K_PELLEGRINO_COOLDOWN", "property": "pellegrino_cooldown", "min": 0.0, "max": 6.0, "step": 0.1},
 	{"key": "DEV_K_BRINACCHIO_HEALTH", "property": "brinacchio_health", "min": 1.0, "max": 60.0, "step": 1.0},
 	{"key": "DEV_K_BRINACCHIO_SPEED", "property": "brinacchio_speed", "min": 0.5, "max": 8.0, "step": 0.1},
 	{"key": "DEV_K_BRINACCHIO_AGGRO", "property": "brinacchio_aggro", "min": 1.0, "max": 15.0, "step": 0.5},
@@ -193,14 +237,16 @@ var settings: ProtoSettings
 var _root: PanelContainer
 var combat_tuning: CombatTuning
 var creature_tuning: CreatureTuning
+var chapter_tuning: ChapterTuning
 var _fps_label: Label
 var _status_label: Label
 
 
-func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null, target_creatures: CreatureTuning = null) -> void:
+func _init(target_settings: ProtoSettings, target_combat: CombatTuning = null, target_creatures: CreatureTuning = null, target_chapter: ChapterTuning = null) -> void:
 	settings = target_settings
 	combat_tuning = target_combat
 	creature_tuning = target_creatures
+	chapter_tuning = target_chapter
 	layer = 10
 
 
@@ -306,6 +352,17 @@ func _build() -> void:
 		creatures_save.text = "DEV_SAVE_CREATURES"
 		creatures_save.pressed.connect(func() -> void: creatures_save_requested.emit())
 		box.add_child(creatures_save)
+	if chapter_tuning != null:
+		var chapter_label: Label = Label.new()
+		chapter_label.text = "DEV_SECTION_CHAPTER"
+		box.add_child(HSeparator.new())
+		box.add_child(chapter_label)
+		for definition: Dictionary in CHAPTER_SLIDERS:
+			_add_slider(box, definition, chapter_tuning)
+		var chapter_save: Button = Button.new()
+		chapter_save.text = "DEV_SAVE_CHAPTER"
+		chapter_save.pressed.connect(func() -> void: chapter_save_requested.emit())
+		box.add_child(chapter_save)
 
 
 func _add_slider(box: VBoxContainer, definition: Dictionary, target: Object) -> void:

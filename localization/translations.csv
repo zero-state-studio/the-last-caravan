@@ -116,7 +116,6 @@ INPUT_MOUSE_MIDDLE,Middle mouse button,Tasto centrale del mouse
 INPUT_MOUSE_BUTTON,Mouse button {n},Tasto {n} del mouse
 DEV_C_WALKING_REGEN_MULTIPLIER,Breath regained while walking,Recupero del fiato camminando
 DEV_K_LEASH_DISTANCE,Creatures give up beyond,Le creature rinunciano oltre
-DEV_K_VOLTAFACCIA_HEALTH,Voltafaccia: health,Voltafaccia: vita
 DEV_K_VOLTAFACCIA_SPEED,Voltafaccia: speed,Voltafaccia: velocità
 DEV_K_VOLTAFACCIA_AGGRO,Voltafaccia: notices at,Voltafaccia: si accorge a
 DEV_K_VOLTAFACCIA_ATTACK_RANGE,Voltafaccia: attack range,Voltafaccia: portata
@@ -127,7 +126,6 @@ DEV_K_VOLTAFACCIA_DAMAGE,Voltafaccia: damage,Voltafaccia: danno
 DEV_K_VOLTAFACCIA_LUNGE,Voltafaccia: lunge,Voltafaccia: affondo
 DEV_K_VOLTAFACCIA_SHADE_MULTIPLIER,Voltafaccia: shaded side damage,Voltafaccia: danno sul lato in ombra
 DEV_K_VOLTAFACCIA_SHADE_DEGREES,Voltafaccia: shaded side angle,Voltafaccia: ampiezza del lato in ombra
-DEV_K_RASPAGELO_HEALTH,Raspagelo: health,Raspagelo: vita
 DEV_K_RASPAGELO_BURROW_SPEED,Raspagelo: speed underground,Raspagelo: velocità sotto terra
 DEV_K_RASPAGELO_AGGRO,Raspagelo: notices at,Raspagelo: si accorge a
 DEV_K_RASPAGELO_TELEGRAPH,Raspagelo: ground shaking,Raspagelo: preavviso del terreno
@@ -377,3 +375,50 @@ C01_IOLE_01,"Filecloser! Pia hasn't come back. We were turning the fields, and s
 C01_OTTAVIA_01,Which cart?,Quale carro?
 C01_IOLE_02,The third. At the top.,Il terzo. In cima.
 C01_VOLTACAMPI_WARNING,Not long now! Back to the carts!,Manca poco! Tornate ai carri!
+COMBAT_DAZZLED,Dazzled!,Abbagliata!
+PROG_LOSE_LONG_SPRINT,the long sprint.,lo scatto lungo.
+PROG_LEARN_TIMED_STEP,the timed step.,il passo a tempo.
+DEV_K_VOLTAFACCIA_HITS,Voltafaccia: base strikes,Voltafaccia: colpi base
+DEV_K_RASPAGELO_HITS,Raspagelo: base strikes,Raspagelo: colpi base
+DEV_SECTION_CHAPTER,"Chapter (Truce, terraces)","Capitolo (Tregua, terrazze)"
+DEV_SAVE_CHAPTER,Save chapter values,Salva i valori del capitolo
+DEV_K_DAY_BEAST_FLANK_SECONDS,Day beasts: seconds to turn back to the sun,Bestie del Giorno: secondi per rigirarsi al sole
+DEV_K_RASPAGELO_HOOKED_STUN,Raspagelo: stunned when hooked out,Raspagelo: stordito se tirato fuori con l'uncino
+DEV_K_COCCIO_HITS,Coccio: base strikes,Coccio: colpi base
+DEV_K_COCCIO_SPEED,Coccio: speed,Coccio: velocità
+DEV_K_COCCIO_AGGRO,Coccio: notices within,Coccio: si accorge entro
+DEV_K_COCCIO_ATTACK_RANGE,Coccio: pinch reach,Coccio: portata del pizzico
+DEV_K_COCCIO_WINDUP,Coccio: pinch warning,Coccio: preavviso del pizzico
+DEV_K_COCCIO_DAMAGE,Coccio: pinch damage,Coccio: danno del pizzico
+DEV_K_COCCIO_COOLDOWN,Coccio: pause between pinches,Coccio: pausa tra i pizzichi
+DEV_K_FRINITORE_HITS,Frinitore: base strikes,Frinitore: colpi base
+DEV_K_FRINITORE_DIAMETER,Frinitore: cloud across,Frinitore: diametro della nuvola
+DEV_K_FRINITORE_DAMAGE_PER_SECOND,Frinitore: damage a second inside,Frinitore: danno al secondo dentro
+DEV_K_FRINITORE_SPEED,Frinitore: drift speed,Frinitore: velocità di deriva
+DEV_K_FRINITORE_AGGRO,Frinitore: drifts toward Ottavia within,Frinitore: va verso Ottavia entro
+DEV_K_SPECCHIETTO_HITS,Specchietto: base strikes,Specchietto: colpi base
+DEV_K_SPECCHIETTO_RANGE,Specchietto: flash range,Specchietto: portata del lampo
+DEV_K_SPECCHIETTO_WINDUP,Specchietto: flash warning,Specchietto: preavviso del lampo
+DEV_K_SPECCHIETTO_DAZZLE_SECONDS,Specchietto: dazzled for,Specchietto: abbagliata per
+DEV_K_SPECCHIETTO_DAZZLE_SPEED,Specchietto: speed while dazzled,Specchietto: velocità da abbagliata
+DEV_K_SPECCHIETTO_COOLDOWN,Specchietto: pause between flashes,Specchietto: pausa tra i lampi
+DEV_K_FOGLIONE_HITS,Foglione: base strikes,Foglione: colpi base
+DEV_K_FOGLIONE_WINDUP,Foglione: leaf blow warning,Foglione: preavviso del colpo di foglie
+DEV_K_FOGLIONE_DAMAGE,Foglione: leaf blow damage,Foglione: danno del colpo di foglie
+DEV_K_FOGLIONE_RANGE,Foglione: leaf blow reach,Foglione: portata del colpo di foglie
+DEV_K_FOGLIONE_FRONT_DEGREES,Foglione: leaf shield half-angle,Foglione: semiangolo dello scudo di foglie
+DEV_K_FOGLIONE_FLANK_MULTIPLIER,Foglione: flank damage,Foglione: danno sul fianco
+DEV_K_FOGLIONE_COOLDOWN,Foglione: pause between blows,Foglione: pausa tra i colpi
+DEV_K_FOGLIONE_DISTURB_DISTANCE,Foglione: disturbed this close in front,Foglione: disturbato così vicino davanti
+DEV_K_FOGLIONE_CALM_SECONDS,Foglione: calms down after,Foglione: si calma dopo
+DEV_K_PELLEGRINO_FELT_HITS,Pellegrino: base strikes of the felt,Pellegrino: colpi base del feltro
+DEV_K_PELLEGRINO_BODY_HITS,Pellegrino: base strikes of the body,Pellegrino: colpi base del corpo
+DEV_K_PELLEGRINO_WINDUP,Pellegrino: push warning,Pellegrino: preavviso della spinta
+DEV_K_PELLEGRINO_DAMAGE,Pellegrino: push damage,Pellegrino: danno della spinta
+DEV_K_PELLEGRINO_RANGE,Pellegrino: push reach,Pellegrino: portata della spinta
+DEV_K_PELLEGRINO_SPEED,Pellegrino: speed,Pellegrino: velocità
+DEV_K_PELLEGRINO_COOLDOWN,Pellegrino: pause between pushes,Pellegrino: pausa tra le spinte
+DEV_H_TRUCE_SECONDS,Truce: seconds,Tregua: secondi
+DEV_H_TRUCE_WARNING_SECONDS,Truce: warning before the end,Tregua: avviso prima della fine
+DEV_H_TRUCE_WARM_STONES,Truce: warm stones given back,Tregua: pietre calde restituite
+DEV_H_PLATFORM_TURN_SECONDS,Turning terraces: seconds for a quarter,Terrazze girevoli: secondi per un quarto

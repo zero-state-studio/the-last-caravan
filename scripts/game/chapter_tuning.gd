@@ -11,6 +11,8 @@ extends Resource
 ## A Voltacampi calls the warning this long before the end.
 @export var truce_warning_seconds: float = 60.0
 ## Warm stones given back at the caravan at the start of the Truce (129).
+## Chapter 1: none, Ottavia finds her first three in the Truce; the refill
+## to three holds from chapter 2.
 @export var truce_warm_stones: int = 3
 
 @export_group("Turning platforms")

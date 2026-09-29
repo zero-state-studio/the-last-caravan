@@ -5,7 +5,9 @@ extends CombatEnemy
 ## only a mound of earth moves toward Ottavia. It stops under her, the
 ## ground shakes (time to step aside), it bursts out biting, stays open for a
 ## moment and dives back. The head plate halves frontal strikes when it is
-## not open.
+## not open. Chapter 1: hidden in the ground or in tall grass, it moves only
+## when Ottavia is within 2 m; hooked while the ground swells, it is pulled
+## out stunned instead of biting.
 
 enum Phase { IDLE, BURROW, TELEGRAPH, BURST, SURFACED, DIVE }
 
@@ -14,6 +16,8 @@ const DIVE_SECONDS: float = 0.3
 const FRONT_DEGREES: float = 60.0
 
 @export var creature: CreatureTuning
+## Starts underground, unseen (an ambush in tall grass, chapter 1).
+@export var hidden_start: bool = false
 
 var phase: Phase = Phase.IDLE
 var _time: float = 0.0
@@ -22,7 +26,7 @@ var _mound: Sprite3D
 
 
 func _ready() -> void:
-	max_health = creature.raspagelo_health
+	max_health = CreatureTuning.health_for_hits(creature.raspagelo_hits)
 	is_small = true
 	super._ready()
 	_mound = Sprite3D.new()
@@ -34,10 +38,25 @@ func _ready() -> void:
 	_mound.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 	_mound.visible = false
 	add_child(_mound)
+	if hidden_start:
+		_on_reset()
 
 
 func can_be_targeted() -> bool:
 	return is_alive() and (phase == Phase.IDLE or phase == Phase.BURST or phase == Phase.SURFACED)
+
+
+func can_be_hooked() -> bool:
+	return can_be_targeted() or (is_alive() and phase == Phase.TELEGRAPH)
+
+
+## Hooked while the ground swells: pulled out, stunned, no bite.
+func pull_to(point: Vector3) -> void:
+	if phase == Phase.TELEGRAPH:
+		_go_under(false)
+		_set_phase(Phase.SURFACED)
+		stagger(creature.raspagelo_hooked_stun)
+	super.pull_to(point)
 
 
 func is_exposed() -> bool:
@@ -71,7 +90,11 @@ func _behave(delta: float) -> void:
 		Phase.BURROW:
 			if distance > creature.leash_distance or player.health <= 0.0:
 				pass
+			elif hidden_start and distance > creature.raspagelo_aggro and flat_distance_to(spawn_transform.origin) < 0.3:
+				# Hidden and still: nothing shows until Ottavia comes near.
+				_mound.visible = false
 			elif distance > 0.25:
+				_mound.visible = true
 				move = flat_direction_to(target.global_position) * creature.raspagelo_burrow_speed
 			if distance <= 0.35 and _time >= creature.raspagelo_underground_min:
 				_set_phase(Phase.TELEGRAPH)
@@ -113,8 +136,8 @@ func _on_defeated() -> void:
 
 
 func _on_reset() -> void:
-	_go_under(false)
-	_set_phase(Phase.IDLE)
+	_go_under(hidden_start)
+	_set_phase(Phase.BURROW if hidden_start else Phase.IDLE)
 
 
 func _set_phase(new_phase: Phase) -> void:

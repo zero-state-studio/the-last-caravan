@@ -12,12 +12,17 @@ const LAST_CHAPTER: int = 10
 const POWER_PER_CHAPTER: float = 0.15
 
 ## Index 0 is chapter 1. "stamina" and "speed" are shares of the chapter 1
-## value; "lose" and "learn" are translation keys (StringName, empty: none).
+## value; "run" divides how long a run lasts (1: as in chapter 1); "lose"
+## and "learn" are translation keys (StringName, empty: none).
+## Chapter 2 is defined by the bible (107): after chapter 1 Ottavia loses
+## the long sprint and learns the timed step. The run share is a starting
+## value (TODO-DESIGN #34), and the return strike of the phase 3 proposal is
+## left without a chapter until the table is reviewed.
 const CHAPTERS: Array[Dictionary] = [
-	{"stamina": 1.00, "speed": 1.00, "combo": 3, "lose": &"", "learn": &""},
-	{"stamina": 0.94, "speed": 1.00, "combo": 3, "lose": &"PROG_LOSE_STAMINA", "learn": &"return_strike"},
-	{"stamina": 0.94, "speed": 0.96, "combo": 3, "lose": &"PROG_LOSE_SPEED", "learn": &"keen_eye"},
-	{"stamina": 0.94, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_COMBO", "learn": &"heavy_finisher"},
+	{"stamina": 1.00, "speed": 1.00, "combo": 3, "run": 1.0, "lose": &"", "learn": &""},
+	{"stamina": 1.00, "speed": 1.00, "combo": 3, "run": 0.75, "lose": &"PROG_LOSE_LONG_SPRINT", "learn": &"timed_step"},
+	{"stamina": 1.00, "speed": 0.96, "combo": 3, "lose": &"PROG_LOSE_SPEED", "learn": &"keen_eye"},
+	{"stamina": 1.00, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_COMBO", "learn": &"heavy_finisher"},
 	{"stamina": 0.88, "speed": 0.96, "combo": 2, "lose": &"PROG_LOSE_STAMINA", "learn": &"sure_jump"},
 	{"stamina": 0.88, "speed": 0.92, "combo": 2, "lose": &"PROG_LOSE_SPEED", "learn": &"dazzling_lantern"},
 	{"stamina": 0.82, "speed": 0.92, "combo": 2, "lose": &"PROG_LOSE_STAMINA", "learn": &"deep_counter"},
@@ -47,6 +52,11 @@ static func entry(chapter: int) -> Dictionary:
 	return CHAPTERS[clamp_chapter(chapter) - 1]
 
 
+## How long a run lasts, as a share of chapter 1 (the long sprint, 107).
+static func run_share(chapter: int) -> float:
+	return float(entry(chapter).get("run", 0.75 if chapter >= 2 else 1.0))
+
+
 static func power(chapter: int) -> float:
 	return 1.0 + POWER_PER_CHAPTER * (clamp_chapter(chapter) - 1)
 
@@ -70,6 +80,8 @@ static func chapter_lines(chapter: int) -> PackedStringArray:
 			lose = TranslationServer.translate(&"PROG_LOSE_STAMINA").format({"from": roundi(100.0 * float(before["stamina"])), "to": roundi(100.0 * float(now["stamina"]))})
 		&"PROG_LOSE_SPEED":
 			lose = TranslationServer.translate(&"PROG_LOSE_SPEED").format({"from": roundi(100.0 * float(before["speed"])), "to": roundi(100.0 * float(now["speed"]))})
+		&"PROG_LOSE_LONG_SPRINT":
+			lose = TranslationServer.translate(&"PROG_LOSE_LONG_SPRINT")
 		&"PROG_LOSE_COMBO":
 			lose = TranslationServer.translate(&"PROG_LOSE_COMBO").format({"from": int(before["combo"]), "to": int(now["combo"])})
 	var learn: String = ""
