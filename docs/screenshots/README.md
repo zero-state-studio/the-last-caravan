@@ -15,6 +15,8 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 ## Da valutare adesso
 
+- `asset/capitolo01/01-foglio-unico.png`: il foglio unico del capitolo 1 (passo 3 della fase 4b).
+
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12; da 13 i mezzi in movimento.
 - `asset/personaggi/folla-generici/`: gli otto tipi della folla (121).
 - `asset/ui/`: interfaccia (125): caratteri, elementi dell'HUD, menu.
@@ -274,6 +276,20 @@ Stato: **da valutare**. I sistemi del capitolo 1 provati nel diorama, con forme 
 - `capitoli/00-prologo/01-porta-e-narrazione.mp4`: **da valutare**. Dalla porta alla carovana intera, con la narrazione in sottotitoli, e il ritorno su Ottavia (50 s)
 - `fasi/fase2-stile-definitivo/01-diorama-dimostrativo.mp4`: la scena dimostrativa della fase 2.
 - `fasi/fase3-combattimento/01-capitolo-1-contro-9.mp4`: lo stesso combattimento al capitolo 1 e al 9 (fatto con il vecchio passo).
+
+### `asset/capitolo01/`: Capitolo 1, foglio unico dell'aspetto (107, fase 4b passo 3)
+
+Stato: **da valutare** (fermata del passo 3).
+
+- `01-foglio-unico.png`: **da valutare**. Tutto insieme:
+  - i modelli 3D di prova alla scala di Ottavia;
+  - gabbia e cavolo da vicino;
+  - Iole, Pia, le sei creature e il Pellegrino da sud;
+  - le colture come carte;
+  - le quattro texture.
+- `02-modelli-alla-scala.png`: la fila dei modelli 3D con Ottavia
+- `03-personaggi-e-creature-da-sud.png`: la fila degli sprite da sud
+- `04-concetti-meshy.png`: i cinque concetti da cui sono nati i modelli
 
 ### `asset/ui/`: Interfaccia (125)
 
