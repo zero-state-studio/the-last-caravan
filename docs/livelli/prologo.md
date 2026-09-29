@@ -21,7 +21,7 @@ Il prologo è il tutorial dei comandi. Ogni comando si impara facendo un pezzo d
 ### 3. L'accampamento che smonta (esterno)
 - **Com'è:** una pianura del Crepuscolo. A sinistra il sole basso e il terreno asciutto, a destra la brina e il cielo più scuro. Intorno, la carovana si prepara: i Tessibuio arrotolano le tende, i Voltacampi inclinano i campi, i Traslocanti avviano i Generatori.
 - **Si impara, con un compito per comando, in quest'ordine:**
-  1. **Scatto.** Lo Gnomone dà il primo richiamo. Ottavia deve raggiungere le tende dei Brinaioli, in fondo all'accampamento, prima del secondo richiamo. Non c'è sconfitta, solo il suggerimento di sbrigarsi.
+  1. **Scatto.** Il Meridiano dà il primo richiamo. Ottavia deve raggiungere le tende dei Brinaioli, in fondo all'accampamento, prima del secondo richiamo. Non c'è sconfitta, solo il suggerimento di sbrigarsi.
   2. **Salto.** Per arrivarci attraversa un tratto di terreno non pari, con sassi e scalini di roccia da saltare.
   3. **Arrampicata.** Sulla testata di un carro-campo, accanto ai serbatoi, dorme seduto un vecchio Voltacampi: è Ruggero, che ritroveremo nel capitolo 1. Ottavia sale a svegliarlo con la scala del carro.
   4. **Colpo e rottura.** Una Coda si è piantata nel ghiaccio, tra arbusti secchi e croste di brina, e senza di lei il Generatore non parte. Ottavia la libera a colpi di bastone.
@@ -55,12 +55,12 @@ Accompagna l'inquadratura che mostra la carovana.
 > Ma ormai il mio tempo è passato. La Notte è sempre più vicina... spero solo di trovare un degno erede.
 
 ### Battute
-- **Lo Gnomone, lontano, primo richiamo:** «L'ombra si allunga! Si riparte!»
+- **Il Meridiano, lontano, primo richiamo:** «L'ombra si allunga! Si riparte!»
 - **Una Voltacampi, a Ottavia:** «Serrafila! Il vecchio Ruggero non ha sentito il richiamo: dorme ancora sul suo carro, oltre le tende dei Brinaioli. Se non si sveglia, resta indietro!» **Ottavia:** «Ci penso io.»
 - **Zelinda, al buio:** «Chiudila, quella lanterna. Qui dentro la luce non la vuole nessuno.»
-- **Ruggero, svegliato sul ballatoio, scorbutico:** «Ancora un momento... Le piante sono ancora storte.» **Ottavia:** «Si riparte, Ruggero. In piedi.» **Ruggero:** «Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, lo Gnomone!» «Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte.»
+- **Ruggero, svegliato sul ballatoio, scorbutico:** «Ancora un momento... Le piante sono ancora storte.» **Ottavia:** «Si riparte, Ruggero. In piedi.» **Ruggero:** «Sessant'anni che mi alzo al richiamo, e proprio oggi viene la Serrafila a scuotermi. Lo sento da solo, il Meridiano!» «Invece di svegliare i vecchi, va' giù dal Traslocante: gli s'è piantata una Coda nel ghiaccio, e senza Coda il suo Generatore non parte.»
 - **Un Traslocante, vicino alla Coda piantata:** «La Coda s'è piantata nella brina. Senza, il Generatore non parte.»
-- **Lo Gnomone, secondo richiamo:** «Ultimo richiamo! In marcia!»
+- **Il Meridiano, secondo richiamo:** «Ultimo richiamo! In marcia!»
 - **La mamma di Mirco, correndo dalla colonna:** «Ottavia! Ottavia! Non trovo il mio Mirco, aiutami ti prego!» **Ottavia:** «Dove l'hai visto l'ultima volta?» **La mamma:** «Guardava il buio, laggiù... verso la Notte.» **Ottavia:** «Resta con la colonna. Te lo riporto io.»
 - **Mirco, in fondo, verso il buio:** «Guarda, Serrafila. Là è tutto nero. Com'è, dentro?»
 - **Ottavia:** «Freddo. Andiamo.»
@@ -86,11 +86,11 @@ Narrazione:
 > For forty years, I have been the Filecloser.
 
 Battute:
-- Gnomon, first call: "The shadow grows long! We're moving on!"
+- Meridian, first call: "The shadow grows long! We're moving on!"
 - Zelinda: "Close that lantern. Nobody in here wants the light."
 - Ruggero: "Just a moment more... The plants are still crooked."
 - Homehauler: "The Tail's stuck in the frost. Without it, the Generator won't start."
-- Gnomon, second call: "Last call! We march!"
+- Meridian, second call: "Last call! We march!"
 - Mirco: "Look, Filecloser. Over there it's all black. What's it like, inside?"
 - Ottavia: "Cold. Let's go."
 - Anselmo: "You're late, Ottavia."
@@ -103,7 +103,7 @@ Suggerimenti: "Move", "Open the lantern", "Close the lantern", "Hold to sprint",
 ## Cosa serve per costruirlo
 
 - **Mezzi:** il camion-condominio, fuori e dentro (il piano dei Tessibuio), un carro-campo con terrazze, il mezzo di testa con la meridiana (sullo sfondo della colonna). Aspetto in 16-mezzi.md.
-- **Personaggi:** Ottavia con le animazioni definitive; lo Gnomone, Zelinda, Ruggero, un Traslocante, Mirco, Anselmo, Arold, Enea (una sola posa), 3-4 abitanti generici per la folla. Aspetto in 03-personaggi.md e 15-comparse.md.
+- **Personaggi:** Ottavia con le animazioni definitive; il Meridiano, Zelinda, Ruggero, un Traslocante, Mirco, Anselmo, Arold, Enea (una sola posa), 3-4 abitanti generici per la folla. Aspetto in 03-personaggi.md e 15-comparse.md.
 - **Creature:** Brinacchio (B1).
 - **Oggetti:** tende, brande, arbusti secchi e croste di ghiaccio che si rompono, le Code.
 - **Interfaccia:** vita, fiato, suggerimenti, finestre di dialogo, la corda dei salvati, la sagoma della lanterna nel menu, il titolo del capitolo. Regole in 17-interfaccia-e-audio.md (125).

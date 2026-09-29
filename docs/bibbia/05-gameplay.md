@@ -50,7 +50,7 @@ Si raggiungono le persone e le si riporta indietro superando ostacoli, percorsi 
 
 ## 39. La luce come tempo  [Definito]
 
-Vale ovunque. Durante ogni Tregua la meridiana fa da timer: il giocatore esplora i dintorni della carovana in cerca di oggetti ed equipaggiamento. Al dungeon successivo si passa con un'azione dedicata, separata dall'esplorazione. Quando il tempo finisce, lo Gnomone richiama tutti e la carovana riparte: ciò che il giocatore non ha raccolto resta lì fino al giro successivo, cioè, per Ottavia, per sempre. Nessuna sconfitta, solo occasioni perse.
+Vale ovunque. Durante ogni Tregua la meridiana fa da timer: il giocatore esplora i dintorni della carovana in cerca di oggetti ed equipaggiamento. Al dungeon successivo si passa con un'azione dedicata, separata dall'esplorazione. Quando il tempo finisce, il Meridiano richiama tutti e la carovana riparte: ciò che il giocatore non ha raccolto resta lì fino al giro successivo, cioè, per Ottavia, per sempre. Nessuna sconfitta, solo occasioni perse.
 
 ## 104. Le toppe  [Definito]
 

@@ -60,7 +60,7 @@ Le parole proprie di questo mondo, in italiano e in inglese. È l'elenco unico d
 
 **Ruoli sotto il Sindaco**
 
-- **Gnomone** (Gnomon): Sta immobile accanto alla meridiana del mezzo di testa e annuncia partenze e soste. Dopo il Sindaco, è la voce più ascoltata della carovana.
+- **Meridiano** (Meridian): Sta immobile accanto alla meridiana del mezzo di testa e annuncia partenze e soste. Dopo il Sindaco, è la voce più ascoltata della carovana.
 - **Voltacampi** (Fieldturners): Coltivano i carri-campo e li inclinano di continuo verso il sole basso. Per questo tutte le piante della carovana crescono storte, piegate verso il Giorno.
 - **Specchianti** (Mirrorcloaks): Esploratori che precedono la carovana verso il Giorno, avvolti in mantelli a specchio che respingono il calore. Comunicano lampeggiando la luce del sole.
 - **Brinaioli** (Frostcutters): Tornano indietro fino al margine della Notte per tagliare il ghiaccio, l'unica fonte d'acqua. Dopo la Serrafila è il mestiere più pericoloso, e i Brinaioli sono gli attardati più frequenti.

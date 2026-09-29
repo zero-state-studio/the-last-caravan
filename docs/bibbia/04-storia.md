@@ -8,7 +8,7 @@ L'ultimo giro del mondo di Ottavia, mentre le gambe cominciano a cedere.
 
 ## 25. L'apertura  [Definito]
 
-Ottavia si sveglia perché è stato dato l'ordine di mettersi in marcia. Parte una narrazione del mondo, poi comincia il gameplay: Ottavia deve aiutare la gente a partire. Un'idea per la prima inquadratura: i Tessibuio aprono le tende del camion-condominio, la luce entra di colpo, e si sente lo Gnomone annunciare la partenza.
+Ottavia si sveglia perché è stato dato l'ordine di mettersi in marcia. Parte una narrazione del mondo, poi comincia il gameplay: Ottavia deve aiutare la gente a partire. Un'idea per la prima inquadratura: i Tessibuio aprono le tende del camion-condominio, la luce entra di colpo, e si sente il Meridiano annunciare la partenza.
 
 ## 26. Nessun antagonista  [Definito]
 
@@ -34,7 +34,7 @@ Alla fine del prologo Ottavia arriva in ritardo alla colonna, e il Sindaco le co
 
 **Atto I: Il verdetto**
 
-- **Prologo: La Partenza**: Ottavia si sveglia quando i Tessibuio aprono le tende e lo Gnomone dà l'ordine di marcia. Dopo la narrazione del mondo, aiuta la gente a partire e dà le prime lezioni a Enea. Arriva ultima alla colonna, oltre il limite: è tornata indietro per qualcuno, e per la prima volta il suo corpo non ha tenuto il ritmo. Il Sindaco, senza voltarsi, invece della lanterna le concede dieci Tregue, e Anselmo comincia a costruirla.
+- **Prologo: La Partenza**: Ottavia si sveglia quando i Tessibuio aprono le tende e il Meridiano dà l'ordine di marcia. Dopo la narrazione del mondo, aiuta la gente a partire e dà le prime lezioni a Enea. Arriva ultima alla colonna, oltre il limite: è tornata indietro per qualcuno, e per la prima volta il suo corpo non ha tenuto il ritmo. Il Sindaco, senza voltarsi, invece della lanterna le concede dieci Tregue, e Anselmo comincia a costruirla.
 - **Ne restano dieci: I Carri-campo**: Prima missione in cui Ottavia guida Enea passo passo: per il giocatore è il tutorial, per la storia è la prima lezione vera.
 - **Ne restano nove: La Linea d'Ombra**: Ottavia recupera Tosca per l'ennesima volta. Tosca giura di aver visto una luce nella Notte, e Ottavia non le crede.
 - **Ne restano otto: Il Camion-condominio**: Il primo vero buio del gioco è dentro casa. Nella sua bottega, Anselmo mostra a Ottavia i primi pezzi della lanterna.

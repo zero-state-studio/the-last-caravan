@@ -2,9 +2,9 @@
 
 *I personaggi secondari che servono al prologo e ai primi capitoli. Ognuno ha una descrizione in inglese pronta per PixelLab. L'aspetto usa la regola dei vestiti scoloriti dal sole (98): chi cammina verso il Giorno ha il davanti sbiadito. Densità: 30 pixel per metro, tela 64×64 (49).*
 
-## 117. Lo Gnomone  [In discussione]
+## 117. Il Meridiano  [In discussione]
 
-**Aspetto.** Alto e sottile, circa 1,85 metri (55 pixel, cappello escluso). Sta immobile accanto alla meridiana del mezzo di testa, e per essere un buon gnomone porta un cappello conico altissimo e rigido: è la sua ombra, sul quadrante, a segnare partenze e soste. Cappotto grigio lungo, con il davanti sbiadito da chi sta sempre in testa alla colonna. Sul petto, appesa a una cinghia, una tromba parlante d'ottone con cui annuncia i richiami.
+**Aspetto.** Alto e sottile, circa 1,85 metri (55 pixel, cappello escluso). Sta immobile accanto alla meridiana del mezzo di testa, e, come lo gnomone di una meridiana, porta un cappello conico altissimo e rigido: è la sua ombra, sul quadrante, a segnare partenze e soste. Cappotto grigio lungo, con il davanti sbiadito da chi sta sempre in testa alla colonna. Sul petto, appesa a una cinghia, una tromba parlante d'ottone con cui annuncia i richiami.
 
 > **Descrizione per PixelLab, in inglese:** Tall, thin man, about 55 px tall plus hat on a 64x64 canvas. A very tall, stiff conical hat. Long grey coat, sun-faded on the front. A brass speaking trumpet hanging on a strap across his chest. Perfectly still, upright posture.
 

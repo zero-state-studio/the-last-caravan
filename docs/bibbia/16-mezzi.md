@@ -20,6 +20,6 @@ Un lungo pianale che porta terrazze di terra a gradoni, come una vigna su ruote,
 
 ## 124. Il mezzo di testa  [In discussione]
 
-Porta sul tetto la meridiana: un grande quadrante di bronzo su una piattaforma, con i segni della Tregua e della Rincorsa al posto delle ore. Al centro sta lo Gnomone (117). Arold cammina a piedi davanti al mezzo: non è lui a seguire il mezzo, è il mezzo a seguire lui. Nel prologo si vede solo nello stacco del verdetto.
+Porta sul tetto la meridiana: un grande quadrante di bronzo su una piattaforma, con i segni della Tregua e della Rincorsa al posto delle ore. Al centro sta il Meridiano (117). Arold cammina a piedi davanti al mezzo: non è lui a seguire il mezzo, è il mezzo a seguire lui. Nel prologo si vede solo nello stacco del verdetto.
 
 > **Descrizione per Meshy, in inglese:** Lead caravan vehicle with a large bronze sundial disc on a rooftop platform. Dark solar panels at the front, long pipes dragging at the back. Low-poly, stylised.
