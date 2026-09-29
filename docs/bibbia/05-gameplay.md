@@ -14,7 +14,7 @@ Ottavia combatte con il lungo bastone a gancio: tanta portata, colpi lenti e pre
 
 ## 34. Progressione inversa  [Definito]
 
-Capitolo dopo capitolo Ottavia perde forza, fiato, velocità e lunghezza delle combinazioni, ma impara nuove tecniche e ogni colpo diventa più potente: nel complesso diventa più forte. Alla fine di ogni capitolo una sola schermata mostra due righe, cosa perde e cosa impara, per esempio «La combinazione di colpi si accorcia da 3 a 2» e «Impara il contrattempo». Nessun albero delle abilità: è la vita di Ottavia che cambia. Intanto Enea cresce (81).
+Capitolo dopo capitolo Ottavia perde forza, fiato, velocità e lunghezza delle combinazioni, ma impara nuove tecniche e ogni colpo diventa più potente: nel complesso diventa più forte. Alla fine di ogni capitolo una sola schermata mostra due righe, cosa perde e cosa impara, per esempio «La combinazione di colpi si accorcia da 3 a 2» e «Impara il contrattempo». Nessun albero delle abilità: è la vita di Ottavia che cambia. Intanto Enea cresce (81). La deviazione è disponibile fin dal prologo; il capitolo 1 insegna il passo a tempo (107).
 
 **Resta da definire:** Quale tecnica si impara in quale capitolo, e il bilanciamento: da provare nella fase 3.
 
@@ -36,7 +36,7 @@ Niente mostri malvagi: la fauna che migra nel Crepuscolo come la carovana, i pre
 
 ## 37. La carovana come base  [Definito]
 
-Tra un dungeon e l'altro si torna ai carri: si parla con i compagni, si migliora l'equipaggiamento, si accolgono i Salvati. La base esiste in due forme: ferma durante la Tregua e in marcia durante la Rincorsa (103).
+Tra un dungeon e l'altro si torna ai carri: si parla con i compagni, si cuciono e si scuciono le toppe (128), si accolgono i Salvati. La base esiste in due forme: ferma durante la Tregua e in marcia durante la Rincorsa (103).
 
 ## 103. La carovana in marcia come mappa  [Definito]
 
@@ -54,7 +54,7 @@ Vale ovunque. Durante ogni Tregua la meridiana fa da timer: il giocatore esplora
 
 ## 104. Le toppe  [Definito]
 
-L'equipaggiamento sono le toppe del cappotto, trovate durante la Tregua (39). Si cuciono in tre spazi, e ognuna dà un piccolo effetto: resistenza al freddo per i livelli verso la Notte, al caldo per quelli verso il Giorno, recupero del fiato, durata della lanterna. Nascono dal personaggio e non richiedono sprite nuovi.
+L'equipaggiamento sono le toppe del cappotto, trovate durante la Tregua (39). Si cuciono in tre spazi, e ognuna dà un piccolo effetto: resistenza al freddo per i livelli verso la Notte, al caldo per quelli verso il Giorno, recupero del fiato, durata della lanterna alzata (131). Nascono dal personaggio e non richiedono sprite nuovi.
 
 **Resta da definire:** L'elenco delle toppe.
 

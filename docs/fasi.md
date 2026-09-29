@@ -31,8 +31,9 @@ Il prologo completo (106, `docs/livelli/prologo.md`), dall'inizio al titolo «Ne
 **Stato (29 settembre 2026):** approvata. Avvio: `res://scenes/prologo/piano_tessibuio.tscn` (scena principale); consegna `docs/fase4a-consegna.md`; video `docs/video/capitoli/00-prologo/19-prologo-intero-collisioni.mp4`. Restano da fare in seguito: le frasi della folla (`TODO-DESIGN #121`), le voci inglesi, i salvataggi.
 
 ### Fase 4b: I Carri-campo
-Il capitolo 1 (107), che verifica dungeon, la carovana come base (37), la Tregua a tempo (39), boss, Salvati e salvataggi (95).
-**Uscita:** un pezzo di gioco che si potrebbe far provare a qualcuno.
+Il capitolo 1 (107, `docs/livelli/capitolo-01.md`), che verifica dungeon, la carovana come base (37), la Tregua a tempo (39), boss, Salvati e salvataggi (95), dall'inizio della Tregua al titolo «Ne restano nove». Prompt: `docs/prompts/PROMPT-05.md`.
+**Uscita:** un pezzo di gioco che si potrebbe far provare a qualcuno; l'autore l'ha giocato sul Mac con il gamepad, e lo convince.
+**Stato (29 settembre 2026):** in corso, passo 0 fatto (bibbia e piano).
 
 ## Fase 5: Produzione
 I capitoli da 2 a 10, uno alla volta, ciascuno con il suo dungeon, creature, boss e Salvati.
