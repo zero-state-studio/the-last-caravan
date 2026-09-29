@@ -42,6 +42,14 @@
               "Idle/animations/iole_idle/south/frame_003.png"
             ]
           },
+          "iole_walk": {
+            "east": [
+              "Idle/animations/iole_walk/east/frame_000.png",
+              "Idle/animations/iole_walk/east/frame_001.png",
+              "Idle/animations/iole_walk/east/frame_002.png",
+              "Idle/animations/iole_walk/east/frame_003.png"
+            ]
+          },
           "iole_talk": {
             "south": [
               "Idle/animations/iole_talk/south/frame_000.png",
@@ -67,5 +75,5 @@
     }
   ],
   "export_version": "3.1",
-  "export_date": "2026-09-29T15:07:48.087721"
+  "export_date": "2026-09-29T15:13:55.219286"
 }

@@ -14,9 +14,9 @@ extends Node3D
 
 signal finished
 
-const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
+const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/ruggero/weave_s.png")
 const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
-const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/folla/bambina_south.png")
+const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/pia/pot_s.png")
 const ANSELMO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/anselmo_south.png")
 const FIELD_CART: String = "res://assets/models/vehicles/carro_campo_prova.glb"
 const CONDOMINIO: String = "res://assets/models/vehicles/camion_condominio_prova.glb"
@@ -61,7 +61,8 @@ func _ready() -> void:
 	palette.gradient_width = 120.0
 	add_child(palette)
 	C01Kit.ground(level, Vector3(-60.0, -0.5, 0.0), Vector3(260.0, 1.0, 40.0), 1079)
-	C01Kit.visual(level, Vector3(-60.0, 0.01, 0.0), Vector3(260.0, 0.02, 6.0), C01Kit.DRY_GRASS)
+	# The column's track: the dirt road of the prologue plain (106).
+	LevelBlocks.box(level, Vector3(-60.0, 0.01, 0.0), Vector3(260.0, 0.02, 6.0), LevelBlocks.material(CampScenery.TEX_ROAD), false)
 	# The column: the field-carts with their terraces locked, the
 	# camion-condominio, Anselmo's truck last in the line ahead of Ottavia.
 	for index: int in 3:

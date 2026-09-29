@@ -34,7 +34,9 @@ const ICE_GLOW: Color = Color(0.55, 0.72, 0.95)
 
 
 ## The cart, centred on the origin with its wheels on y = 0, front to -x.
-static func build() -> Node3D:
+## Without `with_lever` the decorative lever stays off (in the dungeon every
+## lever one sees is one that works).
+static func build(with_lever: bool = true) -> Node3D:
 	var root: Node3D = Node3D.new()
 	root.name = "CarroCampo"
 	var wood: ShaderMaterial = LevelBlocks.material(WOOD)
@@ -46,9 +48,10 @@ static func build() -> Node3D:
 		for side: float in [-1.0, 1.0]:
 			var wheel_node: Node3D = wheel(root, WHEEL_RADIUS, side < 0.0)
 			wheel_node.position = Vector3(x, WHEEL_RADIUS, side * (WIDTH * 0.5 + 0.1))
-	var lever: Node3D = LEVER.instantiate()
-	root.add_child(lever)
-	VehicleKit.place_on(lever, Vector3(-LENGTH * 0.5 + 1.2, DECK_TOP, WIDTH * 0.5 - 1.2))
+	if with_lever:
+		var lever: Node3D = LEVER.instantiate()
+		root.add_child(lever)
+		VehicleKit.place_on(lever, Vector3(-LENGTH * 0.5 + 1.2, DECK_TOP, WIDTH * 0.5 - 1.2))
 	# The small Wings in front, the Tails behind, the ice tanks at the ends.
 	var wings: Node3D = VehicleKit.module("ali")
 	wings.rotation.y = VehicleKit.WINGS_ROTATION

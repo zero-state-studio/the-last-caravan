@@ -14,6 +14,7 @@ extends Node3D
 ## Command-line user arguments (after "--"):
 ##   truce_seconds=<s>  a shorter Truce (captures, tests)
 ##   intro=0            no Meridian line at the start
+##   spot=pond          start by the frozen pond (captures)
 
 const CHAPTER_TUNING: ChapterTuning = preload("res://assets/combat/chapter_01_tuning.tres")
 const DUNGEON_SCENE: String = "res://scenes/capitolo01/carri_campo.tscn"
@@ -22,7 +23,7 @@ const CONDOMINIO: String = "res://assets/models/vehicles/camion_condominio_prova
 const LEAD_VEHICLE: String = "res://assets/models/vehicles/mezzo_di_testa_prova.glb"
 const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
 const IOLE_TALK: Texture2D = preload("res://assets/sprites/capitolo01/iole/talk_s.png")
-const IOLE_WALK: Texture2D = preload("res://assets/sprites/folla/donna_adulta_walk_east.png")
+const IOLE_WALK: Texture2D = preload("res://assets/sprites/capitolo01/iole/walk_e.png")
 const MERIDIAN_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/gnomone_south.png")
 const CAMP_MUSIC: AudioStream = preload("res://assets/audio/music/m2_accampamento.ogg")
 const SIZE: Vector2 = Vector2(80.0, 50.0)
@@ -101,6 +102,7 @@ func _ready() -> void:
 	SaveGame.take_pending(scene_file_path)
 	var tuning: ChapterTuning = CHAPTER_TUNING
 	var intro: bool = true
+	var start: Vector3 = START
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("truce_seconds="):
 			tuning = CHAPTER_TUNING.duplicate() as ChapterTuning
@@ -108,6 +110,8 @@ func _ready() -> void:
 			tuning.truce_warning_seconds = minf(tuning.truce_warning_seconds, tuning.truce_seconds * 0.5)
 		elif argument == "intro=0":
 			intro = false
+		elif argument == "spot=pond":
+			start = POND_CENTER + Vector3(-4.0, 0.05, 10.0)
 	# The Twilight a little toward the Day (section 1); the plain drifts to
 	# the Day on the west and to the Night on the east (51).
 	var palette: ZonePalette = ZonePalette.new()
@@ -119,7 +123,7 @@ func _ready() -> void:
 	_build_caravan()
 	_build_things()
 	_build_people()
-	ottavia.global_position = START
+	ottavia.global_position = start
 	ottavia.face_toward(Vector3.FORWARD)
 	camera_rig.target = ottavia
 	camera_rig.limits = Rect2(Vector2(-SIZE.x * 0.5 + 6.0, -SIZE.y * 0.5 + 4.0), SIZE - Vector2(12.0, 6.0))

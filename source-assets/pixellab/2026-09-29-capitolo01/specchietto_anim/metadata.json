@@ -1,0 +1,77 @@
+{
+  "group_id": "a7c3dc1d-087b-449c-ae85-232fe57ad7f0",
+  "states": [
+    {
+      "character": {
+        "id": "09c48dfa-fe3c-42a3-97f0-6b950fa8e7a0",
+        "name": "Idle",
+        "prompt": "Small lizard about 0.4 m long seen mostly from above: long flat body, four legs splayed wide to the sides, long thin tail curving behind, pointed head. Mirror-like scales, silvery grey-blue with a few tiny bright glints. Basking flat on a stone.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "custom",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-09-29T14:23:29.049336+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "specchietto_defeat": {
+            "east": [
+              "Idle/animations/specchietto_defeat/east/frame_000.png",
+              "Idle/animations/specchietto_defeat/east/frame_001.png",
+              "Idle/animations/specchietto_defeat/east/frame_002.png",
+              "Idle/animations/specchietto_defeat/east/frame_003.png",
+              "Idle/animations/specchietto_defeat/east/frame_004.png"
+            ]
+          },
+          "specchietto_hide": {
+            "east": [
+              "Idle/animations/specchietto_hide/east/frame_000.png",
+              "Idle/animations/specchietto_hide/east/frame_001.png",
+              "Idle/animations/specchietto_hide/east/frame_002.png",
+              "Idle/animations/specchietto_hide/east/frame_003.png",
+              "Idle/animations/specchietto_hide/east/frame_004.png"
+            ]
+          },
+          "specchietto_flash": {
+            "east": [
+              "Idle/animations/specchietto_flash/east/frame_000.png",
+              "Idle/animations/specchietto_flash/east/frame_001.png",
+              "Idle/animations/specchietto_flash/east/frame_002.png",
+              "Idle/animations/specchietto_flash/east/frame_003.png",
+              "Idle/animations/specchietto_flash/east/frame_004.png",
+              "Idle/animations/specchietto_flash/east/frame_005.png",
+              "Idle/animations/specchietto_flash/east/frame_006.png"
+            ]
+          },
+          "specchietto_bask": {
+            "east": [
+              "Idle/animations/specchietto_bask/east/frame_000.png",
+              "Idle/animations/specchietto_bask/east/frame_001.png",
+              "Idle/animations/specchietto_bask/east/frame_002.png",
+              "Idle/animations/specchietto_bask/east/frame_003.png",
+              "Idle/animations/specchietto_bask/east/frame_004.png",
+              "Idle/animations/specchietto_bask/east/frame_005.png",
+              "Idle/animations/specchietto_bask/east/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T15:30:54.763828"
+}

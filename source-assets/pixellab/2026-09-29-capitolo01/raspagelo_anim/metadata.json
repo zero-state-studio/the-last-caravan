@@ -1,0 +1,68 @@
+{
+  "group_id": "9b2e4a16-a512-4425-99be-2f23e8ca49b1",
+  "states": [
+    {
+      "character": {
+        "id": "fea21f32-033e-4f07-be27-5c569d905760",
+        "name": "Idle",
+        "prompt": "Small burrowing rodent about 0.5 m long with big shovel-like front teeth and an armoured bony plate on its forehead, brown-grey fur dusted with frost, strong digging claws. Seen from the front.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "cat",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-29T13:11:09.650023+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "raspagelo_bite": {
+            "south": [
+              "Idle/animations/raspagelo_bite/south/frame_000.png",
+              "Idle/animations/raspagelo_bite/south/frame_001.png",
+              "Idle/animations/raspagelo_bite/south/frame_002.png",
+              "Idle/animations/raspagelo_bite/south/frame_003.png",
+              "Idle/animations/raspagelo_bite/south/frame_004.png"
+            ]
+          },
+          "raspagelo_dive": {
+            "south": [
+              "Idle/animations/raspagelo_dive/south/frame_000.png",
+              "Idle/animations/raspagelo_dive/south/frame_001.png",
+              "Idle/animations/raspagelo_dive/south/frame_002.png",
+              "Idle/animations/raspagelo_dive/south/frame_003.png",
+              "Idle/animations/raspagelo_dive/south/frame_004.png",
+              "Idle/animations/raspagelo_dive/south/frame_005.png",
+              "Idle/animations/raspagelo_dive/south/frame_006.png"
+            ]
+          },
+          "raspagelo_emerge": {
+            "south": [
+              "Idle/animations/raspagelo_emerge/south/frame_000.png",
+              "Idle/animations/raspagelo_emerge/south/frame_001.png",
+              "Idle/animations/raspagelo_emerge/south/frame_002.png",
+              "Idle/animations/raspagelo_emerge/south/frame_003.png",
+              "Idle/animations/raspagelo_emerge/south/frame_004.png",
+              "Idle/animations/raspagelo_emerge/south/frame_005.png",
+              "Idle/animations/raspagelo_emerge/south/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T16:04:11.905035"
+}

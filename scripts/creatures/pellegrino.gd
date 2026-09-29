@@ -12,11 +12,18 @@ const FELT_COLOR: Color = Color(0.55, 0.45, 0.5)
 const BODY_COLOR: Color = Color(0.62, 0.5, 0.42)
 const TELEGRAPH_COLOR: Color = Color(1.0, 0.6, 0.3)
 const HEIGHT_PIXELS: int = 60
+const LOOK: String = "res://assets/sprites/creatures/c01/pellegrino"
+const LOOK_RATES: Dictionary = {"idle": 1.0, "sleep": 3.0, "walk": 6.0, "attack": 10.0, "defeat": 8.0}
+## Without its felt the drawn wrap takes the colour of the body under it.
+const BODY_DARK: Color = Color(0.3, 0.2, 0.15)
+const BODY_LIGHT: Color = Color(0.78, 0.62, 0.48)
+const BODY_DYE: float = 0.55
 
 @export var creature: CreatureTuning
 
 var phase: Phase = Phase.ASLEEP
 var felt_left: float = 0.0
+var _body_shown: bool = false
 var _time: float = 0.0
 
 
@@ -30,6 +37,7 @@ func _init() -> void:
 func _ready() -> void:
 	max_health = CreatureTuning.health_for_hits(creature.pellegrino_felt_hits + creature.pellegrino_body_hits)
 	super._ready()
+	use_look(LOOK, LOOK_RATES)
 	felt_left = CreatureTuning.health_for_hits(creature.pellegrino_felt_hits)
 
 
@@ -56,8 +64,11 @@ func _on_hit(_hit: CombatHit) -> void:
 	var felt_share: float = CreatureTuning.health_for_hits(creature.pellegrino_felt_hits)
 	felt_left = maxf(0.0, felt_share - (max_health - health))
 	if felt_left <= 0.0:
-		sprite.texture = PlaceholderSprite.texture(32, HEIGHT_PIXELS, BODY_COLOR, "tall")
-		_material.set_shader_parameter(&"sprite_texture", sprite.texture)
+		if look == null:
+			sprite.texture = PlaceholderSprite.texture(32, HEIGHT_PIXELS, BODY_COLOR, "tall")
+			_material.set_shader_parameter(&"sprite_texture", sprite.texture)
+		elif not _body_shown:
+			_show_body()
 	if phase == Phase.ASLEEP:
 		_set_phase(Phase.APPROACH)
 
@@ -92,19 +103,50 @@ func _behave(delta: float) -> void:
 		Phase.COOLDOWN:
 			if _time >= creature.pellegrino_cooldown:
 				_set_phase(Phase.APPROACH)
-	sprite.flip_h = flat_direction_to(target.global_position).x > 0.0
+	if look == null:
+		sprite.flip_h = flat_direction_to(target.global_position).x > 0.0
 	if not is_being_moved() and not is_staggered():
 		velocity = move
 
 
+func look_animation() -> String:
+	if not is_alive():
+		return "defeat"
+	match phase:
+		Phase.ASLEEP:
+			return "sleep"
+		Phase.WINDUP, Phase.ACTIVE:
+			return "attack"
+		Phase.APPROACH:
+			return "walk" if velocity.length() > 0.2 else "idle"
+	return "idle"
+
+
+## The felt torn off: bits of felt fly and the wrap shows the body's
+## colour (the dye of the sprite shader over the whole figure).
+func _show_body() -> void:
+	_body_shown = true
+	CombatEffects.spark(get_tree().current_scene, global_position + Vector3.UP * 1.2, FELT_COLOR, 24.0)
+	var full: Image = Image.create(1, 1, false, Image.FORMAT_L8)
+	full.fill(Color.WHITE)
+	_material.set_shader_parameter(&"garment_mask", ImageTexture.create_from_image(full))
+	_material.set_shader_parameter(&"garment_dark", Vector3(BODY_DARK.r, BODY_DARK.g, BODY_DARK.b))
+	_material.set_shader_parameter(&"garment_light", Vector3(BODY_LIGHT.r, BODY_LIGHT.g, BODY_LIGHT.b))
+	_material.set_shader_parameter(&"garment_fade", 0.0)
+	_material.set_shader_parameter(&"garment_strength", BODY_DYE)
+
+
 func _on_defeated() -> void:
-	sprite.visible = false
+	sprite.visible = look != null
 
 
 func _on_reset() -> void:
 	felt_left = CreatureTuning.health_for_hits(creature.pellegrino_felt_hits)
-	sprite.texture = PlaceholderSprite.texture(36, HEIGHT_PIXELS, FELT_COLOR, "tall")
-	_material.set_shader_parameter(&"sprite_texture", sprite.texture)
+	_body_shown = false
+	_material.set_shader_parameter(&"garment_strength", 0.0)
+	if look == null:
+		sprite.texture = PlaceholderSprite.texture(36, HEIGHT_PIXELS, FELT_COLOR, "tall")
+		_material.set_shader_parameter(&"sprite_texture", sprite.texture)
 	_set_phase(Phase.ASLEEP)
 
 

@@ -1,0 +1,99 @@
+{
+  "group_id": "8ebe745c-d0f6-49a0-8996-e8734149abb3",
+  "states": [
+    {
+      "character": {
+        "id": "fcfb8ea5-9df3-4643-9a90-348cd7696645",
+        "name": "Idle",
+        "prompt": "74-year-old man, small and gnarled, the figure fills the canvas height from head to feet. His back leans to his left like a crooked plant. Wide-brimmed straw hat worn at an angle. Twine and wooden stakes hanging from his belt. Clothes sun-faded on the front.",
+        "size": {
+          "width": 44,
+          "height": 44
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-28T10:41:19.822346+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "asleep": {
+            "south": [
+              "Idle/animations/asleep/south/frame_000.png",
+              "Idle/animations/asleep/south/frame_001.png",
+              "Idle/animations/asleep/south/frame_002.png",
+              "Idle/animations/asleep/south/frame_003.png",
+              "Idle/animations/asleep/south/frame_004.png",
+              "Idle/animations/asleep/south/frame_005.png"
+            ]
+          },
+          "ruggero_tend_2": {
+            "south-east": [
+              "Idle/animations/ruggero_tend_2/south-east/frame_000.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_001.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_002.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_003.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_004.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_005.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_006.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_007.png",
+              "Idle/animations/ruggero_tend_2/south-east/frame_008.png"
+            ]
+          },
+          "ruggero_si_addormenta": {
+            "south": [
+              "Idle/animations/ruggero_si_addormenta/south/frame_000.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_001.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_002.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_003.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_004.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_005.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_006.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_007.png",
+              "Idle/animations/ruggero_si_addormenta/south/frame_008.png"
+            ]
+          },
+          "ruggero_tend": {
+            "south-east": [
+              "Idle/animations/ruggero_tend/south-east/frame_000.png",
+              "Idle/animations/ruggero_tend/south-east/frame_001.png",
+              "Idle/animations/ruggero_tend/south-east/frame_002.png",
+              "Idle/animations/ruggero_tend/south-east/frame_003.png",
+              "Idle/animations/ruggero_tend/south-east/frame_004.png",
+              "Idle/animations/ruggero_tend/south-east/frame_005.png",
+              "Idle/animations/ruggero_tend/south-east/frame_006.png",
+              "Idle/animations/ruggero_tend/south-east/frame_007.png",
+              "Idle/animations/ruggero_tend/south-east/frame_008.png"
+            ]
+          },
+          "ruggero_weave": {
+            "south": [
+              "Idle/animations/ruggero_weave/south/frame_000.png",
+              "Idle/animations/ruggero_weave/south/frame_001.png",
+              "Idle/animations/ruggero_weave/south/frame_002.png",
+              "Idle/animations/ruggero_weave/south/frame_003.png",
+              "Idle/animations/ruggero_weave/south/frame_004.png",
+              "Idle/animations/ruggero_weave/south/frame_005.png",
+              "Idle/animations/ruggero_weave/south/frame_006.png",
+              "Idle/animations/ruggero_weave/south/frame_007.png",
+              "Idle/animations/ruggero_weave/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T15:50:14.798474"
+}

@@ -21,8 +21,9 @@ const CHAPTER_TUNING: ChapterTuning = preload("res://assets/combat/chapter_01_tu
 const VOLTAFACCIA_SCENE: PackedScene = preload("res://scenes/creatures/voltafaccia.tscn")
 const RASPAGELO_SCENE: PackedScene = preload("res://scenes/creatures/raspagelo.tscn")
 const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
-const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
-const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/folla/bambina_south.png")
+const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/ruggero/tend_se.png")
+const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/pia/asleep_s.png")
+const PIA_AWAKE: Texture2D = preload("res://assets/sprites/capitolo01/pia/pot_s.png")
 const END_SCENE: String = "res://scenes/capitolo01/fine.tscn"
 
 ## Where each diorama sits in the world: far apart, never seen together.
@@ -162,10 +163,7 @@ func _build_cart_1() -> void:
 	# Ground of the diorama: the foot of the cart (room 1) and a strip east.
 	C01Kit.ground(cart, A + Vector3(-7.0, -0.5, 0.0), Vector3(46.0, 1.0, 22.0), 1071)
 	# The chassis, under the turning terrace, and the big wheels.
-	C01Kit.box(cart, A + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
-	for x: float in [-9.0, 9.0]:
-		for z: float in [-5.4, 5.4]:
-			C01Kit.wheel(cart, A + Vector3(x, 1.4, z), 1.4)
+	C01Kit.chassis(cart, A)
 	# Room 1 (14 x 10): gear housings, a broken ladder, patched sacks, a tank.
 	var r1: Room = _room(&"s1", A + Vector3(-19.0, 2.0, 0.0), Vector3(14.0, 4.0, 10.0), &"ingresso")
 	C01Kit.entry(r1, &"ingresso", A + Vector3(-24.5, 0.05, 1.0))
@@ -252,7 +250,7 @@ func _build_high_terrace() -> void:
 	var cart: Node3D = _group(&"Cart2High")
 	C01Kit.ground(cart, C + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1074)
 	# The second cart below: chassis and the low terrace, as scenery.
-	C01Kit.box(cart, C + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
+	C01Kit.chassis(cart, C)
 	C01Kit.visual(cart, C + Vector3(0.0, LOW - SLAB * 0.5, 0.0), Vector3(20.0, SLAB, 9.0), C01Kit.SOIL)
 	C01Kit.box(cart, C + Vector3(0.0, (LOW + HIGH) * 0.5, 0.0), Vector3(1.6, HIGH - LOW, 1.6), C01Kit.WOOD_DARK)
 	# The landing at the west end, where the ladder and the bridge arrive.
@@ -323,7 +321,7 @@ func _build_bonus(cart: Node3D) -> void:
 func _build_low_terrace_2() -> void:
 	var cart: Node3D = _group(&"Cart2Low")
 	C01Kit.ground(cart, D + Vector3(4.0, -0.5, 0.0), Vector3(48.0, 1.0, 30.0), 1075)
-	C01Kit.box(cart, D + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
+	C01Kit.chassis(cart, D)
 	# The column of the high terrace (the terrace itself is left out: it
 	# would hide the room from the camera), and the first cart to the west
 	# casting shade.
@@ -368,7 +366,7 @@ func _build_low_terrace_2() -> void:
 func _build_frozen_terrace() -> void:
 	var cart: Node3D = _group(&"Cart3Low")
 	C01Kit.ground(cart, E + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1076)
-	C01Kit.box(cart, E + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
+	C01Kit.chassis(cart, E)
 	# The second cart to the west throws its shadow over the whole room.
 	C01Kit.visual(cart, E + Vector3(-20.0, 4.0, 0.0), Vector3(10.0, 8.0, 14.0), C01Kit.WOOD_DARK)
 	C01Kit.box(cart, E + Vector3(-10.0, LOW - 0.25, 0.0), Vector3(4.0, 0.5, 4.0), C01Kit.WOOD)
@@ -382,7 +380,8 @@ func _build_frozen_terrace() -> void:
 	terrace_4.rotation.x = deg_to_rad(6.0)
 	C01Kit.rails_around(terrace_4, Vector3(0.0, SLAB, 0.0), Vector2(16.0, 9.0), [["w", -2.0, 2.0], ["e", -2.0, 2.0], ["s", -1.5, 1.5]])
 	C01Kit.tubers(terrace_4, Rect2(-7.5, -4.0, 15.0, 8.0), SLAB)
-	C01Kit.visual(terrace_4, Vector3(0.0, SLAB + 0.02, 0.0), Vector3(16.0, 0.04, 9.0), Color(0.86, 0.9, 1.0))
+	# A crust of frost over the soil of the terrace left in the shade.
+	LevelBlocks.box(terrace_4, Vector3(0.0, SLAB + 0.02, 0.0), Vector3(16.0, 0.04, 9.0), LevelBlocks.material(CampScenery.TEX_FROST), false)
 	# Pia asleep in the cage of plants: six stems, three strikes each.
 	pia = _saved(terrace_4, Vector3(3.0, SLAB, 0.0), &"c01_saved_pia", PIA_TEXTURE, null)
 	pia.locked = true
@@ -551,6 +550,10 @@ func _on_stem_broken() -> void:
 		if stem.is_alive():
 			return
 	pia.locked = false
+	# She wakes up and stands, her pot in her arms.
+	for child: Node in pia.get_children():
+		if child is NpcSprite:
+			(child as NpcSprite).set_strip(PIA_AWAKE, 5.0)
 	# Without its six stems the cage of crops falls apart.
 	var tween: Tween = create_tween()
 	tween.tween_property(pia_cage, "scale", Vector3(1.3, 0.05, 1.3), 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
@@ -688,6 +691,8 @@ func _saved(parent: Node3D, at: Vector3, id: StringName, texture: Texture2D, sho
 	person.shortcut = shortcut
 	var sprite: NpcSprite = NpcSprite.new()
 	sprite.sprite_texture = texture
+	# Slow for the breathing of someone asleep, as for a still pose.
+	sprite.frames_per_second = 1.5 if texture == PIA_TEXTURE else 6.0
 	person.add_child(sprite)
 	parent.add_child(person)
 	person.position = at

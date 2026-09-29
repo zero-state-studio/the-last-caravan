@@ -13,7 +13,7 @@ const MOVE_SETTLE_SECONDS: float = 0.15
 ## Warm pulse while the creature is open: a strike now is a counter-hit (33).
 const OPEN_COLOR: Color = Color(1.0, 0.9, 0.6)
 ## Look animations that play once and hold their last frame.
-const ONE_SHOT: Array[String] = ["attack", "defeat"]
+const ONE_SHOT: Array[String] = ["attack", "defeat", "hide", "flash", "dive", "bite", "pinch"]
 
 @export var max_health: float = 50.0
 ## Body radius in meters, added to the reach of Ottavia's actions.

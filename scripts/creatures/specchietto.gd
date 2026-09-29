@@ -12,6 +12,10 @@ enum Phase { BASK, WINDUP, COOLDOWN, HIDDEN }
 const COLOR: Color = Color(0.7, 0.85, 0.9)
 const GLINT_COLOR: Color = Color(1.0, 1.0, 0.9)
 const HEIGHT_PIXELS: int = 12
+const LOOK: String = "res://assets/sprites/creatures/c01/specchietto"
+const LOOK_RATES: Dictionary = {"bask": 5.0, "flash": 8.0, "hide": 12.0, "defeat": 10.0}
+## The hiding dart stays visible this long before it is gone in the shade.
+const HIDE_SECONDS: float = 0.35
 
 @export var creature: CreatureTuning
 
@@ -29,6 +33,7 @@ func _init() -> void:
 func _ready() -> void:
 	max_health = CreatureTuning.health_for_hits(creature.specchietto_hits)
 	super._ready()
+	use_look(LOOK, LOOK_RATES)
 
 
 func can_be_targeted() -> bool:
@@ -78,8 +83,24 @@ func _behave(delta: float) -> void:
 		Phase.HIDDEN:
 			if lit and _time > 0.5:
 				_set_phase(Phase.BASK)
-	sprite.visible = phase != Phase.HIDDEN and is_alive()
+	sprite.visible = (phase != Phase.HIDDEN or (look != null and _time < HIDE_SECONDS)) and is_alive()
 	velocity = Vector3.ZERO
+
+
+func look_animation() -> String:
+	if not is_alive():
+		return "defeat"
+	match phase:
+		Phase.WINDUP:
+			return "flash"
+		Phase.HIDDEN:
+			return "hide"
+	return "bask"
+
+
+## It basks facing the sun (west, 100); drawn east and mirrored (36).
+func look_direction() -> Vector3:
+	return Vector3.LEFT
 
 
 ## The dazzle, if Ottavia is still in range and looking its way.
@@ -101,7 +122,7 @@ func _flash_at(player: OttaviaProto) -> void:
 
 
 func _on_defeated() -> void:
-	sprite.visible = false
+	sprite.visible = look != null
 
 
 func _on_reset() -> void:

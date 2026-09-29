@@ -39,6 +39,7 @@ const SURFACES: Array[Array] = [
 ]
 const MATCH_TOLERANCE: float = 0.012
 const EARS_CARD: Texture2D = preload("res://assets/sprites/capitolo01/spighe_piegate.png")
+const TUBERS_TINT: Color = Color(1.5, 1.55, 1.7)
 const TUBERS_CARD: Texture2D = preload("res://assets/sprites/capitolo01/tuberi_di_brina.png")
 const TALL_GRASS_CARD: Texture2D = preload("res://assets/textures/vegetation/grass_tall_01.png")
 const STEM_CARD: Texture2D = preload("res://assets/sprites/capitolo01/stelo_a_nodi.png")
@@ -256,7 +257,7 @@ static func cage(parent: Node3D, at: Vector3) -> Node3D:
 
 ## Kit-style crossed cards of `texture` at `spots` (in the parent's space),
 ## one MultiMesh, the base of each card on its spot (101).
-static func cards(parent: Node3D, texture: Texture2D, spots: Array[Transform3D], cast_shadow: bool = true) -> MultiMeshInstance3D:
+static func cards(parent: Node3D, texture: Texture2D, spots: Array[Transform3D], cast_shadow: bool = true, tint: Color = Color.WHITE) -> MultiMeshInstance3D:
 	var size: Vector2 = Vector2(texture.get_width(), texture.get_height()) * WorldScale.METERS_PER_PIXEL
 	var multimesh: MultiMesh = MultiMesh.new()
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
@@ -267,6 +268,7 @@ static func cards(parent: Node3D, texture: Texture2D, spots: Array[Transform3D],
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = CARD_SHADER
 	material.set_shader_parameter(&"albedo_texture", texture)
+	material.set_shader_parameter(&"tint", tint)
 	var instance: MultiMeshInstance3D = MultiMeshInstance3D.new()
 	instance.multimesh = multimesh
 	instance.material_override = material
@@ -314,7 +316,9 @@ static func tubers(parent: Node3D, area: Rect2, y: float, sunny_side: float = IN
 			spots.append(Transform3D(Basis.IDENTITY.scaled(Vector3.ONE * scale), Vector3(x + random.randf_range(-0.2, 0.2), y, z + random.randf_range(-0.2, 0.2))))
 			z += 1.3
 		x += 1.3
-	return cards(parent, TUBERS_CARD, spots, false)
+	# A little light of their own: pale leaves of frost even in the coldest
+	# shade (room 6), not dark weeds.
+	return cards(parent, TUBERS_CARD, spots, false, TUBERS_TINT)
 
 
 ## Tall straw grass up to Ottavia's waist, seen only (section 3, room 3):
@@ -337,6 +341,24 @@ static func tall_grass(parent: Node3D, area: Rect2, clearings: Array[Rect2], y: 
 			z += 0.55
 		x += 0.55
 	return cards(parent, TALL_GRASS_CARD, spots, false)
+
+
+## The chassis of a field-cart centred on `at` (its wheels on at.y): the
+## cart built in Godot (FieldCartModel: deck, wheels with their hubs,
+## lever, Wings, Tails, tanks) and a plain solid block for its deck.
+static func chassis(parent: Node3D, at: Vector3) -> Node3D:
+	var body: StaticBody3D = StaticBody3D.new()
+	parent.add_child(body)
+	body.position = at + Vector3.UP * FieldCartModel.DECK_TOP * 0.5
+	var shape: CollisionShape3D = CollisionShape3D.new()
+	var box_shape: BoxShape3D = BoxShape3D.new()
+	box_shape.size = Vector3(FieldCartModel.LENGTH, FieldCartModel.DECK_TOP, FieldCartModel.WIDTH)
+	shape.shape = box_shape
+	body.add_child(shape)
+	var cart: Node3D = FieldCartModel.build(false)
+	parent.add_child(cart)
+	cart.position = at
+	return cart
 
 
 ## A big cart wheel (the Meshy wheel of the field-cart, with its solid

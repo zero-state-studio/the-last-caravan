@@ -15,6 +15,7 @@ Stato: ogni cartella qui sotto dice se è approvata, storica o **da valutare**. 
 
 ## Da valutare adesso
 
+- `asset/capitolo01/` da 10 a 16 e `capitoli/01-carri-campo/` da 10 a 19: la grafica definitiva del capitolo 1 (passo 4 della fase 4b).
 - `asset/capitolo01/01-foglio-unico.png`: il foglio unico del capitolo 1 (passo 3 della fase 4b).
 
 - `asset/mezzi/`: i tre mezzi (122-124), partendo da 01 e 02 per la scala; poi il kit dei mezzi generici, da 09 a 12; da 13 i mezzi in movimento.
@@ -244,6 +245,18 @@ Stato: **da valutare** giocando. Forme semplici e sprite provvisori; pianta e se
 - `08-stanza-7-cima-boss.png`: **da valutare**. Stanza 7: la cima rotonda, il bordo con le leve, il Foglione Radicato provvisorio
 - `09-fine-stoppino-di-ruggero.png`: **da valutare**. La fine: Ruggero con lo stoppino, Iole e Pia
 
+Passo 4 della fase 4b, grafica definitiva: stato **da valutare**.
+- `10-tregua-terreno-definitivo.png`: **da valutare**. La Tregua col terreno del prologo, senza griglia, e il kit di vegetazione
+- `11-tregua-stagno-e-pellegrino.png`: **da valutare**. Lo stagno ghiacciato, il campo di brina, il Pellegrino addormentato
+- `12-stanza-1-carro-vero.png`: **da valutare**. Stanza 1: il carro montato in Godot, Iole
+- `13-stanza-2-spighe-e-voltafaccia.png`: **da valutare**. Stanza 2: spighe piegate a sinistra, Voltafaccia animati
+- `14-stanza-3-erba-alta.png`: **da valutare**. Stanza 3: erba alta del kit, radure
+- `15-stanza-4-terrazza-alta.png`: **da valutare**. Stanza 4 dal pianerottolo
+- `16-stanza-5-cavoli-e-foglioni.png`: **da valutare**. Stanza 5: cavoli a ventaglio, Foglioni
+- `17-stanza-6-tuberi-di-brina.png`: **da valutare**. Stanza 6, la più fredda: tuberi di brina, crosta di ghiaccio sulla leva
+- `18-stanza-7-cima-e-foglione-radicato.png`: **da valutare**. Stanza 7: la cima con le assi del carro, il Foglione Radicato
+- `19-fine-ruggero-intreccia.png`: **da valutare**. La fine: Ruggero che intreccia lo stoppino, Iole, Pia col vaso, la strada
+
 ### `fasi/fase4b-sistemi/`: Fase 4b, passo 1 (125, 128-131, 105)
 
 Stato: **da valutare**. I sistemi del capitolo 1 provati nel diorama, con forme semplici (banco dei sistemi, a sud del diorama).
@@ -295,6 +308,15 @@ Stato: **da valutare** (fermata del passo 3).
 - `07-carro-campo-da-vicino.png`: la grana di legno e terra a 30 px/m accanto a Ottavia
 - `08-foglione-radicato-gabbia-cavolo-frinitori.png`: Foglione Radicato, gabbia di colture vive, cavolo piantato, sciame dei Frinitori
 - `09-sprite-rifatti.png`: Voltafaccia, Coccio, Specchietto, Pellegrino, stelo, spighe, tuberi rifatti
+
+Passo 4 della fase 4b, i pezzi definitivi da vicino: stato **da valutare**.
+- `10-foglione-radicato-intero.png`: **da valutare**. Il Foglione Radicato intero, di fronte, accanto a Ottavia: a sinistra chiuso, a destra al sole con le foglie aperte; testa, zampe e radici
+- `11-foglione-radicato-dall-alto.png`: **da valutare**. Gli stessi due dalla camera di gioco
+- `12-carro-campo-mozzi-pieni.png`: **da valutare**. Le ruote con il mozzo di legno pieno e l'anello di ferro
+- `13-carro-campo-code-con-brina.png`: **da valutare**. Le Code lunghe che strisciano a destra, con la brina sulle punte
+- `14-gabbia-chiusa-e-cavolo.png`: **da valutare**. La gabbia di colture vive chiusa, i sei steli a nodi, il cavolo a ventaglio da 1,5 m
+- `15-creature-animate-con-ottavia.png`: **da valutare**. Voltafaccia, Foglione, Specchietto, Coccio con due crepe, accanto a Ottavia
+- `16-strisce-delle-animazioni.png`: **da valutare**. Le strisce animate di creature e personaggi
 
 ### `asset/ui/`: Interfaccia (125)
 

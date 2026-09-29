@@ -33,7 +33,7 @@ Il prologo completo (106, `docs/livelli/prologo.md`), dall'inizio al titolo «Ne
 ### Fase 4b: I Carri-campo
 Il capitolo 1 (107, `docs/livelli/capitolo-01.md`), che verifica dungeon, la carovana come base (37), la Tregua a tempo (39), boss, Salvati e salvataggi (95), dall'inizio della Tregua al titolo «Ne restano nove». Prompt: `docs/prompts/PROMPT-05.md`.
 **Uscita:** un pezzo di gioco che si potrebbe far provare a qualcuno; l'autore l'ha giocato sul Mac con il gamepad, e lo convince.
-**Stato (29 settembre 2026):** in corso. Passi 0-2 fatti: bibbia, sistemi (banco nel diorama), capitolo con i segnaposti (`docs/livelli/capitolo-01-forma.md`). Fermata del passo 2: prova dell'autore.
+**Stato (29 settembre 2026):** in corso. Passi 0-4 fatti: bibbia, sistemi (banco nel diorama), capitolo con i segnaposti (`docs/livelli/capitolo-01-forma.md`), foglio dell'aspetto approvato con correzioni, grafica e animazioni definitive nel capitolo. Prossimo: passo 5, audio e interfaccia.
 
 ## Fase 5: Produzione
 I capitoli da 2 a 10, uno alla volta, ciascuno con il suo dungeon, creature, boss e Salvati.

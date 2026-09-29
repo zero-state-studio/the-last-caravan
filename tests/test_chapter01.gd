@@ -148,7 +148,15 @@ func _test_dungeon() -> void:
 	_ottavia.global_position = t2.global_position + Vector3(0.0, 0.5, 0.0)
 	await _wait(0.2)
 	var lever_s4: TurnLever = _lever_on(t2)
+	var basking: Array[Specchietto] = []
+	for node: Node in _scene.get_tree().get_nodes_in_group(&"combat_targets"):
+		if node is Specchietto and (node as Node3D).global_position.distance_to(t2.global_position) < 10.0:
+			basking.append(node)
+	_check(basking.size() == 4 and basking.all(func(lizard: Specchietto) -> bool: return lizard.in_sunlight()), "room 4: the four Specchietti bask in the sun at the start")
 	await _pull(lever_s4)
+	await _wait(0.2)
+	var shaded: int = basking.filter(func(lizard: Specchietto) -> bool: return not lizard.in_sunlight()).size()
+	_check(shaded >= 3, "room 4: after one turn the fan cabbages shade the Specchietti (%d of 4)" % shaded)
 	await _pull(lever_s4)
 	_check(t2.quarter == 2, "room 4: two turns, the ramp points to room 5")
 	await _into(_exit_to(&"s5", &"da_rampa"))

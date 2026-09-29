@@ -3,9 +3,9 @@ extracted PixelLab character zip, for NpcSprite (frame_count cells).
 
 Every frame is placed centred, all frames of a strip on the same baseline
 (the lowest opaque row among them), so the character does not bob.
-Some generated frames come with an opaque flat background: when the four
-corners of a frame are opaque and of one colour, that colour is flooded
-away from the edges.
+Some generated frames come with an opaque grey background: when the four
+corners of a frame are opaque and grey or near-white, the grey pixels
+reaching the edges are cleared.
 
 Usage: uv run --with pillow python3 tools/strip_from_zip.py <zipdir> <animation> <out_prefix> [dir ...]
   dir: pixellab directions (south, west, ...); default all found.
@@ -25,15 +25,17 @@ BASELINE = 60
 KEY_TOLERANCE = 10
 
 
+def _neutral(pixel: tuple) -> bool:
+    """Grey or near-white, no hue: the generator's background, not the art."""
+    return max(pixel[:3]) - min(pixel[:3]) <= KEY_TOLERANCE and min(pixel[:3]) >= 120
+
+
 def drop_flat_background(frame: Image.Image) -> Image.Image:
-    """Clear an opaque flat background reaching the frame's edges."""
+    """Clear an opaque grey background reaching the frame's edges."""
     width, height = frame.size
     pixels = frame.load()
     corners = [pixels[0, 0], pixels[width - 1, 0], pixels[0, height - 1], pixels[width - 1, height - 1]]
-    if any(corner[3] < 255 for corner in corners):
-        return frame
-    key = corners[0]
-    if any(max(abs(corner[i] - key[i]) for i in range(3)) > KEY_TOLERANCE for corner in corners):
+    if any(corner[3] < 255 or not _neutral(corner) for corner in corners):
         return frame
     frame = frame.copy()
     pixels = frame.load()
@@ -45,10 +47,18 @@ def drop_flat_background(frame: Image.Image) -> Image.Image:
             continue
         seen.add((x, y))
         pixel = pixels[x, y]
-        if pixel[3] == 0 or max(abs(pixel[i] - key[i]) for i in range(3)) > KEY_TOLERANCE:
+        if pixel[3] == 0 or not _neutral(pixel):
             continue
         pixels[x, y] = (0, 0, 0, 0)
         stack.extend([(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)])
+    # Pockets of the very background colour closed in by the art (inside a
+    # curled tail) go too.
+    key = corners[0]
+    for y in range(height):
+        for x in range(width):
+            pixel = pixels[x, y]
+            if pixel[3] > 0 and max(abs(pixel[i] - key[i]) for i in range(3)) <= 3:
+                pixels[x, y] = (0, 0, 0, 0)
     return frame
 
 

@@ -6,13 +6,14 @@ extends SceneTree
 
 const OTTAVIA: String = "res://source-assets/pixellab/2026-09-26-ottavia-v1-south/ottavia_south_v1_definitiva.png"
 
-const CREATURES: Array[String] = ["res://scenes/creatures/voltafaccia.tscn"]
+const CREATURES: Array[String] = ["res://scenes/creatures/voltafaccia.tscn", "res://scripts/creatures/foglione.gd", "res://scripts/creatures/specchietto.gd", "res://scripts/creatures/coccio.gd"]
 
 var _out: String = ""
 var _camera: Camera3D
 var _shots: Array[Dictionary] = []
 var _frames: int = 0
 var _basking: RootedFoglione
+var _cracked: Coccio
 
 
 func _initialize() -> void:
@@ -33,6 +34,7 @@ func _initialize() -> void:
 		root.add_child(creature)
 		x += 2.0
 	_sprite(root, OTTAVIA, Vector3(x, 0.0, 40.0))
+	_cracked = root.get_child(root.get_child_count() - 2) as Coccio
 	# The Rooted Leafback whole, on planks of the top: closed (left, face to
 	# the sun, west) and basking with its leaves open (right, face south).
 	LevelBlocks.box(root, Vector3(0.0, -0.1, 80.0), Vector3(30.0, 0.2, 14.0), LevelBlocks.material(FieldCartModel.WOOD), false)
@@ -47,6 +49,23 @@ func _initialize() -> void:
 	basking.act = RootedFoglione.Act.BASK
 	_basking = basking
 	_sprite(root, OTTAVIA, Vector3(0.0, 0.0, 82.0))
+	# The closed cage of live crops round Pia asleep, six knotted stems, and
+	# a fan cabbage, in the cold light of room 6.
+	C01Kit.cage(root, Vector3(0.0, 0.0, 60.0))
+	for index: int in 6:
+		var angle: float = TAU * index / 6.0
+		var stem: MeshInstance3D = C01Kit.card_look(C01Kit.STEM_CARD)
+		stem.position = Vector3(cos(angle) * 1.3, 0.0, 60.0 + sin(angle) * 1.3)
+		root.add_child(stem)
+	var pia: NpcSprite = NpcSprite.new()
+	pia.sprite_texture = preload("res://assets/sprites/capitolo01/pia/asleep_s.png")
+	pia.frames_per_second = 1.5
+	pia.position = Vector3(0.0, 0.0, 60.0)
+	root.add_child(pia)
+	var cabbage_body: StaticBody3D = StaticBody3D.new()
+	root.add_child(cabbage_body)
+	C01Kit.cabbage_on(cabbage_body, Vector3(3.5, 0.0, 60.0))
+	_sprite(root, OTTAVIA, Vector3(-3.0, 0.0, 61.0))
 	_camera = Camera3D.new()
 	_camera.fov = 35.0
 	root.add_child(_camera)
@@ -56,6 +75,7 @@ func _initialize() -> void:
 		{"name": "cart-wheels.png", "target": Vector3(0.0, 1.2, 5.0), "distance": 14.0, "pitch": 20.0},
 		{"name": "boss-front.png", "target": Vector3(0.0, 1.8, 80.0), "distance": 21.0, "pitch": 14.0},
 		{"name": "boss-game.png", "target": Vector3(0.0, 1.6, 80.0), "distance": 24.0, "pitch": 50.0},
+		{"name": "cage.png", "target": Vector3(0.0, 1.0, 60.0), "distance": 9.0, "pitch": 40.0},
 		{"name": "creatures.png", "target": Vector3(0.0, 0.8, 41.5), "distance": 9.0, "pitch": 40.0},
 	]
 	for shot: Dictionary in all:
@@ -66,6 +86,9 @@ func _initialize() -> void:
 
 func _process(_delta: float) -> bool:
 	_frames += 1
+	if _frames == 3 and _cracked != null:
+		# The Coccio after two strikes: two cracks on its shell.
+		_cracked.cracks = 2
 	if _frames == 3:
 		# The boss builds its look in _ready: open its leaves once it has.
 		for hinge: Node3D in _basking._leaves:

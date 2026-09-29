@@ -14,6 +14,8 @@ enum Phase { IDLE, BURROW, TELEGRAPH, BURST, SURFACED, DIVE }
 const MOUND_COLOR: Color = Color(0.45, 0.33, 0.24)
 const DIVE_SECONDS: float = 0.3
 const FRONT_DEGREES: float = 60.0
+const LOOK: String = "res://assets/sprites/creatures/c01/raspagelo"
+const LOOK_RATES: Dictionary = {"idle": 1.0, "bite": 12.0, "dive": 18.0}
 
 @export var creature: CreatureTuning
 ## Starts underground, unseen (an ambush in tall grass, chapter 1).
@@ -29,6 +31,7 @@ func _ready() -> void:
 	max_health = CreatureTuning.health_for_hits(creature.raspagelo_hits)
 	is_small = true
 	super._ready()
+	use_look(LOOK, LOOK_RATES)
 	_mound = Sprite3D.new()
 	_mound.texture = _mound_texture()
 	_mound.pixel_size = WorldScale.METERS_PER_PIXEL
@@ -104,8 +107,10 @@ func _behave(delta: float) -> void:
 			if _time >= creature.raspagelo_telegraph * Difficulty.telegraph():
 				_go_under(false)
 				_facing = flat_direction_to(target.global_position)
-				sprite.flip_h = _facing.x > 0.0
+				if look == null:
+					sprite.flip_h = _facing.x > 0.0
 				_set_phase(Phase.BURST)
+				play_once("bite", 0.4)
 				attack_player(creature.raspagelo_damage, creature.raspagelo_burst_radius, false, true)
 				flash(0.6, Color(0.85, 0.9, 1.0))
 				# A burst of earth that is hard to miss, even in tall grass.
@@ -119,6 +124,14 @@ func _behave(delta: float) -> void:
 				_set_phase(Phase.DIVE)
 	if not is_being_moved():
 		velocity = move
+
+
+func look_animation() -> String:
+	return "dive" if phase == Phase.DIVE else "idle"
+
+
+func look_direction() -> Vector3:
+	return _facing
 
 
 func _go_under(under: bool) -> void:

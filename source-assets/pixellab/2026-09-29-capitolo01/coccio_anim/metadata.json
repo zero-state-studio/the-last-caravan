@@ -1,0 +1,94 @@
+{
+  "group_id": "76d660e6-a069-4198-9d4c-60e05dbabcbd",
+  "states": [
+    {
+      "character": {
+        "id": "66f3f5a4-b0e1-425f-afdf-0305c19d505b",
+        "name": "Idle",
+        "prompt": "Small beetle about 0.5 m long whose domed shell looks like fired terracotta pottery: burnt brown-orange clay colour, glossy glazed enamel with a bright highlight, thin dark cracks across the shell, no spots. Short dark legs, two small pincers in front. Seen from the front.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "custom",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-29T13:41:51.583540+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "coccio_pinch": {
+            "south": [
+              "Idle/animations/coccio_pinch/south/frame_000.png",
+              "Idle/animations/coccio_pinch/south/frame_001.png",
+              "Idle/animations/coccio_pinch/south/frame_002.png",
+              "Idle/animations/coccio_pinch/south/frame_003.png",
+              "Idle/animations/coccio_pinch/south/frame_004.png"
+            ]
+          },
+          "coccio_walk": {
+            "north-east": [
+              "Idle/animations/coccio_walk/north-east/frame_000.png",
+              "Idle/animations/coccio_walk/north-east/frame_001.png",
+              "Idle/animations/coccio_walk/north-east/frame_002.png",
+              "Idle/animations/coccio_walk/north-east/frame_003.png",
+              "Idle/animations/coccio_walk/north-east/frame_004.png"
+            ],
+            "east": [
+              "Idle/animations/coccio_walk/east/frame_000.png",
+              "Idle/animations/coccio_walk/east/frame_001.png",
+              "Idle/animations/coccio_walk/east/frame_002.png",
+              "Idle/animations/coccio_walk/east/frame_003.png",
+              "Idle/animations/coccio_walk/east/frame_004.png"
+            ],
+            "south": [
+              "Idle/animations/coccio_walk/south/frame_000.png",
+              "Idle/animations/coccio_walk/south/frame_001.png",
+              "Idle/animations/coccio_walk/south/frame_002.png",
+              "Idle/animations/coccio_walk/south/frame_003.png",
+              "Idle/animations/coccio_walk/south/frame_004.png"
+            ],
+            "north": [
+              "Idle/animations/coccio_walk/north/frame_000.png",
+              "Idle/animations/coccio_walk/north/frame_001.png",
+              "Idle/animations/coccio_walk/north/frame_002.png",
+              "Idle/animations/coccio_walk/north/frame_003.png",
+              "Idle/animations/coccio_walk/north/frame_004.png"
+            ],
+            "south-east": [
+              "Idle/animations/coccio_walk/south-east/frame_000.png",
+              "Idle/animations/coccio_walk/south-east/frame_001.png",
+              "Idle/animations/coccio_walk/south-east/frame_002.png",
+              "Idle/animations/coccio_walk/south-east/frame_003.png",
+              "Idle/animations/coccio_walk/south-east/frame_004.png"
+            ]
+          },
+          "coccio_defeat": {
+            "south": [
+              "Idle/animations/coccio_defeat/south/frame_000.png",
+              "Idle/animations/coccio_defeat/south/frame_001.png",
+              "Idle/animations/coccio_defeat/south/frame_002.png",
+              "Idle/animations/coccio_defeat/south/frame_003.png",
+              "Idle/animations/coccio_defeat/south/frame_004.png",
+              "Idle/animations/coccio_defeat/south/frame_005.png",
+              "Idle/animations/coccio_defeat/south/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T15:58:53.318263"
+}
