@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="ItemCatalog" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/game/item_catalog.gd" id="1_catalog"]
+[ext_resource type="Script" path="res://scripts/game/item_definition.gd" id="2_item"]
+
+[sub_resource type="Resource" id="patch_felt"]
+script = ExtResource("2_item")
+id = &"patch_felt"
+kind = 0
+name_key = &"ITEM_PATCH_FELT"
+text_key = &"ITEM_PATCH_FELT_TEXT"
+effect = &"cold"
+amount = 0.75
+
+[sub_resource type="Resource" id="patch_field_canvas"]
+script = ExtResource("2_item")
+id = &"patch_field_canvas"
+kind = 0
+name_key = &"ITEM_PATCH_FIELD_CANVAS"
+text_key = &"ITEM_PATCH_FIELD_CANVAS_TEXT"
+effect = &"breath_regen"
+amount = 1.15
+
+[sub_resource type="Resource" id="patch_oiled_leather"]
+script = ExtResource("2_item")
+id = &"patch_oiled_leather"
+kind = 0
+name_key = &"ITEM_PATCH_OILED_LEATHER"
+text_key = &"ITEM_PATCH_OILED_LEATHER_TEXT"
+effect = &"breathless"
+amount = 0.7
+
+[sub_resource type="Resource" id="warm_stone"]
+script = ExtResource("2_item")
+id = &"warm_stone"
+kind = 1
+name_key = &"ITEM_WARM_STONE"
+text_key = &"ITEM_WARM_STONE_TEXT"
+
+[sub_resource type="Resource" id="memory_black_seed"]
+script = ExtResource("2_item")
+id = &"memory_black_seed"
+kind = 3
+name_key = &"ITEM_MEMORY_BLACK_SEED"
+text_key = &"ITEM_MEMORY_BLACK_SEED_TEXT"
+
+[sub_resource type="Resource" id="memory_carved_stake"]
+script = ExtResource("2_item")
+id = &"memory_carved_stake"
+kind = 3
+name_key = &"ITEM_MEMORY_CARVED_STAKE"
+text_key = &"ITEM_MEMORY_CARVED_STAKE_TEXT"
+
+[resource]
+script = ExtResource("1_catalog")
+items = Array[ExtResource("2_item")]([SubResource("patch_felt"), SubResource("patch_field_canvas"), SubResource("patch_oiled_leather"), SubResource("warm_stone"), SubResource("memory_black_seed"), SubResource("memory_carved_stake")])

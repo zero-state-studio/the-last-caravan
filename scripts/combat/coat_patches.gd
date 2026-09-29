@@ -1,27 +1,36 @@
 class_name CoatPatches
 extends RefCounted
-## Coat patches (104): found during the Truce, sewn into three slots, each a
-## small effect. The four test patches of phase 3; the final list is still
-## to be defined (TODO-DESIGN #104), and so are temperatures and lantern
-## fuel, so the cold, heat and lantern effects below are provisional.
+## Coat patches (104): found in the world, sewn into three slots at the
+## caravan (128), each a small effect. The patches and their amounts are in
+## the item catalog (assets/items/item_catalog.tres); this file lists what
+## each effect does. The full list of patches is still to be defined
+## (TODO-DESIGN #104).
 
-const SLOTS: int = 3
-const NONE: StringName = &""
-## Order shown in the panel.
-const ALL: Array[StringName] = [&"cold", &"heat", &"breath", &"lantern"]
+const SLOTS: int = GameState.COAT_SLOTS
 
-## Cold: creatures of the Night side and the ice hurt less, clinging frost
-## parasites slow less.
-const COLD_DAMAGE_TAKEN: float = 0.8
-const COLD_SLOW: float = 0.5
-## Heat: beasts of the Day side hurt less.
-const HEAT_DAMAGE_TAKEN: float = 0.8
-## Breath regained faster.
-const BREATH_REGEN: float = 1.2
-## Lantern light reaches farther (stands for "lasts longer" until the
-## lantern has fuel, TODO-DESIGN #104).
-const LANTERN_RANGE: float = 1.25
+## Cold: damage from creatures of the Night side and the slowing of clinging
+## frost are multiplied by the amount (felt patch: 0.75, a quarter less).
+const EFFECT_COLD: StringName = &"cold"
+## Heat: damage from beasts of the Day side, multiplied by the amount.
+const EFFECT_HEAT: StringName = &"heat"
+## Breath regained faster: regeneration multiplied by the amount.
+const EFFECT_BREATH_REGEN: StringName = &"breath_regen"
+## Out of breath for less time: multiplied by the amount.
+const EFFECT_BREATHLESS: StringName = &"breathless"
+## The raised lantern (chapter 3) lasts longer (131): not used yet.
+const EFFECT_LANTERN_RAISED: StringName = &"lantern_raised"
 
 
-static func label_key(patch: StringName) -> StringName:
-	return StringName("PATCH_" + String(patch).to_upper()) if patch != NONE else &"PATCH_NONE"
+## Product of the amounts of `effect` among the `patches` worn (1: none).
+static func multiplier(patches: Array[StringName], effect: StringName) -> float:
+	var result: float = 1.0
+	var catalog: ItemCatalog = ItemCatalog.main()
+	for patch: StringName in patches:
+		var item: ItemDefinition = catalog.find(patch)
+		if item != null and item.effect == effect:
+			result *= item.amount
+	return result
+
+
+static func all_patches() -> Array[ItemDefinition]:
+	return ItemCatalog.main().of_kind(ItemDefinition.Kind.PATCH)

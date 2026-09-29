@@ -105,26 +105,22 @@ func _test_patches() -> void:
 	day.position = Vector3(22.0, 0.0, 20.0)
 	current_scene.add_child(night)
 	current_scene.add_child(day)
-	_combat.patches = [&"cold"]
-	_check(is_equal_approx(_combat.patch_damage_taken(night), CoatPatches.COLD_DAMAGE_TAKEN) and is_equal_approx(_combat.patch_damage_taken(day), 1.0), "cold patch: less damage from Night creatures only")
-	_combat.patches = [&"heat"]
-	_check(is_equal_approx(_combat.patch_damage_taken(day), CoatPatches.HEAT_DAMAGE_TAKEN), "heat patch: less damage from Day beasts")
-	_combat.patches = [&"lantern"]
-	_ottavia.set_lantern_raised(false)
-	var with_patch: float = _ottavia.lantern_light.omni_range
+	_combat.patches = [&"patch_felt"]
+	_check(is_equal_approx(_combat.patch_damage_taken(night), 0.75) and is_equal_approx(_combat.patch_damage_taken(day), 1.0), "felt patch: a quarter less damage from Night creatures only")
 	_combat.patches = []
-	_ottavia.set_lantern_raised(false)
-	_check(with_patch > _ottavia.lantern_light.omni_range * 1.2, "lantern patch: the light reaches farther")
+	_check(is_equal_approx(_combat.patch_damage_taken(night), 1.0), "no patch: full damage")
 	_ottavia.set_physics_process(false)
 	_combat.stamina = 10.0
 	_combat.physics_update(1.0, Vector2.ZERO, true)
 	var start: float = _combat.stamina
 	_combat.physics_update(0.1, Vector2.ZERO, true)
 	var plain: float = _combat.stamina - start
-	_combat.patches = [&"breath"]
+	_combat.patches = [&"patch_field_canvas"]
 	start = _combat.stamina
 	_combat.physics_update(0.1, Vector2.ZERO, true)
-	_check(_combat.stamina - start > plain * 1.1, "breath patch: breath comes back faster")
+	_check(_combat.stamina - start > plain * 1.1, "field-canvas patch: breath comes back faster")
+	_combat.patches = [&"patch_oiled_leather"]
+	_check(is_equal_approx(_combat.patch_multiplier(CoatPatches.EFFECT_BREATHLESS), 0.7), "oiled-leather patch: out of breath 30% less")
 	_combat.patches = []
 	_ottavia.set_physics_process(true)
 	night.free()

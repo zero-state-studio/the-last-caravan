@@ -24,10 +24,12 @@ signal struck
 ## A move done well by the player (81): parry, counter, combo, jump, hook.
 ## Enea counts them to learn the move.
 signal technique_done(technique: StringName)
+## A warm stone squeezed to the end (129).
+signal healed(amount: float)
 
-enum State { FREE, STRIKE, HOOK, PARRY, JUMP, HITSTUN, BREATHLESS }
+enum State { FREE, STRIKE, HOOK, PARRY, JUMP, HITSTUN, BREATHLESS, WARM_STONE }
 
-const ACTIONS: Array[StringName] = [&"attack", &"hook", &"parry", &"jump", &"run", &"lantern", &"call"]
+const ACTIONS: Array[StringName] = [&"attack", &"hook", &"parry", &"jump", &"run", &"lantern", &"call", &"warm_stone"]
 const SWING_COLOR: Color = Color(1.0, 0.95, 0.8, 0.9)
 const COUNTER_COLOR: Color = Color(1.0, 0.77, 0.42, 1.0)
 const DEFLECT_COLOR: Color = Color(0.85, 0.9, 1.0, 1.0)
@@ -64,6 +66,7 @@ var _knock_velocity: Vector3 = Vector3.ZERO
 var _lantern_charge: float = -1.0
 var _lantern_raised: bool = false
 var _parry_held: bool = false
+var _stone_held: bool = false
 ## Share of speed taken by creatures clinging to Ottavia (B1), 0-1.
 var slowdown: float = 0.0
 var _moving: bool = false
@@ -91,6 +94,7 @@ func reset() -> void:
 	_enter(State.FREE)
 	_buffer.clear()
 	_parry_held = false
+	_stone_held = false
 	_run_held = false
 	running = false
 	_knock_velocity = Vector3.ZERO
@@ -146,10 +150,18 @@ func press(action: StringName, input: Vector2 = Vector2.ZERO) -> void:
 			_lantern_charge = 0.0
 		&"call":
 			_call_companion()
+		&"warm_stone":
+			_stone_held = true
+			_buffer[&"warm_stone"] = tuning.input_buffer_seconds
 
 
 func release(action: StringName) -> void:
 	match action:
+		&"warm_stone":
+			_stone_held = false
+			_buffer.erase(&"warm_stone")
+			if state == State.WARM_STONE:
+				_enter(State.FREE)
 		&"run":
 			_run_held = false
 		&"hook":
@@ -207,8 +219,11 @@ func _advance_state(input: Vector2) -> void:
 		State.HITSTUN:
 			if _state_time >= tuning.hitstun_seconds:
 				_enter(State.FREE)
+		State.WARM_STONE:
+			if _state_time >= tuning.warm_stone_seconds:
+				_finish_warm_stone()
 		State.BREATHLESS:
-			if _state_time >= tuning.breathless_seconds:
+			if _state_time >= tuning.breathless_seconds * patch_multiplier(CoatPatches.EFFECT_BREATHLESS):
 				_enter(State.FREE)
 
 
@@ -233,6 +248,44 @@ func _start_buffered_action(_input: Vector2) -> void:
 	elif _buffer.has(&"hook_pull"):
 		_buffer.erase(&"hook_pull")
 		_start_hook(false)
+	elif _buffer.has(&"warm_stone") and _stone_held:
+		_buffer.erase(&"warm_stone")
+		_start_warm_stone()
+
+
+# --- Warm stones (129) -------------------------------------------------------
+
+## Squeezing a stone takes a moment and is not possible while striking or
+## parrying: only from the free state, with a stone and health to regain.
+func _start_warm_stone() -> void:
+	if GameState.warm_stones <= 0:
+		message.emit(&"COMBAT_NO_WARM_STONE")
+		return
+	if ottavia.health >= ottavia.max_health:
+		return
+	_enter(State.WARM_STONE)
+	# Provisional sound until the chapter 1 effects (phase 4b step 5).
+	SoundBank.play_sound(get_tree(), &"fruscio_tende")
+
+
+func _finish_warm_stone() -> void:
+	_stone_held = false
+	_enter(State.FREE)
+	if not GameState.use_warm_stone():
+		return
+	var amount: float = minf(tuning.warm_stone_heal, ottavia.max_health - ottavia.health)
+	ottavia.heal(amount)
+	ottavia.flash(0.8, Color(1.0, 0.72, 0.4))
+	healed.emit(amount)
+
+
+func is_squeezing_stone() -> bool:
+	return state == State.WARM_STONE
+
+
+## Share of the squeeze done, 0-1 (the interface shows it).
+func warm_stone_progress() -> float:
+	return clampf(_state_time / maxf(tuning.warm_stone_seconds, 0.01), 0.0, 1.0) if state == State.WARM_STONE else 0.0
 
 
 func _start_strike() -> void:
@@ -504,7 +557,7 @@ func _spend(amount: float) -> void:
 func _regenerate(delta: float) -> void:
 	# Never while parrying; half as fast while walking as standing still.
 	if state == State.FREE and _since_action >= regen_delay():
-		var rate: float = tuning.stamina_regen_per_second * (tuning.walking_regen_multiplier if _moving else 1.0) * (CoatPatches.BREATH_REGEN if has_patch(&"breath") else 1.0)
+		var rate: float = tuning.stamina_regen_per_second * (tuning.walking_regen_multiplier if _moving else 1.0) * patch_multiplier(CoatPatches.EFFECT_BREATH_REGEN)
 		stamina = minf(max_stamina(), stamina + rate * delta)
 
 
@@ -523,6 +576,11 @@ func knows(technique: StringName) -> bool:
 
 func has_patch(patch: StringName) -> bool:
 	return patch in patches
+
+
+## Product of the amounts of one patch effect among the patches worn.
+func patch_multiplier(effect: StringName) -> float:
+	return CoatPatches.multiplier(patches, effect)
 
 
 func max_stamina() -> float:
@@ -567,10 +625,10 @@ func patch_damage_taken(source: CombatEnemy) -> float:
 	if source == null:
 		return 1.0
 	var multiplier: float = 1.0
-	if has_patch(&"cold") and source.world_side == &"night":
-		multiplier *= CoatPatches.COLD_DAMAGE_TAKEN
-	if has_patch(&"heat") and source.world_side == &"day":
-		multiplier *= CoatPatches.HEAT_DAMAGE_TAKEN
+	if source.world_side == &"night":
+		multiplier *= patch_multiplier(CoatPatches.EFFECT_COLD)
+	if source.world_side == &"day":
+		multiplier *= patch_multiplier(CoatPatches.EFFECT_HEAT)
 	return multiplier
 
 
@@ -597,6 +655,8 @@ func move_speed_multiplier() -> float:
 			return tuning.parry_speed_multiplier * free
 		State.BREATHLESS:
 			return tuning.breathless_speed_multiplier * free
+		State.WARM_STONE:
+			return tuning.warm_stone_speed_multiplier * free
 	return 0.0
 
 
@@ -609,7 +669,7 @@ func forced_velocity() -> Vector3:
 
 
 func can_turn() -> bool:
-	return state == State.FREE or state == State.BREATHLESS or state == State.JUMP
+	return state == State.FREE or state == State.BREATHLESS or state == State.JUMP or state == State.WARM_STONE
 
 
 func is_acting() -> bool:

@@ -88,6 +88,8 @@ func _ready() -> void:
 	add_to_group(&"player")
 	max_health = combat.tuning.max_health
 	health = max_health
+	combat.patches = GameState.worn_patches()
+	GameState.events.patches_changed.connect(_on_patches_changed)
 	_lantern_base_range = lantern_light.omni_range
 	_lantern_base_energy = lantern_light.light_energy
 	_material.shader = UNSHADED_SHADER
@@ -372,6 +374,15 @@ func take_damage(amount: float) -> void:
 		defeated.emit()
 
 
+func _on_patches_changed() -> void:
+	combat.patches = GameState.worn_patches()
+
+
+func heal(amount: float) -> void:
+	if health > 0.0:
+		health = minf(max_health, health + amount)
+
+
 func restore_health() -> void:
 	health = max_health
 	combat.reset()
@@ -425,8 +436,7 @@ func set_lantern_open(open: bool) -> void:
 ## Raised lantern (33): lights farther while the button is held.
 func set_lantern_raised(raised: bool) -> void:
 	var tuning: CombatTuning = combat.tuning
-	var patch: float = CoatPatches.LANTERN_RANGE if combat.has_patch(&"lantern") else 1.0
-	lantern_light.omni_range = _lantern_base_range * patch * (tuning.lantern_raised_range_multiplier if raised else 1.0)
+	lantern_light.omni_range = _lantern_base_range * (tuning.lantern_raised_range_multiplier if raised else 1.0)
 	lantern_light.light_energy = _lantern_base_energy * (1.3 if raised else 1.0)
 
 

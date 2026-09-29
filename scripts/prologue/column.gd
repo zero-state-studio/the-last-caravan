@@ -361,7 +361,7 @@ func _on_mirco_used() -> void:
 	ottavia.face_toward(mirco.global_position - ottavia.global_position)
 	await ottavia.play_scripted("tie_rope")
 	ottavia.stop_scripted()
-	PrologueState.knots += 1
+	GameState.add_knot()
 	SoundBank.play_sound(get_tree(), &"corda_nodo", 0.0)
 	rope.add_knot()
 	ottavia.controls_enabled = true

@@ -22,6 +22,7 @@ const ACTIONS: Array[Dictionary] = [
 	{"action": &"lantern", "key": "INPUT_LANTERN"},
 	{"action": &"call", "key": "INPUT_CALL"},
 	{"action": &"interact", "key": "INPUT_INTERACT"},
+	{"action": &"warm_stone", "key": "INPUT_WARM_STONE"},
 ]
 const PAD_BUTTON_NAMES: Dictionary = {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",

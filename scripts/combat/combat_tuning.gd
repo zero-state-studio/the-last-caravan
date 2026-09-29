@@ -5,7 +5,7 @@ extends Resource
 ## panel. Times are in seconds, distances in meters, breath in points.
 
 @export_group("Ottavia")
-@export var max_health: float = 150.0
+@export var max_health: float = 100.0
 @export var move_speed: float = 3.0
 
 @export_group("Breath")
@@ -91,6 +91,15 @@ extends Resource
 @export var aim_cone_easy_degrees: float = 90.0
 ## A press this early is kept and used as soon as the action is possible.
 @export var input_buffer_seconds: float = 0.2
+
+@export_group("Warm stones")
+## Health given back by one warm stone (129), out of max_health.
+@export var warm_stone_heal: float = 35.0
+## Seconds the button is held to squeeze a stone; letting go or being hit
+## before the end keeps the stone.
+@export var warm_stone_seconds: float = 1.0
+@export var warm_stone_max: int = 3
+@export var warm_stone_speed_multiplier: float = 0.35
 
 @export_group("Training dummy")
 @export var dummy_attack_interval: float = 2.2

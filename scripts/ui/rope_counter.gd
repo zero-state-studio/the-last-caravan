@@ -22,6 +22,7 @@ var _new_knot_scale: float = 1.0
 
 func _ready() -> void:
 	layer = 9
+	add_to_group(&"rope_counter")
 	_drawing = Control.new()
 	_drawing.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_drawing.position = Vector2(-260.0, 24.0)
@@ -35,7 +36,7 @@ func _ready() -> void:
 	_label.add_theme_color_override(&"font_outline_color", OUTLINE)
 	_label.add_theme_constant_override(&"outline_size", 5)
 	add_child(_label)
-	set_knots(PrologueState.knots)
+	set_knots(GameState.knots)
 
 
 func set_knots(count: int) -> void:

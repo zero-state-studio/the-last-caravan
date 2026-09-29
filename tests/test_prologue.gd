@@ -270,7 +270,7 @@ func _test_column() -> void:
 	_check(column.step == column.Step.TIE, "column: then Mirco can be tied to the rope")
 	ottavia.interact()
 	await create_timer(1.8).timeout
-	_check(column.step == column.Step.RETURN and PrologueState.knots == 1 and column.rope.knots == 1, "column: tied to the rope, a knot is added (125)")
+	_check(column.step == column.Step.RETURN and GameState.knots == 1 and column.rope.knots == 1, "column: tied to the rope, a knot is added (125)")
 	_check(column.dusk > 0.6, "column: near Mirco the light dims, as if night were coming (%.2f)" % column.dusk)
 	var back: float = column._last_vehicle_back()
 	ottavia.global_position.x = back + (column._return_start_x - back) * 0.3

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChapterTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/game/chapter_tuning.gd" id="1_chapter"]
+
+[resource]
+script = ExtResource("1_chapter")
+truce_seconds = 420.0
+truce_warning_seconds = 60.0
+truce_warm_stones = 3
+platform_turn_seconds = 1.5
+day_beast_flank_seconds = 2.0

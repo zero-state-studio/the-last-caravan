@@ -64,7 +64,8 @@ func _input(event: InputEvent) -> void:
 		_refresh()
 
 
-## Shows `text_key` with the key of `action` (&"move" for the movement keys).
+## Shows `text_key` with the key of `action` (&"move" for the movement keys,
+## &"" for none).
 func show_hint(text_key: StringName, action: StringName) -> void:
 	_text_key = text_key
 	_action = action
@@ -120,6 +121,9 @@ func _refresh() -> void:
 
 ## The key names to draw for an action (four for &"move" on the keyboard).
 static func key_caps(action: StringName, device: InputRemap.Device) -> PackedStringArray:
+	# A hint without a key (for example the sundial of the Truce).
+	if action == &"":
+		return PackedStringArray()
 	if action == &"move":
 		if device == InputRemap.Device.GAMEPAD:
 			return PackedStringArray([TranslationServer.translate(&"HINT_LEFT_STICK")])

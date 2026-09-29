@@ -171,11 +171,14 @@ func apply_settings() -> void:
 	zone_palette.night_proximity = settings.zone_night_proximity
 	combat_hud.visible = settings.show_combat_hud
 	ottavia.combat.set_chapter(roundi(settings.chapter))
-	var sewn: Array[StringName] = []
-	for patch: String in [settings.patch_slot_1, settings.patch_slot_2, settings.patch_slot_3]:
-		if patch != "" and not StringName(patch) in sewn:
-			sewn.append(StringName(patch))
-	ottavia.combat.patches = sewn
+	# The coat slots of the panel stand for patches found and sewn (128).
+	var slots: Array[String] = [settings.patch_slot_1, settings.patch_slot_2, settings.patch_slot_3]
+	for slot: int in slots.size():
+		var patch: StringName = StringName(slots[slot])
+		if patch != GameState.EMPTY_SLOT and not patch in GameState.found_patches:
+			GameState.found_patches.append(patch)
+		GameState.sewn_patches[slot] = patch if not patch in GameState.sewn_patches.slice(0, slot) else GameState.EMPTY_SLOT
+	GameState.events.patches_changed.emit()
 	ottavia.set_lantern_raised(false)
 	var tosca: Tosca = get_node_or_null(^"Tosca") as Tosca
 	if tosca != null:

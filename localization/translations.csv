@@ -229,10 +229,6 @@ DEV_CHAPTER,Ottavia's age: chapter,Età di Ottavia: capitolo
 DEV_END_CHAPTER,End of chapter,Fine del capitolo
 DEV_SECTION_COAT,Coat patches (104),Toppe del cappotto (104)
 PATCH_NONE,— empty slot —,— spazio vuoto —
-PATCH_COLD,Cold patch,Toppa del freddo
-PATCH_HEAT,Heat patch,Toppa del caldo
-PATCH_BREATH,Breath patch,Toppa del fiato
-PATCH_LANTERN,Lantern patch,Toppa della lanterna
 CHAPTER_END_TITLE,End of chapter {n},Fine del capitolo {n}
 CHAPTER_LOSES,Loses: {text},Perde: {text}
 CHAPTER_LEARNS,Learns: {text},Impara: {text}
@@ -336,3 +332,27 @@ PRO_OUTRO2_05,"Is it cruel? Maybe so, but necessary. Sadly, in this world no one
 PRO_OTTAVIA_06,"Very well, back to the tail to leave. Whoever comes late is left behind.","Molto bene, torniamo in coda per partire. Chi arriva in ritardo viene lasciato indietro."
 PRO_OUTRO2_06,Rules are rules.,Le regole sono regole.
 PRO_GOAL_TAIL,"Back to the tail of the caravan, to leave","Torna in coda alla carovana, per partire"
+INPUT_WARM_STONE,Warm stone,Pietra calda
+COMBAT_NO_WARM_STONE,No warm stones,Nessuna pietra calda
+HINT_WARM_STONE,Hold a warm stone to heal,Stringi una pietra calda per curarti
+DEV_C_WARM_STONE_HEAL,Warm stone: health given back,Pietra calda: vita restituita
+DEV_C_WARM_STONE_SECONDS,Warm stone: seconds to squeeze,Pietra calda: secondi per stringerla
+DEV_C_WARM_STONE_MAX,Warm stones carried at most,Pietre calde portate al massimo
+DEV_C_WARM_STONE_SPEED_MULTIPLIER,Warm stone: speed while squeezing,Pietra calda: velocità mentre la stringe
+ITEM_PATCH_FELT,Felt patch,Toppa di feltro
+ITEM_PATCH_FELT_TEXT,The cold affects you 25% less.,Riduce del 25% gli effetti del freddo.
+ITEM_PATCH_FIELD_CANVAS,Field-canvas patch,Toppa di tela da campo
+ITEM_PATCH_FIELD_CANVAS_TEXT,Breath comes back 15% faster.,Il fiato si ricarica il 15% più in fretta.
+ITEM_PATCH_OILED_LEATHER,Oiled-leather patch,Toppa di cuoio unto
+ITEM_PATCH_OILED_LEATHER_TEXT,"When your breath runs out, you stay winded 30% less.","Quando il fiato finisce, resti senza respiro il 30% in meno."
+ITEM_WARM_STONE,Warm stone,Pietra calda
+ITEM_WARM_STONE_TEXT,"A reservoir stone of the Generators, still warm. Squeeze it to recover 35 health.","Una pietra-serbatoio dei Generatori, ancora calda. Stringila per riprendere 35 di vita."
+ITEM_MEMORY_BLACK_SEED,A black seed,Un seme nero
+ITEM_MEMORY_BLACK_SEED_TEXT,"A black seed, hard as a stone. Whoever lost it said it only sprouts in the dark.","Un seme nero, duro come un sasso. Chi l'ha perso diceva che germoglia solo al buio."
+ITEM_MEMORY_CARVED_STAKE,The carved stake,Il paletto intagliato
+ITEM_MEMORY_CARVED_STAKE_TEXT,"An old Fieldturner stake, covered in notches. Beside the last one, someone carved: straight.","Un vecchio paletto dei Voltacampi, pieno di tacche. Accanto all'ultima, qualcuno ha inciso: dritta."
+TOAST_FOUND,Found: {name},Trovato: {name}
+HINT_TRUCE_SUNDIAL,The sundial marks the time of the Truce,La meridiana segna il tempo della Tregua
+HINT_TRUCE_LEFT_BEHIND,"When the shadow reaches the end, whatever you haven't gathered stays here","Quando l'ombra arriva in fondo, ciò che non hai raccolto resta qui"
+HINT_USE_LEVER,Use the lever,Usa la leva
+HINT_SAVED_OPEN_WAY,Those you save open the way back,Chi salvi apre la strada del ritorno

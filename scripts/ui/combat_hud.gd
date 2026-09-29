@@ -14,11 +14,18 @@ const MESSAGE_COLORS: Dictionary = {
 	&"COMBAT_BREATHLESS": Color(0.6, 0.65, 1.0),
 	&"COMBAT_NO_COMPANION": Color(0.9, 0.87, 0.8),
 	&"COMBAT_CLINGING": Color(0.75, 0.88, 1.0),
+	&"COMBAT_NO_WARM_STONE": Color(0.9, 0.87, 0.8),
 }
+## Below this share of health, the first time, the hint of the warm stones.
+const WARM_STONE_HINT_HEALTH: float = 0.5
+const WARM_STONE_HINT_SECONDS: float = 6.0
+const WARM_STONE_HINT_FLAG: StringName = &"hint_warm_stone"
 
 var ottavia: OttaviaProto
 
 var gauge: SundialGauge
+var stones: WarmStoneRow
+var _hint_left: float = 0.0
 var _message: Label
 var _message_left: float = 0.0
 var _boss_box: VBoxContainer
@@ -36,6 +43,11 @@ func _ready() -> void:
 	gauge.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 	gauge.position = Vector2(GAUGE_MARGIN, -GAUGE_MARGIN - gauge.custom_minimum_size.y)
 	add_child(gauge)
+	# Warm stones, right of the sundial at the height of its base.
+	stones = WarmStoneRow.new()
+	stones.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	stones.position = Vector2(GAUGE_MARGIN + gauge.custom_minimum_size.x + 6.0, -GAUGE_MARGIN - stones.custom_minimum_size.y)
+	add_child(stones)
 	# Companion readiness, just above the sundial.
 	var box: VBoxContainer = VBoxContainer.new()
 	box.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
@@ -82,6 +94,24 @@ func bind(target: OttaviaProto) -> void:
 	ottavia.combat.message.connect(show_message)
 
 
+## The first time health drops below half with a stone in the bisaccia:
+## «Hold a warm stone to heal» (chapter 1, section 8).
+func _update_warm_stone_hint(delta: float) -> void:
+	var banner: HintBanner = get_tree().get_first_node_in_group(&"hint_banner") as HintBanner
+	if _hint_left > 0.0:
+		_hint_left -= delta
+		if (_hint_left <= 0.0 or ottavia.combat.is_squeezing_stone()) and banner != null and banner.current_hint() == &"HINT_WARM_STONE":
+			banner.hide_hint()
+			_hint_left = 0.0
+		return
+	if banner == null or GameState.has_flag(WARM_STONE_HINT_FLAG) or GameState.warm_stones <= 0:
+		return
+	if ottavia.health > 0.0 and ottavia.health < ottavia.max_health * WARM_STONE_HINT_HEALTH:
+		GameState.set_flag(WARM_STONE_HINT_FLAG)
+		banner.show_hint(&"HINT_WARM_STONE", &"warm_stone")
+		_hint_left = WARM_STONE_HINT_SECONDS
+
+
 func show_message(key: StringName) -> void:
 	_message.text = key
 	_message.add_theme_color_override(&"font_color", MESSAGE_COLORS.get(key, Color.WHITE))
@@ -93,6 +123,8 @@ func _process(delta: float) -> void:
 	if ottavia == null:
 		return
 	gauge.set_values(ottavia.health / maxf(ottavia.max_health, 0.001), ottavia.combat.stamina / maxf(ottavia.combat.max_stamina(), 0.001), ottavia.combat.state == OttaviaCombat.State.BREATHLESS)
+	stones.set_values(GameState.warm_stones, ottavia.combat.tuning.warm_stone_max, ottavia.combat.warm_stone_progress())
+	_update_warm_stone_hint(delta)
 	# Real time: messages stay readable during freeze frames.
 	_message_left = maxf(0.0, _message_left - delta / maxf(Engine.time_scale, 0.001))
 	_message.modulate.a = clampf(_message_left / 0.3, 0.0, 1.0)

@@ -11,11 +11,10 @@ const COLUMN_SCENE: String = "res://scenes/prologo/colonna.tscn"
 static var entered_from_door: bool = false
 ## The lantern shutter as she left the floor.
 static var lantern_open: bool = false
-## Knots on Ottavia's rope: one per person saved (106, 125).
-static var knots: int = 0
 
 
 static func reset() -> void:
 	entered_from_door = false
 	lantern_open = false
-	knots = 0
+	# A new game: the rope, the bisaccia and the world start empty.
+	GameState.reset()

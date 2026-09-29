@@ -81,6 +81,10 @@ const COMBAT_SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_C_HIT_KNOCKBACK", "property": "hit_knockback", "min": 0.0, "max": 2.0, "step": 0.05},
 	{"key": "DEV_C_LANTERN_HOLD_SECONDS", "property": "lantern_hold_seconds", "min": 0.1, "max": 1.0, "step": 0.05},
 	{"key": "DEV_C_LANTERN_RAISED_RANGE_MULTIPLIER", "property": "lantern_raised_range_multiplier", "min": 1.0, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_WARM_STONE_HEAL", "property": "warm_stone_heal", "min": 5.0, "max": 100.0, "step": 1.0},
+	{"key": "DEV_C_WARM_STONE_SECONDS", "property": "warm_stone_seconds", "min": 0.2, "max": 3.0, "step": 0.05},
+	{"key": "DEV_C_WARM_STONE_MAX", "property": "warm_stone_max", "min": 1.0, "max": 6.0, "step": 1.0},
+	{"key": "DEV_C_WARM_STONE_SPEED_MULTIPLIER", "property": "warm_stone_speed_multiplier", "min": 0.0, "max": 1.0, "step": 0.05},
 	{"key": "DEV_C_HITSTOP_SECONDS", "property": "hitstop_seconds", "min": 0.0, "max": 0.3, "step": 0.01},
 	{"key": "DEV_C_HITSTOP_CRITICAL_SECONDS", "property": "hitstop_critical_seconds", "min": 0.0, "max": 0.4, "step": 0.01},
 	{"key": "DEV_C_SHAKE_METERS", "property": "shake_meters", "min": 0.0, "max": 0.4, "step": 0.01},
@@ -320,13 +324,15 @@ func _add_slider(box: VBoxContainer, definition: Dictionary, target: Object) -> 
 	box.add_child(slider)
 
 
-## One coat slot (104): empty or one of the test patches.
+## One coat slot (104): empty or one of the patches of the item catalog.
+## Picking one here also counts it as found.
 func _add_patch_slot(box: VBoxContainer, property: String) -> void:
 	var picker: OptionButton = OptionButton.new()
-	var options: Array[StringName] = [CoatPatches.NONE]
-	options.append_array(CoatPatches.ALL)
-	for patch: StringName in options:
-		picker.add_item(CoatPatches.label_key(patch))
+	var options: Array[StringName] = [GameState.EMPTY_SLOT]
+	picker.add_item("PATCH_NONE")
+	for item: ItemDefinition in CoatPatches.all_patches():
+		options.append(item.id)
+		picker.add_item(item.name_key)
 	picker.selected = maxi(0, options.find(StringName(settings.get(property))))
 	picker.item_selected.connect(func(index: int) -> void:
 		settings.set(property, String(options[index]))

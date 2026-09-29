@@ -118,7 +118,7 @@ func _physics_process(_delta: float) -> void:
 ## Into the water: a little damage and back on the last safe plate.
 func _fall(ottavia: OttaviaProto) -> void:
 	_falling = true
-	var cold: float = CoatPatches.COLD_DAMAGE_TAKEN if ottavia.combat.has_patch(&"cold") else 1.0
+	var cold: float = ottavia.combat.patch_multiplier(CoatPatches.EFFECT_COLD)
 	ottavia.take_damage((boss as VecchioSpartighiaccio).creature.ice_fall_damage * cold * Difficulty.enemy_damage())
 	ottavia.flash(1.0, Color(0.6, 0.75, 1.0))
 	SoundBank.play_sound(get_tree(), &"colpo_subito")
