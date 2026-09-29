@@ -61,6 +61,7 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `31-veduta-citta-vicina.png`: **da valutare**. La veduta sulla carovana con la città morta vicina, senza la fascia vuota
 - `32-campo-di-brina-vicino-a-mirco.png`: **da valutare**. La zona di Mirco non più piatta e uniforme: brina a chiazze con terra e ghiaia, massi, arbusti gelati, tronchi, cumuli di brina e schegge di ghiaccio
 - `33-chiusura-campo-lungo-vestito.png`: **da valutare**. La chiusura: la camera si allarga sulla colonna in cammino, con la pianura vestita (erba, rocce, alberi secchi, ruderi) e il terreno mosso ai lati della strada; niente più sagoma della lanterna
+- `34-lo-sguardo-arriva-a-mirco.png`: **da valutare**. Dopo il dialogo con la mamma la camera arriva fino a Mirco, ingrandito 2 volte
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)
@@ -226,7 +227,8 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 
 ### `docs/video/`
 
-- `capitoli/00-prologo/16-prologo-intero-ultima-revisione.mp4`: **da valutare (con le cuffie)**. Zelinda e Mirco con la voce, la mamma che chiama «Ottavia!», i due che continuano a camminare con la camera che si allarga, la chiusura veloce e ironica di Ottavia (6 min 38 s)
+- `capitoli/00-prologo/17-prologo-intero-meridiano.mp4`: **da valutare (con le cuffie)**. Il Meridiano al posto dello Gnomone, Zelinda con la voce nuova, lo sguardo che arriva fino a Mirco, la chiusura senza la sagoma della lanterna e con la frase sulla crudeltà, la pianura vestita nel campo lungo (6 min 56 s)
+- `capitoli/00-prologo/16-prologo-intero-ultima-revisione.mp4`: superato da 17. Zelinda e Mirco con la voce, la mamma che chiama «Ottavia!», i due che continuano a camminare con la camera che si allarga, la chiusura veloce e ironica di Ottavia (6 min 38 s)
 - `capitoli/00-prologo/15-prologo-intero-voci-nuove.mp4`: superato da 16. Come il 14, con le voci rifatte: «Serra fila» staccato, Anselmo con la voce nuova, la mamma di Mirco più agitata; la mamma che si unisce alla colonna e la folla che cammina al passo giusto (6 min 52 s)
 - `capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`: superato da 15. Terza revisione: motivi dei compiti a voce, Ruggero scorbutico, la mamma di Mirco, le frasi al ritorno, il verdetto nuovo di Anselmo e la chiusura sulle Tregue e la lanterna (6 min 51 s)
 - `capitoli/00-prologo/13-prologo-intero-revisione-2.mp4`: superato da 14. Il prologo intero dopo la seconda revisione: sfondo, rocce, scala e Ruggero, Brinacchi battibili, strada lunga verso Mirco con la notte che cala, verdetto di Anselmo (5 min 21 s)
