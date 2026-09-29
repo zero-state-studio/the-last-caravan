@@ -20,5 +20,6 @@ Stati: **Definito** (si può implementare), **In discussione** (proposta non anc
 - [Comparse](15-comparse.md)
 - [I mezzi della carovana](16-mezzi.md)
 - [Interfaccia e audio](17-interfaccia-e-audio.md)
+- [La bisaccia](18-bisaccia.md)
 
-Livelli nel dettaglio: [Prologo](../livelli/prologo.md)
+Livelli nel dettaglio: [Prologo](../livelli/prologo.md), [Capitolo 1](../livelli/capitolo-01.md)

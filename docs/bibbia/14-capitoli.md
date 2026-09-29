@@ -16,14 +16,16 @@
 - **Enea.** Quando Ottavia arriva tardi, in testa alla colonna, accanto ad Arold, c'è un ragazzo che si volta a guardarla. Il padre non si volta; lui sì. Approvato.
 - **Nota per la produzione.** Scatto e salto sono già implementati nel prototipo della fase 3 (33, 67). Gli ostacoli da rompere sono arbusti secchi, rami e croste di ghiaccio, non alberi interi: il kit di vegetazione (101) avrà bisogno di versioni che si spezzano.
 
-## 107. Capitolo 1. Ne restano dieci: I Carri-campo  [In discussione]
+## 107. Capitolo 1. Ne restano dieci: I Carri-campo  [Definito]
+
+*Mappa e sceneggiatura complete in `docs/livelli/capitolo-01.md`.*
 
 - **Cosa succede.** La prima Tregua a tempo: la meridiana insegna il ritmo del gioco. Pia è sparita tra le terrazze, e Ruggero è rimasto indietro a raddrizzare le piante. Il capitolo completa il tutorial: il giocatore impara da solo, con Ottavia. In cima ai campi, il Foglione Radicato.
 - **Il momento.** Il mestiere fatto ancora come si deve, forse per l'ultima volta.
-- **Meccanica.** I campi inclinabili. Le leve dei Voltacampi inclinano le terrazze: cambia cosa sta in luce e cosa in ombra, e con la luce cambiano i percorsi e il lato debole delle bestie (36).
+- **Meccanica.** Le piattaforme girevoli. Le leve dei Voltacampi girano le terrazze di 90°: cambiano i passaggi, le ombre delle piante e il lato da cui le bestie del Giorno mostrano il fianco (36).
 - **Stanze e durata.** 6-7 terrazze, dalla più bassa alla più alta, con l'arena del boss in cima. 20-25 minuti.
 - **Compagno richiamabile.** Nessuno.
-- **Ottavia perde / impara.** Perde lo scatto lungo. Impara la deviazione: non può più sfuggire ai colpi scattando via, e allora impara a sviarli.
+- **Ottavia perde / impara.** Perde lo scatto lungo. Impara il passo a tempo: non può più scappare scattando, e allora impara a scansarsi all'ultimo istante, senza consumare fiato. La deviazione è disponibile fin dal prologo.
 - **Pezzo della lanterna.** Lo stoppino.
 - **Semi e ritorni.** La pianta dritta di Pia, cresciuta al buio; il nonno di Ruggero e le piante dritte di una volta, che ritornano nella città senza ombra del capitolo 9.
 
@@ -67,7 +69,7 @@
 - **Meccanica.** Bisogna restare dentro un'ombra che si sposta, perché fuori si brucia: è il sistema della luce che si muove del capitolo 2, rovesciato.
 - **Stanze e durata.** 5 stanze ampie. 20-25 minuti.
 - **Compagno richiamabile.** Oreste, con il lampo che mostra il lato debole.
-- **Ottavia perde / impara.** Perde velocità di camminata. Impara il passo a tempo: uno scarto fatto all'ultimo istante non costa fiato.
+- **Ottavia perde / impara.** Perde velocità di camminata. Impara il salto con il bastone: usa il bastone come perno per superare fossi e ostacoli.
 - **Enea impara.** La parata, nella sua prima lezione (82).
 - **Pezzo della lanterna.** La gabbia, dal metallo trovato nell'ombra.
 - **Semi e ritorni.** L'arrivo di Enea apre la seconda metà del gioco: da qui l'ultimo giro di Ottavia diventa il passaggio del mestiere. Le persone che vivono fuori dalle carovane e i Generatori più vecchi della carovana, per il secondo capitolo.
