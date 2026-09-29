@@ -83,6 +83,8 @@ func travel(room_id: StringName, entry_id: StringName) -> void:
 	await _fade_to(1.0, fade_seconds)
 	_place_player(entry.global_position)
 	_set_room(room, entry.global_position)
+	if room.autosave_on_enter:
+		SaveGame.autosave(get_tree(), room.room_id, entry_id, room.save_stage)
 	await _fade_to(0.0, fade_seconds)
 	player.controls_enabled = true
 	_busy = false
@@ -91,6 +93,18 @@ func travel(room_id: StringName, entry_id: StringName) -> void:
 func _physics_process(_delta: float) -> void:
 	if not _busy:
 		_update_room()
+
+
+## After «Continue» (95): Ottavia at the saved entry, without a fade.
+## False when the room or the entry does not exist any more.
+func restore_checkpoint(checkpoint: Dictionary) -> bool:
+	var room: Room = find_room(StringName(str(checkpoint.get("room", ""))))
+	var entry: RoomEntry = room.find_entry(StringName(str(checkpoint.get("entry", "")))) if room != null else null
+	if entry == null:
+		return false
+	_place_player(entry.global_position)
+	_set_room(room, entry.global_position)
+	return true
 
 
 ## Rooms can be left without a passage (a fall from the platform): follow

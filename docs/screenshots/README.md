@@ -228,6 +228,16 @@ Stato: approvata (resoconto in `docs/fase3-consegna.md`).
 - `09-fine-capitolo.png`: schermata di fine capitolo
 - `10-salto.png`: salto
 
+### `fasi/fase4b-sistemi/`: Fase 4b, passo 1 (125, 128-131, 105)
+
+Stato: **da valutare**. I sistemi del capitolo 1 provati nel diorama, con forme semplici (banco dei sistemi, a sud del diorama).
+
+- `01-tregua-meridiana-e-pietre.png`: **da valutare**. La meridiana della Tregua in alto al centro, il primo suggerimento, le tre pietre calde accanto alla vita
+- `02-banco-leva-usa-la-leva.png`: **da valutare**. La leva dei Voltacampi con «Usa la leva», la piattaforma con cassa, cavoli, recinto e un Voltafaccia; sotto, la seconda leva bloccata dalla crosta di ghiaccio
+- `03-banco-piattaforma-girata.png`: la stessa piattaforma dopo un quarto di giro in senso orario: tutto è girato con lei, il Voltafaccia compreso
+- `04-pausa-il-cappotto.png`: **da valutare**. La pagina del cappotto (128), lontano dalla carovana: le toppe si leggono ma non si cuciono
+- `05-pausa-i-ricordi.png`: **da valutare**. La pagina dei ricordi (130)
+
 ### `docs/video/`
 
 - `capitoli/00-prologo/19-prologo-intero-collisioni.mp4`: **da valutare (con le cuffie)**. Tende, carri e mezzi solidi, pianura piena fino all'ultimo fotogramma (7 min 7 s)

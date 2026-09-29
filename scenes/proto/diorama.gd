@@ -17,6 +17,13 @@ extends Node3D
 ##                         Spartighiaccio, prints the result and quits
 ##                         (videos and measures, phase 3 step 7)
 ##   autofight_error=0.15  the bot's parries and steps come up to 0.15 s off
+##   truce=1               start a Truce at once (phase 4b step 1)
+##   truce_seconds=90      a shorter Truce, to see the warning and the end
+##   yard=1                start in the systems yard (a dungeon room)
+##   yard_demo=1           in the yard, pull the lever after a second (captures)
+##   give_items=1          every item of the catalog in the bisaccia
+##   pause=<0-4>           open the pause menu on a page (coat, satchel,
+##                         memories, lantern, options) for captures
 
 const USER_SETTINGS_PATH: String = "user://proto_settings.json"
 const PERF_WARMUP_SECONDS: float = 2.0
@@ -62,6 +69,9 @@ const CREATURE_TUNING: CreatureTuning = preload("res://assets/combat/creature_tu
 
 var settings: ProtoSettings = ProtoSettings.new()
 var tuning_panel: TuningPanel
+## Systems of chapter 1 with plain shapes (phase 4b step 1).
+var yard: SystemsYard
+var _truce_seconds: float = -1.0
 
 var _perf_seconds: float = 0.0
 var _autowalk_step: int = -1
@@ -79,6 +89,9 @@ var _perf_cpu_times: PackedFloat32Array = []
 
 
 func _ready() -> void:
+	# The prototype saves apart, never over the game's save (95).
+	if SaveGame.path_override == "":
+		SaveGame.path_override = "user://save_diorama.json"
 	GameOptions.load_options()
 	InputRemap.load_controls()
 	_base_ambient_color = world_environment.environment.ambient_light_color
@@ -108,6 +121,22 @@ func _ready() -> void:
 			_start_autofight.call_deferred(argument.trim_prefix("autofight="))
 		elif argument.begins_with("autofight_error="):
 			_autofight_error = argument.trim_prefix("autofight_error=").to_float()
+		elif argument == "truce=1":
+			_start_truce.call_deferred()
+		elif argument.begins_with("truce_seconds="):
+			_truce_seconds = argument.trim_prefix("truce_seconds=").to_float()
+		elif argument == "yard=1":
+			_go_to_yard.call_deferred()
+		elif argument == "yard_demo=1":
+			_yard_demo.call_deferred()
+		elif argument == "give_items=1":
+			for item: ItemDefinition in ItemCatalog.main().items:
+				GameState.receive(item.id, 3)
+			LanternProgress.revealed = true
+			LanternProgress.pieces = 1
+		elif argument.begins_with("pause="):
+			var page: int = argument.trim_prefix("pause=").to_int()
+			(func() -> void: ($OptionsMenu as OptionsMenu).open_page(page as OptionsMenu.Page)).call_deferred()
 		elif argument.begins_with("lantern_shadows="):
 			ottavia.force_lantern_shadows(argument.trim_prefix("lantern_shadows=").to_int())
 	var error: Error = settings.load_json(settings_path)
@@ -120,6 +149,7 @@ func _ready() -> void:
 	apply_settings()
 	camera_rig.snap_to_target()
 	combat_hud.bind(ottavia)
+	_add_systems()
 	tuning_panel = TuningPanel.new(settings, ottavia.combat.tuning, CREATURE_TUNING)
 	add_child(tuning_panel)
 	tuning_panel.set_panel_visible(open_panel)
@@ -128,6 +158,8 @@ func _ready() -> void:
 	tuning_panel.combat_save_requested.connect(_save_combat_tuning)
 	tuning_panel.creatures_save_requested.connect(func() -> void: _save_resource(CREATURE_TUNING))
 	tuning_panel.end_chapter_requested.connect(end_chapter)
+	tuning_panel.truce_requested.connect(_start_truce)
+	tuning_panel.yard_requested.connect(_go_to_yard)
 	if _perf_seconds > 0.0:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		# Render times do not depend on vsync, which macOS may enforce anyway.
@@ -344,6 +376,41 @@ func _quit_clean() -> void:
 	var tree: SceneTree = get_tree()
 	queue_free()
 	tree.create_timer(0.3, true, false, true).timeout.connect(tree.quit)
+
+
+## The interface of the systems (hints, rope, found line) and the yard.
+func _add_systems() -> void:
+	if get_tree().get_first_node_in_group(&"hint_banner") == null:
+		var banner: HintBanner = HintBanner.new()
+		banner.name = "HintBanner"
+		add_child(banner)
+	var rope: RopeCounter = RopeCounter.new()
+	rope.name = "RopeCounter"
+	add_child(rope)
+	var toast: ItemToast = ItemToast.new()
+	toast.name = "ItemToast"
+	add_child(toast)
+	yard = SystemsYard.new()
+	yard.name = "SystemsYard"
+	add_child(yard)
+	yard.setup($RoomManager as RoomManager, ottavia)
+
+
+func _start_truce() -> void:
+	yard.start_truce(_truce_seconds)
+
+
+func _go_to_yard() -> void:
+	await yard.go_to_yard()
+
+
+func _yard_demo() -> void:
+	await yard.go_to_yard()
+	ottavia.global_position = yard.lever.global_position + Vector3(0.9, 0.05, 0.6)
+	ottavia.face_toward(Vector3.LEFT)
+	camera_rig.snap_to_target()
+	await get_tree().create_timer(1.0).timeout
+	ottavia.interact()
 
 
 ## Ends the current chapter (34): Ottavia moves to the next one and the

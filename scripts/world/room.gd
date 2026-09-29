@@ -12,6 +12,12 @@ extends Node3D
 @export var camera_limits_rect: Rect2 = Rect2()
 ## Entry used when Ottavia arrives without a passage (for example a fall).
 @export var default_entry: StringName
+## A room of a dungeon: the sundial of the Truce stops here (38).
+@export var dungeon: bool = false
+## Arriving here through a passage writes the autosave (95): the entry of
+## a dungeon. `save_stage` names the point of the chapter in the save.
+@export var autosave_on_enter: bool = false
+@export var save_stage: StringName = &"dungeon"
 
 
 func _enter_tree() -> void:

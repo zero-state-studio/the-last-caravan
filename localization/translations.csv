@@ -356,3 +356,24 @@ HINT_TRUCE_SUNDIAL,The sundial marks the time of the Truce,La meridiana segna il
 HINT_TRUCE_LEFT_BEHIND,"When the shadow reaches the end, whatever you haven't gathered stays here","Quando l'ombra arriva in fondo, ciò che non hai raccolto resta qui"
 HINT_USE_LEVER,Use the lever,Usa la leva
 HINT_SAVED_OPEN_WAY,Those you save open the way back,Chi salvi apre la strada del ritorno
+PAUSE_TAB_COAT,The coat,Il cappotto
+PAUSE_TAB_SATCHEL,The satchel,La bisaccia
+PAUSE_TAB_MEMORIES,Memories,I ricordi
+PAUSE_TAB_LANTERN,The lantern,La lanterna
+PAUSE_TAB_OPTIONS,Options,Opzioni
+PAUSE_COAT_INTRO,At the caravan you can sew and unpick your patches.,Alla carovana puoi cucire e scucire le toppe.
+PAUSE_COAT_AWAY,Patches are sewn and unpicked at the caravan.,Le toppe si cuciono e si scuciono alla carovana.
+PAUSE_COAT_SLOT,Slot {n},Spazio {n}
+PAUSE_COAT_NONE,No patches found yet.,"Nessuna toppa trovata, per ora."
+PAUSE_SATCHEL_STONES,Warm stones: {n} of {max},Pietre calde: {n} su {max}
+PAUSE_SATCHEL_NO_TOOLS,Nothing else in the satchel.,Nient'altro nella bisaccia.
+PAUSE_MEMORIES_NONE,No memories yet.,"Nessun ricordo, per ora."
+START_CONTINUE,Continue,Continua
+START_NEW_GAME,New game,Nuova partita
+DEV_START_TRUCE,Start a Truce (chapter 1 systems),Inizia una Tregua (sistemi del capitolo 1)
+DEV_GO_TO_YARD,Go to the systems yard,Vai al banco dei sistemi
+SPEAKER_IOLE,Iole,Iole
+C01_IOLE_01,"Filecloser! Pia hasn't come back. We were turning the fields, and she was asleep up there.","Serrafila! Pia non torna. Stavamo girando i campi, e lei dormiva lassù."
+C01_OTTAVIA_01,Which cart?,Quale carro?
+C01_IOLE_02,The third. At the top.,Il terzo. In cima.
+C01_VOLTACAMPI_WARNING,Not long now! Back to the carts!,Manca poco! Tornate ai carri!

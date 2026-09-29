@@ -82,12 +82,15 @@ func _test_pause_lantern() -> void:
 	await process_frame
 	LanternProgress.revealed = false
 	menu.open()
-	_check(not menu.lantern.get_parent().visible, "pause: before the verdict the lantern is not in the menu")
+	_check(not menu.has_page(OptionsMenu.Page.LANTERN), "pause: before the verdict the lantern is not in the menu")
 	menu.close()
 	LanternProgress.revealed = true
 	LanternProgress.pieces = 3
 	menu.open()
-	_check(menu.lantern.get_parent().visible and menu.lantern.pieces == 3, "pause: after the verdict the lantern shows, filled piece by piece (88)")
+	menu.open_page(OptionsMenu.Page.LANTERN)
+	_check(menu.has_page(OptionsMenu.Page.LANTERN) and menu.current_page() == OptionsMenu.Page.LANTERN and menu.lantern.pieces == 3, "pause: after the verdict the lantern shows, filled piece by piece (88)")
+	for page: OptionsMenu.Page in [OptionsMenu.Page.COAT, OptionsMenu.Page.SATCHEL, OptionsMenu.Page.MEMORIES, OptionsMenu.Page.OPTIONS]:
+		_check(menu.has_page(page), "pause: page %d of the bisaccia and the options (128)" % page)
 	menu.close()
 	LanternProgress.revealed = false
 	LanternProgress.pieces = 0

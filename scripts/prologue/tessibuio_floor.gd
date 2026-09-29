@@ -96,6 +96,10 @@ func _ready() -> void:
 	menu.name = "OptionsMenu"
 	add_child(menu)
 	PrologueAutoplay.attach_if_requested(get_tree())
+	# With a save (95), «Continue» or «New game» first; not in tests
+	# (a SceneTree script) nor with dev arguments.
+	if get_tree().get_script() == null and OS.get_cmdline_user_args().is_empty():
+		StartMenu.show_if_saved(self)
 	marker = ObjectiveMarker.new()
 	level.add_child(marker)
 	_wake.call_deferred()

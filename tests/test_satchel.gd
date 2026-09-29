@@ -26,7 +26,7 @@ func _initialize() -> void:
 
 	GameState.reset()
 	current_scene.queue_free()
-	await _wait(0.4)
+	await create_timer(0.3, true, false, true).timeout
 	print("TESTS: satchel %d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 

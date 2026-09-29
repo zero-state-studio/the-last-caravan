@@ -8,6 +8,9 @@ signal save_requested
 signal combat_save_requested
 signal creatures_save_requested
 signal end_chapter_requested
+## Systems yard of phase 4b step 1: start a Truce, go to the yard.
+signal truce_requested
+signal yard_requested
 
 const SLIDERS: Array[Dictionary] = [
 	{"key": "DEV_CAMERA_PITCH", "property": "camera_pitch", "min": 30.0, "max": 70.0, "step": 0.5},
@@ -267,6 +270,14 @@ func _build() -> void:
 	end_chapter.text = "DEV_END_CHAPTER"
 	end_chapter.pressed.connect(func() -> void: end_chapter_requested.emit())
 	box.add_child(end_chapter)
+	var truce: Button = Button.new()
+	truce.text = "DEV_START_TRUCE"
+	truce.pressed.connect(func() -> void: truce_requested.emit())
+	box.add_child(truce)
+	var yard: Button = Button.new()
+	yard.text = "DEV_GO_TO_YARD"
+	yard.pressed.connect(func() -> void: yard_requested.emit())
+	box.add_child(yard)
 	var coat: Label = Label.new()
 	coat.text = "DEV_SECTION_COAT"
 	box.add_child(coat)

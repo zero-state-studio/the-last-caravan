@@ -3,7 +3,7 @@ extends SceneTree
 ## Usage: godot --headless --path . --script res://tests/run_tests.gd
 ## Exits with code 0 when every check passes, 1 otherwise.
 
-const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"jump", &"run", &"parry", &"lantern", &"call", &"open_options"]
+const GAME_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down", &"toggle_tuning_panel", &"interact", &"attack", &"hook", &"jump", &"run", &"parry", &"lantern", &"call", &"warm_stone", &"open_options"]
 const LOAD_ROOTS: Array[String] = ["res://scenes", "res://scripts", "res://tests"]
 const TEST_KEY: StringName = &"UI_TEST_GREETING"
 const EXPECTED_TRANSLATIONS: Dictionary = {
@@ -142,8 +142,8 @@ func _test_load_all_resources() -> void:
 ## Shift; bindings
 ## can be changed and reset.
 func _test_controls() -> void:
-	var left_hand: Array[Key] = [KEY_Q, KEY_E, KEY_R, KEY_F, KEY_SPACE, KEY_SHIFT, KEY_ESCAPE, KEY_W, KEY_A, KEY_S, KEY_D]
-	for action: StringName in [&"hook", &"jump", &"run", &"lantern", &"call", &"interact", &"open_options"]:
+	var left_hand: Array[Key] = [KEY_Q, KEY_E, KEY_R, KEY_F, KEY_C, KEY_SPACE, KEY_SHIFT, KEY_ESCAPE, KEY_W, KEY_A, KEY_S, KEY_D]
+	for action: StringName in [&"hook", &"jump", &"run", &"lantern", &"call", &"interact", &"warm_stone", &"open_options"]:
 		var event: InputEvent = InputRemap.main_event(action, InputRemap.Device.KEYBOARD)
 		_check(event is InputEventKey and (event as InputEventKey).physical_keycode in left_hand, "controls: %s under the left hand" % action)
 	var attack: InputEvent = InputRemap.main_event(&"attack", InputRemap.Device.KEYBOARD)
