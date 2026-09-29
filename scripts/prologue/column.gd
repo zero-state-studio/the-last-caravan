@@ -117,7 +117,7 @@ const FROST_FIELD: Rect2 = Rect2(20.0, -14.0, 140.0, 40.0)
 const FLAT_RECTS: Array[Rect2] = [Rect2(-480.0, -13.0, 700.0, 20.0), Rect2(-12.0, -17.0, 192.0, 47.0)]
 const PLAIN_HOLLOW_METERS: float = 1.6
 ## The plain dressed north and south of the road, west of the start.
-const PLAIN_AREAS: Array[Rect2] = [Rect2(-260.0, -90.0, 255.0, 76.0), Rect2(-260.0, 8.0, 255.0, 55.0)]
+const PLAIN_AREAS: Array[Rect2] = [Rect2(-260.0, -90.0, 280.0, 76.0), Rect2(-260.0, 8.0, 280.0, 60.0)]
 const PLAIN_SEED: int = 1070
 
 ## Nightfall toward Mirco (106): how much the light dims at his place.
@@ -559,7 +559,8 @@ func _spawn_brinacchio(at: Vector3) -> CombatEnemy:
 
 
 func _plain_free(point: Vector3) -> bool:
-	return point.z < COLUMN_Z - 10.0 or point.z > COLUMN_Z + 10.0
+	# Off the road, and off the ways to and from Mirco.
+	return (point.z < COLUMN_Z - 10.0 or point.z > COLUMN_Z + 10.0) and _frost_free(point)
 
 
 func _frost_free(point: Vector3) -> bool:
@@ -650,6 +651,8 @@ func _build_column() -> void:
 		VehicleWheels.attach(vehicle)
 		var box: AABB = VehicleKit.bounds(vehicle)
 		vehicle.position = Vector3(COLUMN_START_X[index], 0.0, COLUMN_Z) - Vector3(box.get_center().x, box.position.y, box.get_center().z)
+		# Solid, moving with the vehicle: nobody walks through a caravan.
+		LevelBlocks.make_solid(vehicle, 0.9)
 		column.append(vehicle)
 	# The people walk beside the vehicles (76: whoever can walk, walks).
 	var trades: Array[StringName] = CrowdTrades.names()
@@ -684,6 +687,7 @@ func _build_head() -> void:
 	VehicleWheels.attach(lead)
 	var box: AABB = VehicleKit.bounds(lead)
 	lead.position = Vector3(8.0, 0.0, 0.0) - Vector3(box.get_center().x, box.position.y, box.get_center().z)
+	LevelBlocks.make_solid(lead, 0.9)
 	var gnomone: NpcSprite = NpcSprite.new()
 	gnomone.sprite_texture = load("res://assets/sprites/comparse/gnomone_south.png")
 	gnomone.position = Vector3(8.0, box.size.y + 0.05, 0.0)

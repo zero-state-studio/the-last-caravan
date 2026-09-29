@@ -63,6 +63,7 @@ Stato: **da valutare** (fase 4a, passi 3-5).
 - `33-chiusura-campo-lungo-vestito.png`: **da valutare**. La chiusura: la camera si allarga sulla colonna in cammino, con la pianura vestita (erba, rocce, alberi secchi, ruderi) e il terreno mosso ai lati della strada; niente più sagoma della lanterna
 - `34-lo-sguardo-arriva-a-mirco.png`: **da valutare**. Dopo il dialogo con la mamma la camera arriva fino a Mirco, ingrandito 2 volte
 - `35-chiusura-pianura-piena.png`: **da valutare**. La chiusura fino all'ultimo fotogramma, con la pianura piena: erba fitta, rocce, alberi secchi, relitti delle carovane passate, ruderi
+- `36-ultimo-fotogramma-pieno.png`: **da valutare**. L'ultimo fotogramma della chiusura: pianura vestita anche in primo piano e a est, fino ai bordi
 
 
 ### `asset/mezzi/`: I tre mezzi della carovana (122-124)

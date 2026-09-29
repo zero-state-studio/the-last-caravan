@@ -364,7 +364,7 @@ static func dress_plain(parent: Node3D, area: Rect2, is_free: Callable, seed_val
 		entries.append(load(path) as VegetationEntry)
 	scatter.entries = entries
 	scatter.extents = area.size * 0.5
-	scatter.density = 0.32
+	scatter.density = 0.45
 	scatter.random_seed = seed_value
 	scatter.position = Vector3(area.get_center().x, 0.0, area.get_center().y)
 	scatter.height_at = ground_height
@@ -372,7 +372,7 @@ static func dress_plain(parent: Node3D, area: Rect2, is_free: Callable, seed_val
 	var per_1000: Dictionary = {
 		"res://assets/vegetation_kit/roccia_grande_01.tres": 6.0,
 		"res://assets/vegetation_kit/sassi_01.tres": 8.0,
-		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 12.0,
+		"res://assets/vegetation_kit/cespuglio_secco_01.tres": 18.0,
 		"res://assets/vegetation_kit/albero_storto_01.tres": 2.4,
 		"res://assets/vegetation_kit/alberello_01.tres": 2.4,
 		"res://assets/vegetation_kit/tronco_caduto_01.tres": 2.0,

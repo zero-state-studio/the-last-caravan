@@ -307,6 +307,7 @@ func _place_tents() -> void:
 		var box: AABB = VehicleKit.bounds(tent)
 		tent.position = spot - Vector3(box.get_center().x, box.position.y, box.get_center().z)
 		tent.rotation.y = _random.randf_range(-0.4, 0.4)
+		LevelBlocks.make_solid(tent, 0.85)
 
 
 ## The people of the caravan getting ready (121): generic types going

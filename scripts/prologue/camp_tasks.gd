@@ -351,6 +351,7 @@ func _build() -> void:
 		tent.position = TENTS + offset
 		tent.rotation.y = randf_range(-0.3, 0.3)
 		add_child(tent)
+		LevelBlocks.make_solid(tent, 0.85)
 	_build_field_wagon()
 	_build_stuck_tail()
 
@@ -362,6 +363,8 @@ func _build_field_wagon() -> void:
 	add_child(wagon)
 	var box: AABB = VehicleKit.bounds(wagon)
 	wagon.position = FIELD_WAGON - Vector3(box.get_center().x, box.position.y, box.get_center().z)
+	# Solid: one walks round it, and climbs only by the ladder.
+	LevelBlocks.make_solid(wagon, 0.92)
 	var planks: ShaderMaterial = LevelBlocks.material(TEX_PLANKS)
 	var size: Vector2 = LANDING_MAX - LANDING_MIN
 	var centre: Vector2 = (LANDING_MIN + LANDING_MAX) * 0.5

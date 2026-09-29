@@ -186,6 +186,11 @@ func _test_camp_tasks() -> void:
 	var hints: HintBanner = camp.hints
 	_check(tasks.task == CampTasks.Task.SPRINT and hints.current_hint() == &"PRO_HINT_SPRINT", "camp 1: after the first call, the hint is to hold to sprint")
 	_check(hints.current_goal() == &"PRO_GOAL_ROCKS" and tasks.marker.is_active(), "camp: each task says where to go and marks the place (106)")
+	var camp_space: PhysicsDirectSpaceState3D = camp.get_world_3d().direct_space_state
+	var solid: bool = true
+	for at: Vector3 in [CampTasks.TENTS + Vector3(-2.5, 0.0, -1.0), CampTasks.FIELD_WAGON]:
+		solid = solid and not camp_space.intersect_ray(PhysicsRayQueryParameters3D.create(at + Vector3(0, 0.8, 12.0), at + Vector3(0, 0.8, 0))).is_empty()
+	_check(solid, "camp: tents and the field-wagon are solid")
 	var ledge: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(Vector3(CampTasks.ROCK_ROWS[0] - 2.0, 0.2, 2.2), Vector3(CampTasks.ROCK_ROWS[0] + 2.0, 0.2, 2.2))
 	_check(not camp.get_world_3d().direct_space_state.intersect_ray(ledge).is_empty(), "camp: ledges of rock across the way, to jump (106)")
 	var start_positions: Array[Vector3] = []
@@ -249,6 +254,8 @@ func _test_column() -> void:
 	var start_x: float = column.column[0].position.x
 	await create_timer(0.5).timeout
 	_check(column.column[0].position.x < start_x, "column: the vehicles move west")
+	var tail_at: Vector3 = Vector3(column.column[0].global_position.x, 0.8, column.COLUMN_Z)
+	_check(not column.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(tail_at + Vector3(0, 0, 12.0), tail_at)).is_empty(), "column: the marching vehicles are solid")
 	var tail_x: float = column._last_vehicle_back()
 	_check(column._anselmo.visible and absf(column._anselmo.global_position.x - tail_x) < 6.0, "column: Anselmo walks at the tail from the start, seen from afar (106)")
 	var space: PhysicsDirectSpaceState3D = column.get_world_3d().direct_space_state
