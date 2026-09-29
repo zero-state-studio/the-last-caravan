@@ -106,3 +106,7 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 - Poi: lo Gnomone diventa il Meridiano (117); Zelinda con voce di vecchia scocciata; lo sguardo della camera arriva fino a Mirco; niente sagoma della lanterna nella chiusura, con la frase sulla crudeltà necessaria; pianura con avvallamenti e vestita ai lati della strada. Video: `docs/video/capitoli/00-prologo/17-prologo-intero-meridiano.mp4`, 6 minuti e 56 secondi.
 
 - Poi: ritorno in coda dopo lo sciame, chiusura senza scatto di camera, «Le regole sono regole.», pianura piena con cinque relitti nuovi (90 crediti Meshy). Video: `docs/video/capitoli/00-prologo/18-prologo-intero-in-coda.mp4`, 7 minuti e 8 secondi.
+
+## Approvazione
+
+Fase 4a approvata dall'autore il 29 settembre 2026. Video finale: `docs/video/capitoli/00-prologo/19-prologo-intero-collisioni.mp4` (7 minuti e 7 secondi).

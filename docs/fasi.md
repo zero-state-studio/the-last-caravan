@@ -1,6 +1,6 @@
 # Fasi di sviluppo
 
-**Fase corrente: 4a**
+**Fase corrente: 4b**
 
 Ogni fase finisce con un resoconto e con l'approvazione dell'autore. Non si passa alla fase successiva senza un ok esplicito. Quando una fase è approvata, aggiorna la riga "Fase corrente".
 
@@ -28,6 +28,7 @@ In due tempi (68), con grafica, musica, effetti e testi IT/EN definitivi.
 ### Fase 4a: Il prologo
 Il prologo completo (106, `docs/livelli/prologo.md`), dall'inizio al titolo «Ne restano dieci», per verificare la grafica e i comandi. Prompt: `docs/prompts/PROMPT-04.md`.
 **Uscita:** l'autore l'ha giocato sul Mac con il gamepad, e lo convince.
+**Stato (29 settembre 2026):** approvata. Avvio: `res://scenes/prologo/piano_tessibuio.tscn` (scena principale); consegna `docs/fase4a-consegna.md`; video `docs/video/capitoli/00-prologo/19-prologo-intero-collisioni.mp4`. Restano da fare in seguito: le frasi della folla (`TODO-DESIGN #121`), le voci inglesi, i salvataggi.
 
 ### Fase 4b: I Carri-campo
 Il capitolo 1 (107), che verifica dungeon, la carovana come base (37), la Tregua a tempo (39), boss, Salvati e salvataggi (95).
