@@ -20,7 +20,7 @@ signal chapter_won
 const CHAPTER_TUNING: ChapterTuning = preload("res://assets/combat/chapter_01_tuning.tres")
 const VOLTAFACCIA_SCENE: PackedScene = preload("res://scenes/creatures/voltafaccia.tscn")
 const RASPAGELO_SCENE: PackedScene = preload("res://scenes/creatures/raspagelo.tscn")
-const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/folla/donna_adulta_south.png")
+const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
 const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
 const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/folla/bambina_south.png")
 const END_SCENE: String = "res://scenes/capitolo01/fine.tscn"
@@ -39,15 +39,20 @@ const SLAB: float = 0.4
 
 ## Light of each room (section 1): warmest on the first cart, colder to
 ## the east; room 6 the coldest; the top back in full sun.
+## "zone" is the colour drift of the world palette (51): the Twilight a
+## little toward the Day, growing toward the Night from west to east.
 const ROOM_LIGHT: Dictionary = {
-	&"s1": {"color": Color(1.0, 0.76, 0.5), "energy": 1.7},
-	&"s2": {"color": Color(1.0, 0.76, 0.5), "energy": 1.7},
-	&"s3": {"color": Color(1.0, 0.74, 0.52), "energy": 1.5},
-	&"s4": {"color": Color(1.0, 0.8, 0.58), "energy": 1.8},
-	&"s5": {"color": Color(0.9, 0.72, 0.62), "energy": 1.2},
-	&"s6": {"color": Color(0.62, 0.62, 0.9), "energy": 0.8},
-	&"s7": {"color": Color(1.0, 0.82, 0.6), "energy": 1.9},
+	&"s1": {"color": Color(1.0, 0.76, 0.5), "energy": 1.7, "zone": -0.25},
+	&"s2": {"color": Color(1.0, 0.76, 0.5), "energy": 1.7, "zone": -0.25},
+	&"s3": {"color": Color(1.0, 0.74, 0.52), "energy": 1.5, "zone": -0.15},
+	&"s4": {"color": Color(1.0, 0.8, 0.58), "energy": 1.8, "zone": -0.1},
+	&"s5": {"color": Color(0.9, 0.72, 0.62), "energy": 1.2, "zone": 0.0},
+	&"s6": {"color": Color(0.62, 0.62, 0.9), "energy": 0.8, "zone": 0.35},
+	&"s7": {"color": Color(1.0, 0.82, 0.6), "energy": 1.9, "zone": -0.3},
 }
+## Metres along world x, inside a room, for a full step of drift: each
+## diorama shades gently from west to east, never jumps.
+const ROOM_GRADIENT: float = 90.0
 const RUGGERO_LINES: Array[Array] = [
 	[&"SPEAKER_RUGGERO", &"C01_RUGGERO_01"],
 	[&"SPEAKER_OTTAVIA", &"C01_OTTAVIA_03"],
@@ -82,6 +87,8 @@ var lever_s1: TurnLever
 var lever_s6: TurnLever
 var ice_crust: Breakable
 var stems: Array[Breakable] = []
+var palette: ZonePalette
+var pia_cage: Node3D
 var ruggero: RescuedPerson
 var pia: RescuedPerson
 var boss: RootedFoglione
@@ -104,6 +111,10 @@ func _ready() -> void:
 	sun.add_to_group(&"sun")
 	NpcSprite.sun_azimuth_degrees = sun.rotation_degrees.y
 	GameState.at_caravan = false
+	palette = ZonePalette.new()
+	palette.name = "ZonePalette"
+	palette.gradient_width = ROOM_GRADIENT
+	add_child(palette)
 	_build_cart_1()
 	_build_grass()
 	_build_high_terrace()
@@ -149,7 +160,7 @@ func _start(room_id: StringName, entry_id: StringName) -> void:
 func _build_cart_1() -> void:
 	var cart: Node3D = _group(&"Cart1")
 	# Ground of the diorama: the foot of the cart (room 1) and a strip east.
-	C01Kit.box(cart, A + Vector3(-7.0, -0.5, 0.0), Vector3(46.0, 1.0, 22.0), C01Kit.SOIL.lightened(0.15))
+	C01Kit.ground(cart, A + Vector3(-7.0, -0.5, 0.0), Vector3(46.0, 1.0, 22.0), 1071)
 	# The chassis, under the turning terrace, and the big wheels.
 	C01Kit.box(cart, A + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
 	for x: float in [-9.0, 9.0]:
@@ -208,7 +219,7 @@ func _build_cart_1() -> void:
 
 func _build_grass() -> void:
 	var grass: Node3D = _group(&"Grass")
-	C01Kit.box(grass, B + Vector3(0.0, -0.5, 0.0), Vector3(30.0, 1.0, 24.0), C01Kit.SOIL)
+	C01Kit.ground(grass, B + Vector3(0.0, -0.5, 0.0), Vector3(30.0, 1.0, 24.0), 1073)
 	# The ends of the first and second carts, as scenery on both sides.
 	C01Kit.box(grass, B + Vector3(-12.0, 1.6, 0.0), Vector3(8.0, 3.2, 12.0), C01Kit.WOOD_DARK)
 	C01Kit.box(grass, B + Vector3(12.0, 2.25, 0.0), Vector3(8.0, 4.5, 12.0), C01Kit.WOOD_DARK)
@@ -239,7 +250,7 @@ func _build_grass() -> void:
 
 func _build_high_terrace() -> void:
 	var cart: Node3D = _group(&"Cart2High")
-	C01Kit.box(cart, C + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), C01Kit.SOIL.darkened(0.1))
+	C01Kit.ground(cart, C + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1074)
 	# The second cart below: chassis and the low terrace, as scenery.
 	C01Kit.box(cart, C + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
 	C01Kit.visual(cart, C + Vector3(0.0, LOW - SLAB * 0.5, 0.0), Vector3(20.0, SLAB, 9.0), C01Kit.SOIL)
@@ -298,12 +309,7 @@ func _build_bonus(cart: Node3D) -> void:
 		return
 	C01Kit.box(cart, Vector3(hedge_x, HIGH - 0.25, C.z - 5.5), Vector3(6.0, 0.5, 5.0), C01Kit.WOOD)
 	for index: int in 3:
-		var look: MeshInstance3D = MeshInstance3D.new()
-		var mesh: BoxMesh = BoxMesh.new()
-		mesh.size = Vector3(0.9, 1.4, 0.3)
-		look.mesh = mesh
-		look.material_override = C01Kit.material(C01Kit.EAR.darkened(0.2))
-		look.position = Vector3.UP * 0.7
+		var look: MeshInstance3D = C01Kit.card_look(C01Kit.STEM_CARD, 0.8)
 		var stem: Breakable = Breakable.create(level, Vector3(hedge_x - 1.0 + index, HIGH, C.z - 2.0), look, CreatureTuning.health_for_hits(3.0), C01Kit.EAR)
 		bonus_hedge.append(stem)
 	_pickup(&"patch_oiled_leather", &"c01_bonus_leather", Vector3(hedge_x - 1.5, HIGH, C.z - 6.5))
@@ -316,7 +322,7 @@ func _build_bonus(cart: Node3D) -> void:
 
 func _build_low_terrace_2() -> void:
 	var cart: Node3D = _group(&"Cart2Low")
-	C01Kit.box(cart, D + Vector3(4.0, -0.5, 0.0), Vector3(48.0, 1.0, 30.0), C01Kit.SOIL.darkened(0.15))
+	C01Kit.ground(cart, D + Vector3(4.0, -0.5, 0.0), Vector3(48.0, 1.0, 30.0), 1075)
 	C01Kit.box(cart, D + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
 	# The column of the high terrace (the terrace itself is left out: it
 	# would hide the room from the camera), and the first cart to the west
@@ -361,7 +367,7 @@ func _build_low_terrace_2() -> void:
 
 func _build_frozen_terrace() -> void:
 	var cart: Node3D = _group(&"Cart3Low")
-	C01Kit.box(cart, E + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), C01Kit.SOIL.darkened(0.3))
+	C01Kit.ground(cart, E + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 30.0), 1076)
 	C01Kit.box(cart, E + Vector3(0.0, 0.8, 0.0), Vector3(24.0, 1.6, 10.0), C01Kit.WOOD_DARK)
 	# The second cart to the west throws its shadow over the whole room.
 	C01Kit.visual(cart, E + Vector3(-20.0, 4.0, 0.0), Vector3(10.0, 8.0, 14.0), C01Kit.WOOD_DARK)
@@ -381,15 +387,10 @@ func _build_frozen_terrace() -> void:
 	pia = _saved(terrace_4, Vector3(3.0, SLAB, 0.0), &"c01_saved_pia", PIA_TEXTURE, null)
 	pia.locked = true
 	pia.tied.connect(_on_pia_tied)
+	pia_cage = C01Kit.cage(terrace_4, Vector3(3.0, SLAB, 0.0))
 	for index: int in 6:
 		var angle: float = TAU * index / 6.0
-		var look: MeshInstance3D = MeshInstance3D.new()
-		var mesh: BoxMesh = BoxMesh.new()
-		mesh.size = Vector3(0.35, 2.0, 0.35)
-		look.mesh = mesh
-		look.material_override = C01Kit.material(Color(0.42, 0.5, 0.36))
-		look.position = Vector3(0.0, 1.0, 0.0)
-		look.rotation.z = deg_to_rad(18.0) * (1.0 if index % 2 == 0 else -1.0)
+		var look: MeshInstance3D = C01Kit.card_look(C01Kit.STEM_CARD)
 		var stem: Breakable = Breakable.create(level, terrace_4.to_global(Vector3(3.0 + cos(angle) * 1.3, SLAB, sin(angle) * 1.3)), look, CreatureTuning.health_for_hits(3.0), Color(0.5, 0.62, 0.42))
 		stem.broken.connect(_on_stem_broken)
 		stems.append(stem)
@@ -446,7 +447,7 @@ func _build_frozen_terrace() -> void:
 
 func _build_top() -> void:
 	var top: Node3D = _group(&"Top")
-	C01Kit.box(top, F + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 40.0), C01Kit.SOIL.darkened(0.2))
+	C01Kit.ground(top, F + Vector3(0.0, -0.5, 0.0), Vector3(40.0, 1.0, 40.0), 1077)
 	C01Kit.box(top, F + Vector3(0.0, TOP * 0.5 - 0.3, 0.0), Vector3(3.0, TOP - 0.6, 3.0), C01Kit.WOOD_DARK)
 	# The fixed rim round the turning top, with four levers, one per side.
 	for index: int in 16:
@@ -518,6 +519,11 @@ func _on_room_changed(room: Room) -> void:
 		var tween: Tween = create_tween().set_parallel(true)
 		tween.tween_property(sun, "light_color", light["color"], 0.4)
 		tween.tween_property(sun, "light_energy", light["energy"], 0.4)
+		# Each diorama sits far from the others in the world: its palette is
+		# centred on it (51), with its own value of the zone.
+		palette.night_proximity = float(light["zone"])
+		palette.center_x = room.global_position.x
+		palette.apply()
 	var hint: StringName = &""
 	match room.room_id:
 		&"s2":
@@ -545,6 +551,10 @@ func _on_stem_broken() -> void:
 		if stem.is_alive():
 			return
 	pia.locked = false
+	# Without its six stems the cage of crops falls apart.
+	var tween: Tween = create_tween()
+	tween.tween_property(pia_cage, "scale", Vector3(1.3, 0.05, 1.3), 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: pia_cage.visible = false)
 
 
 func _on_pia_tied() -> void:

@@ -15,7 +15,7 @@ extends Node3D
 signal finished
 
 const RUGGERO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/ruggero_south.png")
-const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/folla/donna_adulta_south.png")
+const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
 const PIA_TEXTURE: Texture2D = preload("res://assets/sprites/folla/bambina_south.png")
 const ANSELMO_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/anselmo_south.png")
 const FIELD_CART: String = "res://assets/models/vehicles/carro_campo_prova.glb"
@@ -54,7 +54,13 @@ func _ready() -> void:
 	($Sun as DirectionalLight3D).add_to_group(&"sun")
 	NpcSprite.sun_azimuth_degrees = ($Sun as DirectionalLight3D).rotation_degrees.y
 	GameState.at_caravan = false
-	C01Kit.box(level, Vector3(-60.0, -0.5, 0.0), Vector3(260.0, 1.0, 40.0), C01Kit.SOIL.lightened(0.1))
+	# The Twilight a little toward the Day (section 1, 51).
+	var palette: ZonePalette = ZonePalette.new()
+	palette.name = "ZonePalette"
+	palette.night_proximity = TrucePlain.ZONE_VALUE
+	palette.gradient_width = 120.0
+	add_child(palette)
+	C01Kit.ground(level, Vector3(-60.0, -0.5, 0.0), Vector3(260.0, 1.0, 40.0), 1079)
 	C01Kit.visual(level, Vector3(-60.0, 0.01, 0.0), Vector3(260.0, 0.02, 6.0), C01Kit.DRY_GRASS)
 	# The column: the field-carts with their terraces locked, the
 	# camion-condominio, Anselmo's truck last in the line ahead of Ottavia.

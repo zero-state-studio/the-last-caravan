@@ -1,0 +1,299 @@
+{
+  "group_id": "88079dc0-dfd4-4927-98b4-23d2e132c834",
+  "states": [
+    {
+      "character": {
+        "id": "8db10c5c-ddce-47ab-b63e-75671b15bf0d",
+        "name": "Idle",
+        "prompt": "Small sun-loving grazing beast about 0.8 m long, like a slim little goat, sandy ochre coat with a lighter belly. Around its muzzle it has a large flat round disc of stiff golden-yellow fringe like the petals of a sunflower, framing the face, so it is clear at a glance which way it faces. Four legs, standing, head up. Seen from the front.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "horse",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-29T13:41:51.311949+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "voltafaccia_idle": {
+            "south-east": [
+              "Idle/animations/voltafaccia_idle/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_003.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_004.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_005.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_006.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_007.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_008.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_009.png",
+              "Idle/animations/voltafaccia_idle/south-east/frame_010.png"
+            ],
+            "north-east": [
+              "Idle/animations/voltafaccia_idle/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_003.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_004.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_005.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_006.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_007.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_008.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_009.png",
+              "Idle/animations/voltafaccia_idle/north-east/frame_010.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_idle/south/frame_000.png",
+              "Idle/animations/voltafaccia_idle/south/frame_001.png",
+              "Idle/animations/voltafaccia_idle/south/frame_002.png",
+              "Idle/animations/voltafaccia_idle/south/frame_003.png",
+              "Idle/animations/voltafaccia_idle/south/frame_004.png",
+              "Idle/animations/voltafaccia_idle/south/frame_005.png",
+              "Idle/animations/voltafaccia_idle/south/frame_006.png",
+              "Idle/animations/voltafaccia_idle/south/frame_007.png",
+              "Idle/animations/voltafaccia_idle/south/frame_008.png",
+              "Idle/animations/voltafaccia_idle/south/frame_009.png",
+              "Idle/animations/voltafaccia_idle/south/frame_010.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_idle/east/frame_000.png",
+              "Idle/animations/voltafaccia_idle/east/frame_001.png",
+              "Idle/animations/voltafaccia_idle/east/frame_002.png",
+              "Idle/animations/voltafaccia_idle/east/frame_003.png",
+              "Idle/animations/voltafaccia_idle/east/frame_004.png",
+              "Idle/animations/voltafaccia_idle/east/frame_005.png",
+              "Idle/animations/voltafaccia_idle/east/frame_006.png",
+              "Idle/animations/voltafaccia_idle/east/frame_007.png",
+              "Idle/animations/voltafaccia_idle/east/frame_008.png",
+              "Idle/animations/voltafaccia_idle/east/frame_009.png",
+              "Idle/animations/voltafaccia_idle/east/frame_010.png"
+            ],
+            "north": [
+              "Idle/animations/voltafaccia_idle/north/frame_000.png",
+              "Idle/animations/voltafaccia_idle/north/frame_001.png",
+              "Idle/animations/voltafaccia_idle/north/frame_002.png",
+              "Idle/animations/voltafaccia_idle/north/frame_003.png",
+              "Idle/animations/voltafaccia_idle/north/frame_004.png",
+              "Idle/animations/voltafaccia_idle/north/frame_005.png",
+              "Idle/animations/voltafaccia_idle/north/frame_006.png",
+              "Idle/animations/voltafaccia_idle/north/frame_007.png",
+              "Idle/animations/voltafaccia_idle/north/frame_008.png",
+              "Idle/animations/voltafaccia_idle/north/frame_009.png",
+              "Idle/animations/voltafaccia_idle/north/frame_010.png"
+            ]
+          },
+          "voltafaccia_hit": {
+            "north-east": [
+              "Idle/animations/voltafaccia_hit/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_hit/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_hit/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_hit/north-east/frame_003.png"
+            ],
+            "north": [
+              "Idle/animations/voltafaccia_hit/north/frame_000.png",
+              "Idle/animations/voltafaccia_hit/north/frame_001.png",
+              "Idle/animations/voltafaccia_hit/north/frame_002.png",
+              "Idle/animations/voltafaccia_hit/north/frame_003.png"
+            ],
+            "south-east": [
+              "Idle/animations/voltafaccia_hit/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_hit/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_hit/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_hit/south-east/frame_003.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_hit/south/frame_000.png",
+              "Idle/animations/voltafaccia_hit/south/frame_001.png",
+              "Idle/animations/voltafaccia_hit/south/frame_002.png",
+              "Idle/animations/voltafaccia_hit/south/frame_003.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_hit/east/frame_000.png",
+              "Idle/animations/voltafaccia_hit/east/frame_001.png",
+              "Idle/animations/voltafaccia_hit/east/frame_002.png",
+              "Idle/animations/voltafaccia_hit/east/frame_003.png"
+            ]
+          },
+          "voltafaccia_defeat": {
+            "north-east": [
+              "Idle/animations/voltafaccia_defeat/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_defeat/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_defeat/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_defeat/north-east/frame_003.png",
+              "Idle/animations/voltafaccia_defeat/north-east/frame_004.png",
+              "Idle/animations/voltafaccia_defeat/north-east/frame_005.png"
+            ],
+            "south-east": [
+              "Idle/animations/voltafaccia_defeat/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_defeat/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_defeat/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_defeat/south-east/frame_003.png",
+              "Idle/animations/voltafaccia_defeat/south-east/frame_004.png",
+              "Idle/animations/voltafaccia_defeat/south-east/frame_005.png"
+            ],
+            "north": [
+              "Idle/animations/voltafaccia_defeat/north/frame_000.png",
+              "Idle/animations/voltafaccia_defeat/north/frame_001.png",
+              "Idle/animations/voltafaccia_defeat/north/frame_002.png",
+              "Idle/animations/voltafaccia_defeat/north/frame_003.png",
+              "Idle/animations/voltafaccia_defeat/north/frame_004.png",
+              "Idle/animations/voltafaccia_defeat/north/frame_005.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_defeat/east/frame_000.png",
+              "Idle/animations/voltafaccia_defeat/east/frame_001.png",
+              "Idle/animations/voltafaccia_defeat/east/frame_002.png",
+              "Idle/animations/voltafaccia_defeat/east/frame_003.png",
+              "Idle/animations/voltafaccia_defeat/east/frame_004.png",
+              "Idle/animations/voltafaccia_defeat/east/frame_005.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_defeat/south/frame_000.png",
+              "Idle/animations/voltafaccia_defeat/south/frame_001.png",
+              "Idle/animations/voltafaccia_defeat/south/frame_002.png",
+              "Idle/animations/voltafaccia_defeat/south/frame_003.png",
+              "Idle/animations/voltafaccia_defeat/south/frame_004.png",
+              "Idle/animations/voltafaccia_defeat/south/frame_005.png"
+            ]
+          },
+          "voltafaccia_walk": {
+            "north-east": [
+              "Idle/animations/voltafaccia_walk/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_walk/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_walk/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_walk/north-east/frame_003.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_walk/east/frame_000.png",
+              "Idle/animations/voltafaccia_walk/east/frame_001.png",
+              "Idle/animations/voltafaccia_walk/east/frame_002.png",
+              "Idle/animations/voltafaccia_walk/east/frame_003.png"
+            ],
+            "north": [
+              "Idle/animations/voltafaccia_walk/north/frame_000.png",
+              "Idle/animations/voltafaccia_walk/north/frame_001.png",
+              "Idle/animations/voltafaccia_walk/north/frame_002.png",
+              "Idle/animations/voltafaccia_walk/north/frame_003.png"
+            ],
+            "south-east": [
+              "Idle/animations/voltafaccia_walk/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_walk/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_walk/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_walk/south-east/frame_003.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_walk/south/frame_000.png",
+              "Idle/animations/voltafaccia_walk/south/frame_001.png",
+              "Idle/animations/voltafaccia_walk/south/frame_002.png",
+              "Idle/animations/voltafaccia_walk/south/frame_003.png"
+            ]
+          },
+          "voltafaccia_graze": {
+            "north-east": [
+              "Idle/animations/voltafaccia_graze/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_graze/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_graze/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_graze/north-east/frame_003.png",
+              "Idle/animations/voltafaccia_graze/north-east/frame_004.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_graze/south/frame_000.png",
+              "Idle/animations/voltafaccia_graze/south/frame_001.png",
+              "Idle/animations/voltafaccia_graze/south/frame_002.png",
+              "Idle/animations/voltafaccia_graze/south/frame_003.png",
+              "Idle/animations/voltafaccia_graze/south/frame_004.png"
+            ],
+            "north": [
+              "Idle/animations/voltafaccia_graze/north/frame_000.png",
+              "Idle/animations/voltafaccia_graze/north/frame_001.png",
+              "Idle/animations/voltafaccia_graze/north/frame_002.png",
+              "Idle/animations/voltafaccia_graze/north/frame_003.png",
+              "Idle/animations/voltafaccia_graze/north/frame_004.png"
+            ],
+            "south-east": [
+              "Idle/animations/voltafaccia_graze/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_graze/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_graze/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_graze/south-east/frame_003.png",
+              "Idle/animations/voltafaccia_graze/south-east/frame_004.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_graze/east/frame_000.png",
+              "Idle/animations/voltafaccia_graze/east/frame_001.png",
+              "Idle/animations/voltafaccia_graze/east/frame_002.png",
+              "Idle/animations/voltafaccia_graze/east/frame_003.png",
+              "Idle/animations/voltafaccia_graze/east/frame_004.png"
+            ]
+          },
+          "voltafaccia_attack": {
+            "north": [
+              "Idle/animations/voltafaccia_attack/north/frame_000.png",
+              "Idle/animations/voltafaccia_attack/north/frame_001.png",
+              "Idle/animations/voltafaccia_attack/north/frame_002.png",
+              "Idle/animations/voltafaccia_attack/north/frame_003.png",
+              "Idle/animations/voltafaccia_attack/north/frame_004.png",
+              "Idle/animations/voltafaccia_attack/north/frame_005.png",
+              "Idle/animations/voltafaccia_attack/north/frame_006.png",
+              "Idle/animations/voltafaccia_attack/north/frame_007.png"
+            ],
+            "south-east": [
+              "Idle/animations/voltafaccia_attack/south-east/frame_000.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_001.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_002.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_003.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_004.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_005.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_006.png",
+              "Idle/animations/voltafaccia_attack/south-east/frame_007.png"
+            ],
+            "east": [
+              "Idle/animations/voltafaccia_attack/east/frame_000.png",
+              "Idle/animations/voltafaccia_attack/east/frame_001.png",
+              "Idle/animations/voltafaccia_attack/east/frame_002.png",
+              "Idle/animations/voltafaccia_attack/east/frame_003.png",
+              "Idle/animations/voltafaccia_attack/east/frame_004.png",
+              "Idle/animations/voltafaccia_attack/east/frame_005.png",
+              "Idle/animations/voltafaccia_attack/east/frame_006.png",
+              "Idle/animations/voltafaccia_attack/east/frame_007.png"
+            ],
+            "north-east": [
+              "Idle/animations/voltafaccia_attack/north-east/frame_000.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_001.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_002.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_003.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_004.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_005.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_006.png",
+              "Idle/animations/voltafaccia_attack/north-east/frame_007.png"
+            ],
+            "south": [
+              "Idle/animations/voltafaccia_attack/south/frame_000.png",
+              "Idle/animations/voltafaccia_attack/south/frame_001.png",
+              "Idle/animations/voltafaccia_attack/south/frame_002.png",
+              "Idle/animations/voltafaccia_attack/south/frame_003.png",
+              "Idle/animations/voltafaccia_attack/south/frame_004.png",
+              "Idle/animations/voltafaccia_attack/south/frame_005.png",
+              "Idle/animations/voltafaccia_attack/south/frame_006.png",
+              "Idle/animations/voltafaccia_attack/south/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T14:27:14.815758"
+}

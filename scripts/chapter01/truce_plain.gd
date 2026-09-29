@@ -20,11 +20,14 @@ const DUNGEON_SCENE: String = "res://scenes/capitolo01/carri_campo.tscn"
 const FIELD_CART: String = "res://assets/models/vehicles/carro_campo_prova.glb"
 const CONDOMINIO: String = "res://assets/models/vehicles/camion_condominio_prova.glb"
 const LEAD_VEHICLE: String = "res://assets/models/vehicles/mezzo_di_testa_prova.glb"
-const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/folla/donna_adulta_south.png")
+const IOLE_TEXTURE: Texture2D = preload("res://assets/sprites/capitolo01/iole/idle_s.png")
+const IOLE_TALK: Texture2D = preload("res://assets/sprites/capitolo01/iole/talk_s.png")
 const IOLE_WALK: Texture2D = preload("res://assets/sprites/folla/donna_adulta_walk_east.png")
 const MERIDIAN_TEXTURE: Texture2D = preload("res://assets/sprites/comparse/gnomone_south.png")
 const CAMP_MUSIC: AudioStream = preload("res://assets/audio/music/m2_accampamento.ogg")
 const SIZE: Vector2 = Vector2(80.0, 50.0)
+## Value of the zone for the world palette (51, section 1).
+const ZONE_VALUE: float = -0.15
 const START: Vector3 = Vector3(4.0, 0.05, 10.0)
 const IOLE_SPOT: Vector3 = Vector3(-10.0, 0.0, 2.0)
 const POND_CENTER: Vector3 = Vector3(27.0, 0.0, 8.0)
@@ -42,6 +45,25 @@ const BARKS: Array[Array] = [
 ]
 const BARK_METERS: float = 3.5
 const BARK_SECONDS: float = 4.0
+## The wheel tracks of the column across the plain, for the ground mask.
+const TRACKS: Array[Dictionary] = [
+	{"points": [Vector2(-60.0, -12.0), Vector2(-10.0, -6.0), Vector2(20.0, -7.0), Vector2(60.0, -10.0)], "half_width": 2.6},
+]
+const DAY_ENTRIES: Array[String] = [
+	"res://assets/vegetation_kit/erba_alta_01.tres",
+	"res://assets/vegetation_kit/ciuffo_erba_01.tres",
+	"res://assets/vegetation_kit/ciuffo_erba_02.tres",
+	"res://assets/vegetation_kit/sassi_01.tres",
+]
+## Kept clear of scenery: where the vehicles, the people, the things to
+## gather and the pond are (centre x, z and radius).
+const CLEAR: Array[Vector3] = [
+	Vector3(-14.0, -10.0, 9.0), Vector3(-2.0, -13.0, 9.0), Vector3(10.0, -11.0, 9.0), Vector3(-30.0, -14.0, 8.0),
+	Vector3(8.0, 0.0, 12.0), Vector3(-20.0, 4.0, 7.0), Vector3(20.0, -2.0, 7.0), Vector3(-6.0, 14.0, 7.0),
+	Vector3(14.0, 16.0, 7.0), Vector3(33.0, -14.0, 7.0), Vector3(-10.0, 2.0, 3.0), Vector3(4.0, 10.0, 3.0),
+	Vector3(0.0, 7.0, 3.0), Vector3(-3.0, -18.0, 3.0), Vector3(-31.0, 5.0, 2.0), Vector3(27.0, 8.0, 10.0),
+	Vector3(-24.0, -9.0, 2.0),
+]
 
 ## Seconds each line stays when it has no voice; tests shorten it.
 @export var line_seconds: float = 3.4
@@ -86,6 +108,13 @@ func _ready() -> void:
 			tuning.truce_warning_seconds = minf(tuning.truce_warning_seconds, tuning.truce_seconds * 0.5)
 		elif argument == "intro=0":
 			intro = false
+	# The Twilight a little toward the Day (section 1); the plain drifts to
+	# the Day on the west and to the Night on the east (51).
+	var palette: ZonePalette = ZonePalette.new()
+	palette.name = "ZonePalette"
+	palette.night_proximity = ZONE_VALUE
+	palette.gradient_width = 60.0
+	add_child(palette)
 	_build_ground()
 	_build_caravan()
 	_build_things()
@@ -142,19 +171,54 @@ func _process(delta: float) -> void:
 
 func _build_ground() -> void:
 	var half: Vector2 = SIZE * 0.5
-	C01Kit.box(level, Vector3(0.0, -0.5, 0.0), Vector3(SIZE.x + 40.0, 1.0, SIZE.y + 40.0), C01Kit.SOIL.lightened(0.1))
-	# The Day side: dry straw and cracked flat stones.
-	C01Kit.visual(level, Vector3(-half.x + 12.0, 0.01, 0.0), Vector3(24.0, 0.02, SIZE.y), C01Kit.DRY_GRASS)
+	# The ground of the prologue plain (106): meadows blended with roads,
+	# gravel and frost toward the Night, so it never shows one repeated
+	# pattern; flat where one plays.
+	CampScenery.flat_rects = [Rect2(-half.x - 6.0, -half.y - 6.0, SIZE.x + 12.0, SIZE.y + 12.0)]
+	CampScenery.hollow_meters = CampScenery.HOLLOW_METERS
 	var random: RandomNumberGenerator = RandomNumberGenerator.new()
 	random.seed = 107
+	CampScenery.build_ground(level, random, TRACKS)
+	# More of the second meadow than in the camp: the tile does not repeat
+	# in a grid under the camera (phase 4b step 3 review).
+	var ground: MeshInstance3D = level.get_node("Ground") as MeshInstance3D
+	(ground.material_override as ShaderMaterial).set_shader_parameter(&"alt_amount", 0.5)
+	(ground.material_override as ShaderMaterial).set_shader_parameter(&"alt_patch_meters", 6.0)
+	var tufts: VegetationScatter = VegetationScatter.new()
+	var tuft_entries: Array[VegetationEntry] = []
+	for path: String in CampScenery.GRASS_ENTRIES:
+		tuft_entries.append(load(path) as VegetationEntry)
+	tufts.entries = tuft_entries
+	tufts.extents = half + Vector2(8.0, 8.0)
+	tufts.density = 0.35
+	tufts.random_seed = 1072
+	level.add_child(tufts)
+	# The Day side: dry tall grass, burnt shrubs, cracked flat stones.
+	var dry: VegetationScatter = VegetationScatter.new()
+	var entries: Array[VegetationEntry] = []
+	for path: String in DAY_ENTRIES:
+		entries.append(load(path) as VegetationEntry)
+	dry.entries = entries
+	dry.extents = Vector2(24.0, half.y)
+	dry.density = 0.5
+	dry.random_seed = 1071
+	dry.position = Vector3(-half.x + 18.0, 0.0, 0.0)
+	level.add_child(dry)
 	for index: int in 18:
 		var at: Vector3 = Vector3(random.randf_range(-half.x + 2.0, -18.0), 0.06, random.randf_range(-half.y + 3.0, half.y - 3.0))
-		C01Kit.visual(level, at, Vector3(random.randf_range(1.0, 2.2), 0.12, random.randf_range(0.8, 1.8)), C01Kit.STONE, Vector3(0.0, random.randf() * PI, 0.0))
-	for index: int in 8:
-		var at: Vector3 = Vector3(random.randf_range(-half.x + 3.0, -20.0), 0.4, random.randf_range(-half.y + 3.0, half.y - 3.0))
-		C01Kit.visual(level, at, Vector3(0.8, 0.8, 0.8), C01Kit.WOOD_DARK.darkened(0.3))
-	# The Night side: frost and the frozen pond.
-	C01Kit.visual(level, Vector3(half.x - 11.0, 0.01, 0.0), Vector3(22.0, 0.02, SIZE.y), Color(0.82, 0.86, 0.95))
+		if _is_free(at):
+			C01Kit.visual(level, at, Vector3(random.randf_range(1.0, 2.2), 0.12, random.randf_range(0.8, 1.8)), C01Kit.STONE, Vector3(0.0, random.randf() * PI, 0.0))
+	var shrub: VegetationEntry = load("res://assets/vegetation_kit/cespuglio_secco_01.tres")
+	for index: int in 10:
+		var at: Vector3 = Vector3(random.randf_range(-half.x + 3.0, -16.0), 0.0, random.randf_range(-half.y + 3.0, half.y - 3.0))
+		if not _is_free(at):
+			continue
+		var bush: Node3D = shrub.model.instantiate()
+		bush.position = at
+		bush.rotation.y = random.randf_range(-PI, PI)
+		level.add_child(bush)
+	# The Night side: the frost field of the prologue and the frozen pond.
+	CampScenery.dress_frost_field(level, Rect2(half.x - 20.0, -half.y, 20.0, SIZE.y), _is_free)
 	var pond: MeshInstance3D = MeshInstance3D.new()
 	var disc: CylinderMesh = CylinderMesh.new()
 	disc.top_radius = POND_RADIUS
@@ -224,6 +288,7 @@ func _build_people() -> void:
 	iole.global_position = IOLE_SPOT
 	iole_sprite = NpcSprite.new()
 	iole_sprite.sprite_texture = IOLE_TEXTURE
+	iole_sprite.frames_per_second = 4.0
 	iole.add_child(iole_sprite)
 	iole.used.connect(_on_iole_used)
 	C01Kit.person(level, Vector3(-24.0, 0.0, -9.0), MERIDIAN_TEXTURE)
@@ -292,10 +357,12 @@ func _iole_lines() -> void:
 	ottavia.controls_enabled = false
 	hints.hide_goal()
 	marker.clear()
+	iole_sprite.set_strip(IOLE_TALK, 7.0)
 	for line: Array in IOLE_LINES:
 		var voice: float = dialogue.show_line(line[0], line[1])
 		await get_tree().create_timer(DialogueBox.line_wait(line_seconds, voice)).timeout
 	dialogue.hide_box()
+	iole_sprite.set_strip(IOLE_TEXTURE, 4.0)
 
 
 ## Into the dungeon: the sundial stops for good there (38).
@@ -319,6 +386,17 @@ func _go_to_dungeon() -> void:
 
 
 # --- Helpers -------------------------------------------------------------------
+
+func _is_free(point: Vector3) -> bool:
+	for spot: Vector3 in CLEAR:
+		if Vector2(point.x - spot.x, point.z - spot.y).length() < spot.z:
+			return false
+	for bark: Array in BARKS:
+		var at: Vector3 = bark[2]
+		if Vector2(point.x - at.x, point.z - at.z).length() < 2.0:
+			return false
+	return true
+
 
 func _load(path: String) -> Node3D:
 	return (load(path) as PackedScene).instantiate()

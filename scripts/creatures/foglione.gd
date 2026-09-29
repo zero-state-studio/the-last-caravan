@@ -11,6 +11,8 @@ enum Phase { CALM, ALERT, WINDUP, ACTIVE, COOLDOWN }
 const COLOR: Color = Color(0.42, 0.62, 0.36)
 const TELEGRAPH_COLOR: Color = Color(1.0, 0.6, 0.3)
 const HEIGHT_PIXELS: int = 42
+const LOOK: String = "res://assets/sprites/creatures/c01/foglione"
+const LOOK_RATES: Dictionary = {"idle": 6.0, "attack": 12.0, "hit": 12.0, "defeat": 9.0}
 
 var phase: Phase = Phase.CALM
 var _time: float = 0.0
@@ -27,6 +29,7 @@ func _init() -> void:
 func _ready() -> void:
 	max_health = CreatureTuning.health_for_hits(creature.foglione_hits)
 	super._ready()
+	use_look(LOOK, LOOK_RATES)
 
 
 ## Front (toward its face): the leaves; the shaded right and the sunlit
@@ -53,7 +56,21 @@ func receive_hit(hit: CombatHit) -> void:
 
 
 func _on_hit(_hit: CombatHit) -> void:
+	play_once("hit", 0.4)
 	_disturb()
+
+
+func look_animation() -> String:
+	if not is_alive():
+		return "defeat"
+	if phase == Phase.WINDUP or phase == Phase.ACTIVE:
+		return "attack"
+	return "idle"
+
+
+## It keeps its face (the closed leaves) toward the sun.
+func look_direction() -> Vector3:
+	return facing
 
 
 func is_exposed() -> bool:
@@ -107,7 +124,7 @@ func _behave(delta: float) -> void:
 
 
 func _on_defeated() -> void:
-	sprite.visible = false
+	sprite.visible = look != null
 
 
 func _on_reset() -> void:

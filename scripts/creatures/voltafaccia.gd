@@ -17,6 +17,8 @@ const SEPARATION_DISTANCE: float = 1.2
 const HERD_RADIUS: float = 12.0
 ## Alarmed ones keep this far while another attacks.
 const WAIT_DISTANCE: float = 3.2
+const LOOK: String = "res://assets/sprites/creatures/c01/voltafaccia"
+const LOOK_RATES: Dictionary = {"walk": 8.0, "graze": 5.0, "idle": 6.0, "attack": 14.0, "hit": 12.0, "defeat": 10.0}
 
 var phase: Phase = Phase.GRAZE
 var _time: float = 0.0
@@ -26,6 +28,7 @@ var _graze_goal: Vector3
 func _ready() -> void:
 	max_health = CreatureTuning.health_for_hits(creature.voltafaccia_hits)
 	super._ready()
+	use_look(LOOK, LOOK_RATES)
 	_graze_goal = global_position
 
 
@@ -140,12 +143,36 @@ func _separation() -> Vector3:
 	return push
 
 
+func look_animation() -> String:
+	if not is_alive():
+		return "defeat"
+	match phase:
+		Phase.GRAZE:
+			return "graze"
+		Phase.WINDUP, Phase.ACTIVE:
+			return "attack"
+		Phase.EXPOSED:
+			return "hit"
+	return "walk" if velocity.length() > 0.2 else "idle"
+
+
+## Its muzzle stays toward the sun: it sidles, it does not turn (B31).
+func look_direction() -> Vector3:
+	return facing
+
+
+func _on_hit(_hit: CombatHit) -> void:
+	play_once("hit", 0.35)
+
+
 func _on_staggered() -> void:
 	_set_phase(Phase.EXPOSED)
 
 
 func _on_defeated() -> void:
-	sprite.visible = false
+	# The last frame of the defeat stays until the room restarts; without
+	# the strips the still sprite goes away as before.
+	sprite.visible = look != null
 
 
 func _on_reset() -> void:

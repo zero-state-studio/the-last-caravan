@@ -9,8 +9,11 @@ extends BossEnemy
 ## damage). In phase 3, when it opens its leaves to bask, it can be struck
 ## from any side at normal damage, and any strike stops the healing. Three phases by health; beaten, it does not die: it
 ## uproots, rolls off the cart and goes away into the plain (35).
-## Placeholder look (phase 4b step 2): a trunk and leaves made of boxes,
-## animated in Godot as the final model will be (section 10).
+## Look (phase 4b step 4): the Meshy body, the same animal as the
+## Foglione sprite, 4 m, with its head, legs and roots; eight big leaves on
+## hinges round it, animated in Godot (section 10): closed they lean on
+## the body, they lift on the open flank and open wide to bask; the roots
+## of its attack come out of the planks.
 
 signal rolled_away
 
@@ -22,9 +25,25 @@ const TELEGRAPH_COLOR: Color = Color(1.0, 0.6, 0.3)
 const ROOT_COLOR: Color = Color(0.95, 0.8, 0.55, 0.9)
 const SEED_COLOR: Color = Color(0.95, 0.9, 0.6, 0.9)
 const LEAF_COLOR: Color = Color(0.36, 0.56, 0.3)
+const BODY_MODEL: PackedScene = preload("res://assets/models/capitolo01/foglione_radicato_v2.glb")
+const LEAF_MODEL: PackedScene = preload("res://assets/models/capitolo01/foglia_radicato.glb")
+const ROOT_MODEL: PackedScene = preload("res://assets/models/capitolo01/radice_radicato.glb")
+## The big leaves hinge on a ring high on its back (radius, height).
+const LEAF_RING: float = 1.3
+const LEAF_HEIGHT: float = 3.1
+const LEAF_SCALE: float = 1.0
+## Tilt of a leaf from upright, outward: closed it lies down along the
+## back, on the open flank it lifts, basking it stands up open like a
+## flower to the sun.
+const LEAF_CLOSED: float = 2.45
+const LEAF_OPEN: float = 0.45
+const LEAF_FLANK: float = 1.2
+## Body collision radius: the leaves reach about this far.
+const BODY_RADIUS: float = 2.0
+## Roots along each line of the attack: distances from the centre.
+const ROOT_STEPS: Array[float] = [2.6, 4.4, 6.2]
 const BOUNCE_COLOR: Color = Color(0.75, 1.0, 0.55)
 const BOUNCE_SOUND: StringName = &"bastone_legno"
-const TRUNK_COLOR: Color = Color(0.42, 0.32, 0.22)
 const HEIGHT: float = 4.0
 const LEAVES: int = 8
 ## Radius of the arena, for the roots and for the uprooting roll.
@@ -52,7 +71,9 @@ var _bask_interrupted: bool = false
 var _pending_lines: Array[Dictionary] = []
 var _leaf_rig: Node3D
 var _leaves: Array[Node3D] = []
+## Additive layer over the leaves for the telegraphs and the bounce.
 var _leaf_material: StandardMaterial3D
+var _body: Node3D
 
 
 func _init() -> void:
@@ -60,7 +81,8 @@ func _init() -> void:
 	world_side = &"day"
 	heavy = true
 	title_key = &"BOSS_FOGLIONE"
-	PlaceholderSprite.build_body(self, 1.3, HEIGHT, PlaceholderSprite.texture(8, 8, LEAF_COLOR), 8)
+	radius = BODY_RADIUS
+	PlaceholderSprite.build_body(self, BODY_RADIUS, HEIGHT, PlaceholderSprite.texture(8, 8, LEAF_COLOR), 8)
 
 
 func _ready() -> void:
@@ -272,6 +294,7 @@ func _roots(player: OttaviaProto) -> void:
 	var hit: bool = false
 	for direction: Vector3 in _root_lines:
 		CombatEffects.spark(get_tree().current_scene, global_position + direction * ARENA_RADIUS * 0.6 + Vector3.UP * 0.3, ROOT_COLOR, 18.0)
+		_raise_roots(direction)
 		hit = hit or _in_line(player.global_position, direction, 1.2, ARENA_RADIUS, creature.rooted_root_width)
 	if hit:
 		var attack: CombatAttack = CombatAttack.new()
@@ -373,40 +396,59 @@ func _set_act(new_act: Act) -> void:
 		_open_leaves()
 
 
-# --- Placeholder look: trunk and leaves ------------------------------------
+# --- Look: body, leaves, roots -------------------------------------------------
 
 func _build_look() -> void:
-	var trunk: MeshInstance3D = MeshInstance3D.new()
-	var trunk_mesh: CylinderMesh = CylinderMesh.new()
-	trunk_mesh.top_radius = 0.6
-	trunk_mesh.bottom_radius = 1.1
-	trunk_mesh.height = HEIGHT * 0.7
-	trunk.mesh = trunk_mesh
-	trunk.position = Vector3.UP * HEIGHT * 0.35
-	var trunk_material: StandardMaterial3D = StandardMaterial3D.new()
-	trunk_material.albedo_color = TRUNK_COLOR
-	trunk.material_override = trunk_material
-	add_child(trunk)
 	_leaf_rig = Node3D.new()
-	_leaf_rig.position = Vector3.UP * HEIGHT * 0.55
 	add_child(_leaf_rig)
+	_body = BODY_MODEL.instantiate()
+	_leaf_rig.add_child(_body)
+	var box: AABB = VehicleKit.bounds(_body)
+	_body.position = -Vector3(box.get_center().x, box.position.y, box.get_center().z)
 	_leaf_material = StandardMaterial3D.new()
-	_leaf_material.albedo_color = LEAF_COLOR
+	_leaf_material.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	_leaf_material.albedo_color = Color.BLACK
 	_leaf_material.emission_enabled = true
 	_leaf_material.emission_energy_multiplier = 0.0
+	_leaf_material.emission = TELEGRAPH_COLOR
 	for index: int in LEAVES:
+		# Each hinge on the ring, its leaf standing up outward (local +Z).
 		var hinge: Node3D = Node3D.new()
 		hinge.rotation.y = TAU * index / LEAVES
 		_leaf_rig.add_child(hinge)
-		var leaf: MeshInstance3D = MeshInstance3D.new()
-		var mesh: BoxMesh = BoxMesh.new()
-		mesh.size = Vector3(1.4, 2.6, 0.12)
-		leaf.mesh = mesh
-		leaf.material_override = _leaf_material
-		leaf.position = Vector3(0.0, 0.2, 1.1)
-		hinge.add_child(leaf)
+		var pivot: Node3D = Node3D.new()
+		pivot.position = Vector3(0.0, LEAF_HEIGHT, LEAF_RING)
+		hinge.add_child(pivot)
+		var leaf: Node3D = LEAF_MODEL.instantiate()
+		pivot.add_child(leaf)
+		leaf.scale = Vector3.ONE * LEAF_SCALE
+		# The leaf model lies flat: stand it up, its base on the pivot.
+		var leaf_box: AABB = VehicleKit.bounds(leaf)
+		leaf.rotation.x = -PI * 0.5
+		leaf.position = Vector3(-leaf_box.get_center().x, leaf_box.end.z, 0.0) * LEAF_SCALE
+		for node: Node in leaf.find_children("*", "MeshInstance3D", true, false):
+			(node as MeshInstance3D).material_overlay = _leaf_material
 		_leaves.append(hinge)
+	for node: Node in _body.find_children("*", "MeshInstance3D", true, false):
+		(node as MeshInstance3D).material_overlay = _leaf_material
 	_close_leaves()
+
+
+## Roots out of the planks along a line of the attack: up fast, a moment,
+## back down.
+func _raise_roots(direction: Vector3) -> void:
+	for step: float in ROOT_STEPS:
+		var root_look: Node3D = ROOT_MODEL.instantiate()
+		get_parent().add_child(root_look)
+		var height: float = VehicleKit.bounds(root_look).size.y
+		var at: Vector3 = global_position + direction * step
+		root_look.global_position = at + Vector3.DOWN * height
+		root_look.rotation.y = atan2(direction.x, direction.z) + PI * 0.5
+		var tween: Tween = root_look.create_tween()
+		tween.tween_property(root_look, "global_position", at + Vector3.DOWN * 0.2, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(step * 0.03)
+		tween.tween_interval(0.5)
+		tween.tween_property(root_look, "global_position", at + Vector3.DOWN * height, 0.4).set_ease(Tween.EASE_IN)
+		tween.tween_callback(root_look.queue_free)
 
 
 func _update_look(_delta: float) -> void:
@@ -421,24 +463,24 @@ func _update_look(_delta: float) -> void:
 		var side: float = absf(wrapf(TAU * index / LEAVES, -PI, PI))
 		var on_flank: bool = side > deg_to_rad(creature.rooted_front_degrees) and side < PI - deg_to_rad(40.0)
 		var leaf: Node3D = _leaves[index].get_child(0)
-		leaf.rotation.x = lerpf(leaf.rotation.x, deg_to_rad(55.0) if flank_open() and on_flank else 0.0, 0.25)
+		leaf.rotation.x = lerpf(leaf.rotation.x, LEAF_FLANK if flank_open() and on_flank else LEAF_CLOSED, 0.25)
 
 
 func _close_leaves() -> void:
 	for hinge: Node3D in _leaves:
-		hinge.get_child(0).rotation.x = 0.0
+		hinge.get_child(0).rotation.x = LEAF_CLOSED
 
 
 ## Basking: the leaves open wide to the sun.
 func _open_leaves() -> void:
 	for hinge: Node3D in _leaves:
 		var tween: Tween = create_tween()
-		tween.tween_property(hinge.get_child(0), "rotation:x", deg_to_rad(60.0), 0.5)
+		tween.tween_property(hinge.get_child(0), "rotation:x", LEAF_OPEN, 0.5)
 
 
 func _whip_leaves() -> void:
 	for index: int in [0, 1, LEAVES - 1]:
 		var leaf: Node3D = _leaves[index].get_child(0)
 		var tween: Tween = create_tween()
-		tween.tween_property(leaf, "rotation:x", deg_to_rad(70.0), 0.12)
-		tween.tween_property(leaf, "rotation:x", 0.0, 0.35)
+		tween.tween_property(leaf, "rotation:x", LEAF_OPEN, 0.12)
+		tween.tween_property(leaf, "rotation:x", LEAF_CLOSED, 0.35)

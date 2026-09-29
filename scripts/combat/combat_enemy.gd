@@ -12,6 +12,8 @@ const FLASH_DECAY_PER_SECOND: float = 8.0
 const MOVE_SETTLE_SECONDS: float = 0.15
 ## Warm pulse while the creature is open: a strike now is a counter-hit (33).
 const OPEN_COLOR: Color = Color(1.0, 0.9, 0.6)
+## Look animations that play once and hold their last frame.
+const ONE_SHOT: Array[String] = ["attack", "defeat"]
 
 @export var max_health: float = 50.0
 ## Body radius in meters, added to the reach of Ottavia's actions.
@@ -39,6 +41,11 @@ var spawn_transform: Transform3D
 var target_override: Node3D = null
 ## Pixel health bar above the head, shown once hit (none for bosses).
 var health_bar: EnemyHealthBar
+## The animated look (phase 4b), or null for a still sprite.
+var look: CreatureLook = null
+
+var _once_animation: String = ""
+var _once_left: float = 0.0
 
 var _material: ShaderMaterial = ShaderMaterial.new()
 var _flash: float = 0.0
@@ -88,6 +95,7 @@ func reset_enemy() -> void:
 	_stagger_left = 0.0
 	_move_left = 0.0
 	sprite.visible = true
+	_once_left = 0.0
 	collision_layer = 1
 	collision_mask = 1
 	_on_reset()
@@ -154,6 +162,7 @@ func _physics_process(delta: float) -> void:
 		flash(0.3 + 0.15 * sin(Time.get_ticks_msec() * 0.015), OPEN_COLOR)
 	_material.set_shader_parameter(&"flash", _flash)
 	_material.set_shader_parameter(&"flash_color", _flash_color)
+	_update_look(delta)
 	if _move_left > 0.0:
 		_move_left -= delta
 		velocity = _move_velocity
@@ -274,6 +283,54 @@ func _become_defeated() -> void:
 	if not acts_when_defeated():
 		collision_layer = 0
 		collision_mask = 0
+
+
+## Uses the strips in `folder` (CreatureLook) instead of the still sprite.
+func use_look(folder: String, rates: Dictionary = {}) -> void:
+	look = CreatureLook.load_from(folder, rates)
+	if look.strips.is_empty():
+		look = null
+		return
+	sprite.offset = Vector2(0.0, CreatureLook.feet_offset())
+	sprite.pixel_size = WorldScale.METERS_PER_PIXEL
+
+
+## Shows `animation` once over the next `seconds` (a hit, a pinch), then
+## back to look_animation().
+func play_once(animation: String, seconds: float) -> void:
+	if look == null or not look.has_animation(animation):
+		return
+	_once_animation = animation
+	_once_left = seconds
+	look.current = ""
+
+
+## The animation the look shows now; creatures with a look override it.
+func look_animation() -> String:
+	if not is_alive():
+		return "defeat"
+	return "walk" if velocity.length() > 0.2 else "idle"
+
+
+## Where the look faces (flat vector).
+func look_direction() -> Vector3:
+	var flat: Vector3 = Vector3(velocity.x, 0.0, velocity.z)
+	if flat.length() > 0.2:
+		return flat
+	var player: OttaviaProto = find_player()
+	return flat_direction_to(player.global_position) if player != null else Vector3.BACK
+
+
+func _update_look(delta: float) -> void:
+	if look == null:
+		return
+	var animation: String = look_animation()
+	var loop: bool = not ONE_SHOT.has(animation)
+	if _once_left > 0.0 and is_alive():
+		_once_left -= delta
+		animation = _once_animation
+		loop = false
+	look.show(sprite, _material, animation, look_direction(), delta, loop)
 
 
 ## Bosses show their health in the HUD instead.

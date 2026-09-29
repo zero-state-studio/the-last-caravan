@@ -1,0 +1,297 @@
+{
+  "group_id": "ddfaaabe-38d2-4fa3-be10-f0102e69cacf",
+  "states": [
+    {
+      "character": {
+        "id": "0165b629-4fe2-4dd7-bab3-c7f3bc17dd24",
+        "name": "Idle",
+        "prompt": "Slow heavy beast about 1.4 m tall whose broad back is covered with large overlapping green-purple leaves like a shield, stubby legs, small head low in front. The leaves are closed forward like a shield. Seen from the front.",
+        "size": {
+          "width": 44,
+          "height": 44
+        },
+        "template_id": "bear",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-29T13:11:09.918693+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "foglione_attack": {
+            "north-east": [
+              "Idle/animations/foglione_attack/north-east/frame_000.png",
+              "Idle/animations/foglione_attack/north-east/frame_001.png",
+              "Idle/animations/foglione_attack/north-east/frame_002.png",
+              "Idle/animations/foglione_attack/north-east/frame_003.png",
+              "Idle/animations/foglione_attack/north-east/frame_004.png",
+              "Idle/animations/foglione_attack/north-east/frame_005.png",
+              "Idle/animations/foglione_attack/north-east/frame_006.png"
+            ],
+            "north": [
+              "Idle/animations/foglione_attack/north/frame_000.png",
+              "Idle/animations/foglione_attack/north/frame_001.png",
+              "Idle/animations/foglione_attack/north/frame_002.png",
+              "Idle/animations/foglione_attack/north/frame_003.png",
+              "Idle/animations/foglione_attack/north/frame_004.png",
+              "Idle/animations/foglione_attack/north/frame_005.png",
+              "Idle/animations/foglione_attack/north/frame_006.png"
+            ],
+            "south-east": [
+              "Idle/animations/foglione_attack/south-east/frame_000.png",
+              "Idle/animations/foglione_attack/south-east/frame_001.png",
+              "Idle/animations/foglione_attack/south-east/frame_002.png",
+              "Idle/animations/foglione_attack/south-east/frame_003.png",
+              "Idle/animations/foglione_attack/south-east/frame_004.png",
+              "Idle/animations/foglione_attack/south-east/frame_005.png",
+              "Idle/animations/foglione_attack/south-east/frame_006.png"
+            ],
+            "south": [
+              "Idle/animations/foglione_attack/south/frame_000.png",
+              "Idle/animations/foglione_attack/south/frame_001.png",
+              "Idle/animations/foglione_attack/south/frame_002.png",
+              "Idle/animations/foglione_attack/south/frame_003.png",
+              "Idle/animations/foglione_attack/south/frame_004.png",
+              "Idle/animations/foglione_attack/south/frame_005.png",
+              "Idle/animations/foglione_attack/south/frame_006.png"
+            ],
+            "east": [
+              "Idle/animations/foglione_attack/east/frame_000.png",
+              "Idle/animations/foglione_attack/east/frame_001.png",
+              "Idle/animations/foglione_attack/east/frame_002.png",
+              "Idle/animations/foglione_attack/east/frame_003.png",
+              "Idle/animations/foglione_attack/east/frame_004.png",
+              "Idle/animations/foglione_attack/east/frame_005.png",
+              "Idle/animations/foglione_attack/east/frame_006.png"
+            ]
+          },
+          "foglione_hit": {
+            "east": [
+              "Idle/animations/foglione_hit/east/frame_000.png",
+              "Idle/animations/foglione_hit/east/frame_001.png",
+              "Idle/animations/foglione_hit/east/frame_002.png",
+              "Idle/animations/foglione_hit/east/frame_003.png",
+              "Idle/animations/foglione_hit/east/frame_004.png"
+            ],
+            "south-east": [
+              "Idle/animations/foglione_hit/south-east/frame_000.png",
+              "Idle/animations/foglione_hit/south-east/frame_001.png",
+              "Idle/animations/foglione_hit/south-east/frame_002.png",
+              "Idle/animations/foglione_hit/south-east/frame_003.png",
+              "Idle/animations/foglione_hit/south-east/frame_004.png"
+            ],
+            "north": [
+              "Idle/animations/foglione_hit/north/frame_000.png",
+              "Idle/animations/foglione_hit/north/frame_001.png",
+              "Idle/animations/foglione_hit/north/frame_002.png",
+              "Idle/animations/foglione_hit/north/frame_003.png",
+              "Idle/animations/foglione_hit/north/frame_004.png"
+            ],
+            "south": [
+              "Idle/animations/foglione_hit/south/frame_000.png",
+              "Idle/animations/foglione_hit/south/frame_001.png",
+              "Idle/animations/foglione_hit/south/frame_002.png",
+              "Idle/animations/foglione_hit/south/frame_003.png",
+              "Idle/animations/foglione_hit/south/frame_004.png"
+            ],
+            "north-east": [
+              "Idle/animations/foglione_hit/north-east/frame_000.png",
+              "Idle/animations/foglione_hit/north-east/frame_001.png",
+              "Idle/animations/foglione_hit/north-east/frame_002.png",
+              "Idle/animations/foglione_hit/north-east/frame_003.png",
+              "Idle/animations/foglione_hit/north-east/frame_004.png"
+            ]
+          },
+          "foglione_idle": {
+            "south": [
+              "Idle/animations/foglione_idle/south/frame_000.png",
+              "Idle/animations/foglione_idle/south/frame_001.png",
+              "Idle/animations/foglione_idle/south/frame_002.png",
+              "Idle/animations/foglione_idle/south/frame_003.png",
+              "Idle/animations/foglione_idle/south/frame_004.png",
+              "Idle/animations/foglione_idle/south/frame_005.png",
+              "Idle/animations/foglione_idle/south/frame_006.png",
+              "Idle/animations/foglione_idle/south/frame_007.png",
+              "Idle/animations/foglione_idle/south/frame_008.png",
+              "Idle/animations/foglione_idle/south/frame_009.png",
+              "Idle/animations/foglione_idle/south/frame_010.png",
+              "Idle/animations/foglione_idle/south/frame_011.png",
+              "Idle/animations/foglione_idle/south/frame_012.png",
+              "Idle/animations/foglione_idle/south/frame_013.png",
+              "Idle/animations/foglione_idle/south/frame_014.png",
+              "Idle/animations/foglione_idle/south/frame_015.png",
+              "Idle/animations/foglione_idle/south/frame_016.png"
+            ],
+            "south-east": [
+              "Idle/animations/foglione_idle/south-east/frame_000.png",
+              "Idle/animations/foglione_idle/south-east/frame_001.png",
+              "Idle/animations/foglione_idle/south-east/frame_002.png",
+              "Idle/animations/foglione_idle/south-east/frame_003.png",
+              "Idle/animations/foglione_idle/south-east/frame_004.png",
+              "Idle/animations/foglione_idle/south-east/frame_005.png",
+              "Idle/animations/foglione_idle/south-east/frame_006.png",
+              "Idle/animations/foglione_idle/south-east/frame_007.png",
+              "Idle/animations/foglione_idle/south-east/frame_008.png",
+              "Idle/animations/foglione_idle/south-east/frame_009.png",
+              "Idle/animations/foglione_idle/south-east/frame_010.png",
+              "Idle/animations/foglione_idle/south-east/frame_011.png",
+              "Idle/animations/foglione_idle/south-east/frame_012.png",
+              "Idle/animations/foglione_idle/south-east/frame_013.png",
+              "Idle/animations/foglione_idle/south-east/frame_014.png",
+              "Idle/animations/foglione_idle/south-east/frame_015.png",
+              "Idle/animations/foglione_idle/south-east/frame_016.png"
+            ],
+            "north-east": [
+              "Idle/animations/foglione_idle/north-east/frame_000.png",
+              "Idle/animations/foglione_idle/north-east/frame_001.png",
+              "Idle/animations/foglione_idle/north-east/frame_002.png",
+              "Idle/animations/foglione_idle/north-east/frame_003.png",
+              "Idle/animations/foglione_idle/north-east/frame_004.png",
+              "Idle/animations/foglione_idle/north-east/frame_005.png",
+              "Idle/animations/foglione_idle/north-east/frame_006.png",
+              "Idle/animations/foglione_idle/north-east/frame_007.png",
+              "Idle/animations/foglione_idle/north-east/frame_008.png",
+              "Idle/animations/foglione_idle/north-east/frame_009.png",
+              "Idle/animations/foglione_idle/north-east/frame_010.png",
+              "Idle/animations/foglione_idle/north-east/frame_011.png",
+              "Idle/animations/foglione_idle/north-east/frame_012.png",
+              "Idle/animations/foglione_idle/north-east/frame_013.png",
+              "Idle/animations/foglione_idle/north-east/frame_014.png",
+              "Idle/animations/foglione_idle/north-east/frame_015.png",
+              "Idle/animations/foglione_idle/north-east/frame_016.png"
+            ],
+            "north": [
+              "Idle/animations/foglione_idle/north/frame_000.png",
+              "Idle/animations/foglione_idle/north/frame_001.png",
+              "Idle/animations/foglione_idle/north/frame_002.png",
+              "Idle/animations/foglione_idle/north/frame_003.png",
+              "Idle/animations/foglione_idle/north/frame_004.png",
+              "Idle/animations/foglione_idle/north/frame_005.png",
+              "Idle/animations/foglione_idle/north/frame_006.png",
+              "Idle/animations/foglione_idle/north/frame_007.png",
+              "Idle/animations/foglione_idle/north/frame_008.png",
+              "Idle/animations/foglione_idle/north/frame_009.png",
+              "Idle/animations/foglione_idle/north/frame_010.png",
+              "Idle/animations/foglione_idle/north/frame_011.png",
+              "Idle/animations/foglione_idle/north/frame_012.png",
+              "Idle/animations/foglione_idle/north/frame_013.png",
+              "Idle/animations/foglione_idle/north/frame_014.png",
+              "Idle/animations/foglione_idle/north/frame_015.png",
+              "Idle/animations/foglione_idle/north/frame_016.png"
+            ],
+            "east": [
+              "Idle/animations/foglione_idle/east/frame_000.png",
+              "Idle/animations/foglione_idle/east/frame_001.png",
+              "Idle/animations/foglione_idle/east/frame_002.png",
+              "Idle/animations/foglione_idle/east/frame_003.png",
+              "Idle/animations/foglione_idle/east/frame_004.png",
+              "Idle/animations/foglione_idle/east/frame_005.png",
+              "Idle/animations/foglione_idle/east/frame_006.png",
+              "Idle/animations/foglione_idle/east/frame_007.png",
+              "Idle/animations/foglione_idle/east/frame_008.png",
+              "Idle/animations/foglione_idle/east/frame_009.png",
+              "Idle/animations/foglione_idle/east/frame_010.png",
+              "Idle/animations/foglione_idle/east/frame_011.png",
+              "Idle/animations/foglione_idle/east/frame_012.png",
+              "Idle/animations/foglione_idle/east/frame_013.png",
+              "Idle/animations/foglione_idle/east/frame_014.png",
+              "Idle/animations/foglione_idle/east/frame_015.png",
+              "Idle/animations/foglione_idle/east/frame_016.png"
+            ]
+          },
+          "foglione_walk": {
+            "north": [
+              "Idle/animations/foglione_walk/north/frame_000.png",
+              "Idle/animations/foglione_walk/north/frame_001.png",
+              "Idle/animations/foglione_walk/north/frame_002.png",
+              "Idle/animations/foglione_walk/north/frame_003.png"
+            ],
+            "south": [
+              "Idle/animations/foglione_walk/south/frame_000.png",
+              "Idle/animations/foglione_walk/south/frame_001.png",
+              "Idle/animations/foglione_walk/south/frame_002.png",
+              "Idle/animations/foglione_walk/south/frame_003.png"
+            ],
+            "north-east": [
+              "Idle/animations/foglione_walk/north-east/frame_000.png",
+              "Idle/animations/foglione_walk/north-east/frame_001.png",
+              "Idle/animations/foglione_walk/north-east/frame_002.png",
+              "Idle/animations/foglione_walk/north-east/frame_003.png"
+            ],
+            "south-east": [
+              "Idle/animations/foglione_walk/south-east/frame_000.png",
+              "Idle/animations/foglione_walk/south-east/frame_001.png",
+              "Idle/animations/foglione_walk/south-east/frame_002.png",
+              "Idle/animations/foglione_walk/south-east/frame_003.png"
+            ],
+            "east": [
+              "Idle/animations/foglione_walk/east/frame_000.png",
+              "Idle/animations/foglione_walk/east/frame_001.png",
+              "Idle/animations/foglione_walk/east/frame_002.png",
+              "Idle/animations/foglione_walk/east/frame_003.png"
+            ]
+          },
+          "foglione_defeat": {
+            "north": [
+              "Idle/animations/foglione_defeat/north/frame_000.png",
+              "Idle/animations/foglione_defeat/north/frame_001.png",
+              "Idle/animations/foglione_defeat/north/frame_002.png",
+              "Idle/animations/foglione_defeat/north/frame_003.png",
+              "Idle/animations/foglione_defeat/north/frame_004.png",
+              "Idle/animations/foglione_defeat/north/frame_005.png",
+              "Idle/animations/foglione_defeat/north/frame_006.png"
+            ],
+            "east": [
+              "Idle/animations/foglione_defeat/east/frame_000.png",
+              "Idle/animations/foglione_defeat/east/frame_001.png",
+              "Idle/animations/foglione_defeat/east/frame_002.png",
+              "Idle/animations/foglione_defeat/east/frame_003.png",
+              "Idle/animations/foglione_defeat/east/frame_004.png",
+              "Idle/animations/foglione_defeat/east/frame_005.png",
+              "Idle/animations/foglione_defeat/east/frame_006.png"
+            ],
+            "south-east": [
+              "Idle/animations/foglione_defeat/south-east/frame_000.png",
+              "Idle/animations/foglione_defeat/south-east/frame_001.png",
+              "Idle/animations/foglione_defeat/south-east/frame_002.png",
+              "Idle/animations/foglione_defeat/south-east/frame_003.png",
+              "Idle/animations/foglione_defeat/south-east/frame_004.png",
+              "Idle/animations/foglione_defeat/south-east/frame_005.png",
+              "Idle/animations/foglione_defeat/south-east/frame_006.png"
+            ],
+            "north-east": [
+              "Idle/animations/foglione_defeat/north-east/frame_000.png",
+              "Idle/animations/foglione_defeat/north-east/frame_001.png",
+              "Idle/animations/foglione_defeat/north-east/frame_002.png",
+              "Idle/animations/foglione_defeat/north-east/frame_003.png",
+              "Idle/animations/foglione_defeat/north-east/frame_004.png",
+              "Idle/animations/foglione_defeat/north-east/frame_005.png",
+              "Idle/animations/foglione_defeat/north-east/frame_006.png"
+            ],
+            "south": [
+              "Idle/animations/foglione_defeat/south/frame_000.png",
+              "Idle/animations/foglione_defeat/south/frame_001.png",
+              "Idle/animations/foglione_defeat/south/frame_002.png",
+              "Idle/animations/foglione_defeat/south/frame_003.png",
+              "Idle/animations/foglione_defeat/south/frame_004.png",
+              "Idle/animations/foglione_defeat/south/frame_005.png",
+              "Idle/animations/foglione_defeat/south/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T14:57:12.312595"
+}

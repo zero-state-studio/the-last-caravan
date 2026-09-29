@@ -60,7 +60,9 @@ func _test_voltafaccia() -> void:
 		await _wait(0.1)
 		attacked = attacked or beast.phase == Voltafaccia.Phase.WINDUP or beast.phase == Voltafaccia.Phase.ACTIVE
 	_check(attacked, "voltafaccia: notices Ottavia, sidles close and attacks")
-	_check(not beast.sprite.flip_h, "voltafaccia: never turns away from the sun")
+	# It sidles, never turns: its face stays west, the view drawn east and
+	# mirrored (CreatureLook, 36).
+	_check(beast.facing.is_equal_approx(SunFacingEnemy.SUN_DIRECTION) and beast.look != null and beast.sprite.flip_h, "voltafaccia: never turns away from the sun")
 	beast.free()
 	_ottavia.restore_health()
 

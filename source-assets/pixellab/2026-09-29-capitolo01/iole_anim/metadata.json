@@ -1,0 +1,71 @@
+{
+  "group_id": "d609e486-9af8-4b72-a7a7-404c3eb9f36a",
+  "states": [
+    {
+      "character": {
+        "id": "d0b29615-8095-4769-b47a-9099981ee122",
+        "name": "Idle",
+        "prompt": "Fieldturner woman in her forties, the figure fills the canvas height from head to feet. Olive-green and straw-coloured work clothes, sun-faded on the front. Holding a long wooden field tool, a rake-like pole. Worried, urgent posture, leaning slightly forward.",
+        "size": {
+          "width": 52,
+          "height": 52
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-29T13:07:49.883913+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "iole_idle": {
+            "south-east": [
+              "Idle/animations/iole_idle/south-east/frame_000.png",
+              "Idle/animations/iole_idle/south-east/frame_001.png",
+              "Idle/animations/iole_idle/south-east/frame_002.png",
+              "Idle/animations/iole_idle/south-east/frame_003.png"
+            ],
+            "south": [
+              "Idle/animations/iole_idle/south/frame_000.png",
+              "Idle/animations/iole_idle/south/frame_001.png",
+              "Idle/animations/iole_idle/south/frame_002.png",
+              "Idle/animations/iole_idle/south/frame_003.png"
+            ]
+          },
+          "iole_talk": {
+            "south": [
+              "Idle/animations/iole_talk/south/frame_000.png",
+              "Idle/animations/iole_talk/south/frame_001.png",
+              "Idle/animations/iole_talk/south/frame_002.png",
+              "Idle/animations/iole_talk/south/frame_003.png",
+              "Idle/animations/iole_talk/south/frame_004.png",
+              "Idle/animations/iole_talk/south/frame_005.png",
+              "Idle/animations/iole_talk/south/frame_006.png"
+            ],
+            "south-east": [
+              "Idle/animations/iole_talk/south-east/frame_000.png",
+              "Idle/animations/iole_talk/south-east/frame_001.png",
+              "Idle/animations/iole_talk/south-east/frame_002.png",
+              "Idle/animations/iole_talk/south-east/frame_003.png",
+              "Idle/animations/iole_talk/south-east/frame_004.png",
+              "Idle/animations/iole_talk/south-east/frame_005.png",
+              "Idle/animations/iole_talk/south-east/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-29T15:07:48.087721"
+}
