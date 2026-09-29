@@ -17,6 +17,9 @@ const COLUMN_SPEED: float = 1.2
 ## While Ottavia is away for Mirco the column walks on, but slower, so the
 ## way back is a chase and not minutes of empty plain.
 const COLUMN_SPEED_AWAY: float = 0.3
+## Walk animation speed at the full column pace.
+const WALK_FPS: float = 8.0
+const ANSELMO_WALK_FPS: float = 7.0
 const COLUMN_Z: float = -3.0
 const COLUMN_START_X: Array[float] = [-7.0, -31.0, -55.0, -79.0]
 const COLUMN_RECIPES: Array[String] = ["casa_due_piani", "tenda_e_carico", "orto_e_serbatoio", "casa_torre"]
@@ -246,7 +249,9 @@ func _intro() -> void:
 	# She goes back to the column; the camera looks toward the dark.
 	_mother.set_strip(load("res://assets/sprites/folla/%s_walk_west.png" % MOTHER_KIND), 8.0)
 	var back: Tween = create_tween()
-	back.tween_property(_mother, "position", _mother.position + Vector3(-30.0, 0.0, -3.0), 30.0 / 1.4)
+	back.tween_property(_mother, "position", _mother.position + Vector3(-8.0, 0.0, 2.5), 8.0 / 1.4)
+	# Then she walks on with the column, like everyone else.
+	back.tween_callback(func() -> void: walkers.append(_mother))
 	var start: Transform3D = camera_rig.camera.global_transform
 	var toward: Transform3D = start.translated(Vector3(40.0, 0.0, 0.0))
 	cinema_camera.global_transform = start
@@ -266,6 +271,11 @@ func _intro() -> void:
 func _physics_process(delta: float) -> void:
 	if column_moving:
 		var speed: float = column_speed()
+		# Steps in time with the ground covered: slower column, slower feet.
+		var pace: float = speed / COLUMN_SPEED
+		for walker: NpcSprite in walkers:
+			walker.frames_per_second = WALK_FPS * pace
+		_anselmo.frames_per_second = ANSELMO_WALK_FPS * pace
 		for node: Node3D in column:
 			node.position.x -= speed * delta
 		for walker: NpcSprite in walkers:
