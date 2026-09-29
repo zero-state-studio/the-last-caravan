@@ -446,7 +446,7 @@ func _outro() -> void:
 		var wait: float = DialogueBox.line_wait(line_seconds, voice, OUTRO_PAUSE)
 		# The lantern outline shows while she speaks of it.
 		if index == OUTRO_LANTERN_LINE:
-			title.show_lantern_silhouette(wait)
+			title.show_lantern_silhouette(maxf(wait - 1.2, 0.05), true)
 		await get_tree().create_timer(wait).timeout
 	dialogue.hide_box()
 	GameAudio.stop_music(1.5)

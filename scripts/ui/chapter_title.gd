@@ -96,7 +96,9 @@ func is_title_visible() -> bool:
 
 
 ## The farewell lantern (88), still empty: only its outline.
-func show_lantern_silhouette(seconds: float) -> void:
+## With `clear_after` the dimming goes away with the lantern (the scene
+## goes on behind it).
+func show_lantern_silhouette(seconds: float, clear_after: bool = false) -> void:
 	LanternProgress.revealed = true
 	_lantern.pieces = LanternProgress.pieces
 	var tween: Tween = create_tween()
@@ -104,4 +106,6 @@ func show_lantern_silhouette(seconds: float) -> void:
 	tween.parallel().tween_property(_lantern, "modulate:a", 1.0, 0.8)
 	tween.tween_interval(seconds)
 	tween.tween_property(_lantern, "modulate:a", 0.0, 0.6)
+	if clear_after:
+		tween.parallel().tween_property(_black, "color:a", 0.0, 0.6)
 	await tween.finished

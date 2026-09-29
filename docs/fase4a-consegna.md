@@ -34,7 +34,7 @@ Dal piano buio dei Tessibuio, alla porta, all'accampamento, alla coda della colo
 | PixelLab | 289 generazioni | 300 | somma del registro (264 alla prima consegna, più 24 per le camminate della folla e 1 per Ruggero che si addormenta); l'account segna le generazioni del ciclo del mese, fase 3 compresa |
 | Scenario | 30 CU | 1.000 | confermato dall'account (3 texture) |
 | Meshy | 459 crediti | circa 500 | somma del registro (387 alla prima consegna, più 72 per le quattro rovine della città morta) |
-| ElevenLabs | 2.075 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
+| ElevenLabs | 3.173 misurati, più la musica | 15.000 | effetti 663 e voci 380 dall'intestazione `character-cost`; i quattro brani (circa 4 minuti) non danno il costo e la chiave non legge il consumo: stima 3.000-8.000, totale stimato 4.000-9.000 |
 
 ## Asset
 
@@ -96,3 +96,9 @@ Tutti in `docs/asset-log.csv`: 166 righe con data 28 settembre 2026. In breve:
 - Verdetto di Anselmo riscritto e affranto, poi una breve chiusura in cui Ottavia spiega le dieci Tregue e la lanterna del congedo.
 - 25 battute nuove (834 crediti ElevenLabs, modello v3 per le voci più espressive).
 - Video: `docs/video/capitoli/00-prologo/14-prologo-intero-revisione-3.mp4`, 6 minuti e 51 secondi.
+
+## Ultima revisione
+
+- Voci rifatte: «Serra fila» pronunciato staccato, Anselmo con la voce di Marco (riflessivo), la mamma di Mirco con quella di Roberta; Zelinda e Mirco con la voce.
+- La mamma chiama «Ottavia! Ottavia!»; niente sosta per la mano: dopo il verdetto i due continuano a camminare e la camera si allarga e si allontana; la chiusura di Ottavia è veloce e ironica.
+- Video: `docs/video/capitoli/00-prologo/16-prologo-intero-ultima-revisione.mp4`, 6 minuti e 38 secondi.
